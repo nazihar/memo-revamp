@@ -10849,6 +10849,202 @@
       "value": " types of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forumTypes.changes.actionsAmber": [
+    {
+      "type": 0,
+      "value": "Actions: amber when due withinSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDays": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDefaultDue": [
+    {
+      "type": 0,
+      "value": "Actions: default due dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDefaultDue.days": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " after the action is raisedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDefaultDue.nextMeeting": [
+    {
+      "type": 0,
+      "value": "The next meeting, or "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " when none is scheduledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDefinition": [
+    {
+      "type": 0,
+      "value": "Actions: workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDueChange": [
+    {
+      "type": 0,
+      "value": "Actions: a new due date needsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDueChange.chair": [
+    {
+      "type": 0,
+      "value": "The chair’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDueChange.reason": [
+    {
+      "type": 0,
+      "value": "Only a reasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsDueChange.secretary": [
+    {
+      "type": 0,
+      "value": "The secretary’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsEvidence": [
+    {
+      "type": 0,
+      "value": "Actions: evidence required when marked as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsOff": [
+    {
+      "type": 0,
+      "value": "OffSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsStale": [
+    {
+      "type": 0,
+      "value": "Actions: “No recent update” afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsUpdateRequests": [
+    {
+      "type": 0,
+      "value": "Actions: ask owners for an update before the papers are dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsVerifiedBy": [
+    {
+      "type": 0,
+      "value": "Actions: verified bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsVerifiedBy.chair": [
+    {
+      "type": 0,
+      "value": "The chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.actionsVerifiedBy.secretary": [
+    {
+      "type": 0,
+      "value": "A secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "forumTypes.changes.added": [
     {
       "type": 0,
@@ -11962,6 +12158,12 @@
     {
       "type": 0,
       "value": "BoardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.preset.boardAuditCommittee": [
+    {
+      "type": 0,
+      "value": "Board audit committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.preset.boardCommittee": [

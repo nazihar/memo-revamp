@@ -197,7 +197,7 @@ class DefinitionLifecycle(
         val loaded = reads.version(key, number)
         refuseIf(loaded.definition.builtIn, "BUILT_IN") { "Built-in definitions cannot be retired." }
         refuseIf(loaded.version.state != VersionState.PUBLISHED, "WRONG_STATE") { "Only the published version can be retired." }
-        refuseIf(usages.any { it.inUse(key) }, "IN_USE") { "A memo type still uses this definition." }
+        refuseIf(usages.any { it.inUse(key) }, "IN_USE") { "A memo type or a committee type still uses this definition." }
         if (!versions.move(loaded.version.id, VersionState.PUBLISHED, VersionState.RETIRED)) {
             throw ConcurrentModificationException("workflow definition version ${loaded.version.id}", loaded.version.revision)
         }

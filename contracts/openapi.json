@@ -10,6 +10,46 @@
         },
         "type" : "object"
       },
+      "ActionsPolicy" : {
+        "properties" : {
+          "amberWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "defaultDue" : {
+            "enum" : [ "NEXT_MEETING", "WORKING_DAYS" ],
+            "type" : "string"
+          },
+          "defaultDueWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "definitionKey" : {
+            "type" : "string"
+          },
+          "dueChange" : {
+            "enum" : [ "SECRETARY_AGREES", "CHAIR_AGREES", "OWNER_WITH_REASON" ],
+            "type" : "string"
+          },
+          "evidenceRequired" : {
+            "type" : "boolean"
+          },
+          "staleWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "updateRequestWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "verifiedBy" : {
+            "enum" : [ "SECRETARY", "CHAIR" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "amberWorkingDays", "defaultDue", "defaultDueWorkingDays", "definitionKey", "dueChange", "evidenceRequired", "staleWorkingDays", "updateRequestWorkingDays", "verifiedBy" ],
+        "type" : "object"
+      },
       "ActiveRequest" : {
         "properties" : {
           "active" : {
@@ -2125,7 +2165,7 @@
             "type" : "string"
           },
           "preset" : {
-            "enum" : [ "BOARD", "BOARD_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
+            "enum" : [ "BOARD", "BOARD_COMMITTEE", "BOARD_AUDIT_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
             "type" : [ "string", "null" ]
           }
         },
@@ -3875,7 +3915,7 @@
       "ForumTypePresetResponse" : {
         "properties" : {
           "key" : {
-            "enum" : [ "BOARD", "BOARD_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
+            "enum" : [ "BOARD", "BOARD_COMMITTEE", "BOARD_AUDIT_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
             "type" : "string"
           },
           "name" : {
@@ -3928,6 +3968,9 @@
       },
       "ForumTypeSettingsRequest" : {
         "properties" : {
+          "actions" : {
+            "$ref" : "#/components/schemas/ActionsPolicy"
+          },
           "agenda" : {
             "$ref" : "#/components/schemas/AgendaPolicy"
           },
@@ -3980,6 +4023,9 @@
       },
       "ForumTypeVersionResponse" : {
         "properties" : {
+          "actions" : {
+            "$ref" : "#/components/schemas/ActionsPolicy"
+          },
           "agenda" : {
             "$ref" : "#/components/schemas/AgendaPolicy"
           },
@@ -4080,7 +4126,7 @@
             "$ref" : "#/components/schemas/TermPolicy"
           }
         },
-        "required" : [ "agenda", "createdAt", "meetings", "memberAttributes", "minutes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
+        "required" : [ "actions", "agenda", "createdAt", "meetings", "memberAttributes", "minutes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -12969,6 +13015,28 @@
           }
         },
         "summary" : "Create a committee type as draft version 1, blank or from a preset",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/action-definitions" : {
+      "get" : {
+        "operationId" : "listActionDefinitions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DefinitionChoice"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The published workflows a committee type's actions can run on",
         "tags" : [ "forum" ]
       }
     },

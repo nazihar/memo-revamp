@@ -1,4 +1,5 @@
 import type {
+  ActionsPolicy,
   AgendaPolicy,
   ForumTypeSettingsRequest,
   ForumTypeVersionResponse,
@@ -68,6 +69,8 @@ export interface TypeSettings {
   meetings: Meetings
   /** Minutes approval, memos moving on, resolution numbers, the template (Phase 4 E06); as loaded until E06 T10. */
   minutes: MinutesPolicy
+  /** Action items: RAG, due dates, verification, evidence, update requests, the workflow (Phase 4 E07); as loaded until T10. */
+  actions: ActionsPolicy
 }
 
 /**
@@ -157,6 +160,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     agenda: v.agenda,
     meetings: meetingsOf(v.meetings),
     minutes: v.minutes,
+    actions: v.actions,
   }
 }
 
@@ -208,6 +212,7 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
     // An empty reply deadline goes as -1, so the server names the field (RANGE).
     meetings: { ...s.meetings, replyDeadlineWorkingDays: s.meetings.replyDeadlineWorkingDays ?? -1 },
     minutes: s.minutes,
+    actions: s.actions,
   }
 }
 

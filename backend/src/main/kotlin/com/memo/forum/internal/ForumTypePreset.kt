@@ -1,6 +1,9 @@
 package com.memo.forum.internal
 
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.AgendaPolicy
+import com.memo.forum.DefaultDue
+import com.memo.forum.DueChange
 import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
 import com.memo.forum.MANAGEMENT_AGENDA
@@ -21,6 +24,9 @@ import com.memo.forum.ThresholdKind
  * bank charters, never applied silently. Labels are English, like tenant content (Phase 3 Q3). Boards and board committees
  * approve their minutes at the next meeting, management committees by circulation (ADR-0066, recommendation 2 of
  * E06's UX review); memos move on when the meeting is held, and resolutions are numbered `BRC/2026/014` (ADR-0065).
+ * Action items (design E07 §1.13): boards and board committees use the defaults, an audit committee asks for evidence
+ * when an action is marked as done (the IIA's evidence, research E07 §3.3), and management committees turn amber sooner,
+ * give ten working days by default and let the owner move a date with a reason.
  */
 enum class ForumTypePreset(
     val displayName: String,
@@ -73,6 +79,14 @@ enum class ForumTypePreset(
             agenda = AgendaPolicy(sections = STANDARD_AGENDA),
         ),
     ),
+    BOARD_AUDIT_COMMITTEE(
+        "Board audit committee",
+        BOARD_COMMITTEE.settings.copy(
+            name = "Board audit committee",
+            description = "The board's audit committee under its terms of reference.",
+            actions = ActionsPolicy(evidenceRequired = true),
+        ),
+    ),
     MANAGEMENT_COMMITTEE(
         "Management committee",
         ForumTypeSettings(
@@ -100,9 +114,19 @@ enum class ForumTypePreset(
             agenda = AgendaPolicy(sections = MANAGEMENT_AGENDA),
             // Management committees meet often and need their minutes quickly: by circulation (owner, 2026-11-19).
             minutes = MinutesPolicy(approval = MinutesApproval.BY_CIRCULATION),
+            actions =
+                ActionsPolicy(
+                    amberWorkingDays = MANAGEMENT_AMBER_DAYS,
+                    dueChange = DueChange.OWNER_WITH_REASON,
+                    defaultDue = DefaultDue.WORKING_DAYS,
+                    defaultDueWorkingDays = MANAGEMENT_DUE_DAYS,
+                ),
         ),
     ),
 }
+
+private const val MANAGEMENT_AMBER_DAYS = 5
+private const val MANAGEMENT_DUE_DAYS = 10
 
 private val INDEPENDENT = MemberAttribute("independent", "Independent")
 private val NON_EXECUTIVE = MemberAttribute("nonExecutive", "Non-executive")

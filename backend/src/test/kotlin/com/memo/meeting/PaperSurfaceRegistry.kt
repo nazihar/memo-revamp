@@ -209,6 +209,7 @@ object PaperSurfaceRegistry {
                 "GET /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template",
                 "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template/preview",
                 "POST /api/v1/admin/forum-types/resolution-numbering/preview",
+                "GET /api/v1/admin/forum-types/action-definitions",
             ).associateWith { "committee types (tenant administration): no meeting or item content" } +
             listOf(
                 "GET /api/v1/forums/{forumId}/submissions",

@@ -8,6 +8,18 @@ export type AcceptRequest = {
     targetDate?: string | null;
 };
 
+export type ActionsPolicy = {
+    amberWorkingDays: number;
+    defaultDue: 'NEXT_MEETING' | 'WORKING_DAYS';
+    defaultDueWorkingDays: number;
+    definitionKey: string;
+    dueChange: 'SECRETARY_AGREES' | 'CHAIR_AGREES' | 'OWNER_WITH_REASON';
+    evidenceRequired: boolean;
+    staleWorkingDays: number;
+    updateRequestWorkingDays: number;
+    verifiedBy: 'SECRETARY' | 'CHAIR';
+};
+
 export type ActiveRequest = {
     active: boolean;
 };
@@ -714,7 +726,7 @@ export type CreateDefinitionRequest = {
 export type CreateForumTypeRequest = {
     code?: string;
     name?: string;
-    preset?: 'BOARD' | 'BOARD_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
+    preset?: 'BOARD' | 'BOARD_COMMITTEE' | 'BOARD_AUDIT_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
 };
 
 export type CreateOrgUnitRequest = {
@@ -1270,7 +1282,7 @@ export type ForumRetention = {
 };
 
 export type ForumTypePresetResponse = {
-    key: 'BOARD' | 'BOARD_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
+    key: 'BOARD' | 'BOARD_COMMITTEE' | 'BOARD_AUDIT_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
     name: string;
     settings: ForumTypeSettingsRequest;
 };
@@ -1287,6 +1299,7 @@ export type ForumTypeResponse = {
 };
 
 export type ForumTypeSettingsRequest = {
+    actions?: ActionsPolicy;
     agenda?: AgendaPolicy;
     defaultClassificationId?: string | null;
     description?: string | null;
@@ -1302,6 +1315,7 @@ export type ForumTypeSettingsRequest = {
 };
 
 export type ForumTypeVersionResponse = {
+    actions: ActionsPolicy;
     agenda: AgendaPolicy;
     createdAt: string;
     createdBy?: PersonRef | null;
@@ -4384,6 +4398,22 @@ export type CreateForumTypeResponses = {
 };
 
 export type CreateForumTypeResponse = CreateForumTypeResponses[keyof CreateForumTypeResponses];
+
+export type ListActionDefinitionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/forum-types/action-definitions';
+};
+
+export type ListActionDefinitionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<DefinitionChoice>;
+};
+
+export type ListActionDefinitionsResponse = ListActionDefinitionsResponses[keyof ListActionDefinitionsResponses];
 
 export type ListForumTypePresetsData = {
     body?: never;

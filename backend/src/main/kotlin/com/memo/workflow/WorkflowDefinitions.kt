@@ -35,14 +35,23 @@ class WorkflowDefinitions(
      * Every published definition that is not a fragment, by name. With [subjectType], only those that may run for it:
      * not bound to a subject type, or bound to that one (ADR-0068).
      */
-    fun published(subjectType: String? = null): List<DefinitionChoice> {
+    fun published(subjectType: String? = null): List<DefinitionChoice> =
+        choices { subject -> subjectType == null || subject == null || subject == subjectType }
+
+    /**
+     * Every published definition bound to [subjectType] (ADR-0068), by name: what a setting that names the definitions of
+     * one kind of item may choose from (a committee type's actions, design E07 §1.13). Unbound definitions are not.
+     */
+    fun bound(subjectType: String): List<DefinitionChoice> = choices { it == subjectType }
+
+    private fun choices(fits: (String?) -> Boolean): List<DefinitionChoice> {
         val definitions = versions.definitions().filterNot { it.fragment }
         val published = versions.versions(definitions.map { it.id }).filter { it.state == VersionState.PUBLISHED }
         return definitions.mapNotNull { definition ->
             published
                 .firstOrNull { it.definitionId == definition.id }
                 ?.let { compiled.get(it.id) }
-                ?.takeIf { subjectType == null || it.subject == null || it.subject == subjectType }
+                ?.takeIf { fits(it.subject) }
                 ?.let { body -> DefinitionChoice(definition.key, definition.name, body.steps.any { it.type == StepType.ROUTE }) }
         }
     }

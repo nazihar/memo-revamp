@@ -855,6 +855,68 @@ describe('the agenda builder (Phase 4 E03 T7, flow O)', () => {
   })
 })
 
+describe('focus after a removal (Phase 4 E03 T9 follow-up)', () => {
+  /** The draft with the term loan's papers [keep] only, or without item [itemId]. */
+  function draftWith({ keep, itemId }: { keep?: string[]; itemId?: string }) {
+    const base = draftOf()
+    return draftOf({
+      version: 8,
+      sections: base.sections.map((s) => ({
+        ...s,
+        items: s.items
+          .filter((i) => i.id !== itemId)
+          .map((i) => (i.id === 'i3' && keep ? { ...i, papers: i.papers.filter((p) => keep.includes(p.id)) } : i)),
+      })),
+    })
+  }
+
+  async function removePaper(user: ReturnType<typeof userEvent.setup>, title: string) {
+    const sheet = await screen.findByRole('dialog', { name: 'Item 3 · Term loan, Delta Textiles' })
+    await user.click(within(sheet).getByRole('button', { name: `Actions for the paper ${title}` }))
+    await user.click(screen.getByRole('menuitem', { name: 'Remove from the pack' }))
+    const confirm = await screen.findByRole('alertdialog', { name: `Remove ${title} from the pack?` })
+    await user.click(within(confirm).getByRole('button', { name: 'Remove from the pack' }))
+    return sheet
+  }
+
+  it('moves focus to the paper before when the last one is removed, and to the papers line when none is left', async () => {
+    const user = userEvent.setup()
+    setup({ answer: (call) => draftWith({ keep: call.path.endsWith('/p2/remove') ? ['p1'] : [] }) })
+    renderRoute('/meetings/m1/agenda')
+    await user.click(
+      await screen.findByRole('button', { name: 'Actions for Term loan, Delta Textiles' }, { timeout: 15_000 }),
+    )
+    await user.click(screen.getByRole('menuitem', { name: 'Papers…' }))
+
+    const sheet = await removePaper(user, 'Security valuation report')
+    await waitFor(() => {
+      expect(
+        within(sheet).getByRole('button', { name: 'Actions for the paper Paper: CR/HO-CR/2026-27/0042' }),
+      ).toHaveFocus()
+    })
+
+    await removePaper(user, 'Paper: CR/HO-CR/2026-27/0042')
+    await waitFor(() => {
+      expect(within(sheet).getByText('Papers in the order members see them.')).toHaveFocus()
+    })
+  }, 30_000)
+
+  it('moves focus to the next item’s menu when an item is removed from the agenda', async () => {
+    const user = userEvent.setup()
+    setup({ answer: () => draftWith({ itemId: 'i2' }) })
+    renderRoute('/meetings/m1/agenda')
+    await user.click(
+      await screen.findByRole('button', { name: 'Actions for Declarations of interest' }, { timeout: 15_000 }),
+    )
+    await user.click(screen.getByRole('menuitem', { name: 'Remove from agenda' }))
+    const confirm = await screen.findByRole('alertdialog', { name: 'Remove Declarations of interest from the agenda?' })
+    await user.click(within(confirm).getByRole('button', { name: 'Remove' }))
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Actions for Term loan, Delta Textiles' })).toHaveFocus()
+    })
+  }, 30_000)
+})
+
 describe('the chair’s side (flow Q)', () => {
   const waiting = item({
     id: 'i8',

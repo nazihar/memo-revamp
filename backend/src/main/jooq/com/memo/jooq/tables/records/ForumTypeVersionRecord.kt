@@ -124,6 +124,10 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
         set(value): Unit = set(25, value)
         get(): JSONB? = get(25) as JSONB?
 
+    open var actions: JSONB?
+        set(value): Unit = set(26, value)
+        get(): JSONB? = get(26) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -133,7 +137,7 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
     /**
      * Create a detached, initialised ForumTypeVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, forumTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, description: String? = null, defaultClassificationId: UUID? = null, retention: JSONB? = null, memberAttributes: JSONB? = null, quorum: JSONB, outcomes: JSONB, termPolicy: JSONB? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, submissionPolicy: JSONB? = null, agenda: JSONB? = null, meetings: JSONB? = null, minutes: JSONB? = null): this() {
+    constructor(id: UUID, tenantId: UUID, forumTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, description: String? = null, defaultClassificationId: UUID? = null, retention: JSONB? = null, memberAttributes: JSONB? = null, quorum: JSONB, outcomes: JSONB, termPolicy: JSONB? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, submissionPolicy: JSONB? = null, agenda: JSONB? = null, meetings: JSONB? = null, minutes: JSONB? = null, actions: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.forumTypeId = forumTypeId
@@ -160,6 +164,7 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
         this.agenda = agenda
         this.meetings = meetings
         this.minutes = minutes
+        this.actions = actions
         resetTouchedOnNotNull()
     }
 }

@@ -9,6 +9,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
@@ -24,6 +25,8 @@ import com.memo.forum.QuorumSeat
 import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
 import com.memo.identity.UserSummaries
+import com.memo.workflow.DefinitionChoice
+import com.memo.workflow.WorkflowDefinitions
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -63,6 +66,8 @@ data class ForumTypeSettingsRequest(
     val meetings: MeetingPolicy = MeetingPolicy(),
     /** Minutes approval, when memos move on, resolution numbers and the template (Phase 4 E06); left out: the defaults. */
     val minutes: MinutesPolicy = MinutesPolicy(),
+    /** Action items (Phase 4 E07, design E07 §1.13); left out: the defaults. */
+    val actions: ActionsPolicy = ActionsPolicy(),
 )
 
 data class CreateForumTypeRequest(
@@ -89,6 +94,7 @@ data class ForumTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agenda: AgendaPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: MeetingPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val minutes: MinutesPolicy,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val actions: ActionsPolicy,
     val createdBy: PersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     val submittedBy: PersonRef?,
@@ -149,6 +155,7 @@ data class ReviewRemarkRequest(
 class ForumTypesController(
     private val types: ForumTypes,
     private val responses: ForumTypeResponses,
+    private val definitions: WorkflowDefinitions,
     private val transactions: TenantTransactions,
 ) {
     @GetMapping("/api/v1/admin/forum-types")
@@ -164,6 +171,12 @@ class ForumTypesController(
         ForumTypePreset.entries.map {
             ForumTypePresetResponse(it, it.displayName, it.settings.request())
         }
+
+    /** What the Actions tab offers for `actions.definitionKey` (design E07 §1.13, flow AQ): definitions bound to action items. */
+    @GetMapping("/api/v1/admin/forum-types/action-definitions")
+    @RequiresPermission(Permission.FORUM_TYPES_MANAGE, orAnyOf = [Permission.FORUM_TYPES_APPROVE])
+    @Operation(operationId = "listActionDefinitions", summary = "The published workflows a committee type's actions can run on")
+    fun actionDefinitions(): List<DefinitionChoice> = read { definitions.bound(ActionsPolicy.SUBJECT) }
 
     @PostMapping("/api/v1/admin/forum-types")
     @RequiresPermission(Permission.FORUM_TYPES_MANAGE)
@@ -372,6 +385,7 @@ class ForumTypeResponses(
                 agenda = s.agenda,
                 meetings = s.meetings,
                 minutes = s.minutes,
+                actions = s.actions,
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),
@@ -402,6 +416,7 @@ internal fun ForumTypeSettingsRequest.settings() =
         agenda = agenda.trimmed(),
         meetings = meetings.copy(neutralTitle = meetings.neutralTitle.trim()),
         minutes = minutes,
+        actions = actions.copy(definitionKey = actions.definitionKey.trim()),
     )
 
 internal fun ForumTypeSettings.request() =
@@ -418,6 +433,7 @@ internal fun ForumTypeSettings.request() =
         agenda,
         meetings,
         minutes,
+        actions,
     )
 
 private fun number(path: String): Int = path.toIntOrNull() ?: throw ForumNotFoundException("forum type version")

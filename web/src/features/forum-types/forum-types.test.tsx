@@ -104,6 +104,17 @@ const published: ForumTypeVersionResponse = {
       fyStartMonth: 7,
     },
   },
+  actions: {
+    amberWorkingDays: 10,
+    staleWorkingDays: 20,
+    dueChange: 'SECRETARY_AGREES',
+    verifiedBy: 'SECRETARY',
+    evidenceRequired: false,
+    defaultDue: 'NEXT_MEETING',
+    defaultDueWorkingDays: 20,
+    updateRequestWorkingDays: 5,
+    definitionKey: 'action-item',
+  },
   retention: { years: 10, from: 'MEETING' },
   createdAt: '2026-11-18T08:00:00Z',
 }
@@ -123,6 +134,7 @@ const inReview: ForumTypeVersionResponse = {
     approval: 'BY_CIRCULATION',
     resolutionNumbering: { ...published.minutes.resolutionNumbering, reset: 'FINANCIAL_YEAR' },
   },
+  actions: { ...published.actions, staleWorkingDays: 0, dueChange: 'OWNER_WITH_REASON', evidenceRequired: true },
   submittedBy: { id: 'u2', name: 'Admin Two' },
   submittedAt: '2026-11-18T10:20:00Z',
 }
@@ -269,6 +281,7 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
       agenda: unknown
       meetings: unknown
       minutes: unknown
+      actions: unknown
     }[] = []
     server.use(
       ...handlers([draft, published]),
@@ -305,6 +318,8 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.meetings).toEqual(draft.meetings)
     // And the minutes policy (Phase 4 E06) until its tab comes (E06 T10).
     expect(bodies[0]?.minutes).toEqual(draft.minutes)
+    // And the actions policy (Phase 4 E07) until its tab comes (E07 T10).
+    expect(bodies[0]?.actions).toEqual(draft.actions)
     await expectNoA11yViolations(container)
   }, 20_000)
 
@@ -486,7 +501,13 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
 
     expect(await screen.findByText(/^Submitted by Admin Two/, {}, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByText('Changes apply to every committee of this type from its next meeting.')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Changes (5)' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Changes (8)' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Actions: “No recent update” after:')).toBeInTheDocument()
+    expect(screen.getByText('Off')).toBeInTheDocument()
+    expect(screen.getByText('Actions: a new due date needs:')).toBeInTheDocument()
+    expect(screen.getByText('The secretary’s agreement')).toBeInTheDocument()
+    expect(screen.getByText('Only a reason')).toBeInTheDocument()
+    expect(screen.getByText('Actions: evidence required when marked as done:')).toBeInTheDocument()
     expect(screen.getByText('Invitation title in calendars:')).toBeInTheDocument()
     expect(screen.getByText('A neutral title: Board committee meeting')).toBeInTheDocument()
     expect(screen.getByText('How minutes are approved:')).toBeInTheDocument()

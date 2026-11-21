@@ -3,6 +3,7 @@ package com.memo.forum
 import com.memo.forum.internal.ForumNotFoundException
 import com.memo.forum.internal.ForumPolicyResponse
 import com.memo.forum.internal.ForumRow
+import com.memo.forum.internal.ForumStore
 import com.memo.forum.internal.ForumTypeVersionRow
 import com.memo.forum.internal.ForumTypeVersionStore
 import com.memo.org.OrgDirectory
@@ -29,6 +30,8 @@ data class ForumTypePolicy(
     val outcomes: List<Outcome>,
     /** The agenda template and the chair's agreement (ADR-0060). */
     val agenda: AgendaPolicy,
+    /** Action items (design E07 §1.13): read from the version in force today ([ForumPolicies.current]), not a pinned one. */
+    val actions: ActionsPolicy,
 )
 
 /**
@@ -41,6 +44,7 @@ class ForumPolicies(
     private val versions: ForumTypeVersionStore,
     private val directory: ForumDirectory,
     private val org: OrgDirectory,
+    private val forums: ForumStore,
 ) {
     /** Version [number] of [typeId], in any state; null when there is no such version. */
     fun version(
@@ -50,6 +54,13 @@ class ForumPolicies(
 
     /** The version of [typeId] published now; null when none is. */
     fun published(typeId: UUID): ForumTypePolicy? = versions.published(typeId)?.policy()
+
+    /**
+     * The policy in force today for the committee [forumId]: its type's published version, whatever version its meetings
+     * pinned. Action items read their policy here (design E07 §1.13): an action lives across meetings, and its rules follow
+     * the committee's current ones. Null when there is no such committee or its type has no published version.
+     */
+    fun current(forumId: UUID): ForumTypePolicy? = forums.find(forumId)?.let { published(it.typeId) }
 
     /** The type's published policy, and the quorum on [on] (default today) over the members in office that day. */
     fun policy(
@@ -88,5 +99,6 @@ class ForumPolicies(
             minutes = settings.minutes,
             outcomes = settings.outcomes,
             agenda = settings.agenda,
+            actions = settings.actions,
         )
 }

@@ -9,7 +9,9 @@ package com.memo.meeting
  * surfaces of later epics still to come ([pending]); its meta-test fails when a controller of [modules] is not registered.
  * E05 T5 added the alternate of a recused member to every probe of [PaperLeakIT], and its surfaces (invitations, replies,
  * the register, the quorum, the forecast and snapshots) to both suites. E06 T3 made its decisions placeholder real: the
- * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns).
+ * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E07 T3
+ * made its actions placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing,
+ * discarding and issuing (officers, with recusal columns or an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -36,6 +38,10 @@ object PaperSurfaceRegistry {
         DECISIONS(
             "The decisions of a meeting and an item's history (E06 T3): an item's decision when it is seen in full; for a recused " +
                 "person who sees its line the outcome, text and conditions only (no vote, names or notes); nothing of other items",
+        ),
+        ACTIONS(
+            "Action items (E07 T3): one action, a meeting's actions and My actions with their counts; a person recused from the " +
+                "item neither sees nor counts its actions unless involved, and then without the item's hidden title or papers",
         ),
     }
 
@@ -77,6 +83,10 @@ object PaperSurfaceRegistry {
             // Decisions (E06 T3): the list as each person may see it, and an item's history (officers and forum.read, seeing it in full).
             "GET /api/v1/meetings/{meetingId}/decisions" to Surface.DECISIONS,
             "GET /api/v1/meetings/{meetingId}/items/{itemId}/decision/entries" to Surface.DECISIONS,
+            // Actions (E07 T3): by the one rule (ActionAccess), on the action's copied item columns with the recusal EXISTS.
+            "GET /api/v1/actions/{actionId}" to Surface.ACTIONS,
+            "GET /api/v1/meetings/{meetingId}/actions" to Surface.ACTIONS,
+            "GET /api/v1/me/actions" to Surface.ACTIONS,
         )
 
     /**
@@ -146,6 +156,14 @@ object PaperSurfaceRegistry {
                     "saving the notes (E06 T3): secretaries not recused (recusal columns)",
                 "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                     "the committee's decisions to be ratified (E06 T3): secretaries; ids, numbers and outcomes only (officer probe)",
+                "POST /api/v1/meetings/{meetingId}/actions" to
+                    "raising an action (E07 T3): secretaries and forums.manage not recused from the item (recusal columns)",
+                "POST /api/v1/meetings/{meetingId}/actions/issue" to
+                    "issuing a meeting's drafts (E07 T3): secretaries; none of an item they are recused from (officer probe)",
+                "POST /api/v1/forums/{forumId}/actions" to "a direct action (E07 T3): secretaries; no item (officer probe)",
+                "PATCH /api/v1/actions/{actionId}" to "editing a draft (E07 T3): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/discard" to "discarding a draft (E07 T3): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/issue" to "issuing a draft (E07 T3): secretaries not recused (recusal columns)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -255,8 +273,8 @@ object PaperSurfaceRegistry {
             ),
             Pending(
                 "E07",
-                "Actions from the item: not shown to a recused person unless they own the action",
-                listOf("/api/v1/actions", "/api/v1/me/actions", "/api/v1/meetings/{meetingId}/actions"),
+                "The committee's action tracker, its totals and export (E07 T8): rows by the one rule, no row or count of a recused item",
+                listOf("/api/v1/forums/{forumId}/actions/"),
             ),
             Pending(
                 "E08",

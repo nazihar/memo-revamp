@@ -346,6 +346,23 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
 - **Item columns** are copied onto the action and refreshed (§1.1). The rule therefore runs on the action's row with one `EXISTS` for the recusal (`PaperExclusions`), and lists stay set-based.
 - **The report rows** carry the same columns, and each reader gets their rows from the same rule.
 - **Evidence files** (`action.evidence`): the purpose's `mayRead` is `seeAction`. The generic files endpoints serve them to nobody else.
+- **As built in T3** (2026-11-21):
+  - `ActionAccess` writes the rule as one jOOQ condition on `action_item` and passes the action's copied columns to `PaperAccess.itemCondition` as an `ItemColumns` (no attendee reads an action). The recusal is the meeting module's published `PaperExclusions.excluded` on `item_id`/`item_parent_id`, one `EXISTS`.
+  - **The reader clause also requires** `¬itemMembersOnly` and clearance for the item's level: a `forum.read` holder does not read an in-camera item's title (ADR-0061's title rule), so they do not read its actions either.
+  - `viewerToday` (`ActionViewer`): roles from `ForumDirectory.rolesOf` today; officer = secretary, chair (vice-chair when there is no chair) or `forums.manage`; member = any seat in office, members-only for chair, vice-chair, member and secretary; never guest or attendee.
+  - `involved` includes the open tasks the viewer holds or may claim (`WorkflowQueries.myTasks`, subject `action-item`).
+  - The meeting's actions answer 404 for a meeting the viewer neither sees nor has an action of; an owner outside the committee gets their own.
+  - The source label carries numbers only: "BRC 3/2026, item 5 — decision, condition 2" (the resolution number waits for E06 T4). `itemTitle` is answered only when `itemCondition` or `titleCondition` allows it.
+  - `AgendaItemRef` (meeting) gained `classificationId` and `membersOnly`, so the item columns are copied from the published revision (or the live row of a tabled item).
+- **As built in T3, raising and issuing** (§1.1, §1.2):
+  - **The tables are named `actions_item`, `actions_counter`, `actions_contributor` and `actions_entry`** (and T4–T7's `actions_*`): `RlsMetaTest` requires the module's identifier as every table's prefix. §1.15 and §7 keep the shorter names for reading.
+  - An ITEM source whose item has a decision is raised from the decision (DECISION, its current entry), so the chain to the resolution is kept. `conditionIndex` counts from 0; the entry's `seq` is kept as `decision_seq`. A condition fills a missing title and context.
+  - The level may not be lower than the source's (`CLASSIFICATION`), nor above the raising secretary's clearance (`CLASSIFICATION`).
+  - Discarding is `POST /actions/{id}/discard` (`{reason?}`); editing a draft is `PATCH /actions/{id}` with the whole set of fields, as the other PATCH endpoints.
+  - `action_contributor` has a surrogate id and a unique current row per person (a person removed and added again is a new row), instead of the PK `(tenant_id, action_id, user_id)`.
+  - `action_item` has all of §1.15's columns from V1 (T4 adds tables only), plus `decision_seq` and `owner_step` (the owner's definition step, set by the instance's first task: later steps mean DONE_PENDING, the owner's step again after that IN_PROGRESS).
+  - The CEL attributes are read as `item.priority`, `item.fromResolution`, … (the engine's prefix), and `committeeType` is the committee type's name (the type's code is not published).
+  - The bulk issue stores the drafts it chose under the key, and each action's result under the key and its id, so a retry replays both.
 
 ### 1.15 ERD
 ```mermaid

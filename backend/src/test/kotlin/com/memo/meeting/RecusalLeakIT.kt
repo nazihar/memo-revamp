@@ -1,5 +1,8 @@
 package com.memo.meeting
 
+import com.memo.actions.ActionPlanting
+import com.memo.actions.internal.ActionStore
+import com.memo.actions.internal.ItemCopy
 import com.memo.audit.AuditExport
 import com.memo.audit.AuditFilter
 import com.memo.common.authz.Permission
@@ -67,6 +70,59 @@ class RecusalLeakIT : RecusalLeakFixture() {
     @Autowired lateinit var decisionStore: DecisionStore
 
     @Autowired lateinit var noteStore: NoteStore
+
+    @Autowired lateinit var actionStore: ActionStore
+
+    @Autowired lateinit var meetingItems: MeetingItems
+
+    /**
+     * E07 T3: the actions planted on a [Planted] meeting, once per meeting: a draft and an issued action of the item and an
+     * issued one of the hidden item, their titles a canary and owned by the control; and one of the hidden item owned by d1
+     * (recused from it), whose title is not a canary: they see their own action, never the item's hidden title.
+     */
+    private inner class PlantedActions(
+        p: Planted,
+    ) {
+        private val planting = ActionPlanting(transactions, actionStore, tenantDsl)
+        private val copies =
+            transactions.readInTenant(tenant.id) {
+                val agenda = meetingItems.agenda(p.meeting.id)
+                p.both.associateWith { id ->
+                    val item = checkNotNull(agenda.item(id))
+                    ItemCopy(item.parentId, item.classificationId, item.restrictedTo, item.titleHidden, item.membersOnly)
+                }
+            }
+
+        private fun plant(
+            p: Planted,
+            item: java.util.UUID,
+            title: String,
+            owner: Person,
+            issued: Boolean = true,
+        ) = planting.action(
+            tenant.id,
+            brc,
+            p.meeting.id,
+            item,
+            copies.getValue(item),
+            copies.getValue(item).classificationId,
+            secretary2.id,
+            title,
+            owner.id,
+            issued,
+            context = "$CANARY_ACTION context".takeIf { owner != d1 },
+        )
+
+        val draft = plant(p, p.item, "$CANARY_ACTION draft", control, issued = false)
+        val issued = plant(p, p.item, "$CANARY_ACTION issued", control)
+        val ofHidden = plant(p, p.hidden, "$CANARY_ACTION of the hidden item", control)
+        val d1s = plant(p, p.hidden, "Confirm the covenant waiver", d1)
+        val hiddenToAll = listOf(draft, issued, ofHidden)
+    }
+
+    private val plantedActions = mutableMapOf<java.util.UUID, PlantedActions>()
+
+    private fun actionsOf(p: Planted): PlantedActions = plantedActions.getOrPut(p.meeting.id) { PlantedActions(p) }
 
     // 1. Canaries and status, surface by surface
 
@@ -198,7 +254,46 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 assertThat(result.json()["requests"].list().map { it["itemId"].asString() }).doesNotContain(p.item.toString())
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
+            Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
         )
+
+    /**
+     * E07 T3's surface: none of the item's actions, nor a count of them, for a viewer recused from it and not involved
+     * (404 to the action, absent from the meeting's actions and "My actions"); d1 sees their own action of the hidden item,
+     * marked recused, without its title. The control (the owner) reads the canaries.
+     */
+    private fun actionsProbe(
+        p: Planted,
+        v: Viewer,
+    ) {
+        val planted = actionsOf(p)
+        val person = v.person()
+        assertThat(read("/api/v1/actions/${planted.issued}", control.session).response.contentAsString).contains(CANARY_ACTION)
+        planted.hiddenToAll.forEach { id ->
+            val one = read("/api/v1/actions/$id", person.session)
+            assertThat(one).hasStatus(HttpStatus.NOT_FOUND)
+            assertThat(one.response.contentAsString).doesNotContain(CANARY_ACTION)
+        }
+        val list = read("/api/v1/meetings/${p.meeting.id}/actions", person.session)
+        clean(person, list)
+        assertThat(list.response.contentAsString).doesNotContain(CANARY_ACTION)
+        val listed = list.json()["actions"].list().map { java.util.UUID.fromString(it["id"].asString()) }
+        assertThat(listed).doesNotContainAnyElementsOf(planted.hiddenToAll)
+        assertThat(list.json()["drafts"].asInt()).isZero()
+        val mine = read("/api/v1/me/actions", person.session)
+        clean(person, mine)
+        assertThat(mine.response.contentAsString).doesNotContain(CANARY_ACTION)
+        if (v == Viewer.RECUSED) {
+            val own = read("/api/v1/actions/${planted.d1s}", person.session)
+            clean(person, own)
+            assertThat(own.json()["viewerRecused"].asBoolean()).isTrue()
+            assertThat(own.json()["source"].absent("itemTitle")).isTrue()
+            assertThat(listed).containsExactly(planted.d1s)
+            assertThat(mine.json()["counts"]["mine"].asInt()).isEqualTo(1)
+        } else {
+            assertThat(listed).doesNotContain(planted.d1s)
+        }
+    }
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
     private fun filesEndpoints(
@@ -498,6 +593,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 .replace("{sectionId}", p.section.toString())
                 .replace("{declarationId}", p.observed.id.toString())
                 .replace("{forumId}", brc.toString())
+                .let { if ("{actionId}" in it) it.replace("{actionId}", actionsOf(p).draft.toString()) else it }
         val query = row.query?.let { "?" + substituted(p, it) }.orEmpty()
         if (row.method == "GET") return read(path + query, viewer.person().session)
         val body = row.body?.let { substituted(p, json.writeValueAsString(it)) } ?: "{}"
@@ -620,6 +716,22 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // The committee's decisions to be ratified (E06 T3): ids, numbers and outcomes only.
             "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                 { _ -> read("/api/v1/forums/$brc/decisions/to-be-ratified", secretary.session) },
+            // Actions (E07 T3): issuing the meeting's drafts skips those of items the secretary is recused from; a direct
+            // action names no item.
+            "POST /api/v1/meetings/{meetingId}/actions/issue" to { p ->
+                actionsOf(p)
+                send(HttpMethod.POST, "${base(p)}/actions/issue", secretary, "{}", mapOf("Idempotency-Key" to UUID.randomUUID().toString()))
+            },
+            "POST /api/v1/forums/{forumId}/actions" to { _ ->
+                val body = """{"title":"Circulate the revised policy","sourceNote":"Chair's instruction"}"""
+                send(
+                    HttpMethod.POST,
+                    "/api/v1/forums/$brc/actions",
+                    secretary,
+                    body,
+                    mapOf("Idempotency-Key" to UUID.randomUUID().toString()),
+                )
+            },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to
@@ -673,6 +785,9 @@ class RecusalLeakIT : RecusalLeakFixture() {
         /** E06 T3: a dissent's reason and the secretary's notes on the planted item, which no recused viewer may read. */
         const val CANARY_DISSENT = "CANARY-DS dissent reason"
         const val CANARY_NOTE = "CANARY-NT secretary notes"
+
+        /** E07 T3: the planted actions' titles and context, which no recused viewer who is not involved may read. */
+        const val CANARY_ACTION = "CANARY-ACT action"
 
         /** The officer probes the recused chair makes; the recused secretary makes the others. */
         val BY_THE_CHAIR =

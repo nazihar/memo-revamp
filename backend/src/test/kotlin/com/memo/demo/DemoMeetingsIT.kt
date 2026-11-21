@@ -15,13 +15,21 @@ import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.identity.operator.OperatorMfa
 import com.memo.meeting.AgendaSeeding
+import com.memo.meeting.AttendanceCapacity
+import com.memo.meeting.AttendanceMode
+import com.memo.meeting.AttendanceSeeding
+import com.memo.meeting.AttendanceState
 import com.memo.meeting.DeclarationHow
 import com.memo.meeting.DeclarationSeeding
 import com.memo.meeting.DeclarationSource
 import com.memo.meeting.DeclarationState
 import com.memo.meeting.LineAccess
+import com.memo.meeting.MeetingAttendance
 import com.memo.meeting.MeetingSeeding
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.QuorumChangeKind
+import com.memo.meeting.QuorumSnapshots
+import com.memo.meeting.ReplySeeding
 import com.memo.meeting.internal.AgendaDraftViews
 import com.memo.meeting.internal.AgendaNoticeScheduler
 import com.memo.meeting.internal.DeclarationReviews
@@ -52,12 +60,15 @@ import org.springframework.core.env.Environment
 import java.time.Clock
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
 
 /**
  * Phase 4 E03 demo data (T9): the Board Risk Committee's review published twice (a replaced paper, a late paper the
  * chair agreed, a consent item lifted by Demo Director, an item whose papers only the chair reads, an in-camera section
- * and a guest), and the credit committee's meeting with the BDT 15 million proposal placed from the queue. Once only.
+ * and a guest), and the credit committee's meeting with the BDT 15 million proposal placed from the queue. E04 T9 adds
+ * declarations, E05 T10 the risk review's replies and the credit committee's held review with its register, quorum
+ * changes and a decision's snapshot. Once only.
  */
 class DemoMeetingsIT : FilesIntegrationTest() {
     @Autowired lateinit var committees: DemoForumSeeder
@@ -99,6 +110,14 @@ class DemoMeetingsIT : FilesIntegrationTest() {
     @Autowired lateinit var agendaSeeding: AgendaSeeding
 
     @Autowired lateinit var declarationSeeding: DeclarationSeeding
+
+    @Autowired lateinit var replySeeding: ReplySeeding
+
+    @Autowired lateinit var attendanceSeeding: AttendanceSeeding
+
+    @Autowired lateinit var registers: MeetingAttendance
+
+    @Autowired lateinit var snapshots: QuorumSnapshots
 
     @Autowired lateinit var declarationReviews: DeclarationReviews
 
@@ -144,29 +163,20 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             // As at start-up: the demo memos first. They are seeded only while Demo User has no memo, so seeding the credit
             // proposal first would leave them out for DemoMemosIT, whichever test runs first.
             DemoMemoSeeder(accounts, lifecycle, memoSeeding, transactions, uploads, password).seed()
-            val seeder =
-                DemoMeetingSeeder(
-                    meetingSeeding,
-                    agendaSeeding,
-                    declarationSeeding,
-                    memoSeeding,
-                    memoAccess,
-                    forumSeeding,
-                    forumDirectory,
-                    accounts,
-                    transactions,
-                    clock,
-                    password,
-                )
+            val seeder = meetingSeeder(password)
             val seeded = checkNotNull(seeder.seed())
             assertRiskReview(seeded.riskReview)
             assertCreditMeeting(seeded.creditMeeting)
             assertDeclarations(seeded)
+            assertReplies(seeded.riskReview)
+            assertHeldReview(seeded.heldCreditReview)
+            val e05Rows = e05Rows(seeded)
 
-            // Fills gaps only: a second run finds both meetings and adds nothing.
+            // Fills gaps only: a second run finds the three meetings and adds nothing.
             assertThat(seeder.seed()).isEqualTo(seeded)
+            assertThat(e05Rows(seeded)).isEqualTo(e05Rows)
             AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
-                listOf(DemoMeetingSeeder.RISK_TITLE, DemoMeetingSeeder.CREDIT_TITLE).forEach {
+                listOf(DemoMeetingSeeder.RISK_TITLE, DemoMeetingSeeder.CREDIT_TITLE, DemoMeetingSeeder.HELD_TITLE).forEach {
                     assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
                 }
                 assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
@@ -179,6 +189,30 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             invitations.jobs = true
         }
     }
+
+    private fun meetingSeeder(password: String) =
+        DemoMeetingSeeder(
+            meetingSeeding,
+            agendaSeeding,
+            declarationSeeding,
+            DemoMeetingAttendanceSeeder(
+                meetingSeeding,
+                agendaSeeding,
+                declarationSeeding,
+                replySeeding,
+                attendanceSeeding,
+                forumDirectory,
+                transactions,
+            ),
+            memoSeeding,
+            memoAccess,
+            forumSeeding,
+            forumDirectory,
+            accounts,
+            transactions,
+            clock,
+            password,
+        )
 
     @Test
     fun `meetings are held on a Monday to Thursday`() {
@@ -320,6 +354,108 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val memo = checkNotNull(asUser(author) { memoAccess.find(author, DemoMeetingSeeder.CREDIT_SUBJECT) })
         assertThat(asUser(secretary) { memoInterests.of(memo) }).containsExactly(headCredit)
     }
+
+    /**
+     * E05 T10: at the risk review Demo Director sent apologies with their alternate standing in, the CFO sent apologies,
+     * the secretary recorded the Chairman's yes by phone, and the chair's yes is for the old time.
+     */
+    private fun assertReplies(meeting: UUID) {
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        val director = id(DemoMeetingSeeder.DIRECTOR)
+        val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            fun count(
+                where: String,
+                vararg params: Any,
+            ) = c.long(
+                "select count(*) from meeting_rsvp r join meeting m on m.id = r.meeting_id where r.meeting_id = ? and $where",
+                meeting,
+                *params,
+            )
+            assertThat(count("r.answer = 'APOLOGIES'")).isEqualTo(2)
+            assertThat(count("r.user_id = ? and r.answer = 'APOLOGIES' and r.alternate_attends and r.how = 'IN_APP'", director))
+                .isOne()
+            assertThat(count("r.user_id = ? and r.answer = 'APOLOGIES'", id(DemoMeetingSeeder.HEAD_FINANCE))).isOne()
+            assertThat(
+                count("r.how = 'PHONE' and r.recorded_by = ? and r.answer = 'IN_PERSON' and r.user_id <> ?", secretary, secretary),
+            ).isOne()
+            // The chair's answer is for the planned date: stale since the meeting was brought forward.
+            assertThat(count("r.user_id = ? and r.for_starts_at <> m.starts_at", id(DemoMeetingSeeder.BOARD_MEMBER))).isOne()
+            assertThat(count("r.for_starts_at <> m.starts_at")).isOne()
+            assertThat(
+                c.long(
+                    "select count(*) from meeting_audience where meeting_id = ? and user_id = ? and source = 'ALTERNATE' " +
+                        "and for_user_id = ? and removed_at is null",
+                    meeting,
+                    headCredit,
+                    director,
+                ),
+            ).isOne()
+        }
+        // The alternate inherits Demo Director's recusals (ADR-0064): the Delta Textiles line without its papers.
+        val items = asUser(headCredit) { agendas.agenda(meeting, null) }.sections.flatMap { it.items }
+        val delta = items.single { it.title == DemoMeetingSeeder.DELTA }
+        assertThat(delta.recused to delta.papers).isEqualTo(true to emptyList<Any>())
+    }
+
+    /**
+     * E05 T10: the credit committee's review held about ten days ago, hybrid: the CRO arrived late, the vice-chair stepped
+     * out for the Meghna Foods item they declared an interest in, the head of finance left early, and the meeting's quorum
+     * was reached, lost once and restored; the Meghna Foods decision has a quorate snapshot that re-evaluates to itself.
+     */
+    private fun assertHeldReview(meeting: UUID) {
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        val director = id(DemoMeetingSeeder.DIRECTOR)
+        val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
+        val finance = id(DemoMeetingSeeder.HEAD_FINANCE)
+        val read = asUser(secretary) { reads.get(meeting) }
+        assertThat(read.status).isEqualTo(MeetingStatus.HELD)
+        assertThat(read.startsAt).isBefore(clock.instant())
+        assertThat(read.label).matches("MCC \\d+/\\d{4}")
+        val meghna = checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, DemoMeetingSeeder.MEGHNA) })
+        val register = checkNotNull(asUser(secretary) { registers.of(meeting) })
+        val people = register.people.associateBy { it.userId }
+        assertThat(people.getValue(secretary).state).isEqualTo(AttendanceState.PRESENT)
+        assertThat(people.getValue(director).let { it.state to it.joinedLate }).isEqualTo(AttendanceState.PRESENT to false)
+        assertThat(people.getValue(finance).let { it.state to it.leftEarly }).isEqualTo(AttendanceState.LEFT to true)
+        val vice = people.getValue(headCredit)
+        assertThat(Triple(vice.state, vice.mode, vice.steppedOutOf))
+            .isEqualTo(Triple(AttendanceState.PRESENT, AttendanceMode.REMOTE, listOf(meghna)))
+        val late = register.people.filter { it.joinedLate }
+        assertThat(late).hasSize(1)
+        assertThat(late.single().let { it.capacity to it.state }).isEqualTo(AttendanceCapacity.MEMBER to AttendanceState.PRESENT)
+        // The four opening items, the three of the meeting and any other business.
+        assertThat(register.itemsInProgress).hasSize(8)
+        assertThat(register.quorumChanges.map { it.kind })
+            .containsExactly(QuorumChangeKind.REACHED, QuorumChangeKind.LOST, QuorumChangeKind.RESTORED)
+        val lost = register.quorumChanges[1]
+        assertThat(lost.needed to lost.present).isEqualTo(3 to 2)
+        val day = read.startsAt.atZone(DemoMeetingSeeder.ZONE).toLocalDate()
+        assertThat(lost.at).isEqualTo(DemoMeetingSeeder.at(day, LocalTime.of(15, 30)))
+
+        val snapshot = asUser(secretary) { snapshots.ofMeeting(meeting) }.single()
+        assertThat(snapshot.itemId).isEqualTo(meghna)
+        assertThat(snapshot.result.quorate).isTrue()
+        assertThat(snapshot.override).isNull()
+        assertThat(snapshot.inputs.recused).contains(headCredit)
+        assertThat(snapshot.inputs.evaluate()).isEqualTo(snapshot.result)
+        assertThat(snapshot.result.present to snapshot.result.needed).isEqualTo(3 to 3)
+    }
+
+    /** The E05 rows of the three meetings, to compare before and after a second run. */
+    private fun e05Rows(seeded: DemoMeetingSeeder.Seeded): List<Long> =
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            val all = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting, seeded.heldCreditReview)
+            listOf(
+                "meeting_rsvp",
+                "meeting_rsvp_event",
+                "meeting_attendance_event",
+                "meeting_item_progress",
+                "meeting_quorum_change",
+                "meeting_quorum_snapshot",
+                "meeting_declaration",
+            ).map { c.long("select count(*) from $it where meeting_id in (?, ?, ?)", *all) }
+        }
 
     private fun id(email: String): UUID = transactions.inTenant(DemoTenant.ID) { accounts.findByEmail(email)!!.id.value }
 

@@ -25786,6 +25786,12 @@
       "value": " failedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetingReplies.invite.notInvitable": [
+    {
+      "type": 0,
+      "value": "No invitation: they cannot sign in or are not cleared for this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetingReplies.invite.notSent": [
     {
       "type": 0,

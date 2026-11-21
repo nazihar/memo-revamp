@@ -64,10 +64,37 @@ export interface TypeSettings {
   submissionPolicy: Papers
   /** The agenda template and the chair's agreement (ADR-0060), edited on the Agenda tab (E03 T7). */
   agenda: AgendaPolicy
-  /** Invitations, replies and the quorum override (Phase 4 E05); kept as loaded until the Meetings tab edits it (E05 T8). */
-  meetings: MeetingPolicy
+  /** Invitations, replies and the quorum override (Phase 4 E05), edited on the Meetings tab (E05 T8). */
+  meetings: Meetings
   /** Minutes approval, memos moving on, resolution numbers, the template (Phase 4 E06); as loaded until E06 T10. */
   minutes: MinutesPolicy
+}
+
+/**
+ * The meeting policy as the editor holds it (design E05 §1.8): every part present, the server's defaults filled in; an
+ * empty reply deadline being typed is null.
+ */
+export interface Meetings {
+  invitationTitle: NonNullable<MeetingPolicy['invitationTitle']>
+  neutralTitle: string
+  replyDeadlineWorkingDays: number | null
+  replyReminder: boolean
+  meetingReminder: boolean
+  quorumOverride: NonNullable<MeetingPolicy['quorumOverride']>
+}
+
+/** The longest reply deadline, in working days before the meeting (design E05 §1.8). */
+export const MAX_REPLY_DAYS = 10
+
+function meetingsOf(p: MeetingPolicy | undefined): Meetings {
+  return {
+    invitationTitle: p?.invitationTitle ?? 'NAME',
+    neutralTitle: p?.neutralTitle ?? 'Committee meeting',
+    replyDeadlineWorkingDays: p?.replyDeadlineWorkingDays ?? 2,
+    replyReminder: p?.replyReminder ?? true,
+    meetingReminder: p?.meetingReminder ?? true,
+    quorumOverride: p?.quorumOverride ?? 'NEVER',
+  }
 }
 
 /** The submission policy as the editor holds it: every part present, the server's defaults filled in. */
@@ -128,7 +155,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     reminderDays: v.termPolicy.reminderDays ?? [],
     submissionPolicy: papersOf(v.submissionPolicy),
     agenda: v.agenda,
-    meetings: v.meetings,
+    meetings: meetingsOf(v.meetings),
     minutes: v.minutes,
   }
 }
@@ -178,7 +205,8 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
       triageWorkingDays: s.submissionPolicy.triageWorkingDays ?? -1,
     },
     agenda: s.agenda,
-    meetings: s.meetings,
+    // An empty reply deadline goes as -1, so the server names the field (RANGE).
+    meetings: { ...s.meetings, replyDeadlineWorkingDays: s.meetings.replyDeadlineWorkingDays ?? -1 },
     minutes: s.minutes,
   }
 }

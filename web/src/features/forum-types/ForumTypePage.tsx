@@ -40,6 +40,7 @@ import { stateLabels } from '@/features/workflows/workflow-messages'
 import { changesBetween } from './changes'
 import { ChangesTab } from './ChangesTab'
 import { ft, ftt, ftv } from './messages'
+import { MeetingsTab } from './MeetingsTab'
 import { OutcomesTab } from './OutcomesTab'
 import { PolicyTab } from './PolicyTab'
 import { QuorumTab } from './QuorumTab'
@@ -368,6 +369,7 @@ function VersionEditor({
           <TabsTrigger value="outcomes">{intl.formatMessage(ft.tabOutcomes)}</TabsTrigger>
           <TabsTrigger value="terms">{intl.formatMessage(ft.tabTerms)}</TabsTrigger>
           <TabsTrigger value="agenda">{intl.formatMessage(tm.tab)}</TabsTrigger>
+          <TabsTrigger value="meetings">{intl.formatMessage(ft.tabMeetings)}</TabsTrigger>
           <TabsTrigger value="changes">{intl.formatMessage(ftv.tabChanges, { count: changes.length })}</TabsTrigger>
         </TabsList>
         <TabsContent value="policy" className="pt-4">
@@ -415,6 +417,9 @@ function VersionEditor({
                 : undefined
             }
           />
+        </TabsContent>
+        <TabsContent value="meetings" className="pt-4">
+          <MeetingsTab settings={settings} onChange={change} errors={problems} />
         </TabsContent>
         <TabsContent value="changes" className="pt-4">
           <ChangesTab changes={changes} first={!published} />

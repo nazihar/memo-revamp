@@ -366,3 +366,19 @@ All three jobs passed. `ImportVolumeIT` at 10,000 memos and 30,000 originals of 
 - **Dev had no Tika since E02.** The playbook's `memo_env_keys` lacked `MEMO_TIKA_URL`. Fixed and applied to dev (#143).
   - The demo batch on dev is COMPLETED and verified.
   - Its `.doc` and `.xls` rows were refused `SCAN_UNAVAILABLE` at seeding and stay rejected, because seeders only fill gaps.
+
+## 2026-11-22 — The search volume stall: the cause
+- **Symptom:** `SearchPerformanceIT > initializationError` (statement timeout, 8 minutes) during `SearchVolume`'s load, only in a full suite. It failed at least four times in two days, in the `search_memo`, `memo_participant` or `search_note` insert, always with `Where: SELECT 1 FROM ONLY memo.memo x WHERE tenant_id = $1 AND id = $2 FOR KEY SHARE OF x`, the foreign-key check on `memo`. The plans on record looked normal, because the slow plan was the foreign-key check's own.
+- **Cause:** the whole volume was one transaction. In a full suite, earlier tests leave enough changes on `memo` that autovacuum analyses it while the load is still uncommitted. ANALYZE counts no uncommitted rows, so `memo` read as 0 rows over thousands of pages (the stall dump of run 44933379438: `memo` 40 live, 54 MB, analysed 9 s into the load). On those statistics the check's plan is an index scan of `memo_tenant_origin_unit_idx` on `tenant_id` alone, with `id` as a filter. Each of the 200,000 to 300,000 checks then walked the tenant's 100,000 rows. Alone, nothing triggers that ANALYZE, so the class passes.
+- **Reproduced locally:** `SearchPerformanceIT` alone with a thread that analyses the tables every 5 s during the load. Statistics `memo reltuples 0 relpages 3031`, the plan above, and the same timeout at `SearchVolume.memos` as CI run 44926221737. Without the thread, the load takes 58 s.
+- **Fix (`SearchVolume`):** each stage (memos; search rows and initiators; notes; chunks; copies) commits, and the tables it wrote are analysed before the next stage joins them or checks foreign keys against them. Committed rows are counted by every later ANALYZE, autovacuum's too. After the load, `VACUUM (ANALYZE)` of the five tables merges the GIN pending lists and leaves autovacuum nothing to do during the timing. What is measured is unchanged: the same rows, indexes and queries. The statement timeouts stay (8 minutes; 60 for the weekly V1 run).
+- **Timings:**
+
+  | Run | Load | Result |
+  |---|---|---|
+  | before, alone | 58 s | passes |
+  | before, alone, ANALYZE every 5 s during the load | over 8 min | statement timeout in the foreign-key check, as on CI |
+  | after, alone, ANALYZE every 5 s during the load | 72 s | load passes |
+
+  The rest of the measurements on the dev machine ran beside other agents' suites (CPU at 96 % of 14 threads), so search p95 is not comparable there. The unchanged code also missed the 600 ms budget in that state (unit head "loan" 697 ms). The budgets are judged on CI.
+- **In a larger part of the suite** (`com.memo.search.*` and `com.memo.memo.*`, 197 tests, same machine state): the volume loads in 97 s, and every functional test passes. The 7 failures are latency budgets of performance classes the change does not touch as well (`MemoPerformanceIT`, `NumberingPerformanceIT`, `NotesAccessPerformanceIT`, `DocumentsPerformanceIT`) and `SearchPerformanceIT`'s, all from the busy machine.

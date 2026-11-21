@@ -16,6 +16,12 @@ import java.util.UUID
  *
  * Rows are written as the schema owner (the search tables grant nothing to the application role), with the tenant set so
  * the forced policies of the memo tables accept them. Memo rows are drafts: search rows carry the status mix themselves.
+ *
+ * Each stage commits, and the tables it wrote are analysed before the next stage reads them or checks foreign keys against
+ * them. In one transaction, an autovacuum ANALYZE during the load (a full suite triggers one) counted none of the
+ * uncommitted rows: `memo` read as 0 rows over thousands of pages, and the foreign-key check of every later row
+ * (`tenant_id = $1 AND id = $2`) chose a `tenant_id`-only index and walked the tenant's whole volume. That was the CI stall
+ * (E06 log, 2026-11-22). Committed rows are counted by every later ANALYZE, so the plans can no longer be misled.
  */
 class SearchVolume(
     private val tenant: UUID,
@@ -56,7 +62,12 @@ class SearchVolume(
             notes(c)
             chunks(c)
             participants(c, readerRows)
-            c.exec("analyze memo, memo_participant, search_memo, search_note, search_chunk")
+        }
+        // Searches are timed on vacuumed tables: GIN pending lists merged, visibility maps set, and no autovacuum of the
+        // fresh volume running beside the measurement.
+        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
+            c.createStatement().use { it.execute("set statement_timeout = '${timeoutMinutes}min'") }
+            c.createStatement().use { it.execute("vacuum (analyze) memo, memo_participant, search_memo, search_note, search_chunk") }
         }
     }
 
@@ -86,6 +97,7 @@ class SearchVolume(
             from gen
             """,
         )
+        c.commitAndAnalyse("memo")
         c.exec(
             """
             insert into search_memo (tenant_id, memo_id, classification_rank, origin_unit_id, status, type_id, initiator_id,
@@ -101,6 +113,7 @@ class SearchVolume(
             select '$tenant', id, md5('${seed}i' || (i % 500))::uuid, 'INITIATOR', at from gen
             """,
         )
+        c.commitAndAnalyse("search_memo", "memo_participant")
     }
 
     private fun notes(c: Connection) {
@@ -116,7 +129,7 @@ class SearchVolume(
             from generate_series(1, $notes) j
             """,
         )
-        c.exec("analyze note_gen, search_memo")
+        c.exec("analyze note_gen")
         c.exec(
             """
             insert into search_note (tenant_id, note_id, memo_id, classification_rank, origin_unit_id, status, type_id,
@@ -128,6 +141,7 @@ class SearchVolume(
             """,
         )
         c.exec("drop table note_gen")
+        c.commitAndAnalyse("search_note")
     }
 
     private fun chunks(c: Connection) {
@@ -154,6 +168,7 @@ class SearchVolume(
             """,
         )
         c.exec("drop table chunk_gen")
+        c.commitAndAnalyse("search_chunk")
     }
 
     /** Copies for each reader: [readerRows] rows spread evenly over the volume. */
@@ -172,23 +187,43 @@ class SearchVolume(
                 """,
             )
         }
+        c.commitAndAnalyse("memo_participant")
     }
 
-    /** A transaction as the schema owner, bound to the tenant (transaction-local, as the application binds it). */
+    /**
+     * Transactions as the schema owner, bound to the tenant (transaction-local, as the application binds it): one per
+     * stage, ended by [commitAndAnalyse].
+     */
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.autoCommit = false
-            // A lock wait or a runaway plan fails the test (with its statement) instead of stalling the whole suite.
-            c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
-            val minutes = if (memos > SUITE_SCALE) VOLUME_TIMEOUT_MINUTES else SUITE_TIMEOUT_MINUTES
-            c.createStatement().use { it.execute("set local statement_timeout = '${minutes}min'") }
-            c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
-                it.setString(1, tenant.toString())
-                it.execute()
-            }
+            c.bind()
             block(c)
             c.commit()
         }
+
+    private val timeoutMinutes get() = if (memos > SUITE_SCALE) VOLUME_TIMEOUT_MINUTES else SUITE_TIMEOUT_MINUTES
+
+    /** The settings of each transaction: they are local, so every stage sets them again. */
+    private fun Connection.bind() {
+        // A lock wait or a runaway plan fails the test (with its statement) instead of stalling the whole suite.
+        createStatement().use { it.execute("set local lock_timeout = '30s'") }
+        createStatement().use { it.execute("set local statement_timeout = '${timeoutMinutes}min'") }
+        prepareStatement("select set_config('app.tenant_id', ?, true)").use {
+            it.setString(1, tenant.toString())
+            it.execute()
+        }
+    }
+
+    /**
+     * Commits a stage and analyses the [tables] it wrote, in the next stage's transaction: from here on every ANALYZE, ours
+     * or autovacuum's, counts these rows, so the next stage's joins and foreign-key checks are planned on their real size.
+     */
+    private fun Connection.commitAndAnalyse(vararg tables: String) {
+        commit()
+        bind()
+        exec("analyze ${tables.joinToString()}")
+    }
 
     /**
      * Runs [sql]; an insert's plan is first written to `build/test-stalls/` (uploaded when CI fails), because a stall

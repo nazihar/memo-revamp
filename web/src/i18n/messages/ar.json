@@ -2676,6 +2676,7 @@
   "meetingReplies.invite.appOnly": "في memo فقط (رسائل الدعوة بالبريد متوقفة)",
   "meetingReplies.invite.cancelSentOn": "أُرسل الإلغاء {at}",
   "meetingReplies.invite.failedOn": "لم تُسلَّم: أخفقت رسالة {kind} المرسلة {at}",
+  "meetingReplies.invite.notInvitable": "بلا دعوة: لا يمكنه تسجيل الدخول أو ليس لديه تصريح لهذا الاجتماع",
   "meetingReplies.invite.notSent": "لم تُرسل بعد",
   "meetingReplies.invite.retrying": "لم تُرسل بعد: {attempts, plural, zero {لا محاولات} one {محاولة واحدة} two {محاولتان} few {# محاولات} many {# محاولة} other {# محاولة}}، وتُعاد المحاولة",
   "meetingReplies.invite.sentOn": "أُرسلت {at} ({kind})",

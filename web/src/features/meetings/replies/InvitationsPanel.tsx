@@ -45,7 +45,8 @@ function invitationWords(intl: IntlShape, p: InviteeResponse): string {
   const at = p.lastSentAt ? shortWhen(intl, p.lastSentAt) : ''
   switch (p.state) {
     case 'NOT_INVITED':
-      return intl.formatMessage(rm.notSent)
+      // A member who answers but cannot hold the invitation (no sign-in, or not cleared): the secretary records for them.
+      return intl.formatMessage(p.invitable ? rm.notSent : rm.notInvitable)
     case 'UNINVITED':
       return intl.formatMessage(rmv.withdrawnOn, { at })
     case 'CANCELLED':
@@ -158,7 +159,7 @@ export function InvitationsPanel({ meeting: m }: { meeting: MeetingResponse }) {
         {m.status === 'SCHEDULED' ? <ForecastLines meeting={m} /> : null}
       </div>
       {people.length ? (
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full min-w-[44rem] border-collapse text-sm">
             <caption className="sr-only">{intl.formatMessage(rm.tabReplies)}</caption>
             <thead>

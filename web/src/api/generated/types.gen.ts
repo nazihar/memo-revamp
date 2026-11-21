@@ -1609,6 +1609,14 @@ export type ItemChangeResponse = {
     title: string;
 };
 
+export type ItemForecastResponse = {
+    declared?: number | null;
+    itemId: string;
+    number?: string | null;
+    quorum: QuorumNumbersResponse;
+    viewerRecused: boolean;
+};
+
 export type ItemProgressRequest = {
     itemId?: string;
 };
@@ -1765,6 +1773,7 @@ export type ListMemberView = {
 export type LiveQuorumResponse = {
     at?: string | null;
     basis: number;
+    itemId?: string | null;
     needed: number;
     present: number;
     quorate: boolean;
@@ -2978,6 +2987,7 @@ export type QuorumChangeResponse = {
     id: string;
     itemId?: string | null;
     kind: 'REACHED' | 'LOST' | 'RESTORED';
+    level: 'MEETING' | 'ITEM';
     needed: number;
     present: number;
     unmet: Array<UnmetCondition>;
@@ -2987,6 +2997,20 @@ export type QuorumComposition = {
     atLeast?: number | null;
     attribute?: string;
     majority?: boolean;
+};
+
+export type QuorumForecastResponse = {
+    items: Array<ItemForecastResponse>;
+    meeting: QuorumNumbersResponse;
+    meetingId: string;
+};
+
+export type QuorumNumbersResponse = {
+    basis: number;
+    needed: number;
+    present: number;
+    quorate: boolean;
+    unmet: Array<UnmetCondition>;
 };
 
 export type QuorumPreviewRequest = {
@@ -3031,9 +3055,28 @@ export type QuorumSeatResponse = {
     filledBy?: AttendancePersonRef | null;
     holder: AttendancePersonRef;
     memberId: string;
+    recused: boolean;
     remote: boolean;
     role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    steppedOut: boolean;
     voting: boolean;
+};
+
+export type QuorumSnapshotResponse = {
+    at: string;
+    drifted: boolean;
+    id: string;
+    inputsSha256: string;
+    itemId?: string | null;
+    meetingId: string;
+    override?: SnapshotOverrideResponse | null;
+    quorum: QuorumNumbersResponse;
+    ratificationRequired: boolean;
+    rule: QuorumRule;
+    seats?: Array<SnapshotSeatResponse> | null;
+    takenAt: string;
+    takenBy?: AttendancePersonRef | null;
+    typeVersion: number;
 };
 
 export type QuorumThreshold = {
@@ -3632,6 +3675,24 @@ export type SimulationRequest = {
 export type SimulationResponse = {
     ended: 'APPROVED' | 'BLOCKED' | 'LIMIT';
     steps: Array<SimulatedStepResponse>;
+};
+
+export type SnapshotOverrideResponse = {
+    by: AttendancePersonRef;
+    reason?: string | null;
+};
+
+export type SnapshotSeatResponse = {
+    attributes: Array<string>;
+    byAlternate: boolean;
+    filledBy?: AttendancePersonRef | null;
+    holder: AttendancePersonRef;
+    memberId: string;
+    recused: boolean;
+    remote: boolean;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    steppedOut: boolean;
+    voting: boolean;
 };
 
 export type SnippetPart = {
@@ -9073,6 +9134,7 @@ export type GetMeetingQuorumData = {
     };
     query?: {
         at?: string;
+        itemId?: string;
     };
     url: '/api/v1/meetings/{meetingId}/quorum';
 };
@@ -9103,6 +9165,43 @@ export type GetMeetingQuorumChangesResponses = {
 };
 
 export type GetMeetingQuorumChangesResponse = GetMeetingQuorumChangesResponses[keyof GetMeetingQuorumChangesResponses];
+
+export type GetMeetingQuorumForecastData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/quorum/forecast';
+};
+
+export type GetMeetingQuorumForecastResponses = {
+    /**
+     * OK
+     */
+    200: QuorumForecastResponse;
+};
+
+export type GetMeetingQuorumForecastResponse = GetMeetingQuorumForecastResponses[keyof GetMeetingQuorumForecastResponses];
+
+export type GetMeetingQuorumSnapshotData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        snapshotId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/quorum/snapshots/{snapshotId}';
+};
+
+export type GetMeetingQuorumSnapshotResponses = {
+    /**
+     * OK
+     */
+    200: QuorumSnapshotResponse;
+};
+
+export type GetMeetingQuorumSnapshotResponse = GetMeetingQuorumSnapshotResponses[keyof GetMeetingQuorumSnapshotResponses];
 
 export type RescheduleMeetingData = {
     body: RescheduleRequest;

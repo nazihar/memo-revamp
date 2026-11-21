@@ -1,0 +1,8 @@
+# Phase 4 E05 per-item quorum, the forecast and snapshots (design E05 §3, §4; ADR-0064). Meeting ids are random here, so
+# every subject allowed through is answered 404 before the officer check. Who may read what on a real meeting (the
+# secretary, the chair, a recused officer, a member, an alternate, forum.read) is QuorumSnapshotsIT and QuorumForecastIT;
+# the per-item `GET …/quorum?itemId=` is p4-e05-attendance.yaml's endpoint; another tenant is AttendanceCrossTenantIT.
+epic: P4-E05
+endpoints:
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/quorum/forecast", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/quorum/snapshots/{snapshotId}", rule: signedIn }

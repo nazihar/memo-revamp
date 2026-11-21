@@ -89,15 +89,22 @@ data class QuorumSeatResponse(
     val filledBy: AttendancePersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byAlternate: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val remote: Boolean,
+    /** For an item: the holder is recused from it (counted only when the rule's `recusedCount` says so). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val recused: Boolean,
+    /** For an item: the holder is at the meeting but out of the room for it. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val steppedOut: Boolean,
 )
 
 /**
- * The meeting-level quorum at an instant (design E05 §1.7, flow Y): quorate or not, the numbers and the unmet conditions in
- * parts the web turns into a sentence; the seats for the officers only.
+ * The quorum of the meeting or of one item at an instant (design E05 §1.7, flow Y): quorate or not, the numbers and the
+ * unmet conditions in parts the web turns into a sentence; the seats for the officers only (and not for an item the
+ * officer is recused from: the counts only).
  */
 data class LiveQuorumResponse(
     /** The instant asked for; null: now. */
     val at: Instant?,
+    /** The item evaluated; null: the meeting. */
+    val itemId: UUID?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorate: Boolean,
     /** Counting members in office, or the fixed seats. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val basis: Int,
@@ -108,12 +115,14 @@ data class LiveQuorumResponse(
     val seats: List<QuorumSeatResponse>?,
 )
 
-/** A flip of the meeting's quorum (design E05 §1.7): reached, lost, restored. */
+/** A flip of the meeting's quorum, or of the item in progress's (design E05 §1.7): reached, lost, restored. */
 data class QuorumChangeResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    /** MEETING: the meeting's quorum; ITEM: the quorum of [itemId] while it was in progress. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val level: QuorumLevel,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: QuorumChangeKind,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val at: Instant,
-    /** The item in progress then. */
+    /** The item in progress then (MEETING), or the item (ITEM). */
     val itemId: UUID?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val needed: Int,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val present: Int,

@@ -22,6 +22,7 @@ import com.memo.meeting.internal.MeetingReads
 import com.memo.meeting.internal.TimesInput
 import com.memo.meeting.internal.attendance.Attendance
 import com.memo.meeting.internal.attendance.AttendanceReads
+import com.memo.meeting.internal.quorum.QuorumReads
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AppRoleJdbc
@@ -46,7 +47,8 @@ import java.util.UUID
 /**
  * Tenant isolation of the attendance register (test plan E05 T4, `MeetingCrossTenantIT`'s attendance tables, kept apart to
  * keep that class small; AGENTS.md §3.2): another tenant neither reads nor writes a tenant's register, events, item in
- * progress or quorum changes, through the services or SQL; and within a tenant the events never change.
+ * progress, quorum changes or quorum snapshots (T5: with the per-item quorum, the forecast and taking a snapshot), through
+ * the services or SQL; and within a tenant the events and snapshots never change.
  */
 class AttendanceCrossTenantIT : IntegrationTest() {
     @Autowired lateinit var registry: TenantRegistry
@@ -71,6 +73,10 @@ class AttendanceCrossTenantIT : IntegrationTest() {
 
     @Autowired lateinit var attendanceReads: AttendanceReads
 
+    @Autowired lateinit var quorumReads: QuorumReads
+
+    @Autowired lateinit var snapshots: QuorumSnapshots
+
     private class Side(
         val tenant: TestTenant,
         val admin: UserAccount,
@@ -88,19 +94,18 @@ class AttendanceCrossTenantIT : IntegrationTest() {
                 .AttendanceInput(a.member.id.value, AttendanceEventKind.APOLOGIES)
         asUser(a.tenant, a.admin) { attendance.record(ofA, null, apologies) }
         asUser(a.tenant, a.admin) { reads.get(ofA) }.let { asUser(a.tenant, a.admin) { lifecycle.start(ofA, it.version) } }
+        // A snapshot of A's meeting (one member cannot make a quorum, so it is written as the app role in A).
+        val snapshotOfA = UUID.randomUUID()
+        val stamp = OffsetDateTime.now(ZoneOffset.UTC)
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            c.update(SNAPSHOT_INSERT, snapshotOfA, a.tenant.id.value, ofA, stamp, UUID.randomUUID(), "a".repeat(64), stamp)
+        }
 
         // Through the services: B's administrator gets 404 for A's register, quorum, changes, events and item in progress.
-        listOf<() -> Any>(
-            { attendanceReads.register(ofA) },
-            { attendanceReads.quorum(ofA, null) },
-            { attendanceReads.changes(ofA) },
-            { attendance.record(ofA, null, apologies.copy(userId = b.member.id.value)) },
-            { attendance.arrivals(ofA, listOf(b.member.id.value), AttendanceMode.IN_PERSON, null) },
-            { attendance.progress(ofA, UUID.randomUUID()) },
-        ).forEach { call -> assertThatThrownBy { asUser(b.tenant, b.admin) { call() } }.isInstanceOf(MeetingNotFoundException::class.java) }
+        refusedToB(b, ofA, apologies, snapshotOfA)
 
         // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's meeting.
-        val tables = listOf("meeting_attendance", "meeting_attendance_event", "meeting_item_progress", "meeting_quorum_change")
+        val tables = listOf("attendance", "attendance_event", "item_progress", "quorum_change", "quorum_snapshot").map { "meeting_$it" }
         AppRoleJdbc.inTransaction(a.tenant.id) { c ->
             assertThat(c.long("select count(*) from meeting_attendance_event where meeting_id = ?", ofA)).isEqualTo(1)
         }
@@ -120,6 +125,7 @@ class AttendanceCrossTenantIT : IntegrationTest() {
                 "insert into meeting_item_progress (id, tenant_id, meeting_id, item_id, started_at, recorded_at) " +
                     "values (?, ?, ?, ?, ?, ?)" to
                     listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, UUID.randomUUID(), now, now),
+                SNAPSHOT_INSERT to listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, now, UUID.randomUUID(), "b".repeat(64), now),
             )
         writes.forEach { (sql, params) ->
             val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
@@ -135,10 +141,34 @@ class AttendanceCrossTenantIT : IntegrationTest() {
             "update meeting_attendance set state = 'ABSENT' where meeting_id = ?",
             "delete from meeting_item_progress where meeting_id = ?",
             "update meeting_quorum_change set kind = 'LOST' where meeting_id = ?",
+            "update meeting_quorum_snapshot set quorate = false where meeting_id = ?",
+            "delete from meeting_quorum_snapshot where meeting_id = ?",
         ).forEach { sql ->
             val changed = runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update(sql, ofA) } }
             assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
         }
+    }
+
+    /** B's administrator gets 404 for each read and write of A's meeting through the services. */
+    private fun refusedToB(
+        b: Side,
+        ofA: UUID,
+        apologies: com.memo.meeting.internal.attendance.AttendanceInput,
+        snapshotOfA: UUID,
+    ) {
+        listOf<() -> Any>(
+            { attendanceReads.register(ofA) },
+            { attendanceReads.quorum(ofA, null) },
+            { attendanceReads.changes(ofA) },
+            { attendance.record(ofA, null, apologies.copy(userId = b.member.id.value)) },
+            { attendance.arrivals(ofA, listOf(b.member.id.value), AttendanceMode.IN_PERSON, null) },
+            { attendance.progress(ofA, UUID.randomUUID()) },
+            // T5: the per-item quorum, the forecast and the snapshots.
+            { attendanceReads.quorum(ofA, null, UUID.randomUUID()) },
+            { quorumReads.forecast(ofA) },
+            { quorumReads.snapshot(ofA, snapshotOfA) },
+            { snapshots.take(ofA) },
+        ).forEach { call -> assertThatThrownBy { asUser(b.tenant, b.admin) { call() } }.isInstanceOf(MeetingNotFoundException::class.java) }
     }
 
     private fun side(label: String): Side {
@@ -175,4 +205,12 @@ class AttendanceCrossTenantIT : IntegrationTest() {
         ActorContext.call(ActorScope(Actor.User(account.id.value), null)) {
             TenantContext.call(tenant.id) { transactions.inTenant(tenant.id, block) }
         }
+
+    private companion object {
+        /** A quorate snapshot row: id, tenant, meeting, at, type, SHA-256, taken at. */
+        const val SNAPSHOT_INSERT =
+            "insert into meeting_quorum_snapshot (id, tenant_id, meeting_id, at, type_id, type_version, inputs, result, quorate, " +
+                "ratification_required, inputs_sha256, taken_at) " +
+                "values (?, ?, ?, ?, ?, 1, '{}'::jsonb, '{}'::jsonb, true, false, ?, ?)"
+    }
 }

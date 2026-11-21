@@ -64,6 +64,7 @@ import com.memo.jooq.tables.MeetingItemProgress
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
 import com.memo.jooq.tables.MeetingQuorumChange
+import com.memo.jooq.tables.MeetingQuorumSnapshot
 import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
@@ -447,6 +448,11 @@ val MEETING_PAPER_OPEN: MeetingPaperOpen = MeetingPaperOpen.MEETING_PAPER_OPEN
  * The table <code>memo.meeting_quorum_change</code>.
  */
 val MEETING_QUORUM_CHANGE: MeetingQuorumChange = MeetingQuorumChange.MEETING_QUORUM_CHANGE
+
+/**
+ * The table <code>memo.meeting_quorum_snapshot</code>.
+ */
+val MEETING_QUORUM_SNAPSHOT: MeetingQuorumSnapshot = MeetingQuorumSnapshot.MEETING_QUORUM_SNAPSHOT
 
 /**
  * The table <code>memo.meeting_reader_state</code>.

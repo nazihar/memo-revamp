@@ -162,7 +162,7 @@ class MemoTypeChecks(
         id: UUID?,
     ): List<FieldProblem> {
         val level = settings.defaultClassificationId
-        val definition = definitions.choice(settings.definitionKey)
+        val definition = definitions.choice(settings.definitionKey, MemoWorkflowSubject.TYPE)
         val allowed = settings.allowedApprovers
         return listOfNotNull(
             FieldProblem("name", "LENGTH", "A name of 1 to $MAX_NAME characters.").takeIf {

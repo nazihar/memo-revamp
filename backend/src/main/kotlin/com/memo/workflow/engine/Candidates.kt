@@ -98,7 +98,9 @@ internal class Candidates(
             } else {
                 emptySet()
             }
-        return listOf(SOD_1 to setOf(initiator), SOD_2 to decided, SOD_4 to (context.interested() + recused))
+        // ADR-0068: a subject whose initiator takes part has no SOD-1.
+        val own = if (context.initiatorTakesPart) emptySet() else setOf(initiator)
+        return listOf(SOD_1 to own, SOD_2 to decided, SOD_4 to (context.interested() + recused))
     }
 
     private companion object {

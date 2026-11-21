@@ -66,13 +66,38 @@ class DefinitionRoundTripProperties {
         val withRoute = (seeds.first() % 3L == 0L) && types.isNotEmpty()
         val steps = types.mapIndexed { i, type -> step(i, type, ids, seeds, i == 0 && withRoute) }
         val attributes = if (seeds.last() % 2L == 0L) listOf(Attribute("classificationRank", AttributeType.INT)) else emptyList()
+        // A quarter are bound to a subject type (ADR-0068): reviews go to a slot, approvals are due when the item says.
+        val bound = seeds[2 % seeds.size] % 4L == 0L
         return Definition(
             attributes = attributes,
             resubmit = ResubmitPolicy.entries[(seeds[1] % 3L).toInt()],
             start = ids.first(),
-            steps = steps,
+            steps = if (bound) steps.map(::bind) else steps,
+            subject = "test.slots".takeIf { bound },
         )
     }
+
+    private fun bind(step: StepDef): StepDef =
+        when (step.type) {
+            StepType.REVIEW -> {
+                step.copy(assignee = Assignee(AssigneeKind.SUBJECT, slot = "owner"))
+            }
+
+            StepType.APPROVE -> {
+                step.copy(
+                    sla =
+                        Sla(
+                            from = SlaFrom.SUBJECT,
+                            remind = Remind("P5D", listOf("P5D")),
+                            escalate = Escalate("P10D", EscalateAction.NOTIFY, Assignee(AssigneeKind.SUBJECT, slot = "chair")),
+                        ),
+                )
+            }
+
+            else -> {
+                step
+            }
+        }
 
     private fun step(
         i: Int,

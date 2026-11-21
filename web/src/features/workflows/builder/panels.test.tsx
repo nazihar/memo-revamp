@@ -11,7 +11,7 @@ import { apply, type Command } from './edit'
 import { StepPanel } from './StepPanel'
 
 const catalogue: BuilderCatalogue = {
-  subjectTypes: [{ type: 'memo', attributes: [{ name: 'classificationRank', type: 'int' }] }],
+  subjectTypes: [{ type: 'memo', attributes: [{ name: 'classificationRank', type: 'int' }], slots: [] }],
   roles: [{ id: 'r1', name: 'Credit officer' }],
   queues: [{ key: 'credit-desk', name: 'Credit desk' }],
   fragments: [{ key: 'checks', name: 'Compliance checks' }],

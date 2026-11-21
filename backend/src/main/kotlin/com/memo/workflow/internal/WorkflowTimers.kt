@@ -16,10 +16,13 @@ import com.memo.workflow.TimerKind
 import com.memo.workflow.WorkflowTimerFired
 import com.memo.workflow.calendar.BusinessCalendar
 import com.memo.workflow.calendar.SlaDuration
+import com.memo.workflow.calendar.WorkingDayRules
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.Sla
 import com.memo.workflow.engine.Effect
 import com.memo.workflow.engine.Outcome
+import com.memo.workflow.engine.Step
+import com.memo.workflow.engine.StepState
 import com.memo.workflow.engine.TaskKind
 import com.memo.workflow.engine.TaskState
 import org.springframework.beans.factory.ObjectProvider
@@ -187,6 +190,38 @@ class WorkflowTimers(
         )
     }
 
+    /**
+     * The subject's due time changed (ADR-0068, [com.memo.workflow.Workflows.redue]): every open decision task of the
+     * active [steps] whose SLA is `from: "subject"` gets the due time [subjectDue] gives for its step, its pending timers
+     * are cancelled and new ones planned from it (a reminder or escalation already past is skipped; a past due time fires
+     * at once; none at all without a due time). Records no action. The number of tasks re-planned.
+     */
+    fun replan(
+        instanceId: UUID,
+        definition: Definition,
+        steps: List<Step>,
+        subjectDue: (String) -> Instant?,
+    ): Int {
+        val calendar by lazy { calendars.calendar() }
+        var replanned = 0
+        steps.filter { it.state == StepState.ACTIVE }.forEach { step ->
+            val sla = definition.stepsById[step.nodeId]?.sla?.takeIf { it.fromSubject } ?: return@forEach
+            val tasks = step.tasks.filter { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE }.map { it.id }
+            if (tasks.isEmpty()) return@forEach
+            val due = subjectDue(step.nodeId)
+            tenantDsl
+                .current()
+                .update(WORKFLOW_TASK)
+                .set(WORKFLOW_TASK.DUE_AT, due?.let(::at))
+                .where(WORKFLOW_TASK.ID.`in`(tasks), WORKFLOW_TASK.STATE.eq(TaskState.OPEN.name))
+                .execute()
+            cancel(tasks)
+            if (due != null) tasks.forEach { schedule(instanceId, step.id, it, sla, due) { calendar } }
+            replanned += tasks.size
+        }
+        return replanned
+    }
+
     /** The timers of [taskId] on an SLA step due at [due]: reminders, the due time and the escalation. */
     private fun schedule(
         instanceId: UUID,
@@ -201,9 +236,15 @@ class WorkflowTimers(
         val before =
             sla.remind?.before?.let { iso ->
                 val d = SlaDuration.parse(iso)
-                due.minusSeconds((d.days * MINUTES_PER_DAY + d.minutes) * SECONDS_PER_MINUTE).takeIf { it.isAfter(now) }
+                val at =
+                    if (sla.fromSubject && sla.inWorkingTime) {
+                        workingDaysBefore(due, d, calendar())
+                    } else {
+                        due.minusSeconds((d.days * MINUTES_PER_DAY + d.minutes) * SECONDS_PER_MINUTE)
+                    }
+                at?.takeIf { it.isAfter(now) }
             }
-        val times =
+        val planned =
             listOfNotNull(
                 before?.let { Triple(TimerKind.REMIND_BEFORE, 0, it) },
                 Triple(TimerKind.DUE, 0, due),
@@ -213,6 +254,9 @@ class WorkflowTimers(
                     .orEmpty()
                     .mapIndexedNotNull { i, iso -> after(iso)?.let { Triple(TimerKind.REMIND_AFTER, i + 1, it) } } +
                 listOfNotNull(sla.escalate?.let { e -> after(e.after)?.let { Triple(TimerKind.ESCALATE, 0, it) } })
+        // A due time set by the subject may already be past (ADR-0068): it fires at once, the timers after it that are
+        // past too are skipped. Durations from now are never past, so other steps plan as before.
+        val times = if (sla.fromSubject) planned.filter { (kind, _, at) -> kind == TimerKind.DUE || at.isAfter(now) } else planned
         times.forEach { (kind, ordinal, firesAt) -> insert(instanceId, stepId, taskId, kind, ordinal, firesAt) }
     }
 
@@ -270,6 +314,20 @@ class WorkflowTimers(
     }
 
     private fun at(instant: Instant): OffsetDateTime = instant.atOffset(ZoneOffset.UTC)
+
+    /**
+     * [duration] before [due] in working time, for due times set by the subject (ADR-0068: "5 working days before"):
+     * whole days are working days back, at the same time of day; hours and minutes are then taken off as plain time.
+     */
+    private fun workingDaysBefore(
+        due: Instant,
+        duration: SlaDuration,
+        calendar: BusinessCalendar,
+    ): Instant? {
+        val local = due.atZone(calendar.zone)
+        val day = WorkingDayRules.before(local.toLocalDate(), duration.days.toInt(), calendar::isWorkingDay) ?: return null
+        return local.with(day).toInstant().minusSeconds(duration.minutes * SECONDS_PER_MINUTE)
+    }
 
     private companion object {
         const val PENDING = "PENDING"

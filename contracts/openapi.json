@@ -1628,11 +1628,17 @@
             },
             "type" : "array"
           },
+          "slots" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
           "type" : {
             "type" : "string"
           }
         },
-        "required" : [ "attributes", "type" ],
+        "required" : [ "attributes", "slots", "type" ],
         "type" : "object"
       },
       "ChairAgreementRequest" : {

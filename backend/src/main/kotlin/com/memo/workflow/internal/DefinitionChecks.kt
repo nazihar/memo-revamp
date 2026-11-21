@@ -5,6 +5,7 @@ import com.memo.org.OrgDirectory
 import com.memo.workflow.AttributeType
 import com.memo.workflow.EscalationTargets
 import com.memo.workflow.WorkflowSubject
+import com.memo.workflow.definition.BoundSubject
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
 import com.memo.workflow.definition.DefinitionJson
@@ -42,7 +43,14 @@ class DefinitionChecks(
             .mapValues { (name, types) -> types.firstOrNull { it.json == declared[name] } ?: types.first() }
     }
 
-    fun validate(body: JsonNode): Validation = DefinitionValidator(catalogue(body), References(), ::fragment).validate(body)
+    fun validate(body: JsonNode): Validation =
+        DefinitionValidator(catalogue(body), References(), subjects = ::bound, fragments = ::fragment).validate(body)
+
+    /** A subject type as a definition bound to it is checked (ADR-0068): its attributes, slots and own rules. */
+    private fun bound(type: String): BoundSubject? =
+        subjects.singleOrNull { it.type == type }?.let { subject ->
+            BoundSubject(subject.attributes, subject.slots, subject::checkDefinition)
+        }
 
     /** What the runtime will read once [definition] is published: its fragments inlined, printed as schema-2 JSON. */
     fun compile(definition: Definition): JsonNode = DefinitionJson.print(DefinitionCompiler.inline(definition, ::fragment))

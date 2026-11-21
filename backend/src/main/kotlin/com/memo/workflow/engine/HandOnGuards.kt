@@ -98,7 +98,7 @@ internal object HandOnGuards {
         val onStep = step.tasks.filter { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE }.map { it.assignee }
         return when {
             to == task.assignee -> Refusal.SAME_ASSIGNEE
-            to == state.initiator -> Refusal.INITIATOR_AS_APPROVER
+            !context.initiatorTakesPart && to == state.initiator -> Refusal.INITIATOR_AS_APPROVER
             to in onStep -> Refusal.ALREADY_ON_STEP
             context.eligibility(to) != null -> Refusal.ASSIGNEE_NOT_ELIGIBLE
             else -> null

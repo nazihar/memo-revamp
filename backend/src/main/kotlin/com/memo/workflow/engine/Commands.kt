@@ -371,6 +371,11 @@ class TransitionContext(
     val doa: () -> DoaMatch = { DoaMatch.NONE },
     /** Whether [to] is within [limit] of the holder (design E04 §4.7), for steps that limit forwarding. */
     val within: (holder: UUID, to: UUID, limit: ForwardWithin) -> Boolean = { _, _, _ -> true },
+    /**
+     * The subject lets its initiator take part (ADR-0068): SOD-1 is off, so the initiator may be a candidate, be named in a
+     * route, and be reassigned or handed a task. SOD-2 and SOD-4 still apply.
+     */
+    val initiatorTakesPart: Boolean = false,
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

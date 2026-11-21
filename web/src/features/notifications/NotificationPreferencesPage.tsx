@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { categoryLabel, nm, nmv } from './notification-messages'
 import { WatchSettings } from './WatchSettings'
+import { TableScroll } from '@/components/page/TableScroll'
 
 const CHANNELS = ['IN_APP', 'EMAIL'] as const
 
@@ -42,7 +43,7 @@ export function NotificationPreferencesPage() {
       ) : prefs.isError ? (
         <ErrorState onRetry={() => void prefs.refetch()} />
       ) : (
-        <div className="overflow-x-auto rounded-md border">
+        <TableScroll className="rounded-md border">
           <table className="w-full text-sm">
             <caption className="sr-only">{intl.formatMessage(nm.prefsCaption)}</caption>
             <thead>
@@ -93,7 +94,7 @@ export function NotificationPreferencesPage() {
               })}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       )}
       <WatchSettings />
     </section>

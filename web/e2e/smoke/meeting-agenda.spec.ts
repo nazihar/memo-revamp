@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '../fixtures'
 import { pdf } from '../legacy'
-import { creditProposalToCommittee, dayFromNow } from '../meetings'
+import { checkPageA11y, creditProposalToCommittee, dayFromNow } from '../meetings'
 import { pageAs } from '../roles'
 
 /**
@@ -85,7 +85,7 @@ test.describe('as the company secretary', () => {
     await expect(menu(page, subject)).toBeVisible()
     // Once the builder has said where it went, the rows have stopped moving.
     await expect(said(page)).toHaveText(/added at position 1 in For decision\.$/)
-    await app.checkA11y()
+    await checkPageA11y(page)
 
     // The smoke stack has no document converter, so the memo's Word document has no PDF for members and would refuse
     // the publication (PAPER_NOT_READABLE): the secretary leaves it out of the pack, which keeps it with the memo.
@@ -187,7 +187,7 @@ test.describe('as the company secretary', () => {
     await page.getByRole('button', { name: /Change language/ }).click()
     await page.getByRole('menuitemradio', { name: 'العربية' }).click()
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl')
-    await app.checkA11y()
+    await checkPageA11y(page)
     await page.getByRole('button', { name: /تغيير اللغة|Change language/ }).click()
     await page.getByRole('menuitemradio', { name: 'English' }).click()
     await expect(page.locator('html')).toHaveAttribute('dir', 'ltr')

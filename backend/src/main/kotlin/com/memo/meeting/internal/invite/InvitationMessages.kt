@@ -7,6 +7,7 @@ import com.memo.forum.ForumRef
 import com.memo.forum.InvitationTitle
 import com.memo.forum.MeetingPolicy
 import com.memo.meeting.internal.MeetingRow
+import com.memo.meeting.internal.RecipientLocales
 import com.memo.meeting.internal.ical.Invite
 import com.memo.meeting.internal.ical.InviteEvent
 import com.memo.meeting.internal.ical.InviteKind
@@ -20,10 +21,8 @@ import com.memo.notification.Recipient
 import com.memo.notification.SendingAddress
 import com.memo.tenancy.TenancyProperties
 import com.memo.tenancy.TenantRegistry
-import com.memo.tenancy.TenantSettings
 import org.springframework.stereotype.Component
 import java.time.Instant
-import java.util.Locale
 import java.util.UUID
 
 /**
@@ -59,7 +58,7 @@ class InvitationMessages(
     private val policies: ForumPolicies,
     private val registry: TenantRegistry,
     private val tenancy: TenancyProperties,
-    private val settings: TenantSettings,
+    private val locales: RecipientLocales,
     private val invitees: InviteeStore,
     private val ids: IdGenerator,
 ) {
@@ -102,7 +101,7 @@ class InvitationMessages(
         by: UUID?,
         at: Instant,
     ): InvitationMessageRow {
-        val locale = localeOf(recipient.locale)
+        val locale = locales.of(recipient.locale)
         val invite =
             Invite(
                 kind = INVITE_KINDS.getValue(message.kind),
@@ -141,7 +140,13 @@ class InvitationMessages(
         localeTag: String?,
     ): ByteArray =
         writer.write(
-            Invite(InviteKind.PUBLISH, event(context, context.invitation.sequence), context.organizer, null, locale = localeOf(localeTag)),
+            Invite(
+                InviteKind.PUBLISH,
+                event(context, context.invitation.sequence),
+                context.organizer,
+                null,
+                locale = locales.of(localeTag),
+            ),
         )
 
     private fun event(
@@ -165,16 +170,7 @@ class InvitationMessages(
         )
     }
 
-    /** The person's language if invitations have texts for it, else the tenant's default, else English (as the mail). */
-    private fun localeOf(tag: String?): Locale =
-        listOfNotNull(tag, settings.get(DEFAULT_LOCALE_SETTING)?.value, "en")
-            .map { Locale.forLanguageTag(it) }
-            .first { it.language in SUPPORTED }
-
     private companion object {
-        const val DEFAULT_LOCALE_SETTING = "locale.default"
-        val SUPPORTED = setOf("en", "ar")
-
         fun link(meetingId: UUID) = "/meetings/$meetingId"
 
         val INVITE_KINDS =

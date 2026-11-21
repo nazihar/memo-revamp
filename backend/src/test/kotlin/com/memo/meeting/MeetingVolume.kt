@@ -36,6 +36,8 @@ class MeetingVolume(
     private val perForum: Int,
     private val people: VolumePeople,
     private val levels: Levels,
+    /** With E05's rows too ([invitations] and after; design E05 §8): forum 1's seats, invitations, replies, attendance. */
+    private val e05: Boolean = false,
 ) {
     /** The meeting levels: [low] for most rows, [high] above the director's clearance. */
     data class Levels(
@@ -55,6 +57,12 @@ class MeetingVolume(
 
     /** The focal meeting's id. */
     val focal: UUID get() = generated("mvm1-$focalK")
+
+    /** The first committee's last held meeting: with [e05], the focal meeting's audience and a full register. */
+    private val heldK = if (past % CANCELLED_EVERY == 0) past - 1 else past
+
+    /** The held focal meeting's id. */
+    val held: UUID get() = generated("mvm1-$heldK")
 
     /** The id the generator wrote for [key]: PostgreSQL's `md5(key)::uuid`. */
     fun generated(key: String): UUID =
@@ -81,7 +89,7 @@ class MeetingVolume(
     /** Refreshes the planner's statistics of the tables written, as the schema owner (the application role may not). */
     fun analyse() {
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
-            c.createStatement().use { it.execute("analyze ${TABLES.joinToString()}") }
+            c.createStatement().use { it.execute("analyze ${(TABLES + if (e05) E05_TABLES else emptyList()).joinToString()}") }
         }
     }
 
@@ -98,6 +106,7 @@ class MeetingVolume(
             submissions(),
             files(),
             declarations(),
+            if (e05) invitations() + replies() + attendance() + quorum() else emptyList(),
         ).flatten()
 
     private fun forumsAndMeetings(): List<String> {
@@ -112,11 +121,11 @@ class MeetingVolume(
             select f.f, k, md5('mvm' || f.f || '-' || k)::uuid as id, f.id as forum_id, f.code,
                    date_trunc('day', now()) + ((k - $past - 1) * 30 + f.f % 28) * interval '1 day' + interval '4 hours' as starts_at,
                    case when k = $perForum then 'DRAFT' when k > $past then 'SCHEDULED'
-                        when k % 40 = 0 then 'CANCELLED' else 'HELD' end as status,
+                        when k % $CANCELLED_EVERY = 0 then 'CANCELLED' else 'HELD' end as status,
                    case when f.f = 1 and k = $focalK then $FOCAL_PER_SECTION else $PER_SECTION end as per_section,
                    case when k = $perForum then 0 when f.f = 1 and k = $focalK then $FOCAL_REVISIONS
                         when k % 3 = 0 then 2 else 1 end as revisions,
-                   case when f.f = 1 and k = $focalK then $FOCAL_MEMBERS else $MEMBERS end as members
+                   case when f.f = 1 and k = $focalK then $FOCAL_MEMBERS ${heldMembers()}else $MEMBERS end as members
             from mv_forum f, generate_series(1, $perForum) k
             """,
             """
@@ -410,6 +419,213 @@ class MeetingVolume(
         )
     }
 
+    /** The held focal meeting has the focal meeting's audience with [e05]. */
+    private fun heldMembers() = if (e05) "when f.f = 1 and k = $heldK then $FOCAL_MEMBERS " else ""
+
+    /**
+     * Invitations (design E05 §8): forum 1's 36 member seats (its audience's members, all independent), then for every
+     * meeting past draft the invitation (cancelled ones cancelled) and its 40 invitees (forum 1: its 36 members, the
+     * secretary, the director and the chair), each sent an invitation, an update and a resend (430,000 messages); the focal
+     * meeting's last messages in the outbox, as the panel reads their delivery.
+     */
+    private fun invitations(): List<String> {
+        val sent = "least(now(), m.starts_at - interval '30 days')"
+        val cancelled = "status = 'CANCELLED'"
+        val focal = "f = 1 and k = $focalK"
+        return listOf(
+            """
+            insert into forum_member (id, tenant_id, forum_id, kind, user_id, role, voting, attributes, starts_on, term_number,
+                                      created_at, version)
+            select md5('mvfm' || u)::uuid, '$tenant'::uuid, '${forums.first().first}'::uuid, 'PERSON', md5('mvu1-' || u)::uuid,
+                   'MEMBER', true, '["independent"]'::jsonb, date '2010-01-01', 1, now(), 0
+            from generate_series(1, $FOCAL_MEMBERS) u
+            """,
+            """
+            create temp table mv_invitee on commit drop as
+            select m.id as meeting_id, m.f, m.k, m.status, m.starts_at, u, md5('mvu' || m.f || '-' || u)::uuid as user_id, $sent as sent_at
+            from mv_meeting m, generate_series(1, $INVITEES) u
+            where m.status <> 'DRAFT' and (m.f <> 1 or u <= $FOCAL_MEMBERS)
+            union all
+            select m.id, m.f, m.k, m.status, m.starts_at, 100 + p.r, p.user_id, $sent
+            from mv_meeting m,
+                 (values (1, '${people.secretary}'::uuid), (2, '${people.director}'::uuid), (3, '${people.chair}'::uuid)) p(r, user_id)
+            where m.status <> 'DRAFT' and m.f = 1
+            """,
+            "create index on mv_invitee (meeting_id)",
+            "analyze mv_invitee",
+            """
+            insert into meeting_invitation (tenant_id, meeting_id, ical_uid, sequence, sent_sequence, pending_changes, cancelled_at,
+                                            due_at, reconciled_at, created_at, version)
+            select '$tenant'::uuid, m.id, md5('mvical' || m.id)::uuid, case when m.$cancelled then 2 else 1 end,
+                   case when m.$cancelled then 2 else 1 end, '{}', case when m.$cancelled then m.starts_at - interval '5 days' end,
+                   null, $sent + interval '1 day', $sent - interval '1 hour', 2
+            from mv_meeting m where m.status <> 'DRAFT'
+            """,
+            """
+            insert into meeting_invitee (tenant_id, meeting_id, user_id, state, last_sequence, held_sequence, last_method, last_kind,
+                                         last_outbox_id, first_sent_at, last_sent_at, version)
+            select '$tenant'::uuid, meeting_id, user_id, case when $cancelled then 'CANCELLED' else 'INVITED' end,
+                   case when $cancelled then 2 else 1 end, case when $cancelled then 2 else 1 end,
+                   case when $cancelled then 'CANCEL' else 'REQUEST' end, case when $cancelled then 'CANCEL' else 'UPDATE' end,
+                   case when $focal then md5('mvob' || meeting_id || user_id)::uuid end, sent_at, sent_at + interval '1 day', 2
+            from mv_invitee
+            """,
+            """
+            insert into meeting_invitation_message (id, tenant_id, meeting_id, user_id, sequence, method, kind, changes, outbox_id,
+                                                    notification_id, queued_by, queued_at)
+            select md5('mvim' || i.meeting_id || i.user_id || n)::uuid, '$tenant'::uuid, i.meeting_id, i.user_id,
+                   case when n = 0 then 0 else 1 end, 'REQUEST', (array['INVITATION', 'UPDATE', 'RESEND'])[n + 1],
+                   case when n = 1 then array['TIME'] else '{}'::text[] end, null, null,
+                   case when n = 2 then '${people.secretary}'::uuid end, i.sent_at + n * interval '12 hours'
+            from mv_invitee i, generate_series(0, 2) n
+            """,
+            """
+            insert into notification_mail_outbox (id, tenant_id, template, to_address, status, attempts, created_at, sent_at, relay,
+                                                  last_attempt_at)
+            select md5('mvob' || meeting_id || user_id)::uuid, '$tenant'::uuid, 'MEETING_UPDATED', 'member' || u || '@volume.example',
+                   'SENT', 1, sent_at + interval '1 day', sent_at + interval '1 day', 'PLATFORM', sent_at + interval '1 day'
+            from mv_invitee where $focal
+            """,
+        )
+    }
+
+    /**
+     * Replies (design E05 §8): every invitee answered (one in five with apologies, one in seven online), but one in ten of
+     * the focal meeting's, which also has one in nine answered for an old time; a third changed their answer once (an
+     * earlier event). The meeting reminders of past meetings, as the sweep marks them.
+     */
+    private fun replies(): List<String> {
+        val focal = "f = 1 and k = $focalK"
+        return listOf(
+            """
+            create temp table mv_rsvp on commit drop as
+            select i.*, case when i.u % 5 = 3 then 'APOLOGIES' when i.u % 7 = 2 then 'REMOTE' else 'IN_PERSON' end as answer,
+                   ($focal and i.u % 9 = 4) as stale
+            from mv_invitee i
+            where not ($focal and i.u % 10 = 0)
+            """,
+            """
+            insert into meeting_rsvp (tenant_id, meeting_id, user_id, answer, alternate_attends, note, for_starts_at, for_ends_at,
+                                      recorded_by, how, how_note, answered_at, version)
+            select '$tenant'::uuid, meeting_id, user_id, answer, false, case when u % 8 = 1 then 'I will join after the first item' end,
+                   starts_at - case when stale then interval '1 day' else interval '0' end,
+                   starts_at + interval '3 hours' - case when stale then interval '1 day' else interval '0' end,
+                   user_id, 'IN_APP', null, sent_at + interval '2 days', case when u % 3 = 0 then 2 else 1 end
+            from mv_rsvp
+            """,
+            """
+            insert into meeting_rsvp_event (id, tenant_id, meeting_id, user_id, answer, alternate_attends, note_sha256, for_starts_at,
+                                            for_ends_at, how, recorded_by, at)
+            select md5('mvre' || meeting_id || user_id || e)::uuid, '$tenant'::uuid, meeting_id, user_id,
+                   case when e = 0 then 'APOLOGIES' else answer end, false, null, starts_at, starts_at + interval '3 hours', 'IN_APP',
+                   user_id, sent_at + (1 + e) * interval '1 day'
+            from mv_rsvp, generate_series(0, 1) e where e = 1 or u % 3 = 0
+            """,
+            """
+            insert into meeting_reminder (tenant_id, meeting_id, user_id, kind, key, sent_at)
+            select '$tenant'::uuid, meeting_id, user_id, 'MEETING', ((starts_at at time zone 'Asia/Dhaka')::date)::text,
+                   starts_at - interval '1 day'
+            from mv_invitee where status in ('HELD', 'CANCELLED')
+            """,
+        )
+    }
+
+    /**
+     * Attendance (design E05 §8) at every held meeting: one in five sent apologies; the rest arrived, half left and came
+     * back, a third went online, a quarter left early (about 90 events a meeting, 290,000). The held focal meeting has its
+     * 36 members and three officers on its register with 9 events each (about 300): three departures and returns and
+     * stepping out of an item; ten items in progress. A quorum reached per held meeting, and a snapshot for each of its
+     * first items (60,000; the held focal meeting's are taken through [QuorumSnapshots] by the test).
+     */
+    private fun attendance(): List<String> {
+        val held = "f = 1 and k = $heldK"
+        val minute = "* interval '1 minute'"
+        val general = "not apologies and not focal"
+        val cycles = "mv_attendee, generate_series(1, 3) c where focal and not apologies"
+        return listOf(
+            """
+            create temp table mv_attendee on commit drop as
+            select meeting_id, f, k, u, user_id, starts_at, ($held) as focal, u % 5 = 3 as apologies
+            from mv_invitee where status = 'HELD'
+            """,
+            """
+            insert into meeting_attendance (tenant_id, meeting_id, user_id, capacity, state, mode, first_arrived_at, last_left_at,
+                                            opened_at, updated_at, version)
+            select '$tenant'::uuid, meeting_id, user_id, 'MEMBER',
+                   case when apologies then 'APOLOGIES' when not focal and u % 4 = 1 then 'LEFT' else 'PRESENT' end,
+                   case when apologies or (not focal and u % 4 = 1) then null when not focal and u % 3 = 0 then 'REMOTE'
+                        else 'IN_PERSON' end,
+                   case when not apologies then starts_at + (u % 12) $minute end,
+                   case when apologies then null when focal or u % 2 = 0 then starts_at + interval '90 minutes'
+                        when u % 4 = 1 then starts_at + interval '170 minutes' end,
+                   starts_at, starts_at + interval '3 hours', 0
+            from mv_attendee
+            """,
+            """
+            create temp table mv_attendance_event on commit drop as
+            select meeting_id, user_id, 0 as n, 'APOLOGIES' as kind, null::text as mode, starts_at - interval '1 hour' as at,
+                   false as stepped, 'RSVP' as source
+            from mv_attendee where apologies
+            union all select meeting_id, user_id, 0, 'ARRIVED', 'IN_PERSON', starts_at + (u % 12) $minute, false, 'RECORDED'
+            from mv_attendee where not apologies
+            union all select meeting_id, user_id, 1, 'LEFT', null, starts_at + interval '90 minutes', false, 'RECORDED'
+            from mv_attendee where $general and u % 2 = 0
+            union all select meeting_id, user_id, 2, 'ARRIVED', 'IN_PERSON', starts_at + interval '100 minutes', false, 'RECORDED'
+            from mv_attendee where $general and u % 2 = 0
+            union all select meeting_id, user_id, 3, 'MODE_CHANGED', 'REMOTE', starts_at + interval '120 minutes', false, 'RECORDED'
+            from mv_attendee where $general and u % 3 = 0
+            union all select meeting_id, user_id, 4, 'LEFT', null, starts_at + interval '170 minutes', false, 'RECORDED'
+            from mv_attendee where $general and u % 4 = 1
+            union all select meeting_id, user_id, 2 * c - 1, 'LEFT', null, starts_at + 30 * c $minute, false, 'RECORDED' from $cycles
+            union all select meeting_id, user_id, 2 * c, 'ARRIVED', 'IN_PERSON', starts_at + (30 * c + 5) $minute, false, 'RECORDED'
+            from $cycles
+            union all select meeting_id, user_id, 7, 'STEPPED_OUT', null, starts_at + interval '100 minutes', true, 'RECORDED'
+            from mv_attendee where focal and not apologies
+            union all select meeting_id, user_id, 8, 'STEPPED_BACK', null, starts_at + interval '110 minutes', true, 'RECORDED'
+            from mv_attendee where focal and not apologies
+            """,
+            """
+            insert into meeting_attendance_event (id, tenant_id, meeting_id, user_id, kind, mode, at, item_id, source, correction,
+                                                  recorded_by, recorded_at)
+            select md5('mvae' || meeting_id || user_id || n)::uuid, '$tenant'::uuid, meeting_id, user_id, kind, mode, at,
+                   case when stepped then md5('mvi' || meeting_id || '-1-0')::uuid end, source, false, '${people.secretary}', at
+            from mv_attendance_event
+            """,
+        )
+    }
+
+    /** The held meetings' items in progress (the held focal meeting's), quorum reached and snapshots ([attendance]). */
+    private fun quorum(): List<String> {
+        val held = "f = 1 and k = $heldK"
+        return listOf(
+            """
+            insert into meeting_item_progress (id, tenant_id, meeting_id, item_id, started_at, recorded_by, recorded_at)
+            select md5('mvip' || item_id)::uuid, '$tenant'::uuid, meeting_id, item_id, starts_at + n * interval '15 minutes',
+                   '${people.secretary}', starts_at + n * interval '15 minutes'
+            from mv_item where $held and n <= 10 and not brk
+            """,
+            """
+            insert into meeting_quorum_change (id, tenant_id, meeting_id, level, item_id, kind, needed, present, unmet, at,
+                                               cause_event_id, recorded_at)
+            select md5('mvqc' || id)::uuid, '$tenant'::uuid, id, 'MEETING', null, 'REACHED', 21, 32, '[]'::jsonb,
+                   starts_at + interval '15 minutes', md5('mvae' || id || md5('mvu' || f || '-1')::uuid || 0)::uuid,
+                   starts_at + interval '15 minutes'
+            from mv_meeting where status = 'HELD'
+            """,
+            """
+            insert into meeting_quorum_snapshot (id, tenant_id, meeting_id, item_id, at, type_id, type_version, inputs, result,
+                                                 quorate, override_reason, ratification_required, inputs_sha256, taken_by, taken_at)
+            select md5('mvqs' || it.item_id)::uuid, '$tenant'::uuid, it.meeting_id, it.item_id, it.starts_at + it.n * interval '3 minutes',
+                   fo.forum_type_id, 1, '{"volume": true}'::jsonb, '{"volume": true}'::jsonb, true, null, false,
+                   md5('a' || it.item_id) || md5('b' || it.item_id), '${people.secretary}', it.starts_at + it.n * interval '3 minutes'
+            from mv_item it
+            join mv_meeting m on m.id = it.meeting_id
+            join forum fo on fo.tenant_id = '$tenant'::uuid and fo.id = m.forum_id
+            where it.status = 'HELD' and not it.brk and it.n <= $SNAPSHOTS_UP_TO and not (it.f = 1 and it.k = $heldK)
+            """,
+        )
+    }
+
     /** Every 25th item is for the chair only (the director sees its line), every 25th + 12 for the director and the chair. */
     private fun restriction() =
         "case when n % 25 = 0 then array['${people.chair}'::uuid] " +
@@ -425,6 +641,15 @@ class MeetingVolume(
         const val FOCAL_MEMBERS = 36
         const val DIRECTOR_FORUMS = 3
         const val TRAY = 50
+
+        /** Invitees per meeting past draft (design E05 §8: 40). */
+        const val INVITEES = 40
+
+        /** Every fortieth past meeting is cancelled. */
+        const val CANCELLED_EVERY = 40
+
+        /** Snapshots on the items numbered up to this in agenda order (about 18 a held meeting). */
+        const val SNAPSHOTS_UP_TO = 19
 
         /** An item's purpose: none on a break, else in turn. */
         private const val PURPOSE =
@@ -453,6 +678,24 @@ class MeetingVolume(
                 "meeting_declaration",
                 "meeting_declaration_event",
                 "meeting_declaration_review",
+            )
+
+        /** The tables [MeetingVolume] writes with e05 as well. */
+        val E05_TABLES =
+            listOf(
+                "forum_member",
+                "meeting_invitation",
+                "meeting_invitee",
+                "meeting_invitation_message",
+                "notification_mail_outbox",
+                "meeting_rsvp",
+                "meeting_rsvp_event",
+                "meeting_reminder",
+                "meeting_attendance",
+                "meeting_attendance_event",
+                "meeting_item_progress",
+                "meeting_quorum_change",
+                "meeting_quorum_snapshot",
             )
     }
 }

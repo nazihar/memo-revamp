@@ -18,6 +18,7 @@ export type CataloguePart =
   | 'meetingReplies'
   | 'declarations'
   | 'mySecurity'
+  | 'notificationKinds'
   | 'platform'
   | 'patterns'
   | 'search'

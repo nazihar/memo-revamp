@@ -141,173 +141,190 @@ const kindsWithValues = defineMessages<{
   meetingQuorumLost: { committee: string; date: string; present: string; needed: string }
   meetingQuorumRestored: { committee: string; date: string; present: string; needed: string }
   meetingQuorumOverridden: { committee: string; date: string; present: string; needed: string }
+  meetingReplyReminder: { committee: string; date: string }
+  meetingReminder: { committee: string; date: string; unanswered: string; toReview: number }
+  meetingQuorumAtRisk: { committee: string; date: string }
 }>({
-  signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
-  roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
+  signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
+  roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
   taskAssigned: {
-    id: 'notifications.kind.taskAssigned',
+    id: 'notificationKinds.taskAssigned',
     defaultMessage: 'Memo {reference} is waiting for your approval',
   },
-  memoReturned: { id: 'notifications.kind.memoReturned', defaultMessage: 'Memo {reference} was returned to you' },
-  memoRejected: { id: 'notifications.kind.memoRejected', defaultMessage: 'Memo {reference} was rejected' },
-  memoApproved: { id: 'notifications.kind.memoApproved', defaultMessage: 'Memo {reference} was approved' },
+  memoReturned: { id: 'notificationKinds.memoReturned', defaultMessage: 'Memo {reference} was returned to you' },
+  memoRejected: { id: 'notificationKinds.memoRejected', defaultMessage: 'Memo {reference} was rejected' },
+  memoApproved: { id: 'notificationKinds.memoApproved', defaultMessage: 'Memo {reference} was approved' },
   taskReassigned: {
-    id: 'notifications.kind.taskReassigned',
+    id: 'notificationKinds.taskReassigned',
     defaultMessage: 'The approval of memo {reference} was reassigned',
   },
-  taskBlocked: { id: 'notifications.kind.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
-  memoWithdrawn: { id: 'notifications.kind.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
-  memoUpdate: { id: 'notifications.kind.memoUpdate', defaultMessage: 'There is news about memo {reference}' },
+  taskBlocked: { id: 'notificationKinds.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
+  memoWithdrawn: { id: 'notificationKinds.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
+  memoUpdate: { id: 'notificationKinds.memoUpdate', defaultMessage: 'There is news about memo {reference}' },
   memoCopied: {
-    id: 'notifications.kind.memoCopied',
+    id: 'notificationKinds.memoCopied',
     defaultMessage: 'Memo {reference} was copied to you for information',
   },
   memoMentioned: {
-    id: 'notifications.kind.memoMentioned',
+    id: 'notificationKinds.memoMentioned',
     defaultMessage: 'You were mentioned in a note on memo {reference}',
   },
   taskReminder: {
-    id: 'notifications.kind.taskReminder',
+    id: 'notificationKinds.taskReminder',
     defaultMessage: 'Reminder: memo {reference} is waiting for your decision',
   },
-  taskOverdue: { id: 'notifications.kind.taskOverdue', defaultMessage: 'Memo {reference} is overdue' },
+  taskOverdue: { id: 'notificationKinds.taskOverdue', defaultMessage: 'Memo {reference} is overdue' },
   editNotSaved: {
-    id: 'notifications.kind.editNotSaved',
+    id: 'notificationKinds.editNotSaved',
     defaultMessage: 'Your changes to {name} in the browser editor could not be saved',
   },
   memoWatched: {
-    id: 'notifications.kind.memoWatched',
+    id: 'notificationKinds.memoWatched',
     defaultMessage:
       '{count, plural, one {News} other {# updates}} on memo {reference}: {reason, select, INITIATED {you started it} ACTED {you acted on it} MENTIONED {you were mentioned on it} other {you follow it}}',
   },
   forumMembershipChanged: {
-    id: 'notifications.kind.forumMembershipChanged',
+    id: 'notificationKinds.forumMembershipChanged',
     defaultMessage: 'The membership of {committee} changed',
   },
   forumTermEnding: {
-    id: 'notifications.kind.forumTermEnding',
+    id: 'notificationKinds.forumTermEnding',
     defaultMessage: 'The term of {member} on {committee} ends soon',
   },
   forumSubmissionReceived: {
-    id: 'notifications.kind.forumSubmissionReceived',
+    id: 'notificationKinds.forumSubmissionReceived',
     defaultMessage: 'A paper is waiting for {committee}',
   },
   forumSubmissionTriaged: {
-    id: 'notifications.kind.forumSubmissionTriaged',
+    id: 'notificationKinds.forumSubmissionTriaged',
     defaultMessage: 'News from {committee} on your paper',
   },
   forumSubmissionWaiting: {
-    id: 'notifications.kind.forumSubmissionWaiting',
+    id: 'notificationKinds.forumSubmissionWaiting',
     defaultMessage: 'A paper for {committee} is still waiting for triage',
   },
   meetingCancelled: {
-    id: 'notifications.kind.meetingCancelled',
+    id: 'notificationKinds.meetingCancelled',
     defaultMessage: 'The meeting of {committee} on {date} was cancelled',
   },
   meetingLatePaper: {
-    id: 'notifications.kind.meetingLatePaper',
+    id: 'notificationKinds.meetingLatePaper',
     defaultMessage: 'A late paper for {committee} on {date} needs your agreement',
   },
   meetingAgendaPublished: {
-    id: 'notifications.kind.meetingAgendaPublished',
+    id: 'notificationKinds.meetingAgendaPublished',
     defaultMessage: 'The agenda for {committee} on {date} was published',
   },
   meetingAgendaChanged: {
-    id: 'notifications.kind.meetingAgendaChanged',
+    id: 'notificationKinds.meetingAgendaChanged',
     defaultMessage: 'The agenda for {committee} on {date} has changed',
   },
   meetingItemWithdrawn: {
-    id: 'notifications.kind.meetingItemWithdrawn',
+    id: 'notificationKinds.meetingItemWithdrawn',
     defaultMessage: 'A paper left the published agenda for {committee} on {date}: publish a new revision',
   },
   meetingChairCommented: {
-    id: 'notifications.kind.meetingChairCommented',
+    id: 'notificationKinds.meetingChairCommented',
     defaultMessage: 'The chair commented on the agenda for {committee} on {date}',
   },
   meetingDiscussionRequested: {
-    id: 'notifications.kind.meetingDiscussionRequested',
+    id: 'notificationKinds.meetingDiscussionRequested',
     defaultMessage: 'A member asked to discuss a consent item of {committee} on {date}',
   },
   meetingAgendaDue: {
-    id: 'notifications.kind.meetingAgendaDue',
+    id: 'notificationKinds.meetingAgendaDue',
     defaultMessage: 'Papers for {committee} on {date} were due and the agenda is not published',
   },
   meetingNotHeld: {
-    id: 'notifications.kind.meetingNotHeld',
+    id: 'notificationKinds.meetingNotHeld',
     defaultMessage: 'The meeting of {committee} on {date} is not marked as held',
   },
   meetingDeclarationRecorded: {
-    id: 'notifications.kind.meetingDeclarationRecorded',
+    id: 'notificationKinds.meetingDeclarationRecorded',
     defaultMessage:
       '{change, select, WITHDRAWN {Your declaration of interest in item {item} of {committee} on {date} was withdrawn} other {A declaration of interest in item {item} of {committee} on {date} was recorded for you}}',
   },
   meetingDeclarationMade: {
-    id: 'notifications.kind.meetingDeclarationMade',
+    id: 'notificationKinds.meetingDeclarationMade',
     defaultMessage:
       '{change, select, WITHDRAWN {A declaration of interest in item {item} of {committee} on {date} was withdrawn} other {An interest was declared in item {item} of {committee} on {date}}}',
   },
   meetingRulingNeeded: {
-    id: 'notifications.kind.meetingRulingNeeded',
+    id: 'notificationKinds.meetingRulingNeeded',
     defaultMessage: 'A declaration of interest in item {item} of {committee} on {date} needs your ruling',
   },
   meetingDeclarationRuled: {
-    id: 'notifications.kind.meetingDeclarationRuled',
+    id: 'notificationKinds.meetingDeclarationRuled',
     defaultMessage:
       '{outcome, select, TAKE_PART {The chair ruled that you may take part in item {item} of {committee} on {date}} other {The chair ruled that you leave the room for item {item} of {committee} on {date}}}',
   },
   meetingDeclarationsDue: {
-    id: 'notifications.kind.meetingDeclarationsDue',
+    id: 'notificationKinds.meetingDeclarationsDue',
     defaultMessage: 'Please declare any interests in the agenda for {committee} on {date}',
   },
   meetingInvitation: {
-    id: 'notifications.kind.meetingInvitation',
+    id: 'notificationKinds.meetingInvitation',
     defaultMessage: 'You are invited to the meeting of {committee} on {date}: tell us whether you will attend',
   },
   meetingUpdated: {
-    id: 'notifications.kind.meetingUpdated',
+    id: 'notificationKinds.meetingUpdated',
     defaultMessage: 'The meeting of {committee} on {date} has changed',
   },
   meetingUninvited: {
-    id: 'notifications.kind.meetingUninvited',
+    id: 'notificationKinds.meetingUninvited',
     defaultMessage: 'You are no longer invited to the meeting of {committee} on {date}',
   },
   meetingRsvpRecorded: {
-    id: 'notifications.kind.meetingRsvpRecorded',
+    id: 'notificationKinds.meetingRsvpRecorded',
     defaultMessage:
       'The secretary recorded your answer for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}} ({how, select, EMAIL {by email} PHONE {by phone} IN_PERSON {in person} other {otherwise}})',
   },
   meetingRsvpChanged: {
-    id: 'notifications.kind.meetingRsvpChanged',
+    id: 'notificationKinds.meetingRsvpChanged',
     defaultMessage:
       '{member} answered for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}}',
   },
   meetingAlternateAsked: {
-    id: 'notifications.kind.meetingAlternateAsked',
+    id: 'notificationKinds.meetingAlternateAsked',
     defaultMessage: '{member} asked you to attend {committee} on {date} in their place',
   },
   meetingAlternateReleased: {
-    id: 'notifications.kind.meetingAlternateReleased',
+    id: 'notificationKinds.meetingAlternateReleased',
     defaultMessage: '{member} no longer needs you to attend {committee} on {date} in their place',
   },
   meetingQuorumLost: {
-    id: 'notifications.kind.meetingQuorumLost',
+    id: 'notificationKinds.meetingQuorumLost',
     defaultMessage: 'The meeting of {committee} on {date} lost its quorum: {present} of {needed} present',
   },
   meetingQuorumRestored: {
-    id: 'notifications.kind.meetingQuorumRestored',
+    id: 'notificationKinds.meetingQuorumRestored',
     defaultMessage: 'The meeting of {committee} on {date} is quorate again: {present} of {needed} present',
   },
   meetingQuorumOverridden: {
-    id: 'notifications.kind.meetingQuorumOverridden',
+    id: 'notificationKinds.meetingQuorumOverridden',
     defaultMessage:
       'A decision at the meeting of {committee} on {date} was recorded without a quorum ({present} of {needed} present), to be ratified at a quorate meeting',
+  },
+  meetingReplyReminder: {
+    id: 'notificationKinds.meetingReplyReminder',
+    defaultMessage: 'Replies for {committee} on {date} are due today: please tell us whether you will attend',
+  },
+  meetingReminder: {
+    id: 'notificationKinds.meetingReminder',
+    defaultMessage:
+      '{committee} meets on {date}{unanswered, select, true {. Please tell us whether you will attend} other {}}{toReview, plural, =0 {} one {. You still have # item to review for declarations} other {. You still have # items to review for declarations}}',
+  },
+  meetingQuorumAtRisk: {
+    id: 'notificationKinds.meetingQuorumAtRisk',
+    defaultMessage:
+      'From the replies so far, the meeting of {committee} on {date} or some of its items may not be quorate',
   },
 })
 
 const kinds = defineMessages({
-  passwordChanged: { id: 'notifications.kind.passwordChanged', defaultMessage: 'Your password was changed' },
-  mfaReset: { id: 'notifications.kind.mfaReset', defaultMessage: 'An administrator reset your two-step sign-in' },
-  unknown: { id: 'notifications.kind.unknown', defaultMessage: 'Something changed in your account' },
+  passwordChanged: { id: 'notificationKinds.passwordChanged', defaultMessage: 'Your password was changed' },
+  mfaReset: { id: 'notificationKinds.mfaReset', defaultMessage: 'An administrator reset your two-step sign-in' },
+  unknown: { id: 'notificationKinds.unknown', defaultMessage: 'Something changed in your account' },
 })
 
 /** The values of the meeting kinds: the committee and the meeting's date (never an item's title, ADR-0030). */
@@ -455,6 +472,16 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         present: params.present ?? '',
         needed: params.needed ?? '',
       })
+    case 'MEETING_REPLY_REMINDER':
+      return intl.formatMessage(kindsWithValues.meetingReplyReminder, meetingValues(params))
+    case 'MEETING_REMINDER':
+      return intl.formatMessage(kindsWithValues.meetingReminder, {
+        ...meetingValues(params),
+        unanswered: params.unanswered === 'true' ? 'true' : 'false',
+        toReview: Number(params.toReview ?? '0') || 0,
+      })
+    case 'MEETING_QUORUM_AT_RISK':
+      return intl.formatMessage(kindsWithValues.meetingQuorumAtRisk, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -550,6 +577,9 @@ const mailTemplates = defineMessages({
     id: 'mail.template.meetingAlternateReleased',
     defaultMessage: "No longer needed in a member's place",
   },
+  MEETING_REPLY_REMINDER: { id: 'mail.template.meetingReplyReminder', defaultMessage: 'Meeting reply reminder' },
+  MEETING_REMINDER: { id: 'mail.template.meetingReminder', defaultMessage: 'Meeting reminder' },
+  MEETING_QUORUM_AT_RISK: { id: 'mail.template.meetingQuorumAtRisk', defaultMessage: 'Meeting quorum at risk' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

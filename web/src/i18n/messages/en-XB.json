@@ -38872,6 +38872,48 @@
       "value": "‬"
     }
   ],
+  "mail.template.meetingQuorumAtRisk": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ bnoɹnɯ ɐʇ ɹısʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ɹǝɯıupǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingReplyReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ɹǝdʅʎ ɹǝɯıupǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.meetingRsvpRecorded": [
     {
       "type": 0,
@@ -57013,6 +57055,1719 @@
       "value": "‬"
     }
   ],
+  "notificationKinds.editNotSaved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ ɔɥɐuƃǝs ʇo "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ıu ʇɥǝ qɹoʍsǝɹ ǝpıʇoɹ ɔonʅp uoʇ qǝ sɐʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.forumMembershipChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝɯqǝɹsɥıd oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.forumSubmissionReceived": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dɐdǝɹ ıs ʍɐıʇıuƃ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.forumSubmissionTriaged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍs ɟɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou ʎonɹ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.forumSubmissionWaiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dɐdǝɹ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ıs sʇıʅʅ ʍɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.forumTermEnding": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʇǝɹɯ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǝups soou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingAgendaChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɥɐs ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingAgendaDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍǝɹǝ pnǝ ɐup ʇɥǝ ɐƃǝupɐ ıs uoʇ dnqʅısɥǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingAgendaPublished": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs dnqʅısɥǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingAlternateAsked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ɐsʞǝp ʎon ʇo ɐʇʇǝup "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıu ʇɥǝıɹ dʅɐɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingAlternateReleased": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " uo ʅouƃǝɹ uǝǝps ʎon ʇo ɐʇʇǝup "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıu ʇɥǝıɹ dʅɐɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingCancelled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingChairCommented": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔɥɐıɹ ɔoɯɯǝuʇǝp ou ʇɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingDeclarationMade": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ʍıʇɥpɹɐʍu"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀u ıuʇǝɹǝsʇ ʍɐs pǝɔʅɐɹǝp ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingDeclarationRecorded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄onɹ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ʍıʇɥpɹɐʍu"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ɹǝɔoɹpǝp ɟoɹ ʎon"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingDeclarationRuled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ɯɐʎ ʇɐʞǝ dɐɹʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ʅǝɐʌǝ ʇɥǝ ɹooɯ ɟoɹ ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingDeclarationsDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅǝɐsǝ pǝɔʅɐɹǝ ɐuʎ ıuʇǝɹǝsʇs ıu ʇɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingDiscussionRequested": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ɯǝɯqǝɹ ɐsʞǝp ʇo pısɔnss ɐ ɔousǝuʇ ıʇǝɯ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingInvitation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": ʇǝʅʅ ns ʍɥǝʇɥǝɹ ʎon ʍıʅʅ ɐʇʇǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingItemWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dɐdǝɹ ʅǝɟʇ ʇɥǝ dnqʅısɥǝp ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": dnqʅısɥ ɐ uǝʍ ɹǝʌısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingLatePaper": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ʅɐʇǝ dɐdǝɹ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " uǝǝps ʎonɹ ɐƃɹǝǝɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingNotHeld": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıs uoʇ ɯɐɹʞǝp ɐs ɥǝʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingQuorumAtRisk": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ ʇɥǝ ɹǝdʅıǝs so ɟɐɹ, ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " oɹ soɯǝ oɟ ıʇs ıʇǝɯs ɯɐʎ uoʇ qǝ bnoɹɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingQuorumLost": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʅosʇ ıʇs bnoɹnɯ: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " dɹǝsǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingQuorumOverridden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pǝɔısıou ɐʇ ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝɔoɹpǝp ʍıʇɥonʇ ɐ bnoɹnɯ ("
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " dɹǝsǝuʇ), ʇo qǝ ɹɐʇıɟıǝp ɐʇ ɐ bnoɹɐʇǝ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingQuorumRestored": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıs bnoɹɐʇǝ ɐƃɐıu: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " dɹǝsǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ɯǝǝʇs ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 5,
+      "value": "unanswered",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". Ԁʅǝɐsǝ ʇǝʅʅ ns ʍɥǝʇɥǝɹ ʎon ʍıʅʅ ɐʇʇǝup"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 6,
+      "value": "toReview",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". ⅄on sʇıʅʅ ɥɐʌǝ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ıʇǝɯ ʇo ɹǝʌıǝʍ ɟoɹ pǝɔʅɐɹɐʇıous"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". ⅄on sʇıʅʅ ɥɐʌǝ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ıʇǝɯs ʇo ɹǝʌıǝʍ ɟoɹ pǝɔʅɐɹɐʇıous"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingReplyReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝdʅıǝs ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɐɹǝ pnǝ ʇopɐʎ: dʅǝɐsǝ ʇǝʅʅ ns ʍɥǝʇɥǝɹ ʎon ʍıʅʅ ɐʇʇǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingRsvpChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ɐusʍǝɹǝp ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄ǝs, ıu dǝɹsou"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄ǝs, ouʅıuǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No, ɐdoʅoƃıǝs"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingRsvpRecorded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ sǝɔɹǝʇɐɹʎ ɹǝɔoɹpǝp ʎonɹ ɐusʍǝɹ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄ǝs, ıu dǝɹsou"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄ǝs, ouʅıuǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No, ɐdoʅoƃıǝs"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "qʎ ǝɯɐıʅ"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "qʎ dɥouǝ"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ıu dǝɹsou"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "oʇɥǝɹʍısǝ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingRulingNeeded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " uǝǝps ʎonɹ ɹnʅıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingUninvited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ uo ʅouƃǝɹ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.meetingUpdated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɥɐs ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoApproved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoCopied": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɔodıǝp ʇo ʎon ɟoɹ ıuɟoɹɯɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoMentioned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ɯǝuʇıouǝp ıu ɐ uoʇǝ ou ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoRejected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoReturned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝʇnɹuǝp ʇo ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoUpdate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɹǝ ıs uǝʍs ɐqonʇ ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoWatched": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Nǝʍs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ndpɐʇǝs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ou ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "reason",
+      "options": {
+        "INITIATED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon sʇɐɹʇǝp ıʇ"
+            }
+          ]
+        },
+        "ACTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ɐɔʇǝp ou ıʇ"
+            }
+          ]
+        },
+        "MENTIONED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ʍǝɹǝ ɯǝuʇıouǝp ou ıʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ɟoʅʅoʍ ıʇ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.memoWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ʍıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.mfaReset": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀u ɐpɯıuısʇɹɐʇoɹ ɹǝsǝʇ ʎonɹ ʇʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.passwordChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ dɐssʍoɹp ʍɐs ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.roleGranted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ƃıʌǝu ʇɥǝ ɹoʅǝ "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.signInAlert": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ sıƃu-ıu ʇo ʎonɹ ɐɔɔonuʇ ɟɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.taskAssigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʍɐıʇıuƃ ɟoɹ ʎonɹ ɐddɹoʌɐʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.taskBlocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʍɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.taskOverdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs oʌǝɹpnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.taskReassigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐddɹoʌɐʅ oɟ ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝɐssıƃuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.taskReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹ: ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʍɐıʇıuƃ ɟoɹ ʎonɹ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.unknown": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝʇɥıuƃ ɔɥɐuƃǝp ıu ʎonɹ ɐɔɔonuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.bell": [
     {
       "type": 0,
@@ -57161,1579 +58916,6 @@
     {
       "type": 0,
       "value": "Noʇɥıuƃ uǝʍ. Noʇıɟıɔɐʇıous ɐqonʇ ʎonɹ ɐɔɔonuʇ ɐup ʍoɹʞ ɐddǝɐɹ ɥǝɹǝ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.editNotSaved": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄onɹ ɔɥɐuƃǝs ʇo "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " ıu ʇɥǝ qɹoʍsǝɹ ǝpıʇoɹ ɔonʅp uoʇ qǝ sɐʌǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.forumMembershipChanged": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝɯqǝɹsɥıd oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ɔɥɐuƃǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.forumSubmissionReceived": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ dɐdǝɹ ıs ʍɐıʇıuƃ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.forumSubmissionTriaged": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Nǝʍs ɟɹoɯ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou ʎonɹ dɐdǝɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.forumSubmissionWaiting": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ dɐdǝɹ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ıs sʇıʅʅ ʍɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.forumTermEnding": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ʇǝɹɯ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "member"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ǝups soou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingAgendaChanged": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ɥɐs ɔɥɐuƃǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingAgendaDue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁɐdǝɹs ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ʍǝɹǝ pnǝ ɐup ʇɥǝ ɐƃǝupɐ ıs uoʇ dnqʅısɥǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingAgendaPublished": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs dnqʅısɥǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingAlternateAsked": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "member"
-    },
-    {
-      "type": 0,
-      "value": " ɐsʞǝp ʎon ʇo ɐʇʇǝup "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ıu ʇɥǝıɹ dʅɐɔǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingAlternateReleased": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "member"
-    },
-    {
-      "type": 0,
-      "value": " uo ʅouƃǝɹ uǝǝps ʎon ʇo ɐʇʇǝup "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ıu ʇɥǝıɹ dʅɐɔǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingCancelled": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɔɐuɔǝʅʅǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingChairCommented": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɔɥɐıɹ ɔoɯɯǝuʇǝp ou ʇɥǝ ɐƃǝupɐ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingDeclarationMade": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 5,
-      "value": "change",
-      "options": {
-        "WITHDRAWN": {
-          "value": [
-            {
-              "type": 0,
-              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            },
-            {
-              "type": 0,
-              "value": " ʍɐs ʍıʇɥpɹɐʍu"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "∀u ıuʇǝɹǝsʇ ʍɐs pǝɔʅɐɹǝp ıu ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingDeclarationRecorded": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 5,
-      "value": "change",
-      "options": {
-        "WITHDRAWN": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⅄onɹ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            },
-            {
-              "type": 0,
-              "value": " ʍɐs ʍıʇɥpɹɐʍu"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            },
-            {
-              "type": 0,
-              "value": " ʍɐs ɹǝɔoɹpǝp ɟoɹ ʎon"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingDeclarationRuled": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 5,
-      "value": "outcome",
-      "options": {
-        "TAKE_PART": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ɯɐʎ ʇɐʞǝ dɐɹʇ ıu ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ʅǝɐʌǝ ʇɥǝ ɹooɯ ɟoɹ ıʇǝɯ "
-            },
-            {
-              "type": 1,
-              "value": "item"
-            },
-            {
-              "type": 0,
-              "value": " oɟ "
-            },
-            {
-              "type": 1,
-              "value": "committee"
-            },
-            {
-              "type": 0,
-              "value": " ou "
-            },
-            {
-              "type": 1,
-              "value": "date"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingDeclarationsDue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁʅǝɐsǝ pǝɔʅɐɹǝ ɐuʎ ıuʇǝɹǝsʇs ıu ʇɥǝ ɐƃǝupɐ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingDiscussionRequested": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ ɯǝɯqǝɹ ɐsʞǝp ʇo pısɔnss ɐ ɔousǝuʇ ıʇǝɯ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingInvitation": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄on ɐɹǝ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": ": ʇǝʅʅ ns ʍɥǝʇɥǝɹ ʎon ʍıʅʅ ɐʇʇǝup"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingItemWithdrawn": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ dɐdǝɹ ʅǝɟʇ ʇɥǝ dnqʅısɥǝp ɐƃǝupɐ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": ": dnqʅısɥ ɐ uǝʍ ɹǝʌısıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingLatePaper": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ ʅɐʇǝ dɐdǝɹ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " uǝǝps ʎonɹ ɐƃɹǝǝɯǝuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingNotHeld": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ıs uoʇ ɯɐɹʞǝp ɐs ɥǝʅp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingQuorumLost": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ʅosʇ ıʇs bnoɹnɯ: "
-    },
-    {
-      "type": 1,
-      "value": "present"
-    },
-    {
-      "type": 0,
-      "value": " oɟ "
-    },
-    {
-      "type": 1,
-      "value": "needed"
-    },
-    {
-      "type": 0,
-      "value": " dɹǝsǝuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingQuorumOverridden": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ pǝɔısıou ɐʇ ʇɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɹǝɔoɹpǝp ʍıʇɥonʇ ɐ bnoɹnɯ ("
-    },
-    {
-      "type": 1,
-      "value": "present"
-    },
-    {
-      "type": 0,
-      "value": " oɟ "
-    },
-    {
-      "type": 1,
-      "value": "needed"
-    },
-    {
-      "type": 0,
-      "value": " dɹǝsǝuʇ), ʇo qǝ ɹɐʇıɟıǝp ɐʇ ɐ bnoɹɐʇǝ ɯǝǝʇıuƃ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingQuorumRestored": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ıs bnoɹɐʇǝ ɐƃɐıu: "
-    },
-    {
-      "type": 1,
-      "value": "present"
-    },
-    {
-      "type": 0,
-      "value": " oɟ "
-    },
-    {
-      "type": 1,
-      "value": "needed"
-    },
-    {
-      "type": 0,
-      "value": " dɹǝsǝuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingRsvpChanged": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "member"
-    },
-    {
-      "type": 0,
-      "value": " ɐusʍǝɹǝp ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": ": "
-    },
-    {
-      "type": 5,
-      "value": "answer",
-      "options": {
-        "IN_PERSON": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⅄ǝs, ıu dǝɹsou"
-            }
-          ]
-        },
-        "REMOTE": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⅄ǝs, ouʅıuǝ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "No, ɐdoʅoƃıǝs"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingRsvpRecorded": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ sǝɔɹǝʇɐɹʎ ɹǝɔoɹpǝp ʎonɹ ɐusʍǝɹ ɟoɹ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": ": "
-    },
-    {
-      "type": 5,
-      "value": "answer",
-      "options": {
-        "IN_PERSON": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⅄ǝs, ıu dǝɹsou"
-            }
-          ]
-        },
-        "REMOTE": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⅄ǝs, ouʅıuǝ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "No, ɐdoʅoƃıǝs"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": " ("
-    },
-    {
-      "type": 5,
-      "value": "how",
-      "options": {
-        "EMAIL": {
-          "value": [
-            {
-              "type": 0,
-              "value": "qʎ ǝɯɐıʅ"
-            }
-          ]
-        },
-        "PHONE": {
-          "value": [
-            {
-              "type": 0,
-              "value": "qʎ dɥouǝ"
-            }
-          ]
-        },
-        "IN_PERSON": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ıu dǝɹsou"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "oʇɥǝɹʍısǝ"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": ")"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingRulingNeeded": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
-    },
-    {
-      "type": 1,
-      "value": "item"
-    },
-    {
-      "type": 0,
-      "value": " oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " uǝǝps ʎonɹ ɹnʅıuƃ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingUninvited": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄on ɐɹǝ uo ʅouƃǝɹ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.meetingUpdated": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "committee"
-    },
-    {
-      "type": 0,
-      "value": " ou "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    },
-    {
-      "type": 0,
-      "value": " ɥɐs ɔɥɐuƃǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoApproved": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɐddɹoʌǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoCopied": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɔodıǝp ʇo ʎon ɟoɹ ıuɟoɹɯɐʇıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoMentioned": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄on ʍǝɹǝ ɯǝuʇıouǝp ıu ɐ uoʇǝ ou ɯǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoRejected": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɹǝɾǝɔʇǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoReturned": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɹǝʇnɹuǝp ʇo ʎon"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoUpdate": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝɹǝ ıs uǝʍs ɐqonʇ ɯǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoWatched": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Nǝʍs"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ndpɐʇǝs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": " ou ɯǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": ": "
-    },
-    {
-      "type": 5,
-      "value": "reason",
-      "options": {
-        "INITIATED": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ʎon sʇɐɹʇǝp ıʇ"
-            }
-          ]
-        },
-        "ACTED": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ʎon ɐɔʇǝp ou ıʇ"
-            }
-          ]
-        },
-        "MENTIONED": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ʎon ʍǝɹǝ ɯǝuʇıouǝp ou ıʇ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ʎon ɟoʅʅoʍ ıʇ"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.memoWithdrawn": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ʍıʇɥpɹɐʍu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.mfaReset": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀u ɐpɯıuısʇɹɐʇoɹ ɹǝsǝʇ ʎonɹ ʇʍo-sʇǝd sıƃu-ıu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.passwordChanged": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄onɹ dɐssʍoɹp ʍɐs ɔɥɐuƃǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.roleGranted": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄on ʍǝɹǝ ƃıʌǝu ʇɥǝ ɹoʅǝ "
-    },
-    {
-      "type": 1,
-      "value": "role"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.signInAlert": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Nǝʍ sıƃu-ıu ʇo ʎonɹ ɐɔɔonuʇ ɟɹoɯ "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.taskAssigned": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ıs ʍɐıʇıuƃ ɟoɹ ʎonɹ ɐddɹoʌɐʅ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.taskBlocked": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ıs ʍɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.taskOverdue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ıs oʌǝɹpnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.taskReassigned": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɐddɹoʌɐʅ oɟ ɯǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ʍɐs ɹǝɐssıƃuǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.taskReminder": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯıupǝɹ: ɯǝɯo "
-    },
-    {
-      "type": 1,
-      "value": "reference"
-    },
-    {
-      "type": 0,
-      "value": " ıs ʍɐıʇıuƃ ɟoɹ ʎonɹ pǝɔısıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "notifications.kind.unknown": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Soɯǝʇɥıuƃ ɔɥɐuƃǝp ıu ʎonɹ ɐɔɔonuʇ"
     },
     {
       "type": 0,

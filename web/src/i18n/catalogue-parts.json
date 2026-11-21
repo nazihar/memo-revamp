@@ -56,6 +56,11 @@
     "routes": ["/me/security"],
     "prefixes": ["security"]
   },
+  "notificationKinds": {
+    "$comment": "The text of each kind of notification, shown only in the notification list: split from core when the meeting reminders (Phase 4 E05 T6) would have taken the Arabic core past its limit.",
+    "routes": ["/notifications"],
+    "prefixes": ["notificationKinds"]
+  },
   "platform": {
     "routes": ["/platform"],
     "prefixes": ["platform"]

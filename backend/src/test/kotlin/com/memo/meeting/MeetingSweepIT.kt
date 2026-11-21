@@ -28,12 +28,14 @@ import com.memo.meeting.internal.MeetingInput
 import com.memo.meeting.internal.MeetingLifecycle
 import com.memo.meeting.internal.MeetingNotifier
 import com.memo.meeting.internal.MeetingPlace
+import com.memo.meeting.internal.MeetingReminders
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.MeetingStore
 import com.memo.meeting.internal.MeetingSweep
 import com.memo.meeting.internal.MeetingSweepStore
 import com.memo.meeting.internal.MeetingSweepTenantTask
 import com.memo.meeting.internal.TimesInput
+import com.memo.meeting.internal.invite.InvitationScheduler
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.Audit
@@ -44,6 +46,7 @@ import com.memo.testsupport.aTestTenant
 import com.memo.workflow.WorkingDays
 import com.memo.workflow.internal.Calendars
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -93,6 +96,10 @@ class MeetingSweepIT : MemoIntegrationTest() {
 
     @Autowired lateinit var reminders: DeclarationReminders
 
+    @Autowired lateinit var meetingReminders: MeetingReminders
+
+    @Autowired lateinit var invitationJobs: InvitationScheduler
+
     @Autowired lateinit var items: AgendaItems
 
     @Autowired lateinit var reviews: DeclarationReviews
@@ -106,12 +113,28 @@ class MeetingSweepIT : MemoIntegrationTest() {
     @Autowired lateinit var sweepTask: OneTimeTask<MeetingSweepTenantTask>
 
     private val clock = MutableClock()
-    private val sweep by lazy { MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, reminders, auditLog, clock) }
+    private val sweep by lazy {
+        MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, meetingReminders, reminders, auditLog, clock)
+    }
     private lateinit var secretary: Person
     private lateinit var chair: Person
     private lateinit var member: Person
     private lateinit var type: UUID
     private lateinit var brc: UUID
+
+    /**
+     * The invitations are not sent here (scheduling is off), so no meeting reminder takes the place of the declarations
+     * reminder: those are [MeetingRemindersIT]'s.
+     */
+    @BeforeEach
+    fun invitationsOff() {
+        invitationJobs.jobs = false
+    }
+
+    @AfterEach
+    fun invitationsBack() {
+        invitationJobs.jobs = true
+    }
 
     @BeforeEach
     fun committee() {
@@ -203,7 +226,9 @@ class MeetingSweepIT : MemoIntegrationTest() {
         // Only the draft meeting of a committee without a secretary is due, and the administrators are told. (When the day
         // before is the published meeting's working day before, its members are also reminded to declare: counted apart.)
         val sent = swept()
-        assertThat(sent - (if (told(member, DECLARATIONS_DUE) > 0) 1 else 0)).isEqualTo(1)
+        // E05: nobody has replied to the published one, so its quorum is at risk once its reply deadline has passed.
+        val apart = (if (told(member, DECLARATIONS_DUE) > 0) 1 else 0) + (if (told(secretary, QUORUM_AT_RISK) > 0) 1 else 0)
+        assertThat(sent - apart).isEqualTo(1)
         assertThat(told(secretary, AGENDA_DUE)).isZero()
         assertThat(told(admin.id.value, AGENDA_DUE)).isEqualTo(1)
         Audit.assertAudited(tenant.id, "meeting.reminded.agenda_due", orphan.id.toString(), null)
@@ -232,7 +257,9 @@ class MeetingSweepIT : MemoIntegrationTest() {
         asUser(reviewer.account) { reviews.review(meeting.id, 1) }
 
         clock.now = reminderDay.atTime(LocalTime.of(8, 59)).atZone(DHAKA).toInstant()
-        assertThat(swept()).isZero()
+        // Not yet; the quorum-at-risk warning (E05) may go: nobody has replied, and the reply deadline has passed.
+        swept()
+        assertThat(listOf(member, chair, secretary, reviewer).sumOf { told(it, DECLARATIONS_DUE) }).isZero()
         clock.now = reminderDay.atTime(MORNING).atZone(DHAKA).toInstant()
         assertThat(swept()).isEqualTo(1)
         // The member and the officers who have not confirmed; not the reviewer, who confirmed revision 1.
@@ -351,6 +378,7 @@ class MeetingSweepIT : MemoIntegrationTest() {
         const val AGENDA_DUE = "MEETING_AGENDA_DUE"
         const val NOT_HELD = "MEETING_NOT_HELD"
         const val DECLARATIONS_DUE = "MEETING_DECLARATIONS_DUE"
+        const val QUORUM_AT_RISK = "MEETING_QUORUM_AT_RISK"
         const val WAIT_MILLIS = 30_000L
         const val POLL_MILLIS = 200L
     }

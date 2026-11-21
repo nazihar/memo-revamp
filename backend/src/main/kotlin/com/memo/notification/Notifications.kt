@@ -147,6 +147,16 @@ enum class NotificationKind(
     // A decision recorded without a quorum (Phase 4 E05 T5, ADR-0064): to the chair and the other secretaries, in the app
     // only, "to be ratified at a quorate meeting". Parameters as the two above. Never the item or the reason.
     MEETING_QUORUM_OVERRIDDEN(NotificationCategory.WORKFLOW, null),
+
+    // The sweep's reminders (Phase 4 E05 T6, design E05 §9): on the reply deadline, to those who have not answered
+    // (REPLY_REMINDER); the working day before, to those who said yes or did not answer, with the reply and E04's
+    // declarations lines where they apply (REMINDER); the forecast not quorate after the deadline, to the secretaries and
+    // the chair (QUORUM_AT_RISK). Parameters `committee`, `date`, `organisation`, `link`; for the reminder also `reply`
+    // and `declarations` (the email's sentences, empty when they do not apply) and, for the app, `unanswered` ("true"
+    // without an answer for the current time) and `toReview` (items to review for declarations). Never an item or a paper.
+    MEETING_REPLY_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_REPLY_REMINDER),
+    MEETING_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_REMINDER),
+    MEETING_QUORUM_AT_RISK(NotificationCategory.WORKFLOW, MailTemplate.MEETING_QUORUM_AT_RISK),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

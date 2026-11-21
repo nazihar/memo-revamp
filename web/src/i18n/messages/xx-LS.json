@@ -21636,6 +21636,24 @@
       "value": "Meeting not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingQuorumAtRisk": [
+    {
+      "type": 0,
+      "value": "Meeting quorum at riskSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingReminder": [
+    {
+      "type": 0,
+      "value": "Meeting reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingReplyReminder": [
+    {
+      "type": 0,
+      "value": "Meeting reply reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingRsvpRecorded": [
     {
       "type": 0,
@@ -31201,101 +31219,7 @@
       "value": "WorkflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.bell": [
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Notifications"
-            }
-          ]
-        },
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Notifications, "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " unread"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Notifications, "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " unread"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.bellMore": [
-    {
-      "type": 0,
-      "value": "9+SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.category.administration": [
-    {
-      "type": 0,
-      "value": "Access and administrationSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.category.calendar": [
-    {
-      "type": 0,
-      "value": "Meeting invitationsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.category.security": [
-    {
-      "type": 0,
-      "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.category.watching": [
-    {
-      "type": 0,
-      "value": "Memos you followSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.category.workflow": [
-    {
-      "type": 0,
-      "value": "Memo approvalsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.empty": [
-    {
-      "type": 0,
-      "value": "Nothing new. Notifications about your account and work appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "notifications.kind.editNotSaved": [
+  "notificationKinds.editNotSaved": [
     {
       "type": 0,
       "value": "Your changes to "
@@ -31309,7 +31233,7 @@
       "value": " in the browser editor could not be savedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.forumMembershipChanged": [
+  "notificationKinds.forumMembershipChanged": [
     {
       "type": 0,
       "value": "The membership of "
@@ -31323,7 +31247,7 @@
       "value": " changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.forumSubmissionReceived": [
+  "notificationKinds.forumSubmissionReceived": [
     {
       "type": 0,
       "value": "A paper is waiting for "
@@ -31337,7 +31261,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.forumSubmissionTriaged": [
+  "notificationKinds.forumSubmissionTriaged": [
     {
       "type": 0,
       "value": "News from "
@@ -31351,7 +31275,7 @@
       "value": " on your paperSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.forumSubmissionWaiting": [
+  "notificationKinds.forumSubmissionWaiting": [
     {
       "type": 0,
       "value": "A paper for "
@@ -31365,7 +31289,7 @@
       "value": " is still waiting for triageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.forumTermEnding": [
+  "notificationKinds.forumTermEnding": [
     {
       "type": 0,
       "value": "The term of "
@@ -31387,7 +31311,7 @@
       "value": " ends soonSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingAgendaChanged": [
+  "notificationKinds.meetingAgendaChanged": [
     {
       "type": 0,
       "value": "The agenda for "
@@ -31409,7 +31333,7 @@
       "value": " has changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingAgendaDue": [
+  "notificationKinds.meetingAgendaDue": [
     {
       "type": 0,
       "value": "Papers for "
@@ -31431,7 +31355,7 @@
       "value": " were due and the agenda is not publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingAgendaPublished": [
+  "notificationKinds.meetingAgendaPublished": [
     {
       "type": 0,
       "value": "The agenda for "
@@ -31453,7 +31377,7 @@
       "value": " was publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingAlternateAsked": [
+  "notificationKinds.meetingAlternateAsked": [
     {
       "type": 1,
       "value": "member"
@@ -31479,7 +31403,7 @@
       "value": " in their placeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingAlternateReleased": [
+  "notificationKinds.meetingAlternateReleased": [
     {
       "type": 1,
       "value": "member"
@@ -31505,7 +31429,7 @@
       "value": " in their placeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingCancelled": [
+  "notificationKinds.meetingCancelled": [
     {
       "type": 0,
       "value": "The meeting of "
@@ -31527,7 +31451,7 @@
       "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingChairCommented": [
+  "notificationKinds.meetingChairCommented": [
     {
       "type": 0,
       "value": "The chair commented on the agenda for "
@@ -31549,7 +31473,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingDeclarationMade": [
+  "notificationKinds.meetingDeclarationMade": [
     {
       "type": 5,
       "value": "change",
@@ -31621,7 +31545,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingDeclarationRecorded": [
+  "notificationKinds.meetingDeclarationRecorded": [
     {
       "type": 5,
       "value": "change",
@@ -31697,7 +31621,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingDeclarationRuled": [
+  "notificationKinds.meetingDeclarationRuled": [
     {
       "type": 5,
       "value": "outcome",
@@ -31765,7 +31689,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingDeclarationsDue": [
+  "notificationKinds.meetingDeclarationsDue": [
     {
       "type": 0,
       "value": "Please declare any interests in the agenda for "
@@ -31787,7 +31711,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingDiscussionRequested": [
+  "notificationKinds.meetingDiscussionRequested": [
     {
       "type": 0,
       "value": "A member asked to discuss a consent item of "
@@ -31809,7 +31733,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingInvitation": [
+  "notificationKinds.meetingInvitation": [
     {
       "type": 0,
       "value": "You are invited to the meeting of "
@@ -31831,7 +31755,7 @@
       "value": ": tell us whether you will attendSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingItemWithdrawn": [
+  "notificationKinds.meetingItemWithdrawn": [
     {
       "type": 0,
       "value": "A paper left the published agenda for "
@@ -31853,7 +31777,7 @@
       "value": ": publish a new revisionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingLatePaper": [
+  "notificationKinds.meetingLatePaper": [
     {
       "type": 0,
       "value": "A late paper for "
@@ -31875,7 +31799,7 @@
       "value": " needs your agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingNotHeld": [
+  "notificationKinds.meetingNotHeld": [
     {
       "type": 0,
       "value": "The meeting of "
@@ -31897,7 +31821,29 @@
       "value": " is not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingQuorumLost": [
+  "notificationKinds.meetingQuorumAtRisk": [
+    {
+      "type": 0,
+      "value": "From the replies so far, the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " or some of its items may not be quorateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.meetingQuorumLost": [
     {
       "type": 0,
       "value": "The meeting of "
@@ -31935,7 +31881,7 @@
       "value": " presentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingQuorumOverridden": [
+  "notificationKinds.meetingQuorumOverridden": [
     {
       "type": 0,
       "value": "A decision at the meeting of "
@@ -31973,7 +31919,7 @@
       "value": " present), to be ratified at a quorate meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingQuorumRestored": [
+  "notificationKinds.meetingQuorumRestored": [
     {
       "type": 0,
       "value": "The meeting of "
@@ -32011,7 +31957,105 @@
       "value": " presentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingRsvpChanged": [
+  "notificationKinds.meetingReminder": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " meets on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 5,
+      "value": "unanswered",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". Please tell us whether you will attend"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 6,
+      "value": "toReview",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". You still have "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item to review for declarations"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": ". You still have "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items to review for declarations"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.meetingReplyReminder": [
+    {
+      "type": 0,
+      "value": "Replies for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are due today: please tell us whether you will attendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.meetingRsvpChanged": [
     {
       "type": 1,
       "value": "member"
@@ -32071,7 +32115,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingRsvpRecorded": [
+  "notificationKinds.meetingRsvpRecorded": [
     {
       "type": 0,
       "value": "The secretary recorded your answer for "
@@ -32169,7 +32213,7 @@
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingRulingNeeded": [
+  "notificationKinds.meetingRulingNeeded": [
     {
       "type": 0,
       "value": "A declaration of interest in item "
@@ -32199,7 +32243,7 @@
       "value": " needs your rulingSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingUninvited": [
+  "notificationKinds.meetingUninvited": [
     {
       "type": 0,
       "value": "You are no longer invited to the meeting of "
@@ -32221,7 +32265,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.meetingUpdated": [
+  "notificationKinds.meetingUpdated": [
     {
       "type": 0,
       "value": "The meeting of "
@@ -32243,7 +32287,7 @@
       "value": " has changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoApproved": [
+  "notificationKinds.memoApproved": [
     {
       "type": 0,
       "value": "Memo "
@@ -32257,7 +32301,7 @@
       "value": " was approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoCopied": [
+  "notificationKinds.memoCopied": [
     {
       "type": 0,
       "value": "Memo "
@@ -32271,7 +32315,7 @@
       "value": " was copied to you for informationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoMentioned": [
+  "notificationKinds.memoMentioned": [
     {
       "type": 0,
       "value": "You were mentioned in a note on memo "
@@ -32285,7 +32329,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoRejected": [
+  "notificationKinds.memoRejected": [
     {
       "type": 0,
       "value": "Memo "
@@ -32299,7 +32343,7 @@
       "value": " was rejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoReturned": [
+  "notificationKinds.memoReturned": [
     {
       "type": 0,
       "value": "Memo "
@@ -32313,7 +32357,7 @@
       "value": " was returned to youSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoUpdate": [
+  "notificationKinds.memoUpdate": [
     {
       "type": 0,
       "value": "There is news about memo "
@@ -32327,7 +32371,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoWatched": [
+  "notificationKinds.memoWatched": [
     {
       "type": 6,
       "value": "count",
@@ -32410,7 +32454,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.memoWithdrawn": [
+  "notificationKinds.memoWithdrawn": [
     {
       "type": 0,
       "value": "Memo "
@@ -32424,19 +32468,19 @@
       "value": " was withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.mfaReset": [
+  "notificationKinds.mfaReset": [
     {
       "type": 0,
       "value": "An administrator reset your two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.passwordChanged": [
+  "notificationKinds.passwordChanged": [
     {
       "type": 0,
       "value": "Your password was changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.roleGranted": [
+  "notificationKinds.roleGranted": [
     {
       "type": 0,
       "value": "You were given the role "
@@ -32450,7 +32494,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.signInAlert": [
+  "notificationKinds.signInAlert": [
     {
       "type": 0,
       "value": "New sign-in to your account from "
@@ -32464,7 +32508,7 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.taskAssigned": [
+  "notificationKinds.taskAssigned": [
     {
       "type": 0,
       "value": "Memo "
@@ -32478,7 +32522,7 @@
       "value": " is waiting for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.taskBlocked": [
+  "notificationKinds.taskBlocked": [
     {
       "type": 0,
       "value": "Memo "
@@ -32492,7 +32536,7 @@
       "value": " is waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.taskOverdue": [
+  "notificationKinds.taskOverdue": [
     {
       "type": 0,
       "value": "Memo "
@@ -32506,7 +32550,7 @@
       "value": " is overdueSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.taskReassigned": [
+  "notificationKinds.taskReassigned": [
     {
       "type": 0,
       "value": "The approval of memo "
@@ -32520,7 +32564,7 @@
       "value": " was reassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.taskReminder": [
+  "notificationKinds.taskReminder": [
     {
       "type": 0,
       "value": "Reminder: memo "
@@ -32534,10 +32578,104 @@
       "value": " is waiting for your decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "notifications.kind.unknown": [
+  "notificationKinds.unknown": [
     {
       "type": 0,
       "value": "Something changed in your accountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.bell": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unread"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unread"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.bellMore": [
+    {
+      "type": 0,
+      "value": "9+SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.administration": [
+    {
+      "type": 0,
+      "value": "Access and administrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.calendar": [
+    {
+      "type": 0,
+      "value": "Meeting invitationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.security": [
+    {
+      "type": 0,
+      "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.watching": [
+    {
+      "type": 0,
+      "value": "Memos you followSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.workflow": [
+    {
+      "type": 0,
+      "value": "Memo approvalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.empty": [
+    {
+      "type": 0,
+      "value": "Nothing new. Notifications about your account and work appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.lead": [

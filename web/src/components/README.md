@@ -8,6 +8,8 @@ with synthetic data. Design: `docs/plan/phase-1a-minimum-core/epic-01-app-frame/
 - **Page header:** `page/PageHeader` (one h1, description, actions).
 - **Lists:** `page/DataTable` with `DataTableColumn<T>` columns, server-side sorting (`sorting` / `onSortingChange`), optional
   selection (`rowLabel`), cursor pagination (`paging`: Previous/Next only) and the `state` prop for loading and errors.
+  A hand-written `<table>` goes in `page/TableScroll` (a positioned scroll box): a wide table scrolls inside it, and an
+  `sr-only` caption or header stays inside it instead of widening the page at 320 px (WCAG 1.4.10; a unit test checks).
 - **Forms:** TanStack Form + `ui/field` (`Field` wires label, hint and error); `page/FormPage` for `FormGrid`, `FormActions`,
   `UnsavedBanner` and `UnsavedChangesGuard`; map server Problem Details with `page/problem-details` `applyFieldErrors`.
 - **Trees:** `page/TreePanel` (WAI-ARIA tree keyboard pattern).

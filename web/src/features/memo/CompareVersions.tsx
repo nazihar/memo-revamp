@@ -7,6 +7,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Select } from '@/components/ui/form-controls'
 import { compareTexts, type DiffResult, type DiffSpan } from './version-diff'
+import { TableScroll } from '@/components/page/TableScroll'
 
 const m = defineMessages({
   title: { id: 'memo.compare.title', defaultMessage: 'Compare versions' },
@@ -169,7 +170,7 @@ export function CompareVersions({
           </p>
           {older?.truncated || newer?.truncated ? <p className="text-sm">{intl.formatMessage(m.truncated)}</p> : null}
           <p className="text-xs text-muted-foreground">{intl.formatMessage(m.legend)}</p>
-          <div className="mt-2 overflow-x-auto">
+          <TableScroll className="mt-2">
             <table className="w-full table-fixed border-collapse text-sm" aria-label={intl.formatMessage(m.title)}>
               <thead>
                 <tr>
@@ -194,7 +195,7 @@ export function CompareVersions({
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </>
       ) : older?.text != null && newer?.text != null ? (
         <p role="status" className="mt-3 text-sm">

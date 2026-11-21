@@ -54,7 +54,7 @@ export function Figure({
               {intl.formatMessage(dm.showTable)}
             </Button>
           </div>
-          <div id={`${id}-table`} className={shown ? 'overflow-x-auto' : 'sr-only'}>
+          <div id={`${id}-table`} className={shown ? 'relative overflow-x-auto' : 'sr-only'}>
             {table}
           </div>
         </>

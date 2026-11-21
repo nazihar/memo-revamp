@@ -11,6 +11,8 @@ import com.memo.jooq.tables.references.WORKFLOW_DEFINITION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
 import com.memo.tenancy.TenantCreated
 import com.memo.tenancy.TenantRegistry
+import com.memo.workflow.SeededDefinition
+import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
 import org.jooq.JSONB
@@ -71,6 +73,52 @@ class DefinitionStore(
             .execute()
     }
 
+    /** Whether the tenant has a definition called [key]. */
+    fun has(key: String): Boolean = tenantDsl.current().fetchExists(WORKFLOW_DEFINITION, WORKFLOW_DEFINITION.KEY.eq(key))
+
+    /**
+     * [seed] as a new definition with a published version 1 whose runtime body is [compiled], unless the tenant has a
+     * definition with its key (seeded before, or the tenant's own): what is there is left as it is. Not built in, so the
+     * tenant changes it as new versions (ADR-0042). Returns whether it was seeded. Inside a tenant transaction.
+     */
+    fun ensureSeeded(
+        seed: SeededDefinition,
+        compiled: String,
+    ): Boolean {
+        val dsl = tenantDsl.current()
+        val tenant = tenantDsl.tenant().value
+        val now = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
+        val definitionId = ids.next()
+        val inserted =
+            dsl
+                .insertInto(WORKFLOW_DEFINITION)
+                .set(WORKFLOW_DEFINITION.ID, definitionId)
+                .set(WORKFLOW_DEFINITION.TENANT_ID, tenant)
+                .set(WORKFLOW_DEFINITION.KEY, seed.key)
+                .set(WORKFLOW_DEFINITION.NAME, seed.name)
+                .set(WORKFLOW_DEFINITION.DESCRIPTION, seed.description)
+                .set(WORKFLOW_DEFINITION.BUILT_IN, false)
+                .set(WORKFLOW_DEFINITION.CREATED_AT, now)
+                .onConflictDoNothing()
+                .execute() == 1
+        if (inserted) {
+            dsl
+                .insertInto(WORKFLOW_DEFINITION_VERSION)
+                .set(WORKFLOW_DEFINITION_VERSION.ID, ids.next())
+                .set(WORKFLOW_DEFINITION_VERSION.TENANT_ID, tenant)
+                .set(WORKFLOW_DEFINITION_VERSION.DEFINITION_ID, definitionId)
+                .set(WORKFLOW_DEFINITION_VERSION.NUMBER, 1)
+                .set(WORKFLOW_DEFINITION_VERSION.BODY, JSONB.valueOf(seed.body))
+                .set(WORKFLOW_DEFINITION_VERSION.SCHEMA_VERSION, Definition.SCHEMA_VERSION)
+                .set(WORKFLOW_DEFINITION_VERSION.STATE, PUBLISHED)
+                .set(WORKFLOW_DEFINITION_VERSION.CREATED_AT, now)
+                .set(WORKFLOW_DEFINITION_VERSION.PUBLISHED_AT, now)
+                .set(WORKFLOW_DEFINITION_VERSION.COMPILED, JSONB.valueOf(compiled))
+                .execute()
+        }
+        return inserted
+    }
+
     /** The newest published version of [key]; instances pin it when they start (ADR-0035). */
     fun publishedVersion(key: String): UUID =
         tenantDsl
@@ -93,26 +141,61 @@ class DefinitionStore(
     }
 }
 
+/**
+ * The definitions subject types give every tenant ([WorkflowSubject.seededDefinitions], ADR-0067): each body is checked
+ * as an administrator's would be at publication (the engine's rules and the subject's own), so a seed that does not pass
+ * is a defect and stops the seeding, then stored with its compiled form. Inside a tenant transaction.
+ */
+@Component
+class SubjectDefinitionSeeds(
+    private val definitions: DefinitionStore,
+    private val checks: DefinitionChecks,
+    private val subjects: List<WorkflowSubject>,
+    private val json: JsonMapper,
+) {
+    fun ensure() {
+        subjects.flatMap { it.seededDefinitions }.filterNot { definitions.has(it.key) }.forEach { seed ->
+            val validation = checks.validate(json.readTree(seed.body))
+            val definition =
+                checkNotNull(validation.definition?.takeIf { validation.valid }) {
+                    "seeded definition '${seed.key}' does not pass: ${validation.problems.joinToString { "${it.pointer} ${it.code}" }}"
+                }
+            definitions.ensureSeeded(seed, json.writeValueAsString(checks.compile(definition)))
+        }
+    }
+}
+
 /** Gives every tenant the built-in definitions: new tenants in their creating transaction, existing ones at start-up. */
 @Component
 class WorkflowBootstrap(
     private val definitions: DefinitionStore,
+    private val seeds: SubjectDefinitionSeeds,
     private val transactions: TenantTransactions,
 ) {
     @EventListener
-    fun onTenantCreated(event: TenantCreated) = transactions.inTenant(TenantId(event.tenantId)) { definitions.ensureBuiltIn() }
+    fun onTenantCreated(event: TenantCreated) =
+        transactions.inTenant(TenantId(event.tenantId)) {
+            definitions.ensureBuiltIn()
+            seeds.ensure()
+        }
 }
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class WorkflowBootstrapOnStartup(
     private val definitions: DefinitionStore,
+    private val seeds: SubjectDefinitionSeeds,
     private val registry: TenantRegistry,
     private val transactions: TenantTransactions,
 ) : ApplicationRunner {
     override fun run(args: ApplicationArguments) {
         ActorContext.asSystem("workflow-bootstrap") {
-            registry.listActiveIds().forEach { tenant -> transactions.inTenant(tenant) { definitions.ensureBuiltIn() } }
+            registry.listActiveIds().forEach { tenant ->
+                transactions.inTenant(tenant) {
+                    definitions.ensureBuiltIn()
+                    seeds.ensure()
+                }
+            }
         }
     }
 }

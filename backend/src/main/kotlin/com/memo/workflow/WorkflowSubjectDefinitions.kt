@@ -55,3 +55,17 @@ data class SubjectDefinitionStep(
     val actions: List<String>,
     val targets: List<String>,
 )
+
+/**
+ * A definition every tenant gets for a subject type (ADR-0067, design E07 §1.8), declared by the subject
+ * ([WorkflowSubject.seededDefinitions]): its [key], [name] and [description] as the definitions list shows them, and its
+ * schema-2 [body]. Seeded as a published version 1 when a tenant is created, and at start-up where it is missing, like
+ * `sequential-approval`. Unlike that one it is not marked built in: the tenant changes it in the builder as new versions,
+ * reviewed like any definition (ADR-0042).
+ */
+data class SeededDefinition(
+    val key: String,
+    val name: String,
+    val description: String?,
+    val body: String,
+)

@@ -4,6 +4,7 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
 import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.MeetingPolicy
@@ -184,10 +185,17 @@ private fun JsonMapper.settingsFields(settings: ForumTypeSettings): Map<Field<*>
         FORUM_TYPE_VERSION.AGENDA to jsonb(settings.agenda),
         FORUM_TYPE_VERSION.MEETINGS to jsonb(settings.meetings),
         FORUM_TYPE_VERSION.MINUTES to jsonb(settings.minutes),
+        FORUM_TYPE_VERSION.ACTIONS to jsonb(settings.actions),
     )
 
 private val ATTRIBUTES = object : TypeReference<List<MemberAttribute>>() {}
 private val OUTCOMES = object : TypeReference<List<Outcome>>() {}
+
+/** A policy column as stored, or [default] for a version stored before the column existed (null reads as the defaults). */
+private inline fun <reified T : Any> JsonMapper.policy(
+    value: JSONB?,
+    default: () -> T,
+): T = value?.let { readValue(it.data(), T::class.java) } ?: default()
 
 private fun JsonMapper.row(v: ForumTypeVersionRecord): ForumTypeVersionRow =
     ForumTypeVersionRow(
@@ -205,12 +213,12 @@ private fun JsonMapper.row(v: ForumTypeVersionRecord): ForumTypeVersionRow =
                 memberAttributes = v.memberAttributes?.let { readValue(it.data(), ATTRIBUTES) }.orEmpty(),
                 quorum = readValue(v.quorum.data(), QuorumRule::class.java),
                 outcomes = readValue(v.outcomes.data(), OUTCOMES),
-                termPolicy = v.termPolicy?.let { readValue(it.data(), TermPolicy::class.java) } ?: TermPolicy(),
-                submissionPolicy =
-                    v.submissionPolicy?.let { readValue(it.data(), SubmissionPolicy::class.java) } ?: SubmissionPolicy(),
-                agenda = v.agenda?.let { readValue(it.data(), AgendaPolicy::class.java) } ?: AgendaPolicy(),
-                meetings = v.meetings?.let { readValue(it.data(), MeetingPolicy::class.java) } ?: MeetingPolicy(),
-                minutes = v.minutes?.let { readValue(it.data(), MinutesPolicy::class.java) } ?: MinutesPolicy(),
+                termPolicy = policy(v.termPolicy) { TermPolicy() },
+                submissionPolicy = policy(v.submissionPolicy) { SubmissionPolicy() },
+                agenda = policy(v.agenda) { AgendaPolicy() },
+                meetings = policy(v.meetings) { MeetingPolicy() },
+                minutes = policy(v.minutes) { MinutesPolicy() },
+                actions = policy(v.actions) { ActionsPolicy() },
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

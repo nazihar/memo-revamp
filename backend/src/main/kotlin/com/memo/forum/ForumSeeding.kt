@@ -22,6 +22,7 @@ enum class SeedPreset(
 ) {
     BOARD(ForumTypePreset.BOARD),
     BOARD_COMMITTEE(ForumTypePreset.BOARD_COMMITTEE),
+    BOARD_AUDIT_COMMITTEE(ForumTypePreset.BOARD_AUDIT_COMMITTEE),
     MANAGEMENT_COMMITTEE(ForumTypePreset.MANAGEMENT_COMMITTEE),
 }
 

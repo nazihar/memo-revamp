@@ -2,6 +2,7 @@ package com.memo.forum.internal
 
 import com.memo.common.authz.Clearances
 import com.memo.common.web.FieldProblem
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.AgendaLimits
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.AgendaTemplateItem
@@ -14,6 +15,7 @@ import com.memo.forum.QuorumThreshold
 import com.memo.forum.ResolutionFormats
 import com.memo.forum.StandingKind
 import com.memo.forum.ThresholdKind
+import com.memo.workflow.WorkflowDefinitions
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
 
@@ -22,6 +24,7 @@ import tools.jackson.databind.json.JsonMapper
 class ForumTypeChecks(
     private val clearances: Clearances,
     private val json: JsonMapper,
+    private val definitions: WorkflowDefinitions,
 ) {
     fun require(settings: ForumTypeSettings) = requireNoProblems(problems(settings))
 
@@ -44,7 +47,19 @@ class ForumTypeChecks(
         ) + attributeProblems(settings) + QuorumChecks.problems(settings.quorum, settings.memberAttributes.map { it.key }.toSet()) +
             outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings) +
             AgendaChecks.problems(settings.agenda) + agendaSize(settings) + meetingProblems(settings) +
-            MinutesChecks.problems(settings.minutes, json)
+            MinutesChecks.problems(settings.minutes, json) + ActionsChecks.problems(settings.actions) + definitionProblems(settings)
+    }
+
+    /**
+     * The actions policy's definition (design E07 §1.13): a published definition bound to action items (ADR-0068). One the
+     * tenant retires afterwards cannot be: a committee type that names it keeps it in use ([ForumTypeDefinitionUsage]).
+     */
+    private fun definitionProblems(settings: ForumTypeSettings): List<FieldProblem> {
+        val key = settings.actions.definitionKey
+        return listOfNotNull(
+            FieldProblem("${ActionsChecks.AT}/definitionKey", "UNKNOWN_DEFINITION", "Choose a published workflow for action items.")
+                .takeIf { definitions.bound(ActionsPolicy.SUBJECT).none { it.key == key } },
+        )
     }
 
     /** The meeting policy (design E05 §1.8): a neutral title when invitations use one, and the reply deadline's range. */
@@ -312,4 +327,45 @@ object MinutesChecks {
                 json.writeValueAsBytes(policy).size > MAX_BYTES
             },
         ) + ResolutionFormats.problems(policy.resolutionNumbering, "$AT/resolutionNumbering")
+}
+
+/**
+ * The actions policy's own checks (design E07 §1.13), under `actions/…`: each number of working days in its range, a
+ * rule given 0 being off. Whether its definition exists is the tenant's ([ForumTypeChecks]).
+ */
+object ActionsChecks {
+    const val AT = "actions"
+
+    /** A definition key as the workflow module keys them; longer is never a definition's. */
+    private const val MAX_KEY = 100
+
+    fun problems(policy: ActionsPolicy): List<FieldProblem> {
+        val stale = policy.staleWorkingDays
+        val asks = policy.updateRequestWorkingDays
+        return listOfNotNull(
+            range("amberWorkingDays", ActionsPolicy.AMBER_DAYS, off = false).takeIf {
+                policy.amberWorkingDays !in ActionsPolicy.AMBER_DAYS
+            },
+            range("staleWorkingDays", ActionsPolicy.STALE_DAYS, off = true).takeIf {
+                stale != ActionsPolicy.OFF && stale !in ActionsPolicy.STALE_DAYS
+            },
+            range("defaultDueWorkingDays", ActionsPolicy.DUE_DAYS, off = false).takeIf {
+                policy.defaultDueWorkingDays !in ActionsPolicy.DUE_DAYS
+            },
+            range("updateRequestWorkingDays", ActionsPolicy.UPDATE_REQUEST_DAYS, off = true).takeIf {
+                asks != ActionsPolicy.OFF && asks !in ActionsPolicy.UPDATE_REQUEST_DAYS
+            },
+            FieldProblem("$AT/definitionKey", "LENGTH", "At most $MAX_KEY characters.").takeIf { policy.definitionKey.length > MAX_KEY },
+        )
+    }
+
+    private fun range(
+        field: String,
+        days: IntRange,
+        off: Boolean,
+    ) = FieldProblem(
+        "$AT/$field",
+        "RANGE",
+        "${days.first} to ${days.last} working days${if (off) ", or 0 for off" else ""}.",
+    )
 }

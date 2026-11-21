@@ -351,7 +351,9 @@ function BuilderBody() {
         </p>
       ) : null}
       <AgendaDnd draft={draft} onMove={(body) => void move(body)} onPlace={placeDropped}>
-        <div className={canAdd ? 'grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]' : 'flex flex-col'}>
+        <div
+          className={canAdd ? 'grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]' : 'flex flex-col'}
+        >
           <div className="flex flex-col gap-4">
             <AgendaList onMove={(body) => void move(body)} />
             <TotalLine />

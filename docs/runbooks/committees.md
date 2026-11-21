@@ -1,6 +1,6 @@
 # Committees: types, members and papers sent to them
 
-**When:** setting up the Board and its committees, changing who sits on them, or answering "where is my paper?" and "why can't I see this memo?" for a memo sent to a committee. Background: ADR-0056 (committee types, committees and members), ADR-0057 (quorum), ADR-0058 (the memo waits for the committee) and ADR-0059 (submissions and triage). The screens arrive with Phase 4 E01 T4 and T5 and E02 T4. Until then these steps go through the API (`/api/v1/admin/forum-types`, `/api/v1/forums`).
+**When:** setting up the Board and its committees, changing who sits on them, or answering "where is my paper?" and "why can't I see this memo?" for a memo sent to a committee. Background: ADR-0056 (committee types, committees and members), ADR-0057 (quorum), ADR-0058 (the memo waits for the committee) and ADR-0059 (submissions and triage). The screens arrive with Phase 4 E01 T4 and T5 and E02 T4. Until then these steps go through the API (`/api/v1/admin/forum-types`, `/api/v1/forums`). Meetings, agendas and papers for members are in [meetings-and-agendas.md](meetings-and-agendas.md).
 
 ## Committee types (administrators with `forum.types.manage`; a second person approves)
 - A type holds the policy every committee of that type follows:

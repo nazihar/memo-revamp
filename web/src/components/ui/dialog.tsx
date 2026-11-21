@@ -1,10 +1,11 @@
 // Modal surfaces on the native <dialog> element (ADR-0021): the browser makes the page inert, traps focus and handles
 // Escape; no injected <style>, no aria-hidden on the app root, so the strict CSP stays unchanged.
 import { X } from 'lucide-react'
-import { useEffect, useId, useRef, type ReactNode } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
+import { ModalLayer } from './modal-layer'
 
 const MODAL_OPEN_CLASS = 'modal-open'
 
@@ -72,7 +73,14 @@ function useModal(open: boolean, onOpenChange: (open: boolean) => void) {
     [],
   )
 
-  return ref
+  // The open dialog's element, for the menus opened inside it (ModalLayer); kept as state so they render into it.
+  const [layer, setLayer] = useState<HTMLDialogElement | null>(null)
+  const attach = useCallback((node: HTMLDialogElement | null) => {
+    ref.current = node
+    setLayer(node)
+  }, [])
+
+  return { ref, attach, layer }
 }
 
 interface DialogProps {
@@ -87,12 +95,12 @@ interface DialogProps {
 
 export function Dialog({ open, onOpenChange, title, description, children, footer, className }: DialogProps) {
   const intl = useIntl()
-  const ref = useModal(open, onOpenChange)
+  const { ref, attach, layer } = useModal(open, onOpenChange)
   const titleId = useId()
   const descriptionId = useId()
   return (
     <dialog
-      ref={ref}
+      ref={attach}
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       className={cn(
@@ -100,29 +108,31 @@ export function Dialog({ open, onOpenChange, title, description, children, foote
         className,
       )}
     >
-      <div className="flex items-start gap-4 border-b px-5 py-4">
-        <div className="flex-1">
-          <h2 id={titleId} className="text-lg font-semibold">
-            {title}
-          </h2>
-          {description ? (
-            <p id={descriptionId} className="mt-1 text-sm text-muted-foreground">
-              {description}
-            </p>
-          ) : null}
+      <ModalLayer.Provider value={layer}>
+        <div className="flex items-start gap-4 border-b px-5 py-4">
+          <div className="flex-1">
+            <h2 id={titleId} className="text-lg font-semibold">
+              {title}
+            </h2>
+            {description ? (
+              <p id={descriptionId} className="mt-1 text-sm text-muted-foreground">
+                {description}
+              </p>
+            ) : null}
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={intl.formatMessage({ id: 'dialog.close', defaultMessage: 'Close' })}
+            onClick={() => ref.current?.close()}
+            className="-me-2 -mt-1"
+          >
+            <X aria-hidden="true" />
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={intl.formatMessage({ id: 'dialog.close', defaultMessage: 'Close' })}
-          onClick={() => ref.current?.close()}
-          className="-me-2 -mt-1"
-        >
-          <X aria-hidden="true" />
-        </Button>
-      </div>
-      {children ? <div className="px-5 py-4">{children}</div> : null}
-      {footer ? <div className="flex flex-wrap justify-end gap-2 border-t px-5 py-3">{footer}</div> : null}
+        {children ? <div className="px-5 py-4">{children}</div> : null}
+        {footer ? <div className="flex flex-wrap justify-end gap-2 border-t px-5 py-3">{footer}</div> : null}
+      </ModalLayer.Provider>
     </dialog>
   )
 }
@@ -150,12 +160,12 @@ export function AlertDialog({
   destructive?: boolean
   onConfirm: () => void
 }) {
-  const ref = useModal(open, onOpenChange)
+  const { ref, attach } = useModal(open, onOpenChange)
   const titleId = useId()
   const descriptionId = useId()
   return (
     <dialog
-      ref={ref}
+      ref={attach}
       role="alertdialog"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
@@ -197,17 +207,17 @@ export function Sheet({
   label: string
   children: ReactNode
 }) {
-  const ref = useModal(open, onOpenChange)
+  const { ref, attach, layer } = useModal(open, onOpenChange)
   return (
     <dialog
-      ref={ref}
+      ref={attach}
       aria-label={label}
       onClick={(e) => {
         if (e.target === e.currentTarget) ref.current?.close()
       }}
       className="fixed inset-y-0 start-0 m-0 h-dvh max-h-none w-72 max-w-[85vw] border-e bg-card p-0 text-card-foreground shadow-xl backdrop:bg-black/50"
     >
-      {children}
+      <ModalLayer.Provider value={layer}>{children}</ModalLayer.Provider>
     </dialog>
   )
 }

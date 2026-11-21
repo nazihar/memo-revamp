@@ -73,6 +73,6 @@ Every allowed and forbidden transition of the meeting (§1.1) and agenda (§1.3)
 ## Exit checklist
 - [ ] All of the above green, matrix complete, leak-suite skeleton in place.
 - [ ] Journeys on dev.
-- [ ] Manual accessibility pass recorded.
-- [ ] ASVS rows, runbook.
-- [ ] Owner's screen review recorded (flows N–R with M).
+- [ ] Manual accessibility pass recorded: the agent's keyboard, axe, structure and reflow pass is in `ux-review.md` (T9); the screen-reader pass by a person is still to do.
+- [x] ASVS rows, runbook (T9: five rows in `asvs-checklist.md`, `docs/runbooks/meetings-and-agendas.md`).
+- [x] Owner's screen review recorded (flows N–R with M, 2026-11-18).

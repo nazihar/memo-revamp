@@ -233,3 +233,45 @@
 - **Access kept:** the matrix entries with recusal columns (the list 200 to every recused viewer and never names the item; the decision 403 to all four, `RECUSED` for the chair), the `LATE_REQUESTS` surface in `PaperSurfaceRegistry` with a probe in `PaperLeakIT` (people outside the rule: empty, 403 on decisions, no canary) and in `RecusalLeakIT`.
 - **Tests:** `LateRequestsIT` (the vice-chair lists and decides the recused chair's item only and still cannot read the draft; the chair decides the other and the draft's `decides` says so; secretary, member, guest and `forum.read` listed nothing, a stranger 404; vice-chair 403 where the chair decides; recused chair 403 `RECUSED`; a paper of another item 404; `WRONG_STATE`; 412; audited as the vice-chair; declining; the paper rule with canaries on a restricted and a hidden item; both chairs recused: nobody listed, the secretary records); web `declarations/late.test.tsx` (agree and decline with If-Match, "Restricted item" and "A restricted paper", refusals in words, nothing to decide, Arabic and axe) and the builder test for `decides`.
 - **Left:** the decider cannot open a late paper's content (draft papers are for officers, ADR-0061); the Declarations tab's ruler guess (`rulerOf`) stays client-side, display only (the server checks every ruling).
+
+## 2026-11-21 — T9 close
+- **Built on E03 T9:** PR #208 was not merged when this started, so `origin/phase4/e03-t9` was merged into this branch (its `DemoMeetingSeeder`, `MeetingSeeding`, `AgendaSeeding`, `e2e/meetings.ts` and the runbook).
+- **Demo seed** (`DemoMeetingSeeder`, with the new `DeclarationSeeding` in the meeting module and `MemoSeeding.act` with `STAND_ASIDE`; through the same services as the API):
+  - **The BRC's "Quarterly risk review"** gains "Term loan, Delta Textiles" (For decision, with a paper) in revision 1. After revision 2:
+    - Demo Director declares in the app on it, "My brother-in-law is a director of Delta Textiles.", leaving the room (RECUSED);
+    - he asks the chair to decide on "Operational risk incidents, third quarter" (AWAITING_RULING, Demo Board Member to rule);
+    - he confirms the review of revision 2;
+    - the company secretary records the Chairman's declaration on "Large exposures and concentration limits" "By email" ("Email of {yesterday}"), leaving the room. The Chairman is the holder of the BOD seat, a member of the BRC.
+  - **The MCC's "Credit approvals":** at the credit desk, Demo Head of Credit stands aside on the Padma Spinning Mills proposal ("My brother holds shares in Padma Spinning Mills.", an interest on the memo, SOD-4), and Demo Director, the desk's other member, recommends it. Placing it carries a RECUSED declaration "Interest declared on memo CR/…" to the vice-chair (T3).
+  - **Gap-filling:**
+    - each declaration is added only while the risk review is SCHEDULED, and only for a person who never had one on that item;
+    - the review is confirmed only when it is not confirmed yet;
+    - a risk review seeded before this change has no Delta Textiles item, and a credit proposal recommended before it has no interest, so on such an environment those two are skipped. The runbook says so.
+  - **`DemoMeetingsIT`** checks:
+    - the director's two declarations, his recused and waiting lines without papers, and his review of revision 2;
+    - the declaration by email;
+    - the carried declaration on the placed item and the memo's interest;
+    - that a second run adds nothing (four declarations, one review).
+- **Journey `declarations.spec`** (smoke, PR stage), on an MCC agenda the secretary publishes through the API:
+  - Demo Head of Finance declares on "Term loan, Delta Textiles" with the keyboard. The line becomes "— You declared an interest", without its paper, and focus stays on "My declaration". They review and confirm, and focus goes to the panel's heading. Every target is at least 44 px, nothing scrolls sideways at 320 px, and axe finds nothing in English or Arabic;
+  - the secretary sees the declaration with its interest, and records Demo Head of Credit's on "Market risk limits", "By email", asking the chair;
+  - Demo Director, the chair, decides "They may take part" in the app, and Demo Head of Credit reads "The chair decided you may take part";
+  - the organisation administrator finds both rows in the register, exports the workbook (`.xlsx`), and axe passes in English and Arabic.
+  - It passes locally against `ci/e2e-stack.sh` (three runs), with `meeting-page.spec` and `meeting-agenda.spec` passing beside it twice each.
+- **Keyboard and screen-reader pass** over flows S, T and U, recorded in `ux-review.md` (T9):
+  - axe with every impact, landmarks and headings, the tab order and focus rings, keyboard-only use of every sheet, targets and reflow at 320 px;
+  - the checklist a person must still run with NVDA and VoiceOver.
+- **Defects found and fixed:**
+  - **Focus fell to the page after declaring** (WCAG 2.4.3). The agenda reloads after a change and the item's button is briefly replaced; the old 100 ms check missed it against a real server, and the unit tests' instant answers hid it. The item's declaration button now carries `data-declaration-item`. `declarations/focus.ts` follows it for three seconds, leaving alone focus the person moved, and a newer sheet's watch replaces an older one. Covered by `focus.test.ts` and the journey.
+  - **`DemoMemosIT` and `DemoMeetingsIT` depended on their order** (classes run in random order), found here and on #208 at the same time. The meeting seed creates Demo User's credit proposal, and the memo seeder skips an author who already has memos. #208's fix (5c228d5) is taken here unchanged: `DemoMeetingsIT` seeds the demo memos first, as start-up does, and `DemoMemosIT` leaves the credit proposal out of its sent-box count.
+- **Docs:**
+  - a "Conflicts of interest" section in `docs/runbooks/meetings-and-agendas.md`: declarations, rulings, what a declaration does, the registers and the export, reminders, what to do when…, and the demo data;
+  - six E04 rows in `docs/security/asvs-checklist.md`;
+  - `STATUS.md`.
+- **Verified:**
+  - backend: `DemoMeetingsIT` and the other demo ITs, `ModuleMetadataIT`, `ArchitectureRulesTest`, `ModularityTest`, ktlint, detekt and SpotBugs;
+  - web: the declarations unit tests (28), `pnpm typecheck`, lint and Prettier on the changed files;
+  - the three journeys against the local stack.
+- **Left:**
+  - the journey on dev once deployed;
+  - the person's screen-reader pass (`ux-review.md`).

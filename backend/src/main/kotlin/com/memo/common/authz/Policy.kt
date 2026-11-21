@@ -69,7 +69,12 @@ data class ScopedPermission(
     val scopeUnit: UUID?,
 )
 
-/** The actor lacks [permission] for the resource (403 `forbidden`). */
+/**
+ * The actor lacks [permission] for the resource (403 `forbidden`); [reason], when set, is a stable code for the client (for
+ * example `RECUSED`) and [detail] its English text.
+ */
 class ForbiddenException(
     val permission: Permission?,
+    val reason: String? = null,
+    val detail: String? = null,
 ) : RuntimeException(if (permission == null) "Forbidden" else "Missing permission ${permission.key}")

@@ -18,6 +18,7 @@ import com.memo.jooq.keys.MEETING_INVITATION__MEETING_INVITATION_TENANT_ID_MEETI
 import com.memo.jooq.keys.MEETING_ITEM_PROGRESS__MEETING_ITEM_PROGRESS_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
 import com.memo.jooq.keys.MEETING_QUORUM_CHANGE__MEETING_QUORUM_CHANGE_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_QUORUM_SNAPSHOT__MEETING_QUORUM_SNAPSHOT_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_REMINDER__MEETING_REMINDER_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_RSVP__MEETING_RSVP_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
@@ -30,6 +31,7 @@ import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.MeetingInvitation.MeetingInvitationPath
 import com.memo.jooq.tables.MeetingItemProgress.MeetingItemProgressPath
 import com.memo.jooq.tables.MeetingQuorumChange.MeetingQuorumChangePath
+import com.memo.jooq.tables.MeetingQuorumSnapshot.MeetingQuorumSnapshotPath
 import com.memo.jooq.tables.MeetingReminder.MeetingReminderPath
 import com.memo.jooq.tables.MeetingRsvp.MeetingRsvpPath
 import com.memo.jooq.tables.records.MeetingRecord
@@ -408,6 +410,22 @@ open class Meeting(
 
     val meetingQuorumChange: MeetingQuorumChangePath
         get(): MeetingQuorumChangePath = meetingQuorumChange()
+
+    private lateinit var _meetingQuorumSnapshot: MeetingQuorumSnapshotPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_quorum_snapshot</code> table
+     */
+    fun meetingQuorumSnapshot(): MeetingQuorumSnapshotPath {
+        if (!this::_meetingQuorumSnapshot.isInitialized)
+            _meetingQuorumSnapshot = MeetingQuorumSnapshotPath(this, null, MEETING_QUORUM_SNAPSHOT__MEETING_QUORUM_SNAPSHOT_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingQuorumSnapshot;
+    }
+
+    val meetingQuorumSnapshot: MeetingQuorumSnapshotPath
+        get(): MeetingQuorumSnapshotPath = meetingQuorumSnapshot()
 
     private lateinit var _meetingReminder: MeetingReminderPath
 

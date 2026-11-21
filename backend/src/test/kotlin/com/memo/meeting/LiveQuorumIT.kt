@@ -1,5 +1,6 @@
 package com.memo.meeting
 
+import com.memo.meeting.internal.attendance.QuorumLevel
 import com.memo.testsupport.Audit
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -23,7 +24,9 @@ class LiveQuorumIT : AttendanceTestSupport() {
 
         record(meeting, others[1], AttendanceEventKind.LEFT)
         assertThat(asUser(secretary) { attendanceReads.quorum(meeting.id, null) }.let { it.quorate to it.present }).isEqualTo(true to 4)
-        assertThat(asUser(secretary) { attendanceReads.changes(meeting.id) }.map { it.kind }).containsExactly(QuorumChangeKind.REACHED)
+        // The meeting reached its quorum before any item; "Risk appetite" reached it as it became the item in progress (T5).
+        assertThat(asUser(secretary) { attendanceReads.changes(meeting.id) }.map { "${it.level}:${it.kind}:${it.itemId}" })
+            .containsExactly("MEETING:REACHED:null", "ITEM:REACHED:$appetite")
 
         record(meeting, others[2], AttendanceEventKind.LEFT)
         val lost = asUser(secretary) { attendanceReads.quorum(meeting.id, null) }
@@ -42,7 +45,12 @@ class LiveQuorumIT : AttendanceTestSupport() {
         Audit.assertAudited(tenant.id, "meeting.quorum.restored", meeting.id.toString())
         assertThat(items(chair, "MEETING_QUORUM_RESTORED")).hasSize(1)
 
-        val changes = asUser(chair) { attendanceReads.changes(meeting.id) }
+        val all = asUser(chair) { attendanceReads.changes(meeting.id) }
+        // The item in progress flipped with the meeting, logged and audited at its level, but not told.
+        assertThat(all.filter { it.level == QuorumLevel.ITEM }.map { it.kind })
+            .containsExactly(QuorumChangeKind.REACHED, QuorumChangeKind.LOST, QuorumChangeKind.RESTORED)
+        assertThat(all.filter { it.level == QuorumLevel.ITEM }.map { it.itemId }.distinct()).containsExactly(appetite)
+        val changes = all.filter { it.level == QuorumLevel.MEETING }
         assertThat(changes.map { it.kind }).containsExactly(QuorumChangeKind.REACHED, QuorumChangeKind.LOST, QuorumChangeKind.RESTORED)
         assertThat(changes[1].itemId).isEqualTo(appetite)
         assertThat(changes[1].unmet.map { it.kind.name }).containsExactly("COUNT")

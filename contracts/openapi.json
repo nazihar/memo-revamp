@@ -4876,6 +4876,29 @@
         "required" : [ "flags", "itemId", "removed", "title" ],
         "type" : "object"
       },
+      "ItemForecastResponse" : {
+        "properties" : {
+          "declared" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/QuorumNumbersResponse"
+          },
+          "viewerRecused" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "itemId", "quorum", "viewerRecused" ],
+        "type" : "object"
+      },
       "ItemProgressRequest" : {
         "properties" : {
           "itemId" : {
@@ -5321,6 +5344,10 @@
           "basis" : {
             "format" : "int32",
             "type" : "integer"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
           },
           "needed" : {
             "format" : "int32",
@@ -8881,6 +8908,10 @@
             "enum" : [ "REACHED", "LOST", "RESTORED" ],
             "type" : "string"
           },
+          "level" : {
+            "enum" : [ "MEETING", "ITEM" ],
+            "type" : "string"
+          },
           "needed" : {
             "format" : "int32",
             "type" : "integer"
@@ -8896,7 +8927,7 @@
             "type" : "array"
           }
         },
-        "required" : [ "at", "id", "kind", "needed", "present", "unmet" ],
+        "required" : [ "at", "id", "kind", "level", "needed", "present", "unmet" ],
         "type" : "object"
       },
       "QuorumComposition" : {
@@ -8912,6 +8943,52 @@
             "type" : "boolean"
           }
         },
+        "type" : "object"
+      },
+      "QuorumForecastResponse" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ItemForecastResponse"
+            },
+            "type" : "array"
+          },
+          "meeting" : {
+            "$ref" : "#/components/schemas/QuorumNumbersResponse"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "items", "meeting", "meetingId" ],
+        "type" : "object"
+      },
+      "QuorumNumbersResponse" : {
+        "properties" : {
+          "basis" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "present" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "quorate" : {
+            "type" : "boolean"
+          },
+          "unmet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/UnmetCondition"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "basis", "needed", "present", "quorate", "unmet" ],
         "type" : "object"
       },
       "QuorumPreviewRequest" : {
@@ -9060,6 +9137,9 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "recused" : {
+            "type" : "boolean"
+          },
           "remote" : {
             "type" : "boolean"
           },
@@ -9067,11 +9147,79 @@
             "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
             "type" : "string"
           },
+          "steppedOut" : {
+            "type" : "boolean"
+          },
           "voting" : {
             "type" : "boolean"
           }
         },
-        "required" : [ "byAlternate", "holder", "memberId", "remote", "role", "voting" ],
+        "required" : [ "byAlternate", "holder", "memberId", "recused", "remote", "role", "steppedOut", "voting" ],
+        "type" : "object"
+      },
+      "QuorumSnapshotResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "drifted" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "inputsSha256" : {
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "override" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/SnapshotOverrideResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/QuorumNumbersResponse"
+          },
+          "ratificationRequired" : {
+            "type" : "boolean"
+          },
+          "rule" : {
+            "$ref" : "#/components/schemas/QuorumRule"
+          },
+          "seats" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SnapshotSeatResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "takenAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "takenBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "typeVersion" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "at", "drifted", "id", "inputsSha256", "meetingId", "quorum", "ratificationRequired", "rule", "takenAt", "typeVersion" ],
         "type" : "object"
       },
       "QuorumThreshold" : {
@@ -10841,6 +10989,63 @@
           }
         },
         "required" : [ "ended", "steps" ],
+        "type" : "object"
+      },
+      "SnapshotOverrideResponse" : {
+        "properties" : {
+          "by" : {
+            "$ref" : "#/components/schemas/AttendancePersonRef"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "by" ],
+        "type" : "object"
+      },
+      "SnapshotSeatResponse" : {
+        "properties" : {
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "byAlternate" : {
+            "type" : "boolean"
+          },
+          "filledBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "holder" : {
+            "$ref" : "#/components/schemas/AttendancePersonRef"
+          },
+          "memberId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "recused" : {
+            "type" : "boolean"
+          },
+          "remote" : {
+            "type" : "boolean"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "steppedOut" : {
+            "type" : "boolean"
+          },
+          "voting" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "attributes", "byAlternate", "holder", "memberId", "recused", "remote", "role", "steppedOut", "voting" ],
         "type" : "object"
       },
       "SnippetPart" : {
@@ -21339,6 +21544,14 @@
             "format" : "date-time",
             "type" : "string"
           }
+        }, {
+          "in" : "query",
+          "name" : "itemId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -21352,7 +21565,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "The meeting's quorum now or at an instant: seats for officers, numbers for members",
+        "summary" : "The quorum of the meeting or of one item, now or at an instant: seats for officers, numbers for members",
         "tags" : [ "meeting" ]
       }
     },
@@ -21383,7 +21596,71 @@
             "description" : "OK"
           }
         },
-        "summary" : "The meeting's quorum reached, lost and restored (officers)",
+        "summary" : "The quorum reached, lost and restored, of the meeting and the items in progress (officers)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/quorum/forecast" : {
+      "get" : {
+        "operationId" : "getMeetingQuorumForecast",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QuorumForecastResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "If everyone who said yes attends: the meeting's and each published item's quorum (officers)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/quorum/snapshots/{snapshotId}" : {
+      "get" : {
+        "operationId" : "getMeetingQuorumSnapshot",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "snapshotId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QuorumSnapshotResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A decision's recorded quorum (officers, forum.read)",
         "tags" : [ "meeting" ]
       }
     },

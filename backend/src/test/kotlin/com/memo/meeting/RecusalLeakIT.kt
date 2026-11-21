@@ -157,10 +157,28 @@ class RecusalLeakIT : RecusalLeakFixture() {
             Surface.MEETING to { p, v ->
                 clean(v.person(), read("/api/v1/meetings/${p.meeting.id}", v.person().session))
                 clean(v.person(), read("/api/v1/forums/$brc/meetings", v.person().session))
-                clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/rsvp/mine", v.person().session), statusBelow = 500)
-                // Attendance and the live quorum (E05 T4): people, states and item numbers, never an item's content.
-                clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/attendance", v.person().session), statusBelow = 500)
-                clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/quorum", v.person().session), statusBelow = 500)
+            },
+            // The replies and "Add to my calendar" (E05 T2, T3): never an item (the invitation emails are RecusalMailIT's).
+            Surface.INVITATIONS to { p, v ->
+                listOf("rsvp/mine", "rsvps", "calendar.ics").forEach { path ->
+                    clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/$path", v.person().session), statusBelow = 500)
+                }
+            },
+            // Attendance, the quorum per meeting and per item, the forecast and snapshots (E05 T4, T5): people, states and
+            // numbers, never an item's content; an officer recused from the item gets no seats and no `declared` count.
+            Surface.QUORUM to { p, v ->
+                val base = "/api/v1/meetings/${p.meeting.id}"
+                listOf("attendance", "quorum", "quorum?itemId=${p.item}", "quorum/forecast", "quorum/snapshots/${UUID.randomUUID()}")
+                    .forEach { path -> clean(v.person(), read("$base/$path", v.person().session), statusBelow = 500) }
+                if (v == Viewer.SECRETARY || v == Viewer.CHAIR) {
+                    val item = read("$base/quorum?itemId=${p.item}", v.person().session)
+                    assertThat(item).hasStatusOk()
+                    assertThat(item.json().absent("seats")).describedAs("no seats for an item the officer is recused from").isTrue()
+                    val forecast = read("$base/quorum/forecast", v.person().session).json()["items"].list()
+                    forecast.filter { UUID.fromString(it["itemId"].asString()) in p.both }.forEach {
+                        assertThat(it.absent("declared") to it["viewerRecused"].asBoolean()).isEqualTo(true to true)
+                    }
+                }
             },
             Surface.DECLARATIONS to { p, v -> declarationsProbe(p, v.person()) },
             Surface.REGISTERS to { p, v -> registersProbe(p, v) },
@@ -518,6 +536,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
             "POST /api/v1/meetings/{meetingId}/progress" to
                 { p -> send(HttpMethod.POST, "${base(p)}/progress", secretary, """{"itemId":"${p.item}"}""") },
             "GET /api/v1/meetings/{meetingId}/quorum/changes" to { p -> read("${base(p)}/quorum/changes", secretary.session) },
+            "GET /api/v1/meetings/{meetingId}/quorum/forecast" to { p -> read("${base(p)}/quorum/forecast", secretary.session) },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to

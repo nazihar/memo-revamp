@@ -7,6 +7,8 @@ package com.memo.meeting
  * to every surface, and its own surfaces (declarations, registers). E04 T5 made it the recusal registry as well
  * ([RecusalLeakIT]): the channels beyond the meeting's endpoints ([Channel]), the forum module's endpoints ([forum]), and the
  * surfaces of later epics still to come ([pending]); its meta-test fails when a controller of [modules] is not registered.
+ * E05 T5 added the alternate of a recused member to every probe of [PaperLeakIT], and its surfaces (invitations, replies,
+ * the register, the quorum, the forecast and snapshots) to both suites.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -24,6 +26,11 @@ object PaperSurfaceRegistry {
         MEETING("A meeting's details and a committee's meetings: no item content at all"),
         DECLARATIONS("Declaring an interest in an item, the declarant's own declarations and the review (E04 T1)"),
         REGISTERS("The meeting register, \"Remind them now\", the register across committees and its export (E04 T4)"),
+        INVITATIONS("The invitation files and emails, \"Add to my calendar\" and the replies (E05 T2, T3): never an item"),
+        QUORUM(
+            "The attendance register, the quorum of the meeting and of an item, and the snapshots (E05 T4, T5): people and numbers, " +
+                "never an item's content; no seats for an item the viewer is recused from, no override reason but for officers",
+        ),
     }
 
     /** The meeting module's endpoints that any person of the audience may call, and the surface each one is. */
@@ -48,14 +55,16 @@ object PaperSurfaceRegistry {
             "GET /api/v1/declarations" to Surface.REGISTERS,
             "GET /api/v1/declarations/export" to Surface.REGISTERS,
             // "Add to my calendar" (E05 T2): the meeting's time, place and link only, never an item (InvitationContentIT).
-            "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.MEETING,
+            "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.INVITATIONS,
             // Replies (E05 T3): answers, notes and counts; never an item (an alternate's recusals are AlternateRecusalIT).
-            "GET /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
-            "PUT /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
-            "GET /api/v1/meetings/{meetingId}/rsvps" to Surface.MEETING,
-            // Attendance and the live quorum (E05 T4): people, states, times, item ids and numbers; never an item's content.
-            "GET /api/v1/meetings/{meetingId}/attendance" to Surface.MEETING,
-            "GET /api/v1/meetings/{meetingId}/quorum" to Surface.MEETING,
+            "GET /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.INVITATIONS,
+            "PUT /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.INVITATIONS,
+            "GET /api/v1/meetings/{meetingId}/rsvps" to Surface.INVITATIONS,
+            // Attendance and the live quorum (E05 T4, per item T5): people, states, times, item ids and numbers.
+            "GET /api/v1/meetings/{meetingId}/attendance" to Surface.QUORUM,
+            "GET /api/v1/meetings/{meetingId}/quorum" to Surface.QUORUM,
+            // A decision's snapshot (E05 T5): officers and forum.read; the override's reason for officers not recused only.
+            "GET /api/v1/meetings/{meetingId}/quorum/snapshots/{snapshotId}" to Surface.QUORUM,
         )
 
     /**
@@ -113,6 +122,8 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/meetings/{meetingId}/attendance/events/{eventId}/void" to "voiding an attendance event (E05 T4): secretaries",
                 "POST /api/v1/meetings/{meetingId}/progress" to "the item in progress (E05 T4): secretaries and forums.manage",
                 "GET /api/v1/meetings/{meetingId}/quorum/changes" to "the quorum lost and restored (E05 T4): officers",
+                "GET /api/v1/meetings/{meetingId}/quorum/forecast" to
+                    "the forecast from the replies (E05 T5): officers, numbers only (QUORUM probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -203,9 +214,9 @@ object PaperSurfaceRegistry {
     )
 
     /**
-     * E05's attendance and live quorum (E05 T4) were built while T5 was written: their reads are probed in the MEETING
-     * surface and their changes as officer probes in [RecusalLeakIT]; who counts for an item a holder is recused from is
-     * E05's `PresenceBuilderProperties` and `LiveQuorumIT`.
+     * E05's attendance and quorum (E05 T4, T5): their reads are probed in the QUORUM surface (the replies and the calendar
+     * file in INVITATIONS) and their changes as officer probes in [RecusalLeakIT]; who counts for an item a holder is recused
+     * from is E05's `ItemQuorumProperties`, `PresenceBuilderProperties` and `QuorumSnapshotsIT`.
      */
     val pending: List<Pending> =
         listOf(

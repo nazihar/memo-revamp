@@ -9,8 +9,10 @@ import com.memo.meeting.AttendanceState
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.internal.AudienceSource
 import com.memo.meeting.internal.AudienceStore
+import com.memo.meeting.internal.ItemStore
 import com.memo.meeting.internal.MeetingAccess
 import com.memo.meeting.internal.MeetingGuard
+import com.memo.meeting.internal.MeetingNotFoundException
 import com.memo.meeting.internal.MeetingRelation
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.actorOrNull
@@ -37,6 +39,7 @@ class AttendanceReads(
     private val log: MeetingProgressStore,
     private val live: LiveQuorum,
     private val users: UserSummaries,
+    private val items: ItemStore,
 ) {
     fun register(meetingId: UUID): AttendanceResponse {
         val (meeting, relation) = guard.requireVisible(meetingId)
@@ -62,22 +65,27 @@ class AttendanceReads(
         )
     }
 
-    /** The meeting-level quorum at [at] (null: now): officers with the seats, members and alternates the numbers. */
+    /**
+     * The quorum of the meeting, or of [itemId] (an item of the meeting, else 404), at [at] (null: now): officers with the
+     * seats (the counts only for an item they are recused from), members and alternates the numbers.
+     */
     fun quorum(
         meetingId: UUID,
         at: Instant?,
+        itemId: UUID? = null,
     ): LiveQuorumResponse {
         val (meeting, relation) = guard.requireVisible(meetingId)
+        if (itemId != null && items.find(itemId)?.meetingId != meeting.id) throw MeetingNotFoundException("item")
         val officer = relation == MeetingRelation.OFFICER
-        return quorumView(live.evaluate(meeting, at), officer, relation) ?: throw ForbiddenException(null)
+        return quorumView(live.evaluate(meeting, at, itemId), officer, relation) ?: throw ForbiddenException(null)
     }
 
-    /** The meeting's quorum reached, lost and restored, oldest first: officers only. */
+    /** The quorum reached, lost and restored, of the meeting and of the items in progress, oldest first: officers only. */
     fun changes(meetingId: UUID): List<QuorumChangeResponse> {
         val (meeting, relation) = guard.requireVisible(meetingId)
         if (relation != MeetingRelation.OFFICER) throw ForbiddenException(null)
-        return log.changes(meeting.id).map {
-            QuorumChangeResponse(it.id, it.kind, it.at, it.itemId, it.needed, it.present, it.unmet, it.causeEventId)
+        return log.changes(meeting.id, level = null).map {
+            QuorumChangeResponse(it.id, it.level, it.kind, it.at, it.itemId, it.needed, it.present, it.unmet, it.causeEventId)
         }
     }
 
@@ -164,7 +172,10 @@ class AttendanceReads(
         )
     }
 
-    /** The quorum as [relation] sees it: seats for officers, numbers for members and alternates, nothing for others. */
+    /**
+     * The quorum as [relation] sees it: seats for officers (not for an item they are recused from), numbers for members and
+     * alternates, nothing for others.
+     */
     private fun quorumView(
         quorum: QuorumAt,
         officer: Boolean,
@@ -173,7 +184,7 @@ class AttendanceReads(
         if (!officer && relation != MeetingRelation.MEMBER && relation != MeetingRelation.ALTERNATE) return null
         val result = quorum.result
         val seats =
-            if (officer) {
+            if (officer && actorOrNull() !in quorum.recused) {
                 val filled = quorum.seats.associateBy { it.memberId }
                 val names = users.names(quorum.roster.map { it.userId } + quorum.seats.map { it.userId })
                 quorum.roster.map { seat ->
@@ -186,12 +197,23 @@ class AttendanceReads(
                         filledBy = by?.let { AttendancePersonRef(it.userId, names[it.userId].orEmpty()) },
                         byAlternate = by?.byAlternate ?: false,
                         remote = by?.remote ?: false,
+                        recused = seat.userId in quorum.recused,
+                        steppedOut = seat.userId in quorum.steppedOut,
                     )
                 }
             } else {
                 null
             }
-        return LiveQuorumResponse(quorum.at, result.quorate, result.basis, result.needed, result.present, result.unmet, seats)
+        return LiveQuorumResponse(
+            quorum.at,
+            quorum.itemId,
+            result.quorate,
+            result.basis,
+            result.needed,
+            result.present,
+            result.unmet,
+            seats,
+        )
     }
 
     private fun AttendanceEventRow.response(

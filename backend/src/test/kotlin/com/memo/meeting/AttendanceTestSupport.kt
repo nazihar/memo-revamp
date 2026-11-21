@@ -108,6 +108,14 @@ abstract class AttendanceTestSupport : InvitationTestSupport() {
      * published; [before] runs while it is scheduled (replies). Its items by title.
      */
     fun started(before: (MeetingRow) -> Unit = {}): Pair<MeetingRow, Map<String, UUID>> {
+        val (scheduled, items) = published()
+        before(scheduled)
+        val now = meeting(scheduled.id)
+        return asUser(secretary) { lifecycle.start(now.id, now.version) } to items
+    }
+
+    /** The meeting of [started], scheduled with its two items published, not started yet; its items by title. */
+    fun published(): Pair<MeetingRow, Map<String, UUID>> {
         val zone = ZoneId.of("Asia/Dhaka")
         val start = LocalDateTime.now(zone).truncatedTo(ChronoUnit.MINUTES).minusMinutes(1)
         val created =
@@ -142,9 +150,7 @@ abstract class AttendanceTestSupport : InvitationTestSupport() {
         val scheduled = asUser(secretary) { meeting(created.id).let { lifecycle.schedule(it.id, it.version) } }
         asUser(chair) { chairing.agree(created.id, drafts.draft(created.id).version, false, null) }
         asUser(secretary) { publisher.publish(created.id, drafts.draft(created.id).version, null, true) }
-        before(scheduled)
-        val now = meeting(created.id)
-        return asUser(secretary) { lifecycle.start(now.id, now.version) } to items
+        return meeting(scheduled.id) to items
     }
 
     fun answer(

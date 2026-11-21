@@ -170,9 +170,29 @@ tasks.withType<Test>().configureEach {
 pitest {
     pitestVersion = libs.versions.pitest.core
     junit5PluginVersion = libs.versions.pitest.junit5
-    // The workflow engine (Phase 2) and the numbering formats (Phase 3 E01, ADR-0044): pure code where a surviving mutant is a bug.
-    targetClasses.set(listOf("com.memo.workflow.engine.*", "com.memo.memo.internal.NumberFormats*"))
-    targetTests.set(listOf("com.memo.workflow.engine.*", "com.memo.memo.internal.NumberFormatTest"))
+    // The workflow engine (Phase 2), the numbering formats (Phase 3 E01, ADR-0044) and the quorum (ADR-0057, ADR-0064: the
+    // evaluator, the presence builder and a snapshot's canonical inputs, Phase 4 E05 T5): pure code where a surviving mutant
+    // is a bug.
+    targetClasses.set(
+        listOf(
+            "com.memo.workflow.engine.*",
+            "com.memo.memo.internal.NumberFormats*",
+            "com.memo.forum.Quorum",
+            "com.memo.forum.Quorum$*",
+            "com.memo.meeting.internal.quorum.PresenceBuilder*",
+            "com.memo.meeting.QuorumSnapshotInputs*",
+        ),
+    )
+    targetTests.set(
+        listOf(
+            "com.memo.workflow.engine.*",
+            "com.memo.memo.internal.NumberFormatTest",
+            "com.memo.forum.QuorumTest",
+            "com.memo.forum.QuorumProperties",
+            "com.memo.meeting.internal.quorum.PresenceBuilderProperties",
+            "com.memo.meeting.internal.quorum.ItemQuorumProperties",
+        ),
+    )
     threads.set(4)
     outputFormats.set(listOf("HTML", "XML"))
     timestampedReports.set(false)

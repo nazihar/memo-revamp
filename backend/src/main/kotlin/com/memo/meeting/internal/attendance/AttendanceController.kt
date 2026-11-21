@@ -170,16 +170,21 @@ class AttendanceController(
     @SignedIn
     @Operation(
         operationId = "getMeetingQuorum",
-        summary = "The meeting's quorum now or at an instant: seats for officers, numbers for members",
+        summary = "The quorum of the meeting or of one item, now or at an instant: seats for officers, numbers for members",
     )
     fun quorum(
         @PathVariable meetingId: UUID,
         @RequestParam(required = false) at: Instant?,
-    ): ResponseEntity<LiveQuorumResponse> = noStore(transactions.readInTenant(TenantContext.current()) { reads.quorum(meetingId, at) })
+        @RequestParam(required = false) itemId: UUID?,
+    ): ResponseEntity<LiveQuorumResponse> =
+        noStore(transactions.readInTenant(TenantContext.current()) { reads.quorum(meetingId, at, itemId) })
 
     @GetMapping("/api/v1/meetings/{meetingId}/quorum/changes")
     @SignedIn
-    @Operation(operationId = "getMeetingQuorumChanges", summary = "The meeting's quorum reached, lost and restored (officers)")
+    @Operation(
+        operationId = "getMeetingQuorumChanges",
+        summary = "The quorum reached, lost and restored, of the meeting and the items in progress (officers)",
+    )
     fun changes(
         @PathVariable meetingId: UUID,
     ): ResponseEntity<List<QuorumChangeResponse>> = noStore(transactions.readInTenant(TenantContext.current()) { reads.changes(meetingId) })

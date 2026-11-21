@@ -102,7 +102,7 @@ class ActionSourceListener(
 ) {
     @EventListener
     fun onPublished(event: AgendaPublished) {
-        val actions = store.ofMeetingItems(event.meetingId)
+        val actions = store.ofMeeting(event.meetingId).filter { it.itemId != null }
         val meeting = meetings.find(event.meetingId)?.takeIf { actions.isNotEmpty() } ?: return
         val committee = directory.forum(meeting.forumId)?.name.orEmpty()
         val agenda = items.agenda(event.meetingId)

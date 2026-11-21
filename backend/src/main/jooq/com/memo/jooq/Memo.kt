@@ -108,8 +108,10 @@ import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
+import com.memo.jooq.tables.Minutes
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
+import com.memo.jooq.tables.MinutesEvent
 import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.MinutesResolution
 import com.memo.jooq.tables.MinutesResolutionCounter
@@ -706,6 +708,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_WATCH_SETTING: MemoWatchSetting get() = MemoWatchSetting.MEMO_WATCH_SETTING
 
     /**
+     * The table <code>memo.minutes</code>.
+     */
+    val MINUTES: Minutes get() = Minutes.MINUTES
+
+    /**
      * The table <code>memo.minutes_decision</code>.
      */
     val MINUTES_DECISION: MinutesDecision get() = MinutesDecision.MINUTES_DECISION
@@ -714,6 +721,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.minutes_decision_entry</code>.
      */
     val MINUTES_DECISION_ENTRY: MinutesDecisionEntry get() = MinutesDecisionEntry.MINUTES_DECISION_ENTRY
+
+    /**
+     * The table <code>memo.minutes_event</code>.
+     */
+    val MINUTES_EVENT: MinutesEvent get() = MinutesEvent.MINUTES_EVENT
 
     /**
      * The table <code>memo.minutes_item_note</code>.
@@ -1272,8 +1284,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoWatch.MEMO_WATCH,
         MemoWatchEvent.MEMO_WATCH_EVENT,
         MemoWatchSetting.MEMO_WATCH_SETTING,
+        Minutes.MINUTES,
         MinutesDecision.MINUTES_DECISION,
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
+        MinutesEvent.MINUTES_EVENT,
         MinutesItemNote.MINUTES_ITEM_NOTE,
         MinutesResolution.MINUTES_RESOLUTION,
         MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER,

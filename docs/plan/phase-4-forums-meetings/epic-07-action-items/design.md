@@ -363,6 +363,7 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
   - `action_item` has all of §1.15's columns from V1 (T4 adds tables only), plus `decision_seq` and `owner_step` (the owner's definition step, set by the instance's first task: later steps mean DONE_PENDING, the owner's step again after that IN_PROGRESS).
   - The CEL attributes are read as `item.priority`, `item.fromResolution`, … (the engine's prefix), and `committeeType` is the committee type's name (the type's code is not published).
   - The bulk issue stores the drafts it chose under the key, and each action's result under the key and its id, so a retry replays both.
+  - **The minutes' port** (`MinutesItemActions`, E06 T5) is `ActionMinutes`: the meeting's issued actions not cancelled, in reference order (drafts are not agreed actions yet); the owner as the position's title or the person's name, the due date in words.
 
 ### 1.15 ERD
 ```mermaid

@@ -13,6 +13,7 @@ import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
 import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
+import com.memo.forum.MinutesTemplates
 import com.memo.templating.DocxTemplates
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -51,7 +52,7 @@ class MinutesTemplatePurpose(
     }
 
     companion object {
-        const val KEY = "forum.minutes-template"
+        const val KEY = MinutesTemplates.PURPOSE
         const val MAX_BYTES = 10L shl 20
     }
 }

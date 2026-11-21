@@ -42,6 +42,8 @@ data class MeetingRef(
     val status: MeetingStatus,
     /** The meeting's number in the committee's series (the 3 of "BRC 3/2026"), set with [label]. */
     val number: Int? = null,
+    /** Where it is held (in person or hybrid), as the secretary wrote it; null when not given. */
+    val location: String? = null,
 )
 
 /**
@@ -70,4 +72,4 @@ class Meetings(
 }
 
 internal fun MeetingRow.ref() =
-    MeetingRef(id, forumId, typeVersion, kind, title, startsAt, endsAt, zone, mode, classificationId, label, status, number)
+    MeetingRef(id, forumId, typeVersion, kind, title, startsAt, endsAt, zone, mode, classificationId, label, status, number, location)

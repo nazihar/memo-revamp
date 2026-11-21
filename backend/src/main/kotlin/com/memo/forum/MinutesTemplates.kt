@@ -31,6 +31,7 @@ object MinutesTemplateTags {
             "minutes.approvedOn" to "Date the minutes were approved",
             "minutes.approvedBy" to "Who approved the minutes",
             "quorum.opening" to "The quorum when the meeting opened (a sentence)",
+            "actions.count" to "How many actions the meeting agreed (empty when none)",
         )
 
     /** Table-row loops with their row fields: `{{present}}` in a table row, `[name]` in the row below. */
@@ -51,7 +52,11 @@ object MinutesTemplateTags {
             "absent" to linkedMapOf("name" to "Name"),
             "quorumChanges" to linkedMapOf("at" to "Time", "item" to "During item", "text" to "What happened"),
             "resolutions" to linkedMapOf("number" to "Resolution number", "item" to "Item", "outcome" to "Outcome", "text" to "Text"),
+            "actions" to ACTION_FIELDS + ("item" to "Item"),
         )
+
+    /** The actions agreed on an item (E07, design E07 §11): a row loop inside the items block. */
+    const val ITEM_ACTIONS = "item.actions"
 
     /** Each item's values, inside the items block only. Each may open a block shown when not blank. */
     val ITEM: Map<String, String> =
@@ -78,7 +83,18 @@ object MinutesTemplateTags {
             "item.ratification" to "Decided without a quorum, or ratifying an earlier decision",
             "item.arrivals" to "Who joined during the item",
             "item.departures" to "Who left during the item",
+            "item.actionCount" to "How many actions were agreed on the item (empty when none)",
         )
+
+    /** The row fields of an action, in the meeting's `actions` loop and the item's `item.actions` loop (E07). */
+    val ACTION_FIELDS: Map<String, String>
+        get() =
+            linkedMapOf(
+                "reference" to "Action reference",
+                "action" to "What is to be done",
+                "owner" to "Owner",
+                "due" to "Due date",
+            )
 
     /** Names admins commonly type, and the tag each means: they only lead suggestions ("Did you mean {{item.notes}}?"). */
     val ALIASES: Map<String, String> =
@@ -110,7 +126,10 @@ object MinutesTemplateTags {
             values = MEETING.keys,
             sections = MEETING.keys,
             loops = LOOPS.mapValues { it.value.keys },
-            blocks = mapOf(ITEMS to TagVocabulary(values = ITEM.keys, sections = ITEM.keys, loops = emptyMap())),
+            blocks =
+                mapOf(
+                    ITEMS to TagVocabulary(values = ITEM.keys, sections = ITEM.keys, loops = mapOf(ITEM_ACTIONS to ACTION_FIELDS.keys)),
+                ),
             aliases = ALIASES,
         )
 }
@@ -134,6 +153,9 @@ class MinutesTemplates {
         ClassPathResource(resource(language)).inputStream.use { it.readAllBytes() }
 
     companion object {
+        /** The file purpose of an uploaded minutes template (the forum module owns such files). */
+        const val PURPOSE = "forum.minutes-template"
+
         fun resource(language: MinutesLanguage) = "forum/minutes-template-${language.code}.docx"
     }
 }

@@ -129,6 +129,9 @@ class DemoMeetingsIT : FilesIntegrationTest() {
                 operators,
             ).seed()
             DemoWorkflowSeeder(accounts, workflowSeeding, memoSeeding, transactions, committees, forumDirectory).seed()
+            // As at start-up: the demo memos first. They are seeded only while Demo User has no memo, so seeding the credit
+            // proposal first would leave them out for DemoMemosIT, whichever test runs first.
+            DemoMemoSeeder(accounts, lifecycle, memoSeeding, transactions, uploads, password).seed()
             val seeder =
                 DemoMeetingSeeder(
                     meetingSeeding,

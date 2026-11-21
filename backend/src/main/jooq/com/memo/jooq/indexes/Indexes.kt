@@ -78,6 +78,9 @@ import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
+import com.memo.jooq.tables.MinutesDecision
+import com.memo.jooq.tables.MinutesDecisionEntry
+import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.OrgAssignment
@@ -264,6 +267,11 @@ val MEMO_WATCH_EVENT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_watch
 val MEMO_WATCH_EVENT_UNEMAILED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unemailed_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID), false)
 val MEMO_WATCH_EVENT_UNNOTIFIED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unnotified_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID, MemoWatchEvent.MEMO_WATCH_EVENT.MEMO_ID), false)
 val MEMO_WATCH_USER_IDX: Index = Internal.createIndex(DSL.name("memo_watch_user_idx"), MemoWatch.MEMO_WATCH, arrayOf(MemoWatch.MEMO_WATCH.TENANT_ID, MemoWatch.MEMO_WATCH.USER_ID, MemoWatch.MEMO_WATCH.CREATED_AT.desc(), MemoWatch.MEMO_WATCH.MEMO_ID), false)
+val MINUTES_DECISION_ENTRY_RATIFIES_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_entry_ratifies_idx"), MinutesDecisionEntry.MINUTES_DECISION_ENTRY, arrayOf(MinutesDecisionEntry.MINUTES_DECISION_ENTRY.TENANT_ID, MinutesDecisionEntry.MINUTES_DECISION_ENTRY.RATIFIES_DECISION_ID), false)
+val MINUTES_DECISION_FORUM_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_forum_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.FORUM_ID), false)
+val MINUTES_DECISION_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_meeting_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.MEETING_ID), false)
+val MINUTES_DECISION_SUBMISSION_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_submission_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.SUBMISSION_ID), false)
+val MINUTES_ITEM_NOTE_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_item_note_meeting_idx"), MinutesItemNote.MINUTES_ITEM_NOTE, arrayOf(MinutesItemNote.MINUTES_ITEM_NOTE.TENANT_ID, MinutesItemNote.MINUTES_ITEM_NOTE.MEETING_ID, MinutesItemNote.MINUTES_ITEM_NOTE.ITEM_ID), false)
 val NOTIFICATION_ITEM_UNREAD_IDX: Index = Internal.createIndex(DSL.name("notification_item_unread_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID), false)
 val NOTIFICATION_ITEM_USER_IDX: Index = Internal.createIndex(DSL.name("notification_item_user_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT.desc(), NotificationItem.NOTIFICATION_ITEM.ID.desc()), false)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_created_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT.desc(), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID.desc()), false)

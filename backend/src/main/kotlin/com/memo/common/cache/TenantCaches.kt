@@ -10,6 +10,7 @@ import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * An in-process cache of one kind of read-mostly tenant configuration (ADR-0020). Entries are keyed by tenant, so a cache
@@ -28,9 +29,16 @@ class TenantCache<K : Any, V : Any> internal constructor(
             .maximumSize(maxSize)
             .build()
 
+    /** Counts evictions, so that a load an eviction overtook is not kept (see [get]). */
+    private val evictions = AtomicLong()
+
     /**
      * The cached value for [key] in the current tenant, loading it with [loader] on a miss. Inside a transaction that has
      * already changed this cache's data, the cache is bypassed, so a transaction always reads its own writes.
+     *
+     * An eviction that lands while a load is in flight cannot remove it (Caffeine's key view skips an entry still being
+     * computed), so the load would keep what it read before the change until the TTL. Such a load is dropped once stored,
+     * and the next read loads again (found in E05 T6: a tenant's new mail relay stayed cached as "none" on another node).
      */
     fun get(
         key: K,
@@ -38,13 +46,17 @@ class TenantCache<K : Any, V : Any> internal constructor(
     ): V {
         val tenant = TenantContext.current()
         if (CacheInvalidation.isDirtyInCurrentTransaction(name)) return loader()
-        return cache.get(tenant to key) { loader() }
+        val before = evictions.get()
+        val value = cache.get(tenant to key) { loader() }
+        if (evictions.get() != before) cache.invalidate(tenant to key)
+        return value
     }
 
     internal fun evict(
         tenant: TenantId,
         key: String?,
     ) {
+        evictions.incrementAndGet()
         if (key == null) {
             cache.asMap().keys.removeIf { it.first == tenant }
         } else {
@@ -52,7 +64,10 @@ class TenantCache<K : Any, V : Any> internal constructor(
         }
     }
 
-    internal fun evictAll() = cache.invalidateAll()
+    internal fun evictAll() {
+        evictions.incrementAndGet()
+        cache.invalidateAll()
+    }
 
     internal fun size(): Long = cache.estimatedSize()
 }

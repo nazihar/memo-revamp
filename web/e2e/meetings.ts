@@ -1,6 +1,7 @@
 import { expect, type Browser, type Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from './auth'
 import { docx } from './docx'
+import { assertNoA11yViolations } from './fixtures'
 import { chooseMemoType } from './memo-type'
 import { pageAs } from './roles'
 
@@ -140,4 +141,18 @@ export async function myId(page: Page): Promise<string> {
   const session = (await (await page.request.get('/api/v1/auth/session')).json()) as { user?: { id: string } }
   if (!session.user) throw new Error('not signed in')
   return session.user.id
+}
+
+/**
+ * axe over the whole page, from the top of the document. The shell's top bar is sticky, so after a step that moved focus
+ * down the page (the builder focuses the row it changed) a control can sit partly under the bar, and axe's target-size
+ * check then measures only its uncovered part (a 44 px section menu failed in CI with 12.5 px showing). Checking from the
+ * top keeps the check about the controls' size and spacing rather than the scroll position; the focused control itself
+ * is kept clear of the bar by the page's scroll padding.
+ */
+export async function checkPageA11y(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    window.scrollTo(0, 0)
+  })
+  await assertNoA11yViolations(page)
 }

@@ -107,16 +107,19 @@ class ActionEffects(
                         TaskClosure.valueOf(it.state.name),
                         outcome.action.kind,
                     )
-                } ?: (effect as? Effect.TaskCreated)?.task?.let {
+                } ?: (effect as? Effect.TaskCreated)?.let { created ->
                     WorkflowTaskCreated(
                         tenant,
                         instance.id,
                         instance.subjectType,
                         instance.subjectId,
-                        it.id,
-                        it.assignee,
-                        it.blocked,
+                        created.task.id,
+                        created.task.assignee,
+                        created.task.blocked,
                         outcome.action.kind,
+                        outcome.state.round.steps
+                            .firstOrNull { it.id == created.stepId }
+                            ?.nodeId,
                     )
                 }
             }.forEach(events::publishEvent)

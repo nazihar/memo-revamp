@@ -10,6 +10,7 @@ import com.memo.workflow.engine.Reject
 import com.memo.workflow.engine.Resubmit
 import com.memo.workflow.engine.Return
 import com.memo.workflow.engine.Withdraw
+import com.memo.workflow.internal.SubjectDues
 import com.memo.workflow.internal.WorkflowRunner
 import com.memo.workflow.internal.WorkflowSettings
 import org.springframework.stereotype.Service
@@ -26,6 +27,7 @@ import java.util.UUID
 class Workflows(
     private val runner: WorkflowRunner,
     private val settings: WorkflowSettings,
+    private val dues: SubjectDues,
 ) {
     /** Most approvers a route may have in this tenant (`workflow.route.max`); subjects check it before they start. */
     fun maxApprovers(): Int = settings.maxApprovers()
@@ -90,6 +92,18 @@ class Workflows(
         instanceId: UUID,
         reason: String?,
     ): WorkflowView = runner.onInstance(instanceId, currentUser()) { actor -> Cancel(actor, reason) }
+
+    /**
+     * The subject's due time changed (ADR-0068): re-reads [WorkflowSubject.dueAt] for the open tasks of its running
+     * instance on steps whose SLA is `from: "subject"`, cancels their pending timers and plans new ones, in the caller's
+     * transaction. A reminder already past is skipped; a due time already past fires at once. Records no engine action:
+     * the subject audits the change. Needs no signed-in user. Returns how many tasks were re-planned (0 without a running
+     * instance).
+     */
+    fun redue(
+        subjectType: String,
+        subjectId: UUID,
+    ): Int = dues.redue(subjectType, subjectId)
 
     companion object {
         /** The built-in definition every tenant has: sequential approval of the initiator's route. */

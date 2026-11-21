@@ -36,6 +36,11 @@ class BuilderCatalogueIT : MemoIntegrationTest() {
         assertThat(memo["attributes"].toList().associate { it["name"].asString() to it["type"].asString() })
             .containsEntry("classificationRank", "int")
             .containsEntry("memoTypeId", "string")
+        assertThat(memo["slots"].toList()).isEmpty()
+        // A subject that names people per item lists its slots beside its attributes (ADR-0068).
+        val slotted = catalogue["subjectTypes"].toList().first { it["type"].asString() == "test.slots" }
+        assertThat(slotted["slots"].toList().map { it.asString() }).containsExactly("chair", "owner", "verifier")
+        assertThat(slotted["attributes"].toList().map { it["name"].asString() }).containsExactly("priority")
         assertThat(catalogue["roles"].toList().map { it["name"].asString() }).isNotEmpty()
         assertThat(catalogue["queues"].toList().map { it["key"].asString() }).containsExactly("credit-desk")
         assertThat(catalogue["fragments"].toList().map { it["key"].asString() }).containsExactly("checks")

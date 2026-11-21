@@ -19,6 +19,7 @@ export type CataloguePart =
   | 'meetingAttendance'
   | 'declarations'
   | 'mySecurity'
+  | 'notificationKinds'
   | 'platform'
   | 'patterns'
   | 'search'

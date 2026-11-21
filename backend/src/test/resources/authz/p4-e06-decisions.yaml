@@ -1,0 +1,36 @@
+# Phase 4 E06 T3 decisions and the secretary's notes (design E06 §3, §4; ADR-0065, ADR-0062). Meeting, item, section and
+# forum ids are random here, so every subject allowed through is answered 404 before any role check. Who may do what on a
+# real meeting (the secretary, forums.manage, the chair, a member, an alternate, a guest, forum.read, another committee's
+# secretary, a recused secretary and a recused member) is DecisionsAccessIT; another tenant MinutesCrossTenantIT.
+#
+# Recusal columns (E04 T5's leak suite): the status on the planted (scheduled) meeting for a member recused from the item,
+# one awaiting the chair's ruling, a recused secretary and a recused chair. Recording is refused before the meeting's state
+# is looked at: 403 for anyone who does not record decisions, 403 `RECUSED` for the recused secretary. The history and the
+# notes do not exist for anyone recused (404); a recused secretary writing notes is 403 `RECUSED`. RecusalLeakIT runs them.
+epic: P4-E06
+endpoints:
+  - endpoint: "GET /api/v1/meetings/{meetingId}/decisions"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "PUT /api/v1/meetings/{meetingId}/items/{itemId}/decision"
+    rule: signedIn
+    body: { outcome: "APPROVED", text: "It was resolved that the facility be approved." }
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/items/{itemId}/decision/entries"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/sections/{sectionId}/decision"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/items/{itemId}/notes"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "PUT /api/v1/meetings/{meetingId}/items/{itemId}/notes"
+    rule: signedIn
+    body: { text: "Members challenged the sector outlook." }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 403, recusedChair: 404 }
+  # The committee's decisions taken without a quorum: its secretaries and forums.manage; a random forum is 404.
+  - { endpoint: "GET /api/v1/forums/{forumId}/decisions/to-be-ratified", rule: signedIn }

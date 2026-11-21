@@ -87,19 +87,30 @@ object DeclarationRules {
     /**
      * Whether [act] is open while the meeting is [status] (design E04 §1.1): until it is held, for everyone allowed to act;
      * once held and until the minutes are approved, only a secretary's correction ([secretary]); afterwards, and for a
-     * cancelled meeting, nothing (409 `FROZEN`). True when the act is a correction.
+     * cancelled meeting, nothing (409 `FROZEN`). E06: once the item is [decided], it is as if the meeting were held. True
+     * when the act is a correction.
      */
     fun window(
         status: MeetingStatus,
         act: DeclarationAct,
         secretary: Boolean,
+        decided: Boolean = false,
     ): Boolean {
-        val correction = status == MeetingStatus.HELD && act.correctable && secretary
-        refuseIf(status !in OPEN && !correction, "FROZEN") {
-            if (status == MeetingStatus.HELD) {
-                "The meeting has been held: only a secretary can record or withdraw a declaration, as a correction."
-            } else {
-                "The meeting's declarations are closed."
+        val closed = status == MeetingStatus.HELD || (decided && status in OPEN)
+        val correction = closed && act.correctable && secretary
+        refuseIf((status !in OPEN || decided) && !correction, "FROZEN") {
+            when {
+                status == MeetingStatus.HELD -> {
+                    "The meeting has been held: only a secretary can record or withdraw a declaration, as a correction."
+                }
+
+                decided && status in OPEN -> {
+                    "The item has been decided: only a secretary can record or withdraw a declaration on it, as a correction."
+                }
+
+                else -> {
+                    "The meeting's declarations are closed."
+                }
             }
         }
         return correction

@@ -22,6 +22,8 @@ export function DropdownMenuContent({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   // Inside a modal dialog the rest of the page is inert: the menu renders into the dialog (ModalLayer).
+  // No exit animation: a closing menu would stay mounted while it fades, and its dismissable layer would take the next
+  // Escape, so Escape right after choosing an item that opens a dialog did not close it (found in CI, E03 T9).
   const layer = useContext(ModalLayer)
   return (
     <DropdownMenuPrimitive.Portal container={layer ?? undefined}>
@@ -29,7 +31,7 @@ export function DropdownMenuContent({
         sideOffset={sideOffset}
         className={cn(
           'z-50 min-w-40 overflow-hidden rounded-md border bg-card p-1 text-card-foreground shadow-md',
-          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+          'data-[state=open]:animate-in data-[state=open]:fade-in-0',
           className,
         )}
         {...props}

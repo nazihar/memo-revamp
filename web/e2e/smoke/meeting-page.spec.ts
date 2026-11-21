@@ -1,7 +1,7 @@
 import type { Locator, Page } from '@playwright/test'
 import { assertNoA11yViolations, expect, test } from '../fixtures'
 import { pdf } from '../legacy'
-import { committeeId, dayFromNow, MeetingApi, myId, type Draft } from '../meetings'
+import { checkPageA11y, committeeId, dayFromNow, MeetingApi, myId, type Draft } from '../meetings'
 import { pageAs } from '../roles'
 
 /**
@@ -149,7 +149,7 @@ test.describe('as a committee member', () => {
     await expect(item(page, 'Quarterly compliance report')).toContainText(
       'Lifted for discussion at the request of Demo Director.',
     )
-    await app.checkA11y()
+    await checkPageA11y(page)
 
     // Revision 2 replaces the paper; the director sees what changed since they last looked.
     await api.replace(paper, 'risk-appetite.pdf', pdf('Risk appetite, version 2'))
@@ -183,7 +183,7 @@ test.describe('as a committee member', () => {
     await page.getByRole('button', { name: /Change language/ }).click()
     await page.getByRole('menuitemradio', { name: 'العربية' }).click()
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl')
-    await app.checkA11y()
+    await checkPageA11y(page)
     await page.getByRole('button', { name: /تغيير اللغة|Change language/ }).click()
     await page.getByRole('menuitemradio', { name: 'English' }).click()
     await expect(page.locator('html')).toHaveAttribute('dir', 'ltr')

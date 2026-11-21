@@ -358,8 +358,9 @@ function BuilderBody() {
             <AgendaList onMove={(body) => void move(body)} />
             <TotalLine />
           </div>
+          {/* The tray sticks below the sticky top bar (3.5rem), not under it. */}
           {canAdd ? (
-            <aside className="rounded-md border p-3 lg:sticky lg:top-4">
+            <aside className="rounded-md border p-3 lg:sticky lg:top-18">
               <Tray
                 ask={(s) => {
                   placing.ask(s)

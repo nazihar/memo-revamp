@@ -62,27 +62,7 @@ import java.util.UUID
 @EnabledIfEnvironmentVariable(named = "MEETING_VOLUME", matches = "[1-9][0-9]*")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class MeetingVolumeIT : IntegrationTest() {
-    @Autowired lateinit var registry: TenantRegistry
-
-    @Autowired lateinit var settings: TenantSettings
-
-    @Autowired lateinit var transactions: TenantTransactions
-
-    @Autowired lateinit var tenantDsl: TenantDsl
-
-    @Autowired lateinit var accounts: UserAccounts
-
-    @Autowired lateinit var classification: ClassificationAdmin
-
-    @Autowired lateinit var clearances: Clearances
-
-    @Autowired lateinit var types: ForumTypes
-
-    @Autowired lateinit var forums: Forums
-
-    @Autowired lateinit var members: ForumMembers
-
+class MeetingVolumeIT : MeetingVolumeSupport() {
     @Autowired lateinit var reads: MeetingReads
 
     @Autowired lateinit var drafts: AgendaDraftViews
@@ -99,8 +79,6 @@ class MeetingVolumeIT : IntegrationTest() {
 
     @Autowired lateinit var publisher: AgendaPublisher
 
-    @Autowired lateinit var recorder: SqlRecorder
-
     @Autowired lateinit var meetingRegister: DeclarationRegister
 
     @Autowired lateinit var registers: DeclarationRegisters
@@ -109,58 +87,10 @@ class MeetingVolumeIT : IntegrationTest() {
 
     @Autowired lateinit var workbook: DeclarationWorkbook
 
-    private val meetings = System.getenv("MEETING_VOLUME")?.toIntOrNull() ?: DESIGN_MEETINGS
-    private lateinit var tenant: TestTenant
-    private lateinit var people: VolumePeople
-    private lateinit var volume: MeetingVolume
-    private lateinit var focalForum: UUID
+    override val large: List<String> = LARGE
 
     @BeforeAll
-    fun generate() {
-        tenant = registry.aTestTenant(transactions, settings, "meetvol")
-
-        fun user(admin: Boolean = false) = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = admin).id.value
-        people = VolumePeople(admin = user(admin = true), secretary = user(), director = user(), chair = user())
-        val levels =
-            asUser(people.admin) { clearances.levels() }.sortedBy { it.rank }.let { MeetingVolume.Levels(it.first().id, it.last().id) }
-        // The director reads the low level, not the high one: those items show as "Restricted item".
-        asUser(people.admin, write = true) { classification.setClearance(people.director, levels.low) }
-        val type =
-            asUser(people.admin, write = true) {
-                types.create("BC", "Board committee", ForumTypePreset.BOARD_COMMITTEE, publish = true)
-            }.type.id
-        val committees =
-            (1..FORUMS).map { f ->
-                val forum = asUser(people.admin, write = true) { forums.create(ForumInput("c$f", "C$f", "Committee $f", "C$f", type)) }
-                asUser(people.admin, write = true) {
-                    members.add(forum.id, MemberInput(userId = people.secretary, role = ForumRole.SECRETARY))
-                    if (f <= MeetingVolume.DIRECTOR_FORUMS) members.add(forum.id, MemberInput(userId = people.director))
-                    if (f == 1) members.add(forum.id, MemberInput(userId = people.chair, role = ForumRole.CHAIR))
-                }
-                forum.id to "C$f"
-            }
-        focalForum = committees.first().first
-        volume = MeetingVolume(tenant.id.value, committees, meetings / FORUMS, people, levels)
-        val started = System.nanoTime()
-        transactions.inTenant(tenant.id) { volume.generate(tenantDsl) }
-        volume.analyse()
-        println("MeetingVolumeIT generated $meetings meetings in ${(System.nanoTime() - started) / NANOS_PER_MILLI} ms")
-        transactions.readInTenant(tenant.id) {
-            val counts =
-                (
-                    listOf(
-                        "meeting",
-                        "meeting_item",
-                        "meeting_paper",
-                        "meeting_revision_item",
-                        "meeting_revision_paper",
-                        "meeting_audience",
-                    ) +
-                        listOf("meeting_declaration", "meeting_declaration_event", "meeting_declaration_review")
-                ).associateWith { tenantDsl.current().fetchValue("select count(*) from $it") }
-            println("MeetingVolumeIT rows: $counts")
-        }
-    }
+    fun generate() = generate("meetvol", e05 = false)
 
     @Test
     @Order(1)
@@ -257,76 +187,9 @@ class MeetingVolumeIT : IntegrationTest() {
 
     private fun tray(day: LocalDate) = responses.of(submissions.ready(focalForum, day))
 
-    /**
-     * The plan of every statement [call] runs as [user], printed and checked (no sequential scan of a large table); then
-     * its p95 in a read transaction, asserted under 2x [budget].
-     */
-    private fun measure(
-        name: String,
-        budget: Long,
-        user: UUID,
-        call: () -> Any,
-    ) {
-        repeat(WARM_UP) { asUser(user, block = call) }
-        val statements = asUser(user) { recorder.record(call).second }.filter { SELECT.containsMatchIn(it) }
-        assertThat(statements).describedAs("$name: statements recorded").isNotEmpty
-        println("MeetingVolumeIT $name: ${statements.size} statements")
-        val scans =
-            statements.mapIndexedNotNull { i, sql ->
-                val plan = asUser(user) { explain(sql) }
-                println("MeetingVolumeIT $name, statement ${i + 1}: ${sql.take(SQL_SHOWN)}\n$plan")
-                LARGE
-                    .filter { table -> Regex("Seq Scan on $table\\b").containsMatchIn(plan) }
-                    .takeIf { it.isNotEmpty() }
-                    ?.let { "statement ${i + 1} scans $it:\n$sql\n$plan" }
-            }
-        assertThat(scans).describedAs("$name: sequential scans of large tables").isEmpty()
-        report(name, (1..RUNS).map { timed { asUser(user, block = call) } }, budget)
-    }
-
-    private fun report(
-        name: String,
-        times: List<Long>,
-        budget: Long,
-    ) {
-        val p95 = times.sorted()[(times.size * P95 / 100) - 1]
-        println("MeetingVolumeIT $meetings meetings, $name: p95 $p95 ms (budget $budget ms, CI limit ${budget * 2} ms)")
-        assertThat(p95).describedAs(name).isLessThan(budget * 2)
-    }
-
-    private fun timed(call: () -> Unit): Long {
-        val start = System.nanoTime()
-        call()
-        return (System.nanoTime() - start) / NANOS_PER_MILLI
-    }
-
-    private fun explain(sql: String): String =
-        tenantDsl
-            .current()
-            .fetch("explain (analyze, buffers) $sql")
-            .joinToString("\n") { it.get(0, String::class.java) }
-
-    private fun <T> asUser(
-        user: UUID,
-        write: Boolean = false,
-        block: () -> T,
-    ): T =
-        ActorContext.call(ActorScope(Actor.User(user), null)) {
-            TenantContext.call(tenant.id) {
-                if (write) transactions.inTenant(tenant.id, block) else transactions.readInTenant(tenant.id, block)
-            }
-        }
-
-    private companion object {
-        const val FORUMS = 30
-        const val DESIGN_MEETINGS = 3_600
+    companion object {
         const val PAGE = 50
         const val FOCAL_ITEMS = 60
-        const val WARM_UP = 5
-        const val RUNS = 20
-        const val P95 = 95
-        const val SQL_SHOWN = 400
-        const val NANOS_PER_MILLI = 1_000_000L
         val DHAKA: java.time.ZoneId = java.time.ZoneId.of("Asia/Dhaka")
 
         // Design E03 §8. The revision list and the tray have no row of their own: held to the list budget and to E02's
@@ -343,9 +206,7 @@ class MeetingVolumeIT : IntegrationTest() {
         const val EXPORT_BUDGET_MS = 5_000L
         const val EXPORT_RUNS = 3
 
-        val SELECT = Regex("^\\s*(select|with)\\b", RegexOption.IGNORE_CASE)
-
-        /** The tables the volume makes large. */
+        /** The tables the volume makes large (also [InvitationVolumeIT]'s). */
         val LARGE =
             listOf(
                 "meeting",

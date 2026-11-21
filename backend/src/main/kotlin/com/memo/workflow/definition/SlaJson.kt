@@ -10,7 +10,7 @@ internal object SlaJson {
         assignee: (JsonNode) -> Assignee,
     ): Sla =
         Sla(
-            json["due"].asString(),
+            json["due"]?.takeUnless { it.isNull }?.asString(),
             json["workingTime"]?.asBoolean(),
             json["remind"]?.let { r ->
                 Remind(r["before"]?.takeUnless { it.isNull }?.asString(), r["after"]?.toList().orEmpty().map { it.asString() })
@@ -18,6 +18,7 @@ internal object SlaJson {
             json["escalate"]?.let { e ->
                 Escalate(e["after"].asString(), EscalateAction.of(e["action"].asString()), e["to"]?.let(assignee))
             },
+            json["from"]?.takeUnless { it.isNull }?.asString()?.let(SlaFrom::of),
         )
 
     fun write(
@@ -25,7 +26,8 @@ internal object SlaJson {
         sla: Sla,
         assignee: (Assignee) -> ObjectNode,
     ) {
-        node.put("due", sla.due)
+        sla.from?.let { node.put("from", it.json) }
+        sla.due?.let { node.put("due", it) }
         sla.workingTime?.let { node.put("workingTime", it) }
         sla.remind?.let { remind ->
             val r = node.putObject("remind")

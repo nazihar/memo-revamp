@@ -532,6 +532,7 @@ export type CatalogueRole = {
 
 export type CatalogueSubjectType = {
     attributes: Array<CatalogueAttribute>;
+    slots: Array<string>;
     type: string;
 };
 
@@ -655,6 +656,11 @@ export type ComponentHealth = {
     status: 'UP' | 'DOWN' | 'DISABLED';
 };
 
+export type ConsentDecisionRequest = {
+    decidedAt?: string | null;
+    returnMinutesToDraft?: boolean;
+};
+
 export type CopiesRequest = {
     copies: Array<CopyRecipient>;
 };
@@ -730,6 +736,113 @@ export type CycleTime = {
     medianDays: number;
     p90Days: number;
     type: Named;
+};
+
+export type DecisionDissentResponse = {
+    person: DecisionPerson;
+    reason?: string | null;
+};
+
+export type DecisionEntryResponse = {
+    abstentions: Array<DecisionPerson>;
+    conditions: Array<string>;
+    consentBatchId?: string | null;
+    correction: boolean;
+    decidedAt: string;
+    deferTo?: DeferTarget | null;
+    dissent: Array<DecisionDissentResponse>;
+    outcome: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    outcomeLabel: string;
+    ratificationRequired: boolean;
+    ratifiesDecisionId?: string | null;
+    reason?: string | null;
+    recordedAt: string;
+    recordedBy: DecisionPerson;
+    referReason?: string | null;
+    referToForumId?: string | null;
+    resolution: boolean;
+    seq: number;
+    snapshotId: string;
+    text?: string | null;
+    tookNoPart: Array<DecisionPerson>;
+    validUntil?: string | null;
+    vote: DecisionVoteResponse;
+};
+
+export type DecisionHistoryResponse = {
+    decisionId: string;
+    entries: Array<DecisionEntryResponse>;
+    itemId: string;
+};
+
+export type DecisionOverrideRequest = {
+    reason?: string | null;
+};
+
+export type DecisionPerson = {
+    id: string;
+    name: string;
+};
+
+export type DecisionRequest = {
+    abstentions?: Array<string>;
+    conditions?: Array<string>;
+    decidedAt?: string | null;
+    deferTo?: DeferTarget | null;
+    dissent?: Array<Dissent>;
+    outcome: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    override?: DecisionOverrideRequest | null;
+    ratifiesDecisionId?: string | null;
+    reason?: string | null;
+    recheckQuorum?: boolean;
+    referReason?: string | null;
+    referToForumId?: string | null;
+    returnMinutesToDraft?: boolean;
+    text?: string | null;
+    validUntil?: string | null;
+    voteMode?: 'CONSENSUS' | 'VOTE';
+    votesAbstain?: number | null;
+    votesAgainst?: number | null;
+    votesFor?: number | null;
+};
+
+export type DecisionResponse = {
+    abstentions?: Array<DecisionPerson> | null;
+    conditions: Array<string>;
+    consentBatchId?: string | null;
+    decidedAt: string;
+    deferTo?: DeferTarget | null;
+    dissent?: Array<DecisionDissentResponse> | null;
+    drifted?: boolean | null;
+    id: string;
+    itemId: string;
+    itemNumber?: string | null;
+    outcome: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    outcomeLabel: string;
+    ratificationRequired: boolean;
+    ratifiesDecisionId?: string | null;
+    recordedAt?: string | null;
+    recordedBy?: DecisionPerson | null;
+    referReason?: string | null;
+    referToForumId?: string | null;
+    resolution: boolean;
+    seq: number;
+    snapshotId?: string | null;
+    state: 'RECORDED' | 'RELEASED' | 'FINAL';
+    text?: string | null;
+    toBeRatified: boolean;
+    tookNoPart?: Array<DecisionPerson> | null;
+    validUntil?: string | null;
+    version: number;
+    viewerRecused: boolean;
+    vote?: DecisionVoteResponse | null;
+};
+
+export type DecisionVoteResponse = {
+    mode: 'CONSENSUS' | 'VOTE';
+    votesAbstain?: number | null;
+    votesAgainst?: number | null;
+    votesFor?: number | null;
 };
 
 export type DeclarationLineResponse = {
@@ -809,6 +922,12 @@ export type DeclarationReviewRequest = {
     revision?: number;
 };
 
+export type DeferTarget = {
+    date?: string | null;
+    meetingId?: string | null;
+    next?: boolean;
+};
+
 export type DefinitionChoice = {
     key: string;
     name: string;
@@ -871,6 +990,11 @@ export type DiscussionResponse = {
     canAsk: boolean;
     mine: boolean;
     requestedBy: Array<PersonResponse>;
+};
+
+export type Dissent = {
+    reason?: string | null;
+    userId?: string;
 };
 
 export type DissolveRequest = {
@@ -1618,6 +1742,18 @@ export type ItemForecastResponse = {
     viewerRecused: boolean;
 };
 
+export type ItemNoteRequest = {
+    text?: string | null;
+};
+
+export type ItemNoteResponse = {
+    itemId: string;
+    savedAt?: string | null;
+    savedBy?: DecisionPerson | null;
+    seq: number;
+    text: string;
+};
+
 export type ItemProgressRequest = {
     itemId?: string;
 };
@@ -1863,6 +1999,11 @@ export type Me = {
     lastLoginAt?: string | null;
     mfaEnrolled: boolean;
     tenantAdmin: boolean;
+};
+
+export type MeetingDecisionsResponse = {
+    decisions: Array<DecisionResponse>;
+    meetingId: string;
 };
 
 export type MeetingDeclarationRegisterResponse = {
@@ -3956,6 +4097,16 @@ export type Terms = {
 export type TermsUpdate = {
     locale: string;
     terms: Array<Term>;
+};
+
+export type ToBeRatifiedResponse = {
+    decidedAt: string;
+    decisionId: string;
+    itemId: string;
+    itemNumber?: string | null;
+    meetingId: string;
+    meetingLabel?: string | null;
+    outcomeLabel: string;
 };
 
 export type TriageRequest = {
@@ -7401,6 +7552,24 @@ export type CloneForumResponses = {
 
 export type CloneForumResponse = CloneForumResponses[keyof CloneForumResponses];
 
+export type GetDecisionsToBeRatifiedData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/decisions/to-be-ratified';
+};
+
+export type GetDecisionsToBeRatifiedResponses = {
+    /**
+     * OK
+     */
+    200: Array<ToBeRatifiedResponse>;
+};
+
+export type GetDecisionsToBeRatifiedResponse = GetDecisionsToBeRatifiedResponses[keyof GetDecisionsToBeRatifiedResponses];
+
 export type DissolveForumData = {
     body: DissolveRequest;
     headers?: {
@@ -8891,6 +9060,24 @@ export type CancelMeetingResponses = {
 
 export type CancelMeetingResponse = CancelMeetingResponses[keyof CancelMeetingResponses];
 
+export type GetMeetingDecisionsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/decisions';
+};
+
+export type GetMeetingDecisionsResponses = {
+    /**
+     * OK
+     */
+    200: MeetingDecisionsResponse;
+};
+
+export type GetMeetingDecisionsResponse = GetMeetingDecisionsResponses[keyof GetMeetingDecisionsResponses];
+
 export type GetMeetingDeclarationRegisterData = {
     body?: never;
     path: {
@@ -9126,6 +9313,48 @@ export type ResendMeetingInvitationsResponses = {
 
 export type ResendMeetingInvitationsResponse = ResendMeetingInvitationsResponses[keyof ResendMeetingInvitationsResponses];
 
+export type RecordItemDecisionData = {
+    body: DecisionRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/items/{itemId}/decision';
+};
+
+export type RecordItemDecisionResponses = {
+    /**
+     * OK
+     */
+    200: DecisionResponse;
+};
+
+export type RecordItemDecisionResponse = RecordItemDecisionResponses[keyof RecordItemDecisionResponses];
+
+export type GetItemDecisionHistoryData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/items/{itemId}/decision/entries';
+};
+
+export type GetItemDecisionHistoryResponses = {
+    /**
+     * OK
+     */
+    200: DecisionHistoryResponse;
+};
+
+export type GetItemDecisionHistoryResponse = GetItemDecisionHistoryResponses[keyof GetItemDecisionHistoryResponses];
+
 export type DeclareInterestData = {
     body: DeclarationRequest;
     headers: {
@@ -9147,6 +9376,48 @@ export type DeclareInterestResponses = {
 };
 
 export type DeclareInterestResponse = DeclareInterestResponses[keyof DeclareInterestResponses];
+
+export type GetItemNotesData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/items/{itemId}/notes';
+};
+
+export type GetItemNotesResponses = {
+    /**
+     * OK
+     */
+    200: ItemNoteResponse;
+};
+
+export type GetItemNotesResponse = GetItemNotesResponses[keyof GetItemNotesResponses];
+
+export type SaveItemNotesData = {
+    body: ItemNoteRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/items/{itemId}/notes';
+};
+
+export type SaveItemNotesResponses = {
+    /**
+     * OK
+     */
+    200: ItemNoteResponse;
+};
+
+export type SaveItemNotesResponse = SaveItemNotesResponses[keyof SaveItemNotesResponses];
 
 export type GetMeetingPaperContentData = {
     body?: never;
@@ -9387,6 +9658,28 @@ export type ScheduleMeetingResponses = {
 };
 
 export type ScheduleMeetingResponse = ScheduleMeetingResponses[keyof ScheduleMeetingResponses];
+
+export type DecideConsentSectionData = {
+    body: ConsentDecisionRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        sectionId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/sections/{sectionId}/decision';
+};
+
+export type DecideConsentSectionResponses = {
+    /**
+     * OK
+     */
+    200: MeetingDecisionsResponse;
+};
+
+export type DecideConsentSectionResponse = DecideConsentSectionResponses[keyof DecideConsentSectionResponses];
 
 export type MarkAgendaSeenData = {
     body: SeenRequest;

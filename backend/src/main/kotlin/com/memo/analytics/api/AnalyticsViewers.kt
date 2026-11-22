@@ -48,8 +48,8 @@ class AnalyticsViewers(
         val members = roles.filterValues { it == ForumRole.MEMBER }.keys
         val committees =
             if (oversight) directory.all() else directory.forums(officers + members).values.sortedBy { it.name }
-        if (committees.isEmpty() && !oversight) return null
         return AnalyticsViewer(user, oversight, officers, members, policy.clearanceRank(), committees)
+            .takeIf { oversight || committees.isNotEmpty() }
     }
 
     private companion object {

@@ -628,7 +628,7 @@ class PaperLeakIT : RecusalFixture() {
                     else -> {
                         answers.forEach { clean(p, person, it) }
                         assertThat(answers[1].json()["attendance"]["ownRowOnly"].asBoolean()).isTrue()
-                        assertThat(answers[1].json()["papers"]["summary"]["lateItems"].isNull).isTrue()
+                        assertThat(answers[1].json()["papers"]["summary"].absent("lateItems")).isTrue()
                         assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
                     }
                 }

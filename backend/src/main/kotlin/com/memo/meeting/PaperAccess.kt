@@ -454,6 +454,9 @@ class PaperAccess(
         return !dsl.fetchExists(draft) && !dsl.fetchExists(published)
     }
 
+    /** The late items and papers a viewer sees in full ([LateCounter.of]), for analytics (design E08 §2.1 M5). */
+    val late = LateCounter()
+
     /**
      * The items and papers flagged LATE or TABLED in each of [revisionIds] (not their removed rows) that [viewer] sees in
      * full (analytics' papers on time, design E08 §2.1 M5): an item by the rule ([itemCondition]) or, for `forum.read`, an
@@ -461,53 +464,55 @@ class PaperAccess(
      * `forum.read`, an unrestricted paper at a cleared level of such an item. Recusals apply to both (an item the viewer
      * declared on is never counted, ADR-0062), so the counts cannot reveal an item they may not see. Two grouped queries.
      */
-    fun late(
-        viewer: PaperViewer,
-        revisionIds: Collection<UUID>,
-    ): Map<UUID, Pair<Int, Int>> {
-        if (revisionIds.isEmpty()) return emptyMap()
-        val dsl = tenantDsl.current()
-        val i = MEETING_REVISION_ITEM
-        val p = MEETING_REVISION_PAPER
-        val readerItem =
-            if (viewer.reader) {
-                cleared(viewer, i.CLASSIFICATION_ID)
-                    .and(i.RESTRICTED_TO.isNull)
-                    .and(i.TITLE_HIDDEN.isFalse)
-                    .and(i.MEMBERS_ONLY.isFalse)
-                    .and(exclusions.excluded(viewer.userId, i.ITEM_ID, i.PARENT_ITEM_ID).not())
-            } else {
-                DSL.falseCondition()
-            }
-        val item = itemCondition(viewer, REVISION_ITEM).or(readerItem)
-        val readerPaper =
-            readerItem
-                .and(cleared(viewer, p.CLASSIFICATION_ID))
-                .and(p.RESTRICTED_TO.isNull)
-                .and(exclusions.excludedFromPapers(viewer.userId, i.ITEM_ID, i.PARENT_ITEM_ID).not())
-        val items =
-            dsl
-                .select(i.REVISION_ID, DSL.count())
-                .from(i)
-                .where(i.REVISION_ID.`in`(revisionIds), i.REMOVED.isFalse, i.LATE.ne(NOT_LATE), item)
-                .groupBy(i.REVISION_ID)
-                .fetch()
-                .associate { checkNotNull(it.value1()) to it.value2() }
-        val papers =
-            dsl
-                .select(p.REVISION_ID, DSL.count())
-                .from(p)
-                .join(i)
-                .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
-                .where(
-                    p.REVISION_ID.`in`(revisionIds),
-                    p.REMOVED.isFalse,
-                    p.LATE.ne(NOT_LATE),
-                    paperCondition(viewer, REVISION_ITEM, REVISION_PAPER).or(readerPaper),
-                ).groupBy(p.REVISION_ID)
-                .fetch()
-                .associate { checkNotNull(it.value1()) to it.value2() }
-        return revisionIds.associateWith { (items[it] ?: 0) to (papers[it] ?: 0) }
+    inner class LateCounter {
+        fun of(
+            viewer: PaperViewer,
+            revisionIds: Collection<UUID>,
+        ): Map<UUID, Pair<Int, Int>> {
+            if (revisionIds.isEmpty()) return emptyMap()
+            val dsl = tenantDsl.current()
+            val i = MEETING_REVISION_ITEM
+            val p = MEETING_REVISION_PAPER
+            val readerItem =
+                if (viewer.reader) {
+                    cleared(viewer, i.CLASSIFICATION_ID)
+                        .and(i.RESTRICTED_TO.isNull)
+                        .and(i.TITLE_HIDDEN.isFalse)
+                        .and(i.MEMBERS_ONLY.isFalse)
+                        .and(exclusions.excluded(viewer.userId, i.ITEM_ID, i.PARENT_ITEM_ID).not())
+                } else {
+                    DSL.falseCondition()
+                }
+            val item = itemCondition(viewer, REVISION_ITEM).or(readerItem)
+            val readerPaper =
+                readerItem
+                    .and(cleared(viewer, p.CLASSIFICATION_ID))
+                    .and(p.RESTRICTED_TO.isNull)
+                    .and(exclusions.excludedFromPapers(viewer.userId, i.ITEM_ID, i.PARENT_ITEM_ID).not())
+            val items =
+                dsl
+                    .select(i.REVISION_ID, DSL.count())
+                    .from(i)
+                    .where(i.REVISION_ID.`in`(revisionIds), i.REMOVED.isFalse, i.LATE.ne(NOT_LATE), item)
+                    .groupBy(i.REVISION_ID)
+                    .fetch()
+                    .associate { checkNotNull(it.value1()) to it.value2() }
+            val papers =
+                dsl
+                    .select(p.REVISION_ID, DSL.count())
+                    .from(p)
+                    .join(i)
+                    .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
+                    .where(
+                        p.REVISION_ID.`in`(revisionIds),
+                        p.REMOVED.isFalse,
+                        p.LATE.ne(NOT_LATE),
+                        paperCondition(viewer, REVISION_ITEM, REVISION_PAPER).or(readerPaper),
+                    ).groupBy(p.REVISION_ID)
+                    .fetch()
+                    .associate { checkNotNull(it.value1()) to it.value2() }
+            return revisionIds.associateWith { (items[it] ?: 0) to (papers[it] ?: 0) }
+        }
     }
 
     /** One line as read: the item, how much of it, and whether the viewer is recused from it. */

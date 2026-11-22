@@ -92,7 +92,7 @@ class AgendaTimeliness(
         val counted =
             latest.keys
                 .groupBy { actors.getValue(it) }
-                .flatMap { (viewer, ids) -> paperAccess.late(viewer, ids.map { latest.getValue(it) }).entries }
+                .flatMap { (viewer, ids) -> paperAccess.late.of(viewer, ids.map { latest.getValue(it) }).entries }
                 .associate { it.key to it.value }
         return rows.associate { row ->
             val (items, papers) = latest[row.id]?.let { counted[it] } ?: (0 to 0)

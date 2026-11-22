@@ -5,17 +5,11 @@ import com.memo.analytics.export.AttendanceExport
 import com.memo.analytics.measures.ActionMeasure
 import com.memo.analytics.measures.AnalyticsRejectedException
 import com.memo.analytics.measures.AttendanceMeasure
-import com.memo.analytics.measures.Closed
 import com.memo.analytics.measures.CommitteeActions
-import com.memo.analytics.measures.CommitteeAttendance
-import com.memo.analytics.measures.CommitteePapers
 import com.memo.analytics.measures.DecisionMeasure
-import com.memo.analytics.measures.Deferrals
 import com.memo.analytics.measures.MemberAttendance
-import com.memo.analytics.measures.Overdue
 import com.memo.analytics.measures.Period
 import com.memo.analytics.measures.TimelinessMeasure
-import com.memo.analytics.measures.Timing
 import com.memo.audit.AuditLog
 import com.memo.common.authz.ForbiddenException
 import com.memo.common.context.ActorNames
@@ -141,45 +135,9 @@ class CommitteeAnalytics(
                     membersOmitted = !withMembers,
                 ),
             actions = ActionsDetail(actionsOf(committeeActions), owners(ActionMeasure.owners(forumId, data.overdue))),
-            timeToDecision =
-                TimingDetail(
-                    overall = timingOf(DecisionMeasure.timing(facts, data.zone, data.counter)),
-                    byQuarter =
-                        DecisionMeasure.timingByQuarter(facts, data.zone, data.counter).map {
-                            QuarterTimingResponse(it.quarter, timingOf(it.timing))
-                        },
-                    byMemoType =
-                        DecisionMeasure.timingByMemoType(facts, data.zone, data.counter).map {
-                            MemoTypeTimingResponse(it.memoTypeId, timingOf(it.timing))
-                        },
-                ),
-            deferrals =
-                DeferralDetail(
-                    overall = deferralsOf(DecisionMeasure.deferrals(facts)),
-                    byQuarter =
-                        DecisionMeasure
-                            .deferralsByQuarter(
-                                facts,
-                            ).map { QuarterDeferralResponse(it.quarter, deferralsOf(it.deferrals)) },
-                ),
-            papers =
-                PapersDetail(
-                    summary = papersOf(TimelinessMeasure.committee(papers, access == AnalyticsAccess.FULL)),
-                    meetings =
-                        held.zip(papers).map { (meeting, paper) ->
-                            val counted = AttendanceMeasure.committee(listOf(meeting))
-                            MeetingPapersResponse(
-                                meetingId = meeting.meeting.id,
-                                label = meeting.meeting.label,
-                                date = meeting.meeting.date,
-                                onTime = paper.onTime,
-                                lateItems = paper.lateItems,
-                                latePapers = paper.latePapers,
-                                expected = counted.expected,
-                                attended = counted.attended,
-                            )
-                        },
-                ),
+            timeToDecision = timingDetail(facts, data.zone, data.counter),
+            deferrals = deferralDetail(facts),
+            papers = papersDetail(held, papers, access == AnalyticsAccess.FULL),
         )
     }
 
@@ -292,7 +250,7 @@ class CommitteeAnalytics(
         return workingDays.counter(first, checkNotNull(days.maxOrNull()))
     }
 
-    private inner class Gathered(
+    private class Gathered(
         val held: Map<UUID, List<HeldMeetingAttendance>>,
         val timeliness: Map<UUID, com.memo.meeting.MeetingTimeliness>,
         val late: Map<UUID, com.memo.meeting.LateCounts>,
@@ -358,32 +316,6 @@ class CommitteeAnalytics(
             )
         }
     }
-
-    private fun attendanceOf(a: CommitteeAttendance) = AttendanceSummary(a.heldMeetings, a.expected, a.attended, a.ratePercent)
-
-    private fun actionsOf(a: CommitteeActions): ActionsSummary {
-        val o: Overdue = a.overdue
-        val c: Closed = a.closed
-        return ActionsSummary(
-            overdue = o.count,
-            overdue1To30 = o.days1To30,
-            overdue31To90 = o.days31To90,
-            overdueOver90 = o.over90,
-            overdueRevised = o.revised,
-            closed = c.closed,
-            closedByOriginalDate = c.byOriginalDate,
-            closedByAgreedDate = c.byAgreedDate,
-            closedByOriginalPercent = c.byOriginalPercent,
-            closedByAgreedPercent = c.byAgreedPercent,
-        )
-    }
-
-    private fun timingOf(t: Timing) = TimingSummary(t.decisions, t.medianDays, t.p90Days, t.medianWorkingDays, t.p90WorkingDays, t.enough)
-
-    private fun deferralsOf(d: Deferrals) = DeferralSummary(d.decisions, d.deferred, d.deferredPercent, d.deferredTwice)
-
-    private fun papersOf(p: CommitteePapers) =
-        PapersSummary(p.meetings, p.withDeadline, p.onTime, p.onTimePercent, p.lateItems, p.latePapers)
 
     private companion object {
         const val OBJECT_TYPE = "forum"

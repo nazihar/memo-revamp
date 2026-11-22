@@ -89,11 +89,11 @@ class AnalyticsIT : AnalyticsFixture() {
         val member = analytics(director).committee()
         assertThat(member["access"].asString()).isEqualTo("MEMBER")
         assertThat(member["attendance"]["attended"].asInt()).isEqualTo(7)
-        assertThat(member["papers"]["lateItems"].isNull).isTrue()
+        assertThat(member["papers"].absent("lateItems")).isTrue()
         val own = detail(director).json()
         assertThat(own["attendance"]["ownRowOnly"].asBoolean()).isTrue()
         assertThat(own["attendance"]["members"].items().map { it["userId"].asString() }).containsExactly(director.id.toString())
-        assertThat(own["papers"]["meetings"].items().map { it["lateItems"].isNull }).containsOnly(true)
+        assertThat(own["papers"]["meetings"].items().map { it.absent("lateItems") }).containsOnly(true)
         assertThat(export(director)).hasStatus(HttpStatus.FORBIDDEN)
 
         // Oversight sees every committee in full; the vice-chair is an officer; someone outside has no analytics.

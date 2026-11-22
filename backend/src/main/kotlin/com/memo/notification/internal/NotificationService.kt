@@ -9,9 +9,11 @@ import com.memo.notification.Mail
 import com.memo.notification.NotificationCategory
 import com.memo.notification.NotificationChannel
 import com.memo.notification.NotificationKind
+import com.memo.notification.NotificationLog
 import com.memo.notification.NotificationResult
 import com.memo.notification.Notifications
 import com.memo.notification.Recipient
+import com.memo.notification.SentNotification
 import org.flywaydb.core.api.callback.Callback
 import org.flywaydb.core.api.callback.Context
 import org.flywaydb.core.api.callback.Event
@@ -19,8 +21,10 @@ import org.jooq.JSONB
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
+import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -105,7 +109,8 @@ internal class NotificationService(
         val template = kind.email
         require(calendar == null || template != null) { "a calendar part needs a kind that sends email" }
         val category = kind.category
-        val itemId = ids.next().takeIf { preferences.enabled(recipient.userId, category, NotificationChannel.IN_APP) }
+        val itemId =
+            ids.next().takeIf { kind.inApp && preferences.enabled(recipient.userId, category, NotificationChannel.IN_APP) }
         if (itemId != null) {
             tenantDsl
                 .current()
@@ -131,6 +136,52 @@ internal class NotificationService(
 
     private companion object {
         val LINK = Regex("^/[A-Za-z0-9/_.~%?=&-]{0,499}$")
+    }
+}
+
+/**
+ * The in-app items of some kinds written in a period (ADR-0030), for a module's digest of its own notices: one query on the
+ * period's partitions, the tenant's rows by RLS.
+ */
+@Component
+internal class NotificationLogStore(
+    private val tenantDsl: TenantDsl,
+    private val json: JsonMapper,
+) : NotificationLog {
+    override fun written(
+        kinds: Set<NotificationKind>,
+        from: Instant,
+        to: Instant,
+        limit: Int,
+    ): List<SentNotification> {
+        if (kinds.isEmpty()) return emptyList()
+        val n = NOTIFICATION_ITEM
+        return tenantDsl
+            .current()
+            .select(n.USER_ID, n.KIND, n.PARAMS, n.CREATED_AT)
+            .from(n)
+            .where(
+                n.KIND.`in`(kinds.map { it.name }),
+                n.CREATED_AT.ge(from.atOffset(ZoneOffset.UTC)),
+                n.CREATED_AT.lt(to.atOffset(ZoneOffset.UTC)),
+            ).orderBy(n.CREATED_AT, n.ID)
+            .limit(limit)
+            .fetch { r ->
+                SentNotification(
+                    checkNotNull(r.value1()),
+                    NotificationKind.valueOf(checkNotNull(r.value2())),
+                    r
+                        .value3()
+                        ?.data()
+                        ?.let { json.readValue(it, STRINGS) }
+                        .orEmpty(),
+                    checkNotNull(r.value4()).toInstant(),
+                )
+            }
+    }
+
+    private companion object {
+        val STRINGS = object : TypeReference<Map<String, String>>() {}
     }
 }
 

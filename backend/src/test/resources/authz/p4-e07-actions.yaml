@@ -94,3 +94,19 @@ endpoints:
     body: { dueDate: "2099-01-20", reason: "Not done after all" }
     headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
     recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  # Phase 4 E07 T5: closure. Who may mark done, verify and close at a meeting on a real action is ActionClosureIT and
+  # ActionWorkflowIT; the draft of the item ({actionId} in the recusal columns) is invisible to every recused viewer (404).
+  - endpoint: "POST /api/v1/actions/{actionId}/done"
+    rule: signedIn
+    body: { note: "The revised valuation was reported" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/verify"
+    rule: signedIn
+    body: { decision: "CLOSE" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/actions/close-agreed"
+    rule: signedIn
+    body: { actionIds: ["{random}"] }
+    headers: { Idempotency-Key: "{random}" }

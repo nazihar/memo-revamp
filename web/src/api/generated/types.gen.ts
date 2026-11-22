@@ -1076,6 +1076,12 @@ export type DecisionEntryResponse = {
     vote: DecisionVoteResponse;
 };
 
+export type DecisionFacetsView = {
+    forums: Array<ForumCountView>;
+    outcomes: Array<OutcomeCountView>;
+    years: Array<YearCountView>;
+};
+
 export type DecisionHistoryResponse = {
     decisionId: string;
     entries: Array<DecisionEntryResponse>;
@@ -1145,6 +1151,66 @@ export type DecisionResponse = {
     version: number;
     viewerRecused: boolean;
     vote?: DecisionVoteResponse | null;
+};
+
+export type DecisionRowView = {
+    conditions?: Array<string> | null;
+    corrected?: boolean | null;
+    decidedAt?: string | null;
+    decisionId: string;
+    finalAt?: string | null;
+    forumId: string;
+    forumName: string;
+    hasDissent?: boolean | null;
+    itemId: string;
+    itemNumber?: string | null;
+    level: 'FULL' | 'LINE';
+    meetingDate: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    memoId?: string | null;
+    memoNumber?: string | null;
+    memoTypeId?: string | null;
+    memoTypeName?: string | null;
+    outcomeKind?: string | null;
+    outcomeLabel?: string | null;
+    ratificationRequired?: boolean | null;
+    ratifiedByDecisionId?: string | null;
+    reason?: 'RECUSED' | 'RESTRICTED';
+    resolution?: boolean | null;
+    resolutionId?: string | null;
+    resolutionNumber?: string | null;
+    resolutionState?: string | null;
+    state: string;
+    submissionId?: string | null;
+    text?: string | null;
+    title?: string | null;
+    validUntil?: string | null;
+    voteMode?: string | null;
+};
+
+export type DecisionSearchRequest = {
+    cursor?: string | null;
+    flags?: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'> | null;
+    forumIds?: Array<string> | null;
+    forumTypeIds?: Array<string> | null;
+    from?: string | null;
+    limit?: number | null;
+    memoTypeIds?: Array<string> | null;
+    outcomes?: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'> | null;
+    resolutionsOnly?: boolean | null;
+    sort?: 'RELEVANCE' | 'NEWEST' | 'OLDEST' | 'NUMBER';
+    states?: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'> | null;
+    text?: string | null;
+    to?: string | null;
+};
+
+export type DecisionSearchView = {
+    capped: boolean;
+    facets: DecisionFacetsView;
+    nextCursor?: string | null;
+    rows: Array<DecisionRowView>;
+    total: number;
 };
 
 export type DecisionVoteResponse = {
@@ -1563,6 +1629,12 @@ export type ForumActionsResponse = {
     matching: number;
     nextCursor?: string | null;
     totals: ActionTotals;
+};
+
+export type ForumCountView = {
+    count: number;
+    forumId: string;
+    name: string;
 };
 
 export type ForumPolicyResponse = {
@@ -3258,6 +3330,11 @@ export type Named = {
     name: string;
 };
 
+export type NamedView = {
+    id: string;
+    name: string;
+};
+
 export type NewMemoTypeRequest = {
     code: string;
     name: string;
@@ -3542,6 +3619,11 @@ export type Outcome = {
     kind?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
     label?: string;
     resolution?: boolean;
+};
+
+export type OutcomeCountView = {
+    count: number;
+    outcome: string;
 };
 
 export type OwnerChangeRequest = {
@@ -4086,6 +4168,16 @@ export type RegenerateRequest = {
     reason: string;
 };
 
+export type RegisterCommitteeView = {
+    dissolved: boolean;
+    id: string;
+    member: boolean;
+    name: string;
+    officer: boolean;
+    shortName: string;
+    typeId: string;
+};
+
 export type RegisterEntry = {
     memoId: string;
     number: string;
@@ -4103,6 +4195,17 @@ export type RegisterItemResponse = {
     quorumWarning?: QuorumWarningResponse | null;
     recused: boolean;
     title?: string | null;
+};
+
+export type RegisterScopeView = {
+    canCheckNumbers: boolean;
+    canExport: boolean;
+    committeeTypes: Array<NamedView>;
+    committees: Array<RegisterCommitteeView>;
+    flags: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'>;
+    memoTypes: Array<NamedView>;
+    outcomes: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'>;
+    states: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'>;
 };
 
 export type RemarkRequest = {
@@ -5099,6 +5202,11 @@ export type WorkflowView = {
     subjectId: string;
     subjectType: string;
     version: number;
+};
+
+export type YearCountView = {
+    count: number;
+    year: number;
 };
 
 export type GetActionData = {
@@ -8378,6 +8486,38 @@ export type ApprovalsDashboardResponses = {
 };
 
 export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
+
+export type GetDecisionRegisterScopeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/scope';
+};
+
+export type GetDecisionRegisterScopeResponses = {
+    /**
+     * OK
+     */
+    200: RegisterScopeView;
+};
+
+export type GetDecisionRegisterScopeResponse = GetDecisionRegisterScopeResponses[keyof GetDecisionRegisterScopeResponses];
+
+export type SearchDecisionRegisterData = {
+    body: DecisionSearchRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/search';
+};
+
+export type SearchDecisionRegisterResponses = {
+    /**
+     * OK
+     */
+    200: DecisionSearchView;
+};
+
+export type SearchDecisionRegisterResponse = SearchDecisionRegisterResponses[keyof SearchDecisionRegisterResponses];
 
 export type ListDeclarationsData = {
     body?: never;

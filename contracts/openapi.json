@@ -3293,6 +3293,30 @@
         "required" : [ "abstentions", "conditions", "correction", "decidedAt", "dissent", "outcome", "outcomeLabel", "ratificationRequired", "recordedAt", "recordedBy", "resolution", "seq", "snapshotId", "tookNoPart", "vote" ],
         "type" : "object"
       },
+      "DecisionFacetsView" : {
+        "properties" : {
+          "forums" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ForumCountView"
+            },
+            "type" : "array"
+          },
+          "outcomes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/OutcomeCountView"
+            },
+            "type" : "array"
+          },
+          "years" : {
+            "items" : {
+              "$ref" : "#/components/schemas/YearCountView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "forums", "outcomes", "years" ],
+        "type" : "object"
+      },
       "DecisionHistoryResponse" : {
         "properties" : {
           "decisionId" : {
@@ -3559,6 +3583,226 @@
           }
         },
         "required" : [ "conditions", "decidedAt", "id", "itemId", "outcome", "outcomeLabel", "ratificationRequired", "resolution", "seq", "state", "toBeRatified", "version", "viewerRecused" ],
+        "type" : "object"
+      },
+      "DecisionRowView" : {
+        "properties" : {
+          "conditions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "corrected" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "finalAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "forumName" : {
+            "type" : "string"
+          },
+          "hasDissent" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "level" : {
+            "enum" : [ "FULL", "LINE" ],
+            "type" : "string"
+          },
+          "meetingDate" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "memoNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "memoTypeId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "memoTypeName" : {
+            "type" : [ "string", "null" ]
+          },
+          "outcomeKind" : {
+            "type" : [ "string", "null" ]
+          },
+          "outcomeLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "ratificationRequired" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "ratifiedByDecisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "enum" : [ "RECUSED", "RESTRICTED" ],
+            "type" : [ "string", "null" ]
+          },
+          "resolution" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "resolutionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "resolutionNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "resolutionState" : {
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "type" : "string"
+          },
+          "submissionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          },
+          "validUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "voteMode" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "decisionId", "forumId", "forumName", "itemId", "level", "meetingDate", "meetingId", "state" ],
+        "type" : "object"
+      },
+      "DecisionSearchRequest" : {
+        "properties" : {
+          "cursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "flags" : {
+            "items" : {
+              "enum" : [ "WITH_CONDITIONS", "WITH_DISSENT", "TO_BE_RATIFIED", "CORRECTED", "VALIDITY_PASSED" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "forumIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "forumTypeIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "from" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "limit" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "memoTypeIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "outcomes" : {
+            "items" : {
+              "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "resolutionsOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "sort" : {
+            "enum" : [ "RELEVANCE", "NEWEST", "OLDEST", "NUMBER" ],
+            "type" : [ "string", "null" ]
+          },
+          "states" : {
+            "items" : {
+              "enum" : [ "RECORDED", "NUMBERED", "RELEASED", "FINAL", "VOID" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DecisionSearchView" : {
+        "properties" : {
+          "capped" : {
+            "type" : "boolean"
+          },
+          "facets" : {
+            "$ref" : "#/components/schemas/DecisionFacetsView"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "rows" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionRowView"
+            },
+            "type" : "array"
+          },
+          "total" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "capped", "facets", "rows", "total" ],
         "type" : "object"
       },
       "DecisionVoteResponse" : {
@@ -4819,6 +5063,23 @@
           }
         },
         "required" : [ "can", "committee", "forumId", "items", "key", "matching", "totals" ],
+        "type" : "object"
+      },
+      "ForumCountView" : {
+        "properties" : {
+          "count" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "count", "forumId", "name" ],
         "type" : "object"
       },
       "ForumPolicyResponse" : {
@@ -10199,6 +10460,19 @@
         "required" : [ "id", "name" ],
         "type" : "object"
       },
+      "NamedView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
       "NewMemoTypeRequest" : {
         "properties" : {
           "code" : {
@@ -10953,6 +11227,19 @@
             "type" : "boolean"
           }
         },
+        "type" : "object"
+      },
+      "OutcomeCountView" : {
+        "properties" : {
+          "count" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "outcome" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "count", "outcome" ],
         "type" : "object"
       },
       "OwnerChangeRequest" : {
@@ -12469,6 +12756,35 @@
         "required" : [ "reason" ],
         "type" : "object"
       },
+      "RegisterCommitteeView" : {
+        "properties" : {
+          "dissolved" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "member" : {
+            "type" : "boolean"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "officer" : {
+            "type" : "boolean"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "dissolved", "id", "member", "name", "officer", "shortName", "typeId" ],
+        "type" : "object"
+      },
       "RegisterEntry" : {
         "properties" : {
           "memoId" : {
@@ -12532,6 +12848,57 @@
           }
         },
         "required" : [ "alsoReadsMemo", "declarations", "itemId", "recused" ],
+        "type" : "object"
+      },
+      "RegisterScopeView" : {
+        "properties" : {
+          "canCheckNumbers" : {
+            "type" : "boolean"
+          },
+          "canExport" : {
+            "type" : "boolean"
+          },
+          "committeeTypes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NamedView"
+            },
+            "type" : "array"
+          },
+          "committees" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RegisterCommitteeView"
+            },
+            "type" : "array"
+          },
+          "flags" : {
+            "items" : {
+              "enum" : [ "WITH_CONDITIONS", "WITH_DISSENT", "TO_BE_RATIFIED", "CORRECTED", "VALIDITY_PASSED" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "memoTypes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NamedView"
+            },
+            "type" : "array"
+          },
+          "outcomes" : {
+            "items" : {
+              "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "states" : {
+            "items" : {
+              "enum" : [ "RECORDED", "NUMBERED", "RELEASED", "FINAL", "VOID" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "canCheckNumbers", "canExport", "committeeTypes", "committees", "flags", "memoTypes", "outcomes", "states" ],
         "type" : "object"
       },
       "RemarkRequest" : {
@@ -15454,6 +15821,20 @@
           }
         },
         "required" : [ "currentAssignees", "instanceId", "recallable", "round", "status", "subjectId", "subjectType", "version" ],
+        "type" : "object"
+      },
+      "YearCountView" : {
+        "properties" : {
+          "count" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "year" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "count", "year" ],
         "type" : "object"
       }
     }
@@ -21431,6 +21812,54 @@
         },
         "summary" : "Pending by age, overdue, cycle time and throughput, for me or a unit I oversee (default: the last 12 weeks)",
         "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/decision-register/scope" : {
+      "get" : {
+        "operationId" : "getDecisionRegisterScope",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RegisterScopeView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The committees, committee types, outcomes and memo types the viewer may filter the register by",
+        "tags" : [ "search" ]
+      }
+    },
+    "/api/v1/decision-register/search" : {
+      "post" : {
+        "operationId" : "searchDecisionRegister",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DecisionSearchRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DecisionSearchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Decisions and resolutions the viewer may see, in full or as restricted lines, with totals and facets",
+        "tags" : [ "search" ]
       }
     },
     "/api/v1/declarations" : {

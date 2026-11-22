@@ -138,6 +138,15 @@ class MemoSearchFactsSource(
                 .associate { requireNotNull(it.value1()) to it.value2().orEmpty() }
         }
 
+    override fun allTypeNames(): Map<UUID, String> =
+        tenantDsl
+            .current()
+            .select(MEMO_TYPE.ID, MEMO_TYPE.NAME)
+            .from(MEMO_TYPE)
+            .orderBy(MEMO_TYPE.NAME)
+            .fetch()
+            .associate { requireNotNull(it.value1()) to it.value2().orEmpty() }
+
     /** A file row as (memo, the file's own rank or null for the memo's, the memo's rank). */
     private fun fileFacts(
         fileId: UUID,

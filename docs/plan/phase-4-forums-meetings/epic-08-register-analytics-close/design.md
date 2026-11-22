@@ -204,6 +204,14 @@ Conventions as E03–E07: `/api/v1`, RFC 9457 errors, cursor paging, `Idempotenc
 
 **Problems:** 403 (no scope; export by a member); 404 (a committee outside scope in a path); 422 `FORUM_OUT_OF_SCOPE` (in a body filter), `TEXT_TOO_LONG`, `TOO_MANY_TERMS`, `RANGE` (period), `SORT_NEEDS_ONE_FORUM`, `TOO_MANY_ROWS`, `cursor INVALID`; 429 on the limits.
 
+**As built (T2):**
+- The search body: `text`, `forumIds`, `forumTypeIds`, `from`, `to`, `outcomes` (E06's outcome kinds), `resolutionsOnly`, `states` (RECORDED, NUMBERED, RELEASED, FINAL, VOID), `memoTypeIds`, `flags`, `sort`, `cursor`, `limit` (1–50, default 50). Unknown enum values are 400 (an unreadable body); the rules' problems are 422 `validation` with `errors: [{field, code}]`: `text:TEXT_TOO_LONG`, `text:TOO_MANY_TERMS`, `forumIds:FORUM_OUT_OF_SCOPE` (also a committee that does not exist), `to:RANGE` (before `from`, or more than 25 years), `sort:SORT_NEEDS_ONE_FORUM`, `limit:RANGE`, `<filter>:TOO_MANY` (more than 50 values), `cursor:INVALID`.
+- The order defaults to RELEVANCE with words and NEWEST without; RELEVANCE without words is NEWEST. A number-like text is looked up whole (resolution numbers on FULL and LINE rows, memo numbers on FULL rows); otherwise the last word, when it is a plain word of 3+ letters or digits outside a phrase, matches as a prefix.
+- Rows: `level`, `reason` (on a LINE), `decisionId`, `forumId`, `forumName`, `meetingId`, `meetingLabel`, `meetingDate`, `itemId`, `itemNumber`, `state`, `resolutionId`, `resolutionNumber`, `resolutionState`; FULL rows add the title, outcome, `resolution`, text, conditions, validity, dissent, vote mode, ratification, `corrected`, `decidedAt`, `finalAt`, the submission and the memo (id, type and its name, number). A LINE never carries `decidedAt` or the entry number, which T1 returns for the cursor and the export's hash only.
+- **Cursors are sealed:** AES-256-GCM under the installation's data key (`DataKeys`), with the tenant, the viewer and a SHA-256 fingerprint of the search (normalised words, sorted filters, the order) as associated data. A client cannot read one (it holds a line's decision time), craft or alter one, or use it for another search, person or tenant: 422 `cursor INVALID`.
+- The scope: `committees` (id, names, type, `officer`, `member`, `dissolved`), `committeeTypes`, `outcomes`, `states`, `flags`, `memoTypes` (every memo type of the tenant), `canExport` and `canCheckNumbers` (officers, `forums.manage`, `forum.read`).
+- The rate limit is checked before the transaction (so a person without a scope who floods the endpoint is 429 too); its key is the tenant and the person.
+
 ## 4. Authorisation matrix
 Columns: **Sec** (secretary of the committee in office), **Chair** (chair or vice-chair in office), **Mgr** (`forums.manage`), **Member** (seat in office today), **Read** (`forum.read`), **Former** (former member), **Guest/Att** (guest or item attendee of a past meeting), **Memo** (reader of a decided memo only), **Owner** (an action owner outside the committee), **Recused** (a person in any of the first five columns who is recused from the row's item), **Other** (signed in, none of these).
 
@@ -225,7 +233,7 @@ Columns: **Sec** (secretary of the committee in office), **Chair** (chair or vic
 
 ## 5. Audit events
 In the request's transaction (AGENTS §3.3). Free text is kept only in the audit store as Phase 3's search does (search terms), never in logs.
-- `search.decisions.performed`: terms, filters, sort, total or capped, the decision ids on the returned page (Phase 3's `search.performed` shape).
+- `search.decisions.performed`: terms, filters, sort, total or capped, the decision ids on the returned page (Phase 3's `search.performed` shape). **As built (T2):** the terms as `textSha256` (SHA-256 of the trimmed, lower-case words with single spaces), `terms` (their number) and `numberLookup`, not the words: what a secretary types can name a borrower or an item that the audit's readers may not see; the hash still lets an investigator check a stated search. Also `nextPage` (a cursor was given).
 - `search.decisions.exported`: format, filters, row count, `rowsSha256`; written before the first byte is streamed.
 - `search.decisions.backfilled`: system actor, tenant, rows written (once per backfill run).
 - `analytics.attendance.exported`: committee, period, row count.

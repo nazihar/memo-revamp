@@ -8,6 +8,7 @@ import com.memo.forum.SubmissionPurpose
 import com.memo.meeting.internal.AgendaRules
 import com.memo.meeting.internal.ConsentRequestStore
 import com.memo.meeting.internal.ItemKind
+import com.memo.meeting.internal.ItemRow
 import com.memo.meeting.internal.ItemStore
 import com.memo.meeting.internal.Lateness
 import com.memo.meeting.internal.MeetingAccess
@@ -18,6 +19,7 @@ import com.memo.meeting.internal.PaperStore
 import com.memo.meeting.internal.PaperViewers
 import com.memo.meeting.internal.PublishedLate
 import com.memo.meeting.internal.RevisionStore
+import com.memo.meeting.internal.SectionRow
 import com.memo.meeting.internal.SectionStore
 import com.memo.meeting.internal.Snapshot
 import com.memo.meeting.internal.actorOrNull
@@ -116,11 +118,28 @@ class MeetingItems(
     private val paperStore: PaperStore,
 ) {
     /** [meetingId]'s items: the latest revision's body (no breaks), then the live tabled items it does not carry. */
-    fun agenda(meetingId: UUID): MeetingAgendaRef {
-        val head = revisions.heads(meetingId).lastOrNull()
-        val lifted = requests.open(meetingId).map { it.itemId }.toSet()
-        val published = head?.let { published(revisions.snapshot(it.id).body(), lifted) }.orEmpty()
-        return MeetingAgendaRef(meetingId, head?.number ?: 0, published + tabled(meetingId, published.map { it.id }.toSet(), lifted))
+    fun agenda(meetingId: UUID): MeetingAgendaRef = agendas(listOf(meetingId)).getValue(meetingId)
+
+    /**
+     * [agenda] of each of [meetingIds], in seven queries for them all (E06's resolution register reads the agendas of the
+     * meetings on a page of numbers, design E06 §8).
+     */
+    fun agendas(meetingIds: Collection<UUID>): Map<UUID, MeetingAgendaRef> {
+        val ids = meetingIds.distinct()
+        if (ids.isEmpty()) return emptyMap()
+        val heads = revisions.heads(ids).mapValues { it.value.last() }
+        val open = requests.openOf(ids)
+        val snapshots = revisions.snapshots(heads.values.map { it.id }, withPapers = false)
+        val liveSections = sections.liveOf(ids)
+        val liveItems = items.liveOf(ids)
+        return ids.associateWith { meetingId ->
+            val head = heads[meetingId]
+            val lifted = open[meetingId].orEmpty().map { it.itemId }.toSet()
+            val published = head?.let { published(snapshots.getValue(it.id).body(), lifted) }.orEmpty()
+            val carried = published.map { it.id }.toSet()
+            val tabled = tabled(liveSections[meetingId].orEmpty(), liveItems[meetingId].orEmpty(), carried, lifted)
+            MeetingAgendaRef(meetingId, head?.number ?: 0, published + tabled)
+        }
     }
 
     /**
@@ -217,12 +236,11 @@ class MeetingItems(
 
     /** The live items tabled at the meeting that the latest revision does not carry (officers see them). */
     private fun tabled(
-        meetingId: UUID,
+        liveSections: List<SectionRow>,
+        live: List<ItemRow>,
         carried: Set<UUID>,
         lifted: Set<UUID>,
     ): List<AgendaItemRef> {
-        val liveSections = sections.live(meetingId)
-        val live = items.live(meetingId)
         val numbers = AgendaRules.numbers(liveSections, live)
         val consent = liveSections.filter { it.kind == AgendaSectionKind.CONSENT }.map { it.id }.toSet()
         val membersOnly = liveSections.filter { it.membersOnly }.map { it.id }.toSet()
@@ -322,9 +340,75 @@ class MeetingViewers(
         return view(meeting, userId, viewer, secretary)
     }
 
+    /**
+     * [ofUser] for each of [users] (with their `asMember`) on [meetingId], the meeting, its agenda, its latest revision and
+     * the people's seats, audience rows and clearances read once for them all, and the paper rule in one statement (E06's
+     * copies are planned for every reader of the minutes at once, design E06 §8). Empty when there is no such meeting.
+     */
+    fun ofUsers(
+        meetingId: UUID,
+        users: Map<UUID, Boolean>,
+    ): Map<UUID, MeetingView> {
+        val meeting = store.find(meetingId) ?: return emptyMap()
+        val seen = viewers.ofAll(meeting, users.keys)
+        val secretaries =
+            directory
+                .membersOn(meeting.forumId)
+                .filter { it.role == ForumRole.SECRETARY }
+                .map { it.userId }
+                .toSet()
+        val agenda = items.agenda(meeting.id)
+        val head = revisions.heads(meeting.id).lastOrNull()
+        val viewersOf =
+            users.mapValues { (userId, asMember) ->
+                val one = seen.getValue(userId)
+                if (asMember && !one.member) one.copy(member = true, membersOnly = false) else one
+            }
+        // The paper rule in one statement for up to fifty of them (the papers are not part of a view).
+        val lines =
+            if (head == null) {
+                emptyMap()
+            } else {
+                viewersOf.values.chunked(VIEWERS_PER_QUERY).fold(emptyMap<UUID, Visibility>()) { all, chunk ->
+                    all + paperAccess.linesOf(chunk, head.id)
+                }
+            }
+        return viewersOf.mapValues { (userId, viewer) ->
+            view(meeting, userId, viewer, userId in secretaries, agenda, head?.let { lines.getValue(userId) })
+        }
+    }
+
     private fun view(meeting: MeetingRow): MeetingView {
         val user = checkNotNull(actorOrNull()) { "a meeting view needs a signed-in user" }
         return view(meeting, user, checkNotNull(viewers.actor(meeting)), access.manages(meeting.forumId))
+    }
+
+    /**
+     * [find] for each of [meetingIds] the actor sees (one they do not see is absent), the agendas, the revisions and the
+     * paper rule read once for them all: E06's resolution register shows the numbers of several meetings on a page (design
+     * E06 §8). The same views as [find] gives one by one.
+     */
+    fun findAll(meetingIds: Collection<UUID>): Map<UUID, MeetingView> {
+        val user = actorOrNull() ?: return emptyMap()
+        val meetings = store.findAll(meetingIds.distinct())
+        val relations = access.relations(meetings)
+        val seen = meetings.filter { relations[it.id] != null }
+        val actors = viewers.actors(seen)
+        val agendas = items.agendas(seen.map { it.id })
+        val heads = revisions.heads(seen.map { it.id }).mapValues { it.value.last().id }
+        // The paper rule once per distinct viewer (the same person on each meeting usually reads the same way).
+        val published =
+            seen
+                .filter { it.id in heads }
+                .groupBy { checkNotNull(actors[it.id]) }
+                .flatMap { (viewer, group) ->
+                    val seenBy = paperAccess.revisions(viewer, group.map { heads.getValue(it.id) }, withPapers = false)
+                    group.map { it.id to seenBy.getValue(heads.getValue(it.id)) }
+                }.toMap()
+        return seen.associate { meeting ->
+            val viewer = checkNotNull(actors[meeting.id])
+            meeting.id to view(meeting, user, viewer, access.manages(meeting.forumId), agendas.getValue(meeting.id), published[meeting.id])
+        }
     }
 
     private fun view(
@@ -332,10 +416,26 @@ class MeetingViewers(
         user: UUID,
         viewer: PaperViewer,
         manages: Boolean,
+    ): MeetingView =
+        view(
+            meeting,
+            user,
+            viewer,
+            manages,
+            items.agenda(meeting.id),
+            revisions.heads(meeting.id).lastOrNull()?.let { paperAccess.revision(viewer, it.id, withPapers = false) },
+        )
+
+    /** The view from the meeting's [agenda] and what [viewer] sees of its latest revision ([published], none without one). */
+    private fun view(
+        meeting: MeetingRow,
+        user: UUID,
+        viewer: PaperViewer,
+        manages: Boolean,
+        agenda: MeetingAgendaRef,
+        latest: Visibility?,
     ): MeetingView {
-        val agenda = items.agenda(meeting.id)
-        val head = revisions.heads(meeting.id).lastOrNull()
-        val published = head?.let { paperAccess.revision(viewer, it.id) } ?: Visibility(emptyMap(), emptySet())
+        val published = latest ?: Visibility(emptyMap(), emptySet())
         val tabled =
             agenda.items
                 .filterNot { it.published }
@@ -374,3 +474,6 @@ interface DecidedItems {
 object NoDecidedItems : DecidedItems {
     override fun isDecided(itemId: UUID): Boolean = false
 }
+
+/** People judged in one statement of the paper rule (a `UNION ALL` of their conditions), as E04's review. */
+private const val VIEWERS_PER_QUERY = 50

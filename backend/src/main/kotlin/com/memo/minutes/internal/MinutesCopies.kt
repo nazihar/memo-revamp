@@ -298,7 +298,8 @@ class MinutesCopies(
     /** The distinct sets of [row]'s readers today (the reviewer and recused secretaries among them), each with its readers. */
     fun sets(row: MinutesRow): Map<RedactionSet, List<UUID>> {
         val readers = people.readers(row) + listOfNotNull(row.reviewerId).associateWith { ReaderKind.OFFICER }
-        return readers.entries.groupBy({ (user, kind) -> people.setOf(row, user, kind) }, { it.key })
+        val sets = people.setsOf(row, readers)
+        return readers.keys.groupBy { sets.getValue(it) }
     }
 
     /**

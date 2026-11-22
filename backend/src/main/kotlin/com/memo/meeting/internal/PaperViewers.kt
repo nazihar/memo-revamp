@@ -54,6 +54,20 @@ class PaperViewers(
         officers: Set<UUID> = officers(meeting.forumId),
     ): PaperViewer = viewer(meeting, userId, userId in officers, rank, reader = false, rows = rows)
 
+    /**
+     * [of] for each of [userIds] on [meeting], the audience, clearances and officers read once for them all (E06's copies of
+     * the minutes are planned for every reader at once, design E06 §8).
+     */
+    fun ofAll(
+        meeting: MeetingRow,
+        userIds: Collection<UUID>,
+    ): Map<UUID, PaperViewer> {
+        val rows = audience.audience(meeting.id).groupBy { it.userId }
+        val ranks = clearances.rankOf(userIds.toList())
+        val officers = officers(meeting.forumId)
+        return userIds.associateWith { of(meeting, it, rows[it].orEmpty(), ranks[it] ?: 0, officers) }
+    }
+
     /** The forum's secretaries and chair in office today (the vice-chair when there is no chair): they see every item. */
     fun officers(forumId: UUID): Set<UUID> {
         val seats = directory.membersOn(forumId)

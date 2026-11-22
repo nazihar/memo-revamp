@@ -7,6 +7,7 @@ package com.memo.jooq.routines
 import com.memo.jooq.Memo
 
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.util.UUID
 
 import org.jooq.Parameter
@@ -90,9 +91,46 @@ open class SearchDecisionStats : AbstractRoutine<Record>("search_decision_stats"
         val FORUM_ID: Parameter<UUID?> = Internal.createParameter("forum_id", SQLDataType.UUID, false)
 
         /**
-         * The parameter <code>memo.search_decision_stats.decisions</code>.
+         * The parameter <code>memo.search_decision_stats.memo_type_id</code>.
          */
-        val DECISIONS: Parameter<Long?> = Internal.createParameter("decisions", SQLDataType.BIGINT, false)
+        val MEMO_TYPE_ID: Parameter<UUID?> = Internal.createParameter("memo_type_id", SQLDataType.UUID, false)
+
+        /**
+         * The parameter <code>memo.search_decision_stats.memo_id</code>.
+         */
+        val MEMO_ID: Parameter<UUID?> = Internal.createParameter("memo_id", SQLDataType.UUID, false)
+
+        /**
+         * The parameter <code>memo.search_decision_stats.submission_id</code>.
+         */
+        val SUBMISSION_ID: Parameter<UUID?> = Internal.createParameter("submission_id", SQLDataType.UUID, false)
+
+        /**
+         * The parameter <code>memo.search_decision_stats.meeting_date</code>.
+         */
+        val MEETING_DATE: Parameter<LocalDate?> = Internal.createParameter("meeting_date", SQLDataType.LOCALDATE, false)
+
+        /**
+         * The parameter <code>memo.search_decision_stats.decided_at</code>.
+         */
+        val DECIDED_AT: Parameter<OffsetDateTime?> = Internal.createParameter("decided_at", SQLDataType.TIMESTAMPWITHTIMEZONE(6), false)
+
+        /**
+         * The parameter
+         * <code>memo.search_decision_stats.chain_submitted_at</code>.
+         */
+        val CHAIN_SUBMITTED_AT: Parameter<OffsetDateTime?> = Internal.createParameter("chain_submitted_at", SQLDataType.TIMESTAMPWITHTIMEZONE(6), false)
+
+        /**
+         * The parameter <code>memo.search_decision_stats.outcome_kind</code>.
+         */
+        val OUTCOME_KIND: Parameter<String?> = Internal.createParameter("outcome_kind", SQLDataType.CLOB, false)
+
+        /**
+         * The parameter
+         * <code>memo.search_decision_stats.prior_deferrals</code>.
+         */
+        val PRIOR_DEFERRALS: Parameter<Int?> = Internal.createParameter("prior_deferrals", SQLDataType.INTEGER, false)
     }
 
     init {
@@ -109,7 +147,14 @@ open class SearchDecisionStats : AbstractRoutine<Record>("search_decision_stats"
         addInParameter(SearchDecisionStats.P_FROM)
         addInParameter(SearchDecisionStats.P_TO)
         addOutParameter(SearchDecisionStats.FORUM_ID)
-        addOutParameter(SearchDecisionStats.DECISIONS)
+        addOutParameter(SearchDecisionStats.MEMO_TYPE_ID)
+        addOutParameter(SearchDecisionStats.MEMO_ID)
+        addOutParameter(SearchDecisionStats.SUBMISSION_ID)
+        addOutParameter(SearchDecisionStats.MEETING_DATE)
+        addOutParameter(SearchDecisionStats.DECIDED_AT)
+        addOutParameter(SearchDecisionStats.CHAIN_SUBMITTED_AT)
+        addOutParameter(SearchDecisionStats.OUTCOME_KIND)
+        addOutParameter(SearchDecisionStats.PRIOR_DEFERRALS)
     }
 
     /**
@@ -195,7 +240,43 @@ open class SearchDecisionStats : AbstractRoutine<Record>("search_decision_stats"
     fun getForumId(): UUID? = get(SearchDecisionStats.FORUM_ID)
 
     /**
-     * Get the <code>decisions</code> parameter OUT value from the routine
+     * Get the <code>memo_type_id</code> parameter OUT value from the routine
      */
-    fun getDecisions(): Long? = get(SearchDecisionStats.DECISIONS)
+    fun getMemoTypeId(): UUID? = get(SearchDecisionStats.MEMO_TYPE_ID)
+
+    /**
+     * Get the <code>memo_id</code> parameter OUT value from the routine
+     */
+    fun getMemoId(): UUID? = get(SearchDecisionStats.MEMO_ID)
+
+    /**
+     * Get the <code>submission_id</code> parameter OUT value from the routine
+     */
+    fun getSubmissionId(): UUID? = get(SearchDecisionStats.SUBMISSION_ID)
+
+    /**
+     * Get the <code>meeting_date</code> parameter OUT value from the routine
+     */
+    fun getMeetingDate(): LocalDate? = get(SearchDecisionStats.MEETING_DATE)
+
+    /**
+     * Get the <code>decided_at</code> parameter OUT value from the routine
+     */
+    fun getDecidedAt(): OffsetDateTime? = get(SearchDecisionStats.DECIDED_AT)
+
+    /**
+     * Get the <code>chain_submitted_at</code> parameter OUT value from the
+     * routine
+     */
+    fun getChainSubmittedAt(): OffsetDateTime? = get(SearchDecisionStats.CHAIN_SUBMITTED_AT)
+
+    /**
+     * Get the <code>outcome_kind</code> parameter OUT value from the routine
+     */
+    fun getOutcomeKind(): String? = get(SearchDecisionStats.OUTCOME_KIND)
+
+    /**
+     * Get the <code>prior_deferrals</code> parameter OUT value from the routine
+     */
+    fun getPriorDeferrals(): Int? = get(SearchDecisionStats.PRIOR_DEFERRALS)
 }

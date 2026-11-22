@@ -96,6 +96,30 @@ class MeetingStore(
             .where(MEETING.FORUM_ID.eq(forumId), MEETING.STATUS.`in`(OPEN.map { it.name }))
             .fetch { it.row() }
 
+    /**
+     * The meetings of [forumIds] that were held (HELD, MINUTES_APPROVED or CLOSED) and start from [from] (inclusive) to
+     * [to] (exclusive), by start: one range read per committee on `(tenant_id, forum_id, starts_at)` (analytics, E08 §2.1).
+     */
+    fun held(
+        forumIds: Collection<UUID>,
+        from: Instant,
+        to: Instant,
+    ): List<MeetingRow> =
+        if (forumIds.isEmpty()) {
+            emptyList()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(MEETING)
+                .where(
+                    MEETING.FORUM_ID.`in`(forumIds),
+                    MEETING.STARTS_AT.ge(utc(from)),
+                    MEETING.STARTS_AT.lt(utc(to)),
+                    MEETING.STATUS.`in`(HELD.map { it.name }),
+                ).orderBy(MEETING.STARTS_AT, MEETING.ID)
+                .fetch { it.row() }
+        }
+
     fun insert(row: MeetingRow) {
         val now = now()
         tenantDsl
@@ -178,6 +202,9 @@ class MeetingStore(
 
     companion object {
         val OPEN = setOf(MeetingStatus.DRAFT, MeetingStatus.SCHEDULED, MeetingStatus.IN_PROGRESS)
+
+        /** Held meetings (design E08 §2.1): the meeting took place, whatever has happened to its minutes since. */
+        val HELD = setOf(MeetingStatus.HELD, MeetingStatus.MINUTES_APPROVED, MeetingStatus.CLOSED)
 
         fun utc(at: Instant): OffsetDateTime = at.atOffset(ZoneOffset.UTC)
     }

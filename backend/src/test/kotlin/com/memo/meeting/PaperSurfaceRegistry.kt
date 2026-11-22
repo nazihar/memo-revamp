@@ -20,8 +20,8 @@ package com.memo.meeting
  * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
  * totals and its export (TRACKER). E08 T2 made the register part of its placeholder real: the decision register's scope and
  * search (REGISTER), probed in both suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints
- * listed in [search], and `com.memo.analytics`, whose surface stays a placeholder for T4). E08 T3 added the register's
- * export to REGISTER, and its two files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel.
+ * listed in [search], and `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). E08 T3 added the register's export
+ * to REGISTER, and its two files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -71,6 +71,10 @@ object PaperSurfaceRegistry {
                 "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
                 "comments, the officers everyone's but on items they are recused from; once approved (E06 T7), the record or the " +
                 "reader's approved copy (a PDF/A record of the same set), its versions and its check",
+        ),
+        ANALYTICS(
+            "Meeting analytics, the committee's detail and its attendance export (E08 T4): counts only, never an item; a recused or " +
+                "restricted viewer's decision, deferral, late-paper and action counts leave the item out (AnalyticsLeakIT's differential)",
         ),
         REGISTER(
             "The decision register across committees (E08 T2): its scope, and the search's rows, totals, facets and order; a decision " +
@@ -152,6 +156,10 @@ object PaperSurfaceRegistry {
             "POST /api/v1/decision-register/search" to Surface.REGISTER,
             // E08 T3: its export, the same rows by the same rule (officers and oversight; members 403), its files in EXPORTS.
             "POST /api/v1/decision-register/export" to Surface.REGISTER,
+            // E08 T4: analytics, counts of what the viewer sees in full (members their own attendance row, no late counts).
+            "GET /api/v1/analytics/committees" to Surface.ANALYTICS,
+            "GET /api/v1/analytics/committees/{forumId}" to Surface.ANALYTICS,
+            "GET /api/v1/analytics/committees/{forumId}/attendance/export" to Surface.ANALYTICS,
         )
 
     /**
@@ -389,13 +397,5 @@ object PaperSurfaceRegistry {
      * file in INVITATIONS) and their changes as officer probes in [RecusalLeakIT]; who counts for an item a holder is recused
      * from is E05's `ItemQuorumProperties`, `PresenceBuilderProperties` and `QuorumSnapshotsIT`.
      */
-    val pending: List<Pending> =
-        listOf(
-            Pending(
-                "E08",
-                "Meeting analytics and the attendance export (T4): measures over the rows the viewer sees in full, with live recusals " +
-                    "(the differential probe)",
-                listOf("/api/v1/analytics"),
-            ),
-        )
+    val pending: List<Pending> = emptyList()
 }

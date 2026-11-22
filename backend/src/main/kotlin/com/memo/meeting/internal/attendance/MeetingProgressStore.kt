@@ -31,6 +31,22 @@ class MeetingProgressStore(
             .orderBy(MEETING_ITEM_PROGRESS.STARTED_AT, MEETING_ITEM_PROGRESS.ID)
             .fetch { ItemProgressRow(it.id, it.meetingId, it.itemId, it.startedAt.toInstant(), it.recordedBy) }
 
+    /** When the first item of each of [meetingIds] started, for those where one did: one grouped query (analytics, E08). */
+    fun firstStarts(meetingIds: Collection<UUID>): Map<UUID, java.time.Instant> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            val p = MEETING_ITEM_PROGRESS
+            tenantDsl
+                .current()
+                .select(p.MEETING_ID, DSL.min(p.STARTED_AT))
+                .from(p)
+                .where(p.MEETING_ID.`in`(meetingIds))
+                .groupBy(p.MEETING_ID)
+                .fetch()
+                .associate { it.value1()!! to it.value2()!!.toInstant() }
+        }
+
     fun insert(progress: ItemProgressRow) {
         tenantDsl
             .current()

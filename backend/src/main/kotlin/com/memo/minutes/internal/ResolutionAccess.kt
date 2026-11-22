@@ -63,13 +63,10 @@ class ResolutionAccess(
         if (shown == null) return ResolutionRegisterResponse(forum.id, null, periods, emptyList(), null)
         val page = limit.coerceIn(1, MAX_PAGE)
         val rows = store.page(forum.id, shown, state, before, page + 1)
-        val decisions =
-            rows
-                .map { it.decisionId }
-                .distinct()
-                .mapNotNull { reads.currentById(it) }
-                .associateBy { it.decision.id }
-        val views = rows.map { it.meetingId }.distinct().associateWith { viewers.find(it) }
+        // One query for the page's decisions (E06 T9: one a row was a third of the page's statements at volume).
+        val decisions = reads.currentByIds(rows.map { it.decisionId }.toSet()).associateBy { it.decision.id }
+        // The page's meetings as the viewer sees them, read together (E06 T9: one by one they were most of its time).
+        val views = viewers.findAll(rows.map { it.meetingId })
         val full =
             rows
                 .filter { r ->

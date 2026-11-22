@@ -258,6 +258,9 @@ class PaperAccess(
                 .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
                 .where(
                     p.REVISION_ID.`in`(revisionIds),
+                    // The same revisions on the items' side, so the planner reads them by index for many revisions too (E06
+                    // T9: for twenty meetings at once it scanned every revision item of the tenant).
+                    i.REVISION_ID.`in`(revisionIds),
                     if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition(),
                     paperCondition(viewer, REVISION_ITEM, REVISION_PAPER),
                 ).fetch()

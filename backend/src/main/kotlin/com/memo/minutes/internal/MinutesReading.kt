@@ -75,14 +75,25 @@ class MinutesReading(
         view: MeetingView,
         row: MinutesRow,
         readers: Map<UUID, ReaderKind> = people.readers(row),
+    ): MinutesReader? = readerOf(view, row, lazyOf(readers), managerKind = true)
+
+    /**
+     * [readerOf], reading the minutes' readers only when it needs them (E06 T9: "My meetings" asked for each meeting's
+     * register). [managerKind]: a manager's reader kind too (it names their copy's set; "My meetings" needs none).
+     */
+    private fun readerOf(
+        view: MeetingView,
+        row: MinutesRow,
+        readers: Lazy<Map<UUID, ReaderKind>>,
+        managerKind: Boolean,
     ): MinutesReader? {
         val reads = row.state in READ_STAGES
         val access: Pair<MinutesAccessKind, ReaderKind?>? =
             when {
-                view.manages -> MinutesAccessKind.MANAGER to readers[view.userId]
+                view.manages -> MinutesAccessKind.MANAGER to (if (managerKind) readers.value[view.userId] else null)
                 row.state == MinutesStage.CHAIR_REVIEW && row.reviewerId == view.userId -> MinutesAccessKind.REVIEWER to ReaderKind.OFFICER
                 !reads -> null
-                readers.containsKey(view.userId) -> MinutesAccessKind.READER to readers[view.userId]
+                readers.value.containsKey(view.userId) -> MinutesAccessKind.READER to readers.value[view.userId]
                 people.confirmer(row)?.userId == view.userId -> MinutesAccessKind.READER to ReaderKind.OFFICER
                 linkedReader(row) -> MinutesAccessKind.LINKED to ReaderKind.LINKED
                 else -> null
@@ -141,11 +152,13 @@ class MinutesReading(
     override fun of(meetingIds: Collection<UUID>): Map<UUID, MeetingMinutesSummary> {
         val rows = queries.findAll(meetingIds).values.filter { it.state != MinutesStage.DRAFT }
         if (rows.isEmpty()) return emptyMap()
+        // The meetings as the actor sees them, read together (E06 T9).
+        val views = viewers.findAll(rows.map { it.meetingId })
         return rows
             .mapNotNull { row ->
-                val view = viewers.find(row.meetingId) ?: return@mapNotNull null
-                val readers = people.readers(row)
-                val reader = readerOf(view, row, readers) ?: return@mapNotNull null
+                val view = views[row.meetingId] ?: return@mapNotNull null
+                val readers = lazy { people.readers(row) }
+                val reader = readerOf(view, row, readers, managerKind = false) ?: return@mapNotNull null
                 row.meetingId to MeetingMinutesSummary(row.state.name, action(reader, readers))
             }.toMap()
     }
@@ -154,6 +167,11 @@ class MinutesReading(
     fun action(
         reader: MinutesReader,
         readers: Map<UUID, ReaderKind> = people.readers(reader.row),
+    ): String? = action(reader, lazyOf(readers))
+
+    private fun action(
+        reader: MinutesReader,
+        readers: Lazy<Map<UUID, ReaderKind>>,
     ): String? {
         val row = reader.row
         val secretary = reader.userId in people.secretaries(row.forumId)
@@ -166,7 +184,7 @@ class MinutesReading(
                 "CONFIRM"
             }
 
-            row.state == MinutesStage.CIRCULATED && !secretary && readers.containsKey(reader.userId) && !answered(row, reader.userId) -> {
+            row.state == MinutesStage.CIRCULATED && !secretary && reads(readers, reader) && !answered(row, reader.userId) -> {
                 "COMMENT"
             }
 
@@ -179,6 +197,11 @@ class MinutesReading(
             }
         }
     }
+
+    private fun reads(
+        readers: Lazy<Map<UUID, ReaderKind>>,
+        reader: MinutesReader,
+    ): Boolean = readers.value.containsKey(reader.userId)
 
     private fun answered(
         row: MinutesRow,

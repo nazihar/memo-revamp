@@ -49,6 +49,7 @@ import java.util.UUID
  * - MINUTES_REVIEW_REQUESTED, MINUTES_RETURNED, MINUTES_CONFIRMATION_REQUESTED, MINUTES_APPROVED: name, organisation,
  *   committee, date (the meeting's), link (never an item or a word of the minutes, design E06 §2)
  * - MINUTES_CIRCULATED, MINUTES_COMMENTS_REQUESTED, MINUTES_COMMENTS_CLOSING: as above, and until (the comment deadline)
+ * - ACTION_ASSIGNED: name, organisation, committee, reference, date (the due date), link (never the action's title or text)
  */
 enum class MailTemplate {
     INVITATION,
@@ -106,6 +107,7 @@ enum class MailTemplate {
     MINUTES_COMMENTS_CLOSING,
     MINUTES_CONFIRMATION_REQUESTED,
     MINUTES_APPROVED,
+    ACTION_ASSIGNED,
 }
 
 /**

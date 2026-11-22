@@ -56,6 +56,10 @@ data class AgendaItemRef(
     val published: Boolean,
     /** Tabled at the meeting (E03). */
     val tabled: Boolean,
+    /** The item's classification level (ADR-0061): E07 copies it onto the item's actions, with [membersOnly]. */
+    val classificationId: UUID,
+    /** Its section is members only (in camera). */
+    val membersOnly: Boolean,
 ) {
     val restricted: Boolean get() = restrictedTo != null
 }
@@ -205,6 +209,8 @@ class MeetingItems(
                 lifted = row.itemId in lifted,
                 published = true,
                 tabled = row.late == PublishedLate.TABLED,
+                classificationId = row.classificationId,
+                membersOnly = row.membersOnly,
             )
         }
     }
@@ -219,6 +225,7 @@ class MeetingItems(
         val live = items.live(meetingId)
         val numbers = AgendaRules.numbers(liveSections, live)
         val consent = liveSections.filter { it.kind == AgendaSectionKind.CONSENT }.map { it.id }.toSet()
+        val membersOnly = liveSections.filter { it.membersOnly }.map { it.id }.toSet()
         return live.filter { it.late == Lateness.TABLED && it.kind != ItemKind.BREAK && it.id !in carried }.map { row ->
             AgendaItemRef(
                 id = row.id,
@@ -238,6 +245,8 @@ class MeetingItems(
                 lifted = row.id in lifted,
                 published = false,
                 tabled = true,
+                classificationId = row.classificationId,
+                membersOnly = row.sectionId in membersOnly,
             )
         }
     }

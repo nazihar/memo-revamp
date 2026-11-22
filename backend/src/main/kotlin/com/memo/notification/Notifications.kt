@@ -177,6 +177,13 @@ enum class NotificationKind(
     MINUTES_DRAFT_OVERDUE(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_READY(NotificationCategory.WORKFLOW, null),
     DECISIONS_RELEASE_FAILED(NotificationCategory.WORKFLOW, null),
+
+    // Action items (Phase 4 E07, design E07 §2.3): a committee gave the person an action (to the holder of the owner's
+    // task, when it is issued); the decision an action came from was corrected (to the committee's secretaries not recused
+    // from the item, in the app only). Parameters `committee`, `reference`, `organisation`, `link`; `date` (the due date,
+    // ISO) for the new action. Never the action's title, text or the item (ADR-0067).
+    ACTION_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ASSIGNED),
+    ACTION_SOURCE_CORRECTED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

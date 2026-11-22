@@ -1,0 +1,125 @@
+package com.memo.actions.internal
+
+import com.memo.common.tenant.TenantDsl
+import com.memo.jooq.tables.references.ACTIONS_CONTRIBUTOR
+import com.memo.jooq.tables.references.ACTIONS_ENTRY
+import org.jooq.JSONB
+import org.jooq.impl.DSL
+import org.springframework.stereotype.Repository
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
+import java.time.Instant
+import java.time.ZoneOffset
+import java.util.UUID
+
+/**
+ * An action's contributors and its timeline (design E07 §1.3, §1.6), inside a tenant transaction and under the action's
+ * lock: a contributor's row is only ever ended, once (a person added again is a new row); entries are append-only.
+ */
+@Repository
+class ActionLines(
+    private val tenantDsl: TenantDsl,
+    private val json: JsonMapper,
+) {
+    /** The current contributors of each of [actionIds], in the order they were added. */
+    fun contributors(actionIds: Collection<UUID>): Map<UUID, List<ContributorRow>> {
+        if (actionIds.isEmpty()) return emptyMap()
+        val c = ACTIONS_CONTRIBUTOR
+        return tenantDsl
+            .current()
+            .selectFrom(c)
+            .where(c.ACTION_ID.`in`(actionIds), c.REMOVED_AT.isNull)
+            .orderBy(c.ADDED_AT, c.USER_ID)
+            .fetch { ContributorRow(it.actionId, it.userId, it.addedBy, it.addedAt.toInstant()) }
+            .groupBy { it.actionId }
+    }
+
+    /** The current contributors of [actionId]. */
+    fun contributorsOf(actionId: UUID): List<UUID> = contributors(listOf(actionId))[actionId].orEmpty().map { it.userId }
+
+    /** Sets the current contributors of [actionId] to [users]: the others' rows are ended, the new ones added. */
+    fun setContributors(
+        actionId: UUID,
+        users: List<UUID>,
+        by: UUID,
+        at: Instant,
+    ) {
+        val current = contributorsOf(actionId)
+        val removed = current - users.toSet()
+        val c = ACTIONS_CONTRIBUTOR
+        val dsl = tenantDsl.current()
+        if (removed.isNotEmpty()) {
+            dsl
+                .update(c)
+                .set(c.REMOVED_BY, by)
+                .set(c.REMOVED_AT, at.atOffset(ZoneOffset.UTC))
+                .where(c.ACTION_ID.eq(actionId), c.USER_ID.`in`(removed), c.REMOVED_AT.isNull)
+                .execute()
+        }
+        (users - current.toSet()).forEach { user ->
+            dsl
+                .insertInto(c)
+                .set(c.ID, UUID.randomUUID())
+                .set(c.TENANT_ID, tenantDsl.tenant().value)
+                .set(c.ACTION_ID, actionId)
+                .set(c.USER_ID, user)
+                .set(c.ADDED_BY, by)
+                .set(c.ADDED_AT, at.atOffset(ZoneOffset.UTC))
+                .execute()
+        }
+    }
+
+    /** Appends an entry of [kind] to [actionId]'s timeline; returns its number. */
+    fun entry(
+        actionId: UUID,
+        kind: String,
+        actorId: UUID?,
+        details: Map<String, Any?>,
+        at: Instant,
+    ): Int {
+        val e = ACTIONS_ENTRY
+        val dsl = tenantDsl.current()
+        val seq =
+            (
+                dsl
+                    .select(DSL.max(e.SEQ))
+                    .from(e)
+                    .where(e.ACTION_ID.eq(actionId))
+                    .fetchOne()
+                    ?.value1() ?: 0
+            ) + 1
+        dsl
+            .insertInto(e)
+            .set(e.TENANT_ID, tenantDsl.tenant().value)
+            .set(e.ACTION_ID, actionId)
+            .set(e.SEQ, seq)
+            .set(e.KIND, kind)
+            .set(e.ACTOR_ID, actorId)
+            .set(e.DETAILS, JSONB.jsonb(json.writeValueAsString(details)))
+            .set(e.AT, at.atOffset(ZoneOffset.UTC))
+            .execute()
+        return seq
+    }
+
+    /** [actionId]'s timeline, the newest first. */
+    fun entries(actionId: UUID): List<EntryRow> =
+        tenantDsl
+            .current()
+            .selectFrom(ACTIONS_ENTRY)
+            .where(ACTIONS_ENTRY.ACTION_ID.eq(actionId))
+            .orderBy(ACTIONS_ENTRY.SEQ.desc())
+            .fetch {
+                EntryRow(
+                    it.actionId,
+                    it.seq,
+                    it.kind,
+                    it.actorId,
+                    it.details?.let { d -> json.readValue(d.data(), DETAILS) }.orEmpty(),
+                    it.at.toInstant(),
+                )
+            }
+
+    private companion object {
+        val DETAILS = object : TypeReference<Map<String, Any?>>() {}
+    }
+}

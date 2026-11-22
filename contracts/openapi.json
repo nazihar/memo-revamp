@@ -10,6 +10,348 @@
         },
         "type" : "object"
       },
+      "ActionAbilities" : {
+        "properties" : {
+          "discard" : {
+            "type" : "boolean"
+          },
+          "edit" : {
+            "type" : "boolean"
+          },
+          "issue" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "discard", "edit", "issue" ],
+        "type" : "object"
+      },
+      "ActionFieldsRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "context" : {
+            "type" : [ "string", "null" ]
+          },
+          "contributors" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "dueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "owner" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/OwnerInput"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "priority" : {
+            "enum" : [ "NORMAL", "HIGH" ],
+            "type" : "string"
+          },
+          "sourceNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "ActionOwnerResponse" : {
+        "properties" : {
+          "holder" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ActionPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "kind" : {
+            "enum" : [ "PERSON", "POSITION" ],
+            "type" : "string"
+          },
+          "person" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ActionPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "position" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ActionPosition"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "kind" ],
+        "type" : "object"
+      },
+      "ActionPerson" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "ActionPosition" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title" ],
+        "type" : "object"
+      },
+      "ActionResponse" : {
+        "properties" : {
+          "can" : {
+            "$ref" : "#/components/schemas/ActionAbilities"
+          },
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "committee" : {
+            "type" : "string"
+          },
+          "context" : {
+            "type" : [ "string", "null" ]
+          },
+          "contributors" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionPerson"
+            },
+            "type" : "array"
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "dueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "dueRevisions" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "issuedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "originalDueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "owner" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ActionOwnerResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "priority" : {
+            "enum" : [ "NORMAL", "HIGH" ],
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "source" : {
+            "$ref" : "#/components/schemas/ActionSourceResponse"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "OPEN", "IN_PROGRESS", "DONE_PENDING", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "stepName" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "viewerRecused" : {
+            "type" : "boolean"
+          },
+          "warnings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionWarning"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "can", "classificationId", "committee", "contributors", "createdAt", "dueRevisions", "forumId", "id", "priority", "source", "status", "title", "version", "viewerRecused", "warnings" ],
+        "type" : "object"
+      },
+      "ActionSourceResponse" : {
+        "properties" : {
+          "conditionIndex" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "itemTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "DECISION", "ITEM", "MEETING", "DIRECT" ],
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind", "label" ],
+        "type" : "object"
+      },
+      "ActionSummary" : {
+        "properties" : {
+          "committee" : {
+            "type" : "string"
+          },
+          "conditionIndex" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "dueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "dueRevisions" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "originalDueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "owner" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ActionOwnerResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "priority" : {
+            "enum" : [ "NORMAL", "HIGH" ],
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "sourceKind" : {
+            "enum" : [ "DECISION", "ITEM", "MEETING", "DIRECT" ],
+            "type" : "string"
+          },
+          "sourceLabel" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "OPEN", "IN_PROGRESS", "DONE_PENDING", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "stepName" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "committee", "dueRevisions", "forumId", "id", "priority", "sourceKind", "sourceLabel", "status", "title", "version" ],
+        "type" : "object"
+      },
+      "ActionWarning" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "userId" ],
+        "type" : "object"
+      },
       "ActionsPolicy" : {
         "properties" : {
           "amberWorkingDays" : {
@@ -3060,6 +3402,14 @@
         "required" : [ "person" ],
         "type" : "object"
       },
+      "DiscardActionRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "DiscussionResponse" : {
         "properties" : {
           "canAsk" : {
@@ -5344,6 +5694,37 @@
         "required" : [ "emailOff", "guest", "invitable", "name", "state", "userId" ],
         "type" : "object"
       },
+      "IssueResult" : {
+        "properties" : {
+          "actionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "issued" : {
+            "type" : "boolean"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "actionId", "issued" ],
+        "type" : "object"
+      },
+      "IssueResultsResponse" : {
+        "properties" : {
+          "results" : {
+            "items" : {
+              "$ref" : "#/components/schemas/IssueResult"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "results" ],
+        "type" : "object"
+      },
       "ItemChangeResponse" : {
         "properties" : {
           "flags" : {
@@ -6179,6 +6560,26 @@
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
         "type" : "object"
       },
+      "MeetingActionsResponse" : {
+        "properties" : {
+          "actions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionSummary"
+            },
+            "type" : "array"
+          },
+          "drafts" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "actions", "drafts", "meetingId" ],
+        "type" : "object"
+      },
       "MeetingDecisionsResponse" : {
         "properties" : {
           "decisions" : {
@@ -6831,7 +7232,7 @@
             "type" : [ "string", "null" ]
           }
         },
-        "required" : [ "access", "changes", "id", "kind", "late", "links", "papers", "presenters", "subItems" ],
+        "required" : [ "access", "changes", "id", "kind", "late", "papers", "presenters", "subItems" ],
         "type" : "object"
       },
       "MemberPaperResponse" : {
@@ -8515,6 +8916,38 @@
         "required" : [ "clearance", "permissions" ],
         "type" : "object"
       },
+      "MyActionCounts" : {
+        "properties" : {
+          "mine" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "mine" ],
+        "type" : "object"
+      },
+      "MyActionsResponse" : {
+        "properties" : {
+          "counts" : {
+            "$ref" : "#/components/schemas/MyActionCounts"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionSummary"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "tab" : {
+            "enum" : [ "MINE" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "counts", "items", "tab" ],
+        "type" : "object"
+      },
       "MyClearance" : {
         "properties" : {
           "name" : {
@@ -9528,6 +9961,23 @@
           },
           "resolution" : {
             "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "OwnerInput" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "PERSON", "POSITION" ],
+            "type" : "string"
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
           }
         },
         "type" : "object"
@@ -10555,6 +11005,63 @@
           }
         },
         "required" : [ "available", "basis", "declared", "needed", "recusedCount", "unmet" ],
+        "type" : "object"
+      },
+      "RaiseActionRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "conditionIndex" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "context" : {
+            "type" : [ "string", "null" ]
+          },
+          "contributors" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "dueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "owner" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/OwnerInput"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "priority" : {
+            "enum" : [ "NORMAL", "HIGH" ],
+            "type" : "string"
+          },
+          "source" : {
+            "enum" : [ "DECISION", "ITEM", "MEETING", "DIRECT" ],
+            "type" : "string"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "source" ],
         "type" : "object"
       },
       "RaiseScope" : {
@@ -13741,6 +14248,170 @@
   },
   "openapi" : "3.1.0",
   "paths" : {
+    "/api/v1/actions/{actionId}" : {
+      "get" : {
+        "operationId" : "getAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "An action as the viewer may see it",
+        "tags" : [ "actions" ]
+      },
+      "patch" : {
+        "operationId" : "editAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ActionFieldsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a draft action's fields (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/discard" : {
+      "post" : {
+        "operationId" : "discardAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DiscardActionRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Discard a draft action, kept and never numbered (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/issue" : {
+      "post" : {
+        "operationId" : "issueAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Issue a draft action: its reference, its workflow and its owner told (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
     "/api/v1/admin/audit" : {
       "get" : {
         "operationId" : "queryAudit",
@@ -19615,6 +20286,51 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/forums/{forumId}/actions" : {
+      "post" : {
+        "operationId" : "raiseDirectAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ActionFieldsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Raise a direct draft action on a committee (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
     "/api/v1/forums/{forumId}/clone" : {
       "post" : {
         "operationId" : "cloneForum",
@@ -21010,6 +21726,58 @@
         "tags" : [ "me" ]
       }
     },
+    "/api/v1/me/actions" : {
+      "get" : {
+        "operationId" : "getMyActions",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "tab",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "MINE" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "forumId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyActionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My actions: those I own or hold, by due date",
+        "tags" : [ "actions" ]
+      }
+    },
     "/api/v1/me/forums" : {
       "get" : {
         "operationId" : "listMyForums",
@@ -21425,6 +22193,112 @@
         },
         "summary" : "Change a meeting's title, kind, place, link or classification",
         "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/actions" : {
+      "get" : {
+        "operationId" : "getMeetingActions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingActionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A meeting's actions as the viewer may see them",
+        "tags" : [ "actions" ]
+      },
+      "post" : {
+        "operationId" : "raiseMeetingAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RaiseActionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Raise a draft action from a decision, an item or the meeting (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/actions/issue" : {
+      "post" : {
+        "operationId" : "issueMeetingActions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IssueResultsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send every draft of a meeting the actor may issue to its owner",
+        "tags" : [ "actions" ]
       }
     },
     "/api/v1/meetings/{meetingId}/agenda" : {

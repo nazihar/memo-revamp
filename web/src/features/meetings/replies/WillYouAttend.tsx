@@ -98,9 +98,17 @@ function Question({ meeting: m, mine, titleId }: { meeting: MeetingResponse; min
   const asking = mine.canAnswer && (!mine.answer || mine.stale || changing)
   const offered = mine.offered.length ? mine.offered : offeredFor(m.mode)
 
+  // The wanted target may not be drawn yet (the answer is saved, then the meeting reloads): keep asking until it is,
+  // so focus never falls to the page (WCAG 2.4.3; CI showed it on a busy runner).
   useEffect(() => {
-    if (focus.current === 'result') resultRef.current?.focus()
-    if (focus.current === 'answers') answersRef.current?.querySelector<HTMLButtonElement>('button')?.focus()
+    const target =
+      focus.current === 'result'
+        ? resultRef.current
+        : focus.current === 'answers'
+          ? answersRef.current?.querySelector<HTMLButtonElement>('button')
+          : null
+    if (!target) return
+    target.focus()
     focus.current = undefined
   })
 

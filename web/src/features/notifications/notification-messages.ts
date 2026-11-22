@@ -156,6 +156,8 @@ const kindsWithValues = defineMessages<{
   minutesDraftOverdue: { committee: string; date: string }
   minutesDraftReady: { committee: string; date: string }
   decisionsReleaseFailed: { committee: string; date: string; count: number }
+  actionAssigned: { committee: string; reference: string; date: string }
+  actionSourceCorrected: { committee: string; reference: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -382,6 +384,14 @@ const kindsWithValues = defineMessages<{
     defaultMessage:
       '{count, plural, one {A decision of {committee} on {date} was not sent to its memo} other {# decisions of {committee} on {date} were not sent to their memos}}: open the meeting to try again',
   },
+  actionAssigned: {
+    id: 'notificationKinds.actionAssigned',
+    defaultMessage: '{committee} has given you an action, due {date} ({reference})',
+  },
+  actionSourceCorrected: {
+    id: 'notificationKinds.actionSourceCorrected',
+    defaultMessage: 'The decision that action {reference} of {committee} came from was corrected',
+  },
 })
 
 const kinds = defineMessages({
@@ -584,6 +594,17 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         ...meetingValues(params),
         count: Number(params.count ?? '1') || 1,
       })
+    case 'ACTION_ASSIGNED':
+      return intl.formatMessage(kindsWithValues.actionAssigned, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+        date: params.date ?? '',
+      })
+    case 'ACTION_SOURCE_CORRECTED':
+      return intl.formatMessage(kindsWithValues.actionSourceCorrected, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -698,6 +719,7 @@ const mailTemplates = defineMessages({
     defaultMessage: 'Minutes to approve',
   },
   MINUTES_APPROVED: { id: 'mail.template.minutesApproved', defaultMessage: 'Minutes approved' },
+  ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

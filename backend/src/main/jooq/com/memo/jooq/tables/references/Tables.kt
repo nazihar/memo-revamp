@@ -5,6 +5,10 @@
 package com.memo.jooq.tables.references
 
 
+import com.memo.jooq.tables.ActionsContributor
+import com.memo.jooq.tables.ActionsCounter
+import com.memo.jooq.tables.ActionsEntry
+import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -165,6 +169,26 @@ import org.jooq.Field
 import org.jooq.Result
 
 
+
+/**
+ * The table <code>memo.actions_contributor</code>.
+ */
+val ACTIONS_CONTRIBUTOR: ActionsContributor = ActionsContributor.ACTIONS_CONTRIBUTOR
+
+/**
+ * The table <code>memo.actions_counter</code>.
+ */
+val ACTIONS_COUNTER: ActionsCounter = ActionsCounter.ACTIONS_COUNTER
+
+/**
+ * The table <code>memo.actions_entry</code>.
+ */
+val ACTIONS_ENTRY: ActionsEntry = ActionsEntry.ACTIONS_ENTRY
+
+/**
+ * The table <code>memo.actions_item</code>.
+ */
+val ACTIONS_ITEM: ActionsItem = ActionsItem.ACTIONS_ITEM
 
 /**
  * The table <code>memo.audit_anchor</code>.

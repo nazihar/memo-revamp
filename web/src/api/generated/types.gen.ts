@@ -8,6 +8,106 @@ export type AcceptRequest = {
     targetDate?: string | null;
 };
 
+export type ActionAbilities = {
+    discard: boolean;
+    edit: boolean;
+    issue: boolean;
+};
+
+export type ActionFieldsRequest = {
+    classificationId?: string | null;
+    context?: string | null;
+    contributors?: Array<string>;
+    description?: string | null;
+    dueDate?: string | null;
+    owner?: OwnerInput | null;
+    priority?: 'NORMAL' | 'HIGH';
+    sourceNote?: string | null;
+    title?: string | null;
+};
+
+export type ActionOwnerResponse = {
+    holder?: ActionPerson | null;
+    kind: 'PERSON' | 'POSITION';
+    person?: ActionPerson | null;
+    position?: ActionPosition | null;
+};
+
+export type ActionPerson = {
+    id: string;
+    name: string;
+};
+
+export type ActionPosition = {
+    id: string;
+    title: string;
+};
+
+export type ActionResponse = {
+    can: ActionAbilities;
+    classificationId: string;
+    committee: string;
+    context?: string | null;
+    contributors: Array<ActionPerson>;
+    createdAt: string;
+    description?: string | null;
+    dueDate?: string | null;
+    dueRevisions: number;
+    forumId: string;
+    id: string;
+    issuedAt?: string | null;
+    originalDueDate?: string | null;
+    owner?: ActionOwnerResponse | null;
+    priority: 'NORMAL' | 'HIGH';
+    reference?: string | null;
+    source: ActionSourceResponse;
+    status: 'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED';
+    stepName?: string | null;
+    title: string;
+    version: number;
+    viewerRecused: boolean;
+    warnings: Array<ActionWarning>;
+};
+
+export type ActionSourceResponse = {
+    conditionIndex?: number | null;
+    decisionId?: string | null;
+    itemId?: string | null;
+    itemNumber?: string | null;
+    itemTitle?: string | null;
+    kind: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+    label: string;
+    meetingId?: string | null;
+    note?: string | null;
+};
+
+export type ActionSummary = {
+    committee: string;
+    conditionIndex?: number | null;
+    decisionId?: string | null;
+    dueDate?: string | null;
+    dueRevisions: number;
+    forumId: string;
+    id: string;
+    itemId?: string | null;
+    meetingId?: string | null;
+    originalDueDate?: string | null;
+    owner?: ActionOwnerResponse | null;
+    priority: 'NORMAL' | 'HIGH';
+    reference?: string | null;
+    sourceKind: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+    sourceLabel: string;
+    status: 'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED';
+    stepName?: string | null;
+    title: string;
+    version: number;
+};
+
+export type ActionWarning = {
+    code: string;
+    userId: string;
+};
+
 export type ActionsPolicy = {
     amberWorkingDays: number;
     defaultDue: 'NEXT_MEETING' | 'WORKING_DAYS';
@@ -1000,6 +1100,10 @@ export type DirectoryUser = {
     position?: DirectoryPositionSummary | null;
 };
 
+export type DiscardActionRequest = {
+    reason?: string | null;
+};
+
 export type DiscussionResponse = {
     canAsk: boolean;
     mine: boolean;
@@ -1741,6 +1845,17 @@ export type InviteeResponse = {
     userId: string;
 };
 
+export type IssueResult = {
+    actionId: string;
+    issued: boolean;
+    reason?: string | null;
+    reference?: string | null;
+};
+
+export type IssueResultsResponse = {
+    results: Array<IssueResult>;
+};
+
 export type ItemChangeResponse = {
     flags: Array<'ADDED' | 'REMOVED' | 'MOVED' | 'RETITLED' | 'TIME_CHANGED' | 'PAPER_ADDED' | 'PAPER_REPLACED' | 'PAPER_REMOVED' | 'LATE' | 'TABLED'>;
     itemId: string;
@@ -2025,6 +2140,12 @@ export type Me = {
     tenantAdmin: boolean;
 };
 
+export type MeetingActionsResponse = {
+    actions: Array<ActionSummary>;
+    drafts: number;
+    meetingId: string;
+};
+
 export type MeetingDecisionsResponse = {
     decisions: Array<DecisionResponse>;
     meetingId: string;
@@ -2200,7 +2321,7 @@ export type MemberItemResponse = {
     id: string;
     kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
     late: 'NONE' | 'LATE' | 'TABLED';
-    links: Array<ItemLink>;
+    links?: Array<ItemLink>;
     localStartsAt?: string | null;
     minutes?: number | null;
     myDeclaration?: DeclarationResponse | null;
@@ -2731,6 +2852,17 @@ export type MyAccess = {
     permissions: Array<MyPermission>;
 };
 
+export type MyActionCounts = {
+    mine: number;
+};
+
+export type MyActionsResponse = {
+    counts: MyActionCounts;
+    items: Array<ActionSummary>;
+    nextCursor?: string | null;
+    tab: 'MINE';
+};
+
 export type MyClearance = {
     name: string;
     rank: number;
@@ -3100,6 +3232,12 @@ export type Outcome = {
     kind?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
     label?: string;
     resolution?: boolean;
+};
+
+export type OwnerInput = {
+    kind?: 'PERSON' | 'POSITION';
+    positionId?: string | null;
+    userId?: string | null;
 };
 
 export type PackFileResponse = {
@@ -3480,6 +3618,21 @@ export type QuorumWarningResponse = {
     needed: number;
     recusedCount: boolean;
     unmet: Array<UnmetCondition>;
+};
+
+export type RaiseActionRequest = {
+    classificationId?: string | null;
+    conditionIndex?: number | null;
+    context?: string | null;
+    contributors?: Array<string>;
+    decisionId?: string | null;
+    description?: string | null;
+    dueDate?: string | null;
+    itemId?: string | null;
+    owner?: OwnerInput | null;
+    priority?: 'NORMAL' | 'HIGH';
+    source: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+    title?: string | null;
 };
 
 export type RaiseScope = {
@@ -4559,6 +4712,89 @@ export type WorkflowView = {
     subjectType: string;
     version: number;
 };
+
+export type GetActionData = {
+    body?: never;
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}';
+};
+
+export type GetActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type GetActionResponse = GetActionResponses[keyof GetActionResponses];
+
+export type EditActionData = {
+    body: ActionFieldsRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}';
+};
+
+export type EditActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type EditActionResponse = EditActionResponses[keyof EditActionResponses];
+
+export type DiscardActionData = {
+    body?: DiscardActionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/discard';
+};
+
+export type DiscardActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type DiscardActionResponse = DiscardActionResponses[keyof DiscardActionResponses];
+
+export type IssueActionData = {
+    body?: never;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/issue';
+};
+
+export type IssueActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type IssueActionResponse = IssueActionResponses[keyof IssueActionResponses];
 
 export type QueryAuditData = {
     body?: never;
@@ -7853,6 +8089,27 @@ export type UpdateForumResponses = {
 
 export type UpdateForumResponse = UpdateForumResponses[keyof UpdateForumResponses];
 
+export type RaiseDirectActionData = {
+    body: ActionFieldsRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/actions';
+};
+
+export type RaiseDirectActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type RaiseDirectActionResponse = RaiseDirectActionResponses[keyof RaiseDirectActionResponses];
+
 export type CloneForumData = {
     body: CloneRequest;
     headers: {
@@ -8508,6 +8765,27 @@ export type GetMyAccessResponses = {
 
 export type GetMyAccessResponse = GetMyAccessResponses[keyof GetMyAccessResponses];
 
+export type GetMyActionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        tab?: 'MINE';
+        forumId?: string;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/me/actions';
+};
+
+export type GetMyActionsResponses = {
+    /**
+     * OK
+     */
+    200: MyActionsResponse;
+};
+
+export type GetMyActionsResponse = GetMyActionsResponses[keyof GetMyActionsResponses];
+
 export type ListMyForumsData = {
     body?: never;
     path?: never;
@@ -8798,6 +9076,66 @@ export type UpdateMeetingResponses = {
 };
 
 export type UpdateMeetingResponse = UpdateMeetingResponses[keyof UpdateMeetingResponses];
+
+export type GetMeetingActionsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/actions';
+};
+
+export type GetMeetingActionsResponses = {
+    /**
+     * OK
+     */
+    200: MeetingActionsResponse;
+};
+
+export type GetMeetingActionsResponse = GetMeetingActionsResponses[keyof GetMeetingActionsResponses];
+
+export type RaiseMeetingActionData = {
+    body: RaiseActionRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/actions';
+};
+
+export type RaiseMeetingActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type RaiseMeetingActionResponse = RaiseMeetingActionResponses[keyof RaiseMeetingActionResponses];
+
+export type IssueMeetingActionsData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/actions/issue';
+};
+
+export type IssueMeetingActionsResponses = {
+    /**
+     * OK
+     */
+    200: IssueResultsResponse;
+};
+
+export type IssueMeetingActionsResponse = IssueMeetingActionsResponses[keyof IssueMeetingActionsResponses];
 
 export type GetMeetingAgendaData = {
     body?: never;

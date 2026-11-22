@@ -1,0 +1,57 @@
+# Phase 4 E06 T6 the minutes' review, circulation, copies and approval (design E06 §1.6.2–§1.6.4, §1.9, §3, §4; ADR-0066,
+# ADR-0051). Meeting, comment and approval ids are random here, so every subject allowed through is answered 404 (or 428
+# for a step without If-Match) before any role check, and before the confirmation's step-up. Who may do what on real
+# minutes (the secretary, forums.manage, the reviewer and the vice-chair, a recused chair, the confirmer, a member, an
+# alternate, someone asked for comments, the guest, forum.read, someone outside) is MinutesReviewIT, MinutesCirculationIT,
+# MinutesApprovalIT and MinutesRedactionIT; another tenant MinutesCrossTenantIT; a recused member, a recused secretary and
+# chair the leak suites (MINUTES and MINUTES_COPIES surfaces, officer probes). No endpoint here names an item in its path.
+epic: P4-E06
+endpoints:
+  # The secretaries' steps (If-Match on the minutes' version).
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/send-for-review"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/circulate"
+    rule: signedIn
+    body: { reason: "Nobody can review" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - endpoint: "PUT /api/v1/meetings/{meetingId}/minutes/comments-until"
+    rule: signedIn
+    body: { commentsUntil: "2030-01-15" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/withdraw"
+    rule: signedIn
+    body: { reason: "A decision is corrected" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/end-circulation"
+    rule: signedIn
+    body: { reason: "Needed now" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/comment-requests"
+    rule: signedIn
+    body: { userIds: ["{random}"], itemIds: ["{random}"] }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response"
+    rule: signedIn
+    body: { response: "ADOPTED" }
+    headers: { Idempotency-Key: "{random}" }
+  # The reviewer's answer (or a secretary's on their behalf).
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/review"
+    rule: signedIn
+    body: { decision: "AGREE" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  # The readers' comments, their copy, and the officers' preview of another reader's copy.
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/comments", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/comments"
+    rule: signedIn
+    body: { kind: "NO_COMMENTS" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/document", rule: signedIn }
+  # Without `as` the preview is a 400 for those allowed through (the parameter is required).
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/preview", rule: signedIn }
+  # The confirmer's approval with a fresh step-up, and the stamps with their check.
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/confirm"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/approvals", rule: signedIn }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check", rule: signedIn }

@@ -25,7 +25,22 @@ enum class MinutesEventKind {
     ITEM_REGENERATED,
     ITEM_RESTORED,
     RETURNED_TO_DRAFT,
+    SENT_FOR_REVIEW,
+    AGREED,
+    RETURNED,
+    CIRCULATED,
+    COMMENTS_REQUESTED,
+    WITHDRAWN,
+    DEADLINE_PASSED,
+    DEADLINE_CHANGED,
+    CIRCULATION_ENDED,
+    LINKED_TO_MEETING,
+    APPROVED_AT_MEETING,
+    CONFIRMED,
 }
+
+/** Who reviews or confirms the minutes, as what (design E06 §1.6.2, §1.6.4). */
+enum class MinutesRole { CHAIR, VICE_CHAIR }
 
 /** A meeting's minutes (design E06 §1.5), as the module reads and writes them. */
 data class MinutesRow(
@@ -53,6 +68,24 @@ data class MinutesRow(
     val heldAt: Instant,
     val createdAt: Instant,
     val version: Long,
+    /** The chair or vice-chair asked to review the draft (from CHAIR_REVIEW on). */
+    val reviewerId: UUID? = null,
+    val reviewerRole: MinutesRole? = null,
+    /** The comment deadline, once circulated (the end of a working day). */
+    val commentsUntil: Instant? = null,
+    val circulatedAt: Instant? = null,
+    /** The next meeting's "Minutes of the previous meeting" item they are linked to. */
+    val linkedMeetingId: UUID? = null,
+    val linkedItemId: UUID? = null,
+    /** AT_NEXT_MEETING: the meeting and the decision that approved them. */
+    val approvingMeetingId: UUID? = null,
+    val approvingDecisionId: UUID? = null,
+    /** When they went to the chair for confirmation. */
+    val awaitingSince: Instant? = null,
+    val confirmedApprovalId: UUID? = null,
+    val approvedAt: Instant? = null,
+    /** The copy builds asked for (the `minutes-copies` job's instance id). */
+    val copiesSeq: Int = 0,
 )
 
 /** One line of the minutes' history; [note] is free text, never audited. */
@@ -66,6 +99,10 @@ data class MinutesEventRow(
     val sha256: String?,
     val at: Instant,
     val note: String? = null,
+    /** A secretary who recorded the step for [actor] (the chair's agreement given outside the app). */
+    val onBehalfBy: UUID? = null,
+    /** How it was given, when recorded on someone's behalf (EMAIL, PHONE, IN_PERSON, OTHER). */
+    val how: String? = null,
 )
 
 /**
@@ -136,6 +173,18 @@ class MinutesStore(
             .set(m.TRACKED_CHANGES, after.trackedChanges)
             .set(m.COMMENTS, after.comments)
             .set(m.CHECKED_AT, after.checkedAt?.atOffset(ZoneOffset.UTC))
+            .set(m.REVIEWER_ID, after.reviewerId)
+            .set(m.REVIEWER_ROLE, after.reviewerRole?.name)
+            .set(m.COMMENTS_UNTIL, after.commentsUntil?.atOffset(ZoneOffset.UTC))
+            .set(m.CIRCULATED_AT, after.circulatedAt?.atOffset(ZoneOffset.UTC))
+            .set(m.LINKED_MEETING_ID, after.linkedMeetingId)
+            .set(m.LINKED_ITEM_ID, after.linkedItemId)
+            .set(m.APPROVING_MEETING_ID, after.approvingMeetingId)
+            .set(m.APPROVING_DECISION_ID, after.approvingDecisionId)
+            .set(m.AWAITING_SINCE, after.awaitingSince?.atOffset(ZoneOffset.UTC))
+            .set(m.CONFIRMED_APPROVAL_ID, after.confirmedApprovalId)
+            .set(m.APPROVED_AT, after.approvedAt?.atOffset(ZoneOffset.UTC))
+            .set(m.COPIES_SEQ, after.copiesSeq)
             .set(m.VERSION, before.version + 1)
             .where(m.MEETING_ID.eq(before.meetingId), m.VERSION.eq(before.version))
             .execute() == 1
@@ -153,6 +202,8 @@ class MinutesStore(
             .set(e.ITEM_ID, event.itemId)
             .set(e.ACTOR, event.actor)
             .set(e.NOTE, event.note)
+            .set(e.ON_BEHALF_BY, event.onBehalfBy)
+            .set(e.HOW, event.how)
             .set(e.FILE_VERSION_ID, event.fileVersionId)
             .set(e.SHA256, event.sha256)
             .set(e.AT, event.at.atOffset(ZoneOffset.UTC))
@@ -177,8 +228,13 @@ class MinutesStore(
                     it.sha256,
                     it.at.toInstant(),
                     it.note,
+                    it.onBehalfBy,
+                    it.how,
                 )
             }
+
+    /** [r] as the module reads it (for [MinutesQueries]). */
+    fun rowOf(r: MinutesRecord): MinutesRow = r.row()
 
     private fun MinutesRecord.row() =
         MinutesRow(
@@ -203,6 +259,18 @@ class MinutesStore(
             heldAt = heldAt.toInstant(),
             createdAt = createdAt.toInstant(),
             version = version ?: 0,
+            reviewerId = reviewerId,
+            reviewerRole = reviewerRole?.let(MinutesRole::valueOf),
+            commentsUntil = commentsUntil?.toInstant(),
+            circulatedAt = circulatedAt?.toInstant(),
+            linkedMeetingId = linkedMeetingId,
+            linkedItemId = linkedItemId,
+            approvingMeetingId = approvingMeetingId,
+            approvingDecisionId = approvingDecisionId,
+            awaitingSince = awaitingSince?.toInstant(),
+            confirmedApprovalId = confirmedApprovalId,
+            approvedAt = approvedAt?.toInstant(),
+            copiesSeq = copiesSeq ?: 0,
         )
 
     private companion object {

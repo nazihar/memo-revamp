@@ -455,10 +455,19 @@
       "target" : "memo",
       "types" : [ "USES_COMPONENT" ]
     }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
       "target" : "system",
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "templating",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
       "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Minutes",

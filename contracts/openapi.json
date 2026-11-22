@@ -6503,6 +6503,28 @@
         "required" : [ "itemId", "quorum", "viewerRecused" ],
         "type" : "object"
       },
+      "ItemLink" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "state" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "ItemNoteRequest" : {
         "properties" : {
           "text" : {
@@ -7399,6 +7421,17 @@
         "required" : [ "pending", "sequence" ],
         "type" : "object"
       },
+      "MeetingMinutesSummary" : {
+        "properties" : {
+          "myAction" : {
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "MeetingPageResponse" : {
         "properties" : {
           "items" : {
@@ -7703,6 +7736,13 @@
           "location" : {
             "type" : [ "string", "null" ]
           },
+          "minutes" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MeetingMinutesSummary"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "mode" : {
             "enum" : [ "IN_PERSON", "ONLINE", "HYBRID" ],
             "type" : "string"
@@ -7955,6 +7995,12 @@
           "late" : {
             "enum" : [ "NONE", "LATE", "TABLED" ],
             "type" : "string"
+          },
+          "links" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ItemLink"
+            },
+            "type" : "array"
           },
           "localStartsAt" : {
             "format" : "date-time",
@@ -8942,6 +8988,269 @@
         "required" : [ "items", "toVersion" ],
         "type" : "object"
       },
+      "MinutesAnswersResponse" : {
+        "properties" : {
+          "noComments" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "notYet" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "readers" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "suggestions" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "noComments", "notYet", "readers", "suggestions" ],
+        "type" : "object"
+      },
+      "MinutesApprovalCheckResponse" : {
+        "properties" : {
+          "approvalId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "matches" : {
+            "type" : "boolean"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCheckProblem"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "approvalId", "matches", "problems" ],
+        "type" : "object"
+      },
+      "MinutesApprovalResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "by" : {
+            "$ref" : "#/components/schemas/MinutesPerson"
+          },
+          "client" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : [ "object", "null" ]
+          },
+          "docxSha256" : {
+            "type" : "string"
+          },
+          "docxVersionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "factors" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "recordHash" : {
+            "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR" ],
+            "type" : "string"
+          },
+          "stepUpAgeSeconds" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "at", "by", "docxSha256", "docxVersionId", "factors", "id", "kind", "recordHash", "role" ],
+        "type" : "object"
+      },
+      "MinutesCheckProblem" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "detail" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "detail" ],
+        "type" : "object"
+      },
+      "MinutesCirculateRequest" : {
+        "properties" : {
+          "commentsUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MinutesCommentInput" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "NO_COMMENTS", "SUGGESTION" ],
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind" ],
+        "type" : "object"
+      },
+      "MinutesCommentRequestRequest" : {
+        "properties" : {
+          "itemIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "userIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "itemIds", "userIds" ],
+        "type" : "object"
+      },
+      "MinutesCommentResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "by" : {
+            "$ref" : "#/components/schemas/MinutesPerson"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "NO_COMMENTS", "SUGGESTION" ],
+            "type" : "string"
+          },
+          "mine" : {
+            "type" : "boolean"
+          },
+          "respondedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "respondedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "response" : {
+            "enum" : [ "ADOPTED", "NOT_ADOPTED" ],
+            "type" : [ "string", "null" ]
+          },
+          "responseNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "at", "by", "id", "kind", "mine" ],
+        "type" : "object"
+      },
+      "MinutesCommentResponseRequest" : {
+        "properties" : {
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "response" : {
+            "enum" : [ "ADOPTED", "NOT_ADOPTED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "response" ],
+        "type" : "object"
+      },
+      "MinutesCommentsResponse" : {
+        "properties" : {
+          "all" : {
+            "type" : "boolean"
+          },
+          "comments" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCommentResponse"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "all", "comments" ],
+        "type" : "object"
+      },
+      "MinutesCopySetResponse" : {
+        "properties" : {
+          "readers" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            },
+            "type" : "array"
+          },
+          "redacted" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesRedactionResponse"
+            },
+            "type" : "array"
+          },
+          "setKey" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "readers", "redacted", "setKey" ],
+        "type" : "object"
+      },
+      "MinutesDeadlineRequest" : {
+        "properties" : {
+          "commentsUntil" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "required" : [ "commentsUntil" ],
+        "type" : "object"
+      },
       "MinutesDraftRequest" : {
         "properties" : {
           "replaceEdits" : {
@@ -9000,6 +9309,23 @@
         "required" : [ "itemId", "number" ],
         "type" : "object"
       },
+      "MinutesMeetingResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "label" : {
+            "type" : [ "string", "null" ]
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "startsAt" ],
+        "type" : "object"
+      },
       "MinutesPerson" : {
         "properties" : {
           "id" : {
@@ -9042,11 +9368,81 @@
         "required" : [ "approval", "circulationWorkingDays", "draftWorkingDays", "memoResumes", "resolutionNumbering" ],
         "type" : "object"
       },
+      "MinutesReasonRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MinutesRedactionResponse" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "RECUSED", "RESTRICTED", "HIDDEN" ],
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "itemId", "kind" ],
+        "type" : "object"
+      },
       "MinutesResponse" : {
         "properties" : {
+          "agreed" : {
+            "type" : "boolean"
+          },
+          "answered" : {
+            "type" : "boolean"
+          },
+          "answers" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesAnswersResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "approval" : {
             "enum" : [ "AT_NEXT_MEETING", "BY_CIRCULATION" ],
             "type" : "string"
+          },
+          "approvedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "approvingMeeting" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesMeetingResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "circulatedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "commentsUntil" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "confirmer" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "copies" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCopySetResponse"
+            },
+            "type" : "array"
           },
           "draft" : {
             "oneOf" : [ {
@@ -9069,15 +9465,56 @@
             },
             "type" : "array"
           },
+          "linkedMeeting" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesMeetingResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "mayCirculate" : {
+            "type" : "boolean"
+          },
+          "mayComment" : {
+            "type" : "boolean"
+          },
+          "mayConfirm" : {
+            "type" : "boolean"
+          },
           "mayEdit" : {
+            "type" : "boolean"
+          },
+          "mayEndCirculation" : {
             "type" : "boolean"
           },
           "mayGenerate" : {
             "type" : "boolean"
           },
+          "mayReadCopy" : {
+            "type" : "boolean"
+          },
+          "mayReview" : {
+            "type" : "boolean"
+          },
+          "maySendForReview" : {
+            "type" : "boolean"
+          },
+          "mayWithdraw" : {
+            "type" : "boolean"
+          },
           "meetingId" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "myAction" : {
+            "type" : [ "string", "null" ]
+          },
+          "reviewer" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
           },
           "state" : {
             "enum" : [ "DRAFT", "CHAIR_REVIEW", "CIRCULATED", "AWAITING_CHAIR", "APPROVED" ],
@@ -9096,6 +9533,10 @@
             "format" : "int64",
             "type" : "integer"
           },
+          "viewerAccess" : {
+            "enum" : [ "MANAGER", "REVIEWER", "READER", "LINKED" ],
+            "type" : "string"
+          },
           "viewerRecused" : {
             "type" : "boolean"
           },
@@ -9107,7 +9548,24 @@
             } ]
           }
         },
-        "required" : [ "approval", "forumId", "items", "mayEdit", "mayGenerate", "meetingId", "state", "structure", "undecided", "version", "viewerRecused" ],
+        "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayReadCopy", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
+        "type" : "object"
+      },
+      "MinutesReviewRequest" : {
+        "properties" : {
+          "comment" : {
+            "type" : [ "string", "null" ]
+          },
+          "decision" : {
+            "enum" : [ "AGREE", "RETURN" ],
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "EMAIL", "PHONE", "IN_PERSON", "OTHER" ],
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "decision" ],
         "type" : "object"
       },
       "MinutesStructureResponse" : {
@@ -26138,6 +26596,408 @@
         "tags" : [ "minutes" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/minutes/approvals" : {
+      "get" : {
+        "operationId" : "listMinutesApprovals",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MinutesApprovalResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The approved minutes' authenticated approvals (stamps)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check" : {
+      "post" : {
+        "operationId" : "checkMinutesApproval",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "approvalId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesApprovalCheckResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Recompute an approval's hashes and its place in the committee's chain",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/circulate" : {
+      "post" : {
+        "operationId" : "circulateMinutes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCirculateRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Circulate the draft minutes for comments",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/comment-requests" : {
+      "post" : {
+        "operationId" : "askForMinutesComments",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCommentRequestRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ask named people for comments on items of circulated minutes",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/comments" : {
+      "get" : {
+        "operationId" : "listMinutesComments",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCommentsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The comments on circulated minutes: all for the officers, a reader's own",
+        "tags" : [ "minutes" ]
+      },
+      "post" : {
+        "operationId" : "commentOnMinutes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCommentInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCommentResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "No comments, or suggest a correction to circulated minutes",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/comments-until" : {
+      "put" : {
+        "operationId" : "changeMinutesDeadline",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesDeadlineRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change the comment deadline of circulated minutes",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response" : {
+      "post" : {
+        "operationId" : "respondToMinutesComment",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "commentId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCommentResponseRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCommentResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Adopt or decline a suggestion (secretaries, once)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/confirm" : {
+      "post" : {
+        "operationId" : "confirmMinutes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Approve the minutes (the chair, with a fresh step-up): they become the record",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/document" : {
+      "get" : {
+        "operationId" : "getMinutesDocument",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "The viewer's copy of the draft minutes (PDF, supports Range); 202 while it is being made",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/minutes/draft" : {
       "post" : {
         "operationId" : "makeMinutesDraft",
@@ -26179,6 +27039,58 @@
           }
         },
         "summary" : "Make the draft of the minutes from the committee's template (a job)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/end-circulation" : {
+      "post" : {
+        "operationId" : "endMinutesCirculation",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesReasonRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "End the comment period early (approval by circulation), with a reason",
         "tags" : [ "minutes" ]
       }
     },
@@ -26231,6 +27143,181 @@
           }
         },
         "summary" : "Fill one item of the draft again, or restore its block (a job)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/preview" : {
+      "get" : {
+        "operationId" : "previewMinutesCopy",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "as",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "The copy a given reader gets (secretaries), the secretary's own recusals applying; 202 while it is being made",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/review" : {
+      "post" : {
+        "operationId" : "reviewMinutes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesReviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Agree the draft minutes or send them back (the reviewer, or a secretary on their behalf)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/send-for-review" : {
+      "post" : {
+        "operationId" : "sendMinutesForReview",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send the draft minutes to the chair (or vice-chair) for review",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/withdraw" : {
+      "post" : {
+        "operationId" : "withdrawMinutes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesReasonRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Take circulated minutes back to the draft, with a reason",
         "tags" : [ "minutes" ]
       }
     },

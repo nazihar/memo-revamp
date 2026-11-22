@@ -5,6 +5,8 @@ import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRef
 import com.memo.identity.UserSummaries
 import com.memo.meeting.MeetingKind
+import com.memo.meeting.MeetingMinutesSummaries
+import com.memo.meeting.MeetingMinutesSummary
 import com.memo.meeting.MeetingMode
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.internal.invite.InvitationPanel
@@ -12,6 +14,7 @@ import com.memo.meeting.internal.rsvp.MeetingRsvpResponse
 import com.memo.meeting.internal.rsvp.ReplyReads
 import com.memo.org.OrgDirectory
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDate
@@ -104,6 +107,8 @@ data class MeetingSummaryResponse(
     val changesSinceSeen: Int? = null,
     /** The viewer's own answer to "Will you attend?" (design E05 §3); null when they do not answer this meeting. */
     val rsvp: MeetingRsvpResponse? = null,
+    /** "My meetings" only: the meeting's minutes and what the viewer has to do with them (design E06 §3); null without minutes. */
+    val minutes: MeetingMinutesSummary? = null,
 )
 
 data class MeetingPageResponse(
@@ -128,6 +133,7 @@ class MeetingReads(
     private val agendas: MemberAgendas,
     private val replies: ReplyReads,
     private val invitations: InvitationPanel,
+    private val minutes: ObjectProvider<MeetingMinutesSummaries>,
 ) {
     fun get(id: UUID): MeetingResponse {
         val (meeting, relation) = guard.requireVisible(id)
@@ -213,10 +219,14 @@ class MeetingReads(
         val rows = (lists.ofAudienceFrom(user, since, MINE) + lists.ofForumsFrom(officerOf, since, MINE)).distinctBy { it.id }
         val mine = rows.sortedWith(compareBy({ it.startsAt }, { it.id })).take(MINE)
         val counts = agendas.counts(mine)
+        // The minutes' line (E06): their stage and what the viewer has to do, from the minutes module when it is there.
+        val minutesOf = minutes.ifAvailable?.of(mine.map { it.id }).orEmpty()
         return summaries(mine).map { s ->
-            counts[s.id]?.let { (latest, seen, changed) ->
-                s.copy(agendaRevision = latest, lastSeenRevision = seen, changesSinceSeen = changed)
-            } ?: s
+            val counted =
+                counts[s.id]?.let { (latest, seen, changed) ->
+                    s.copy(agendaRevision = latest, lastSeenRevision = seen, changesSinceSeen = changed)
+                } ?: s
+            counted.copy(minutes = minutesOf[s.id])
         }
     }
 

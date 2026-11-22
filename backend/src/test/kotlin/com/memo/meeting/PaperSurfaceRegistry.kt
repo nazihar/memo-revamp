@@ -12,7 +12,10 @@ package com.memo.meeting
  * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
  * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E06 T5
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
- * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E07 T3 made its actions placeholder
+ * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E06 T6 made the copies real
+ * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
+ * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E07 T3
+ * made its actions placeholder
  * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
  * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
  * totals and its export (TRACKER).
@@ -56,8 +59,14 @@ object PaperSurfaceRegistry {
                 "decision is seen in full, else its number, meeting and item number (\"restricted\"); one resolution as the decision",
         ),
         MINUTES(
-            "The minutes page while drafting (E06 T5): the committee's secretaries and forums.manage only (404 to everyone else); " +
-                "a secretary recused from any item gets the page without the draft, and the draft's file (`minutes.draft`) is not theirs",
+            "The minutes page (E06 T5, T6): the committee's secretaries and forums.manage once held, the reviewer while it is with " +
+                "them, the readers once circulated (404 to everyone else); stage, people and numbers only, never an item's text; a " +
+                "secretary recused from any item gets it without the draft; the review, the confirmation and the stamps",
+        ),
+        MINUTES_COPIES(
+            "A reader's copy of the draft minutes and the comments (E06 T6): the copy of their redaction set (ADR-0066: the recused " +
+                "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
+                "comments, the officers everyone's but on items they are recused from",
         ),
         ANALYTICS(
             "Meeting analytics, the committee's detail and its attendance export (E08 T4): counts only, never an item; a recused or " +
@@ -113,6 +122,14 @@ object PaperSurfaceRegistry {
             "GET /api/v1/resolutions/{resolutionId}" to Surface.RESOLUTIONS,
             // E06 T5: the minutes page (secretaries and forums.manage while drafting; 404 to everyone else).
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
+            // E06 T6: the reviewer's answer, the confirmation and the stamps (the chair), the reader's copy and the comments.
+            "POST /api/v1/meetings/{meetingId}/minutes/review" to Surface.MINUTES,
+            "POST /api/v1/meetings/{meetingId}/minutes/confirm" to Surface.MINUTES,
+            "GET /api/v1/meetings/{meetingId}/minutes/approvals" to Surface.MINUTES,
+            "POST /api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check" to Surface.MINUTES,
+            "GET /api/v1/meetings/{meetingId}/minutes/document" to Surface.MINUTES_COPIES,
+            "GET /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
+            "POST /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
@@ -228,6 +245,19 @@ object PaperSurfaceRegistry {
                     "verifying (E07 T5): the verifier pool, never the owner, a contributor or the recused (recusal columns)",
                 "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to
                     "closing the actions agreed at a meeting (E07 T5): the verifiers; an unseen action is NOT_FOUND (officer probe)",
+            ) +
+            listOf(
+                "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",
+                "POST /api/v1/meetings/{meetingId}/minutes/circulate",
+                "PUT /api/v1/meetings/{meetingId}/minutes/comments-until",
+                "POST /api/v1/meetings/{meetingId}/minutes/withdraw",
+                "POST /api/v1/meetings/{meetingId}/minutes/end-circulation",
+                "POST /api/v1/meetings/{meetingId}/minutes/comment-requests",
+                "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response",
+            ).associateWith { "the minutes' circulation (E06 T6): secretaries and forums.manage, answered with the page (officer probe)" } +
+            mapOf(
+                "GET /api/v1/meetings/{meetingId}/minutes/preview" to
+                    "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -327,14 +357,9 @@ object PaperSurfaceRegistry {
         listOf(
             Pending(
                 "E06",
-                "The readers' copies of the draft and approved minutes (T6, T7): the recused version (heading, own declaration and " +
-                    "decision; no discussion; ADR-0062)",
-                listOf(
-                    "/api/v1/meetings/{meetingId}/minutes/document",
-                    "/api/v1/meetings/{meetingId}/minutes/preview",
-                    "/api/v1/meetings/{meetingId}/minutes/record",
-                    "/api/v1/minutes",
-                ),
+                "The approved minutes' record and its copies (T7): the recused version (heading, own declaration and decision; no " +
+                    "discussion; ADR-0062)",
+                listOf("/api/v1/meetings/{meetingId}/minutes/record", "/api/v1/minutes"),
             ),
             Pending(
                 "E08",

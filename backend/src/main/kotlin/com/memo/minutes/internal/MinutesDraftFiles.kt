@@ -14,6 +14,7 @@ import com.memo.files.StorageClass
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.MeetingViewers
 import com.memo.meeting.Recusals
+import com.memo.notification.NotificationKind
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.time.Clock
@@ -25,7 +26,8 @@ import java.util.UUID
  * ordinary storage, every read audited. Read, uploaded and edited in ONLYOFFICE (co-editing, ADR-0047) by the committee's
  * secretaries in office and `forums.manage` holders who are not recused from any minuted item (a recused secretary works
  * through another one), while the meeting is held and the minutes are a draft, circulated or with the chair for approval.
- * Everyone else is refused by the generic files endpoints. T6 adds the reviewer's review mode.
+ * Everyone else is refused by the generic files endpoints. The reviewer (T6) reads it and edits it in review mode while
+ * the draft is with them (their changes are tracked changes).
  */
 @Component
 class MinutesDraftPurpose(
@@ -40,17 +42,24 @@ class MinutesDraftPurpose(
     override val auditReads = true
 
     override fun mayUpload(ownerId: String?): Boolean {
-        val meetingId = meetingOf(ownerId)
-        return meetingId != null && store.find(meetingId)?.state in EDITABLE && keeper(meetingId, held = true)
+        val meetingId = meetingOf(ownerId) ?: return false
+        val state = store.find(meetingId)?.state
+        return (state in EDITABLE && keeper(meetingId, held = true)) || reviewing(meetingId, held = true)
     }
 
     override fun mayRead(file: FileInfo): Boolean {
         val meetingId = meetingOf(file.ownerId)
-        return meetingId != null && keeper(meetingId, held = false)
+        return meetingId != null && (keeper(meetingId, held = false) || reviewing(meetingId, held = false))
     }
 
     /** Editing in the browser follows the same rule as uploading a new version (ADR-0037). */
     override fun mayEdit(file: FileInfo): Boolean = mayUpload(file.ownerId)
+
+    /** The reviewer edits in review mode: their changes are tracked changes the secretary accepts or rejects (ADR-0066). */
+    override fun reviewOnly(file: FileInfo): Boolean {
+        val meetingId = meetingOf(file.ownerId) ?: return false
+        return !keeper(meetingId, held = false) && reviewing(meetingId, held = false)
+    }
 
     /** A secretary or `forums.manage` holder who sees [meetingId], recused from none of its items; [held]: and it is held. */
     private fun keeper(
@@ -63,13 +72,24 @@ class MinutesDraftPurpose(
         return view != null && recusals.ofMeeting(meetingId).values.none { view.userId in it }
     }
 
+    /** The reviewer of [meetingId]'s draft while it is with them (design E06 §1.6.2), recused from none of its items. */
+    private fun reviewing(
+        meetingId: UUID,
+        held: Boolean,
+    ): Boolean {
+        val user = (ActorContext.currentOrNull()?.actor as? Actor.User)?.userId
+        val row = store.find(meetingId)?.takeIf { it.state == MinutesStage.CHAIR_REVIEW && it.reviewerId != null && it.reviewerId == user }
+        val view = row?.let { viewers.find(it.meetingId) }?.takeIf { !held || it.meeting.status == MeetingStatus.HELD }
+        return view != null && recusals.ofMeeting(meetingId).values.none { user in it }
+    }
+
     private fun meetingOf(ownerId: String?): UUID? = ownerId?.let { runCatching { UUID.fromString(it) }.getOrNull() }
 
     companion object {
         const val KEY = "minutes.draft"
         const val MAX_BYTES = 25L shl 20
 
-        /** The stages in which the draft may change (design E06 §1.6.1); T6 moves the minutes between them. */
+        /** The stages in which the secretaries may change the draft (design E06 §1.6.1); the reviewer changes it in CHAIR_REVIEW. */
         val EDITABLE = setOf(MinutesStage.DRAFT, MinutesStage.CIRCULATED, MinutesStage.AWAITING_CHAIR)
     }
 }
@@ -104,14 +124,18 @@ data class DraftWriting(
 /**
  * Each version of a minutes draft, in the upload's transaction under the minutes' row lock: the first one becomes the
  * minutes' file (a second file for the meeting is vetoed, 409 `DRAFT_EXISTS`); a version stored while the minutes may not
- * change (in the chair's review, approved) is vetoed (409 `WRONG_STATE`). A version the draft job writes closes its request
- * and is recorded and audited as generated, filled again or restored. Every version gets its structure check (a job).
+ * change is vetoed (409 `WRONG_STATE`): approved, or in the chair's review unless the reviewer saved it (review mode). A
+ * version the draft job writes closes its request, is recorded and audited as generated, filled again or restored, and its
+ * requester is told. Every version gets its structure check (a job); one saved while circulated or with the chair has the
+ * readers' copies rebuilt two minutes later (later saves ask again).
  */
 @Component
 class MinutesDraftListener(
     private val store: MinutesStore,
     private val files: Files,
     private val jobs: MinutesJobs,
+    private val copies: MinutesCopies,
+    private val notifier: MinutesNotifier,
     private val ids: IdGenerator,
     private val audit: AuditLog,
     private val clock: Clock,
@@ -121,7 +145,8 @@ class MinutesDraftListener(
         if (event.purposeKey != MinutesDraftPurpose.KEY) return
         val meetingId = event.ownerId?.let { runCatching { UUID.fromString(it) }.getOrNull() }
         val row = meetingId?.let(store::lock) ?: throw MinutesNotFoundException("minutes")
-        refuseIf(row.state !in MinutesDraftPurpose.EDITABLE, "WRONG_STATE") { "The minutes cannot change at this stage." }
+        val reviewer = row.state == MinutesStage.CHAIR_REVIEW && row.reviewerId != null && row.reviewerId == actorOrNull()
+        refuseIf(row.state !in MinutesDraftPurpose.EDITABLE && !reviewer, "WRONG_STATE") { "The minutes cannot change at this stage." }
         refuseIf(row.fileId != null && row.fileId != event.fileId, "DRAFT_EXISTS") {
             "These minutes have a draft already: save a new version of it."
         }
@@ -135,6 +160,7 @@ class MinutesDraftListener(
         if (after != row) check(store.update(row, after)) { "the locked minutes moved on" }
         if (writing != null) generated(row, writing, event.fileId, event.versionId)
         jobs.check(row.meetingId, event.versionId)
+        if (row.state == MinutesStage.CIRCULATED || row.state == MinutesStage.AWAITING_CHAIR) copies.request(row, delayed = true)
     }
 
     private fun generated(
@@ -175,5 +201,7 @@ class MinutesDraftListener(
                     "sha256" to sha256,
                 ),
         )
+        // The requester is told the draft is ready (in the app): the job wrote it as them.
+        row.workRequestedBy?.let { notifier.notify(listOf(it), NotificationKind.MINUTES_DRAFT_READY, row.meetingId, except = null) }
     }
 }

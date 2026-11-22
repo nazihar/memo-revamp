@@ -22068,6 +22068,48 @@
       "value": "Two-step sign-in resetSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.minutesApproved": [
+    {
+      "type": 0,
+      "value": "Minutes approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesCirculated": [
+    {
+      "type": 0,
+      "value": "Draft minutes for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesCommentsClosing": [
+    {
+      "type": 0,
+      "value": "Comments on draft minutes close todaySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesCommentsRequested": [
+    {
+      "type": 0,
+      "value": "Comments on draft minutes asked forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesConfirmationRequested": [
+    {
+      "type": 0,
+      "value": "Minutes to approveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesReturned": [
+    {
+      "type": 0,
+      "value": "Draft minutes sent backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.minutesReviewRequested": [
+    {
+      "type": 0,
+      "value": "Draft minutes to reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.passwordChanged": [
     {
       "type": 0,
@@ -34637,6 +34679,71 @@
       "value": " was marked as done: please verify itSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notificationKinds.decisionsReleaseFailed": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A decision of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " was not sent to its memo"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " were not sent to their memos"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": open the meeting to try againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notificationKinds.editNotSaved": [
     {
       "type": 0,
@@ -35890,6 +35997,306 @@
     {
       "type": 0,
       "value": "An administrator reset your two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesAgreed": [
+    {
+      "type": 0,
+      "value": "The chair agreed the draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": accept their suggested changes, then circulate themSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesApproved": [
+    {
+      "type": 0,
+      "value": "The minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " have been approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesCirculated": [
+    {
+      "type": 0,
+      "value": "The draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are circulated: please send any comments by "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesCommentAdded": [
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "NO_COMMENTS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A reader has no comments on the draft minutes of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A correction to the draft minutes of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " was suggested"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesCommentsClosing": [
+    {
+      "type": 0,
+      "value": "Comments on the draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " close today, "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesCommentsRequested": [
+    {
+      "type": 0,
+      "value": "Your comments on the draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are asked for, by "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesConfirmationRequested": [
+    {
+      "type": 0,
+      "value": "The minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are ready for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesDraftOverdue": [
+    {
+      "type": 0,
+      "value": "The minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are not circulated yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesDraftReady": [
+    {
+      "type": 0,
+      "value": "The draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are readySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesReturned": [
+    {
+      "type": 0,
+      "value": "The draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " were sent back with commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesReviewRequested": [
+    {
+      "type": 0,
+      "value": "The draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " are ready for your reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.passwordChanged": [

@@ -2425,7 +2425,7 @@ export type MemberItemResponse = {
     id: string;
     kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
     late: 'NONE' | 'LATE' | 'TABLED';
-    links: Array<ItemLink>;
+    links?: Array<ItemLink>;
     localStartsAt?: string | null;
     minutes?: number | null;
     myDeclaration?: DeclarationResponse | null;

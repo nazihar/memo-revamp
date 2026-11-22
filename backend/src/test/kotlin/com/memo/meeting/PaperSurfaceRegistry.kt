@@ -211,19 +211,6 @@ object PaperSurfaceRegistry {
                     "making the minutes' draft (E06 T5): secretaries not recused from any item; answered with the page (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate" to
                     "filling an item of the draft again (E06 T5): secretaries not recused from any item (recusal columns)",
-            ) +
-            listOf(
-                "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",
-                "POST /api/v1/meetings/{meetingId}/minutes/circulate",
-                "PUT /api/v1/meetings/{meetingId}/minutes/comments-until",
-                "POST /api/v1/meetings/{meetingId}/minutes/withdraw",
-                "POST /api/v1/meetings/{meetingId}/minutes/end-circulation",
-                "POST /api/v1/meetings/{meetingId}/minutes/comment-requests",
-                "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response",
-            ).associateWith { "the minutes' circulation (E06 T6): secretaries and forums.manage, answered with the page (officer probe)" } +
-            mapOf(
-                "GET /api/v1/meetings/{meetingId}/minutes/preview" to
-                    "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
                 // E07 T4: progress, dates, owners and endings; every one finds the action by the one rule first, so a recused
                 // viewer who is not involved gets 404, and a recused officer who is gets 403 RECUSED (ActionStateMachineTest).
                 "POST /api/v1/actions/{actionId}/updates" to
@@ -241,6 +228,19 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/actions/{actionId}/owner" to "a new owner (E07 T4): secretaries not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/cancel" to "cancelling (E07 T4): a secretary or the chair not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/reopen" to "reopening (E07 T4): secretaries not recused (recusal columns)",
+            ) +
+            listOf(
+                "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",
+                "POST /api/v1/meetings/{meetingId}/minutes/circulate",
+                "PUT /api/v1/meetings/{meetingId}/minutes/comments-until",
+                "POST /api/v1/meetings/{meetingId}/minutes/withdraw",
+                "POST /api/v1/meetings/{meetingId}/minutes/end-circulation",
+                "POST /api/v1/meetings/{meetingId}/minutes/comment-requests",
+                "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response",
+            ).associateWith { "the minutes' circulation (E06 T6): secretaries and forums.manage, answered with the page (officer probe)" } +
+            mapOf(
+                "GET /api/v1/meetings/{meetingId}/minutes/preview" to
+                    "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */

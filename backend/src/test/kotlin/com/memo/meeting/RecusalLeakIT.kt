@@ -207,20 +207,12 @@ class RecusalLeakIT : RecusalActionsFixture() {
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
-            Surface.RESOLUTIONS to { _, v ->
-                listOf(
-                    "/api/v1/forums/$brc/resolutions",
-                    "/api/v1/forums/$brc/resolutions/check",
-                    "/api/v1/resolutions/${UUID.randomUUID()}",
-                ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
-            },
+            Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
             // E06 T5: the minutes page, the secretaries' while drafting; nothing on a meeting not held (404), never a canary.
             Surface.MINUTES to { p, v ->
-                val page = read("/api/v1/meetings/${p.meeting.id}/minutes", v.person().session)
-                assertThat(page).hasStatus(HttpStatus.NOT_FOUND)
-                clean(v.person(), page, statusBelow = 500)
-                // E06 T6: the review, the confirmation and the stamps, refused or not there, naming nothing.
-                minutesCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) }
+                val calls = minutesCalls(p, v.person())
+                assertThat(calls.first()).describedAs("the page: nothing on a meeting not held").hasStatus(HttpStatus.NOT_FOUND)
+                calls.forEach { clean(v.person(), it, statusBelow = 500) }
             },
             // E06 T6: the reader's copy and the comments: the copy of a recused reader is MinutesRedactionIT's; here nothing.
             Surface.MINUTES_COPIES to { p, v -> minutesCopyCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },

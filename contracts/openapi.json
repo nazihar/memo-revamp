@@ -7564,7 +7564,7 @@
             "type" : [ "string", "null" ]
           }
         },
-        "required" : [ "access", "changes", "id", "kind", "late", "links", "papers", "presenters", "subItems" ],
+        "required" : [ "access", "changes", "id", "kind", "late", "papers", "presenters", "subItems" ],
         "type" : "object"
       },
       "MemberPaperResponse" : {

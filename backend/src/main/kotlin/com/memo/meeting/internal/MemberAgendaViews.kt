@@ -81,7 +81,7 @@ data class MemberItemResponse(
      * What a standing item the viewer sees in full links to (design E06 §2): the minutes of the previous meeting to read
      * (E06), the action taken report (E07). Only on the latest revision.
      */
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val links: List<ItemLink> = emptyList(),
+    val links: List<ItemLink> = emptyList(),
 )
 
 data class MemberSectionResponse(

@@ -24,9 +24,8 @@ import java.util.UUID
  *   4,000 date requests (decided, and some pending), 30,000 digest keys of the last 60 days, and in-app action notices for
  *   every person (the day before [runDay]'s digest and older ones), so the daily task has a digest for each;
  * - an action taken report for each held meeting (revision 1, its matters arising item), with a row for each action of
- *   the committee's 8 meetings before it (about 220,000 rows), and two actions held back from the focal meeting.
- *
- * Follow-up memo links (`actions_memo`) are not written: that table is E07 T6's `actions/V3` (#230), not on this branch.
+ *   the committee's 8 meetings before it (about 220,000 rows), and two actions held back from the focal meeting;
+ * - about 1,000 follow-up memo links (`actions_memo`, E07 T6), the memos themselves not written (no reader opens them here).
  *
  * Written as the schema owner with the tenant set (the forced policies apply), in stages: each commits and analyses what it
  * wrote before the next joins or checks foreign keys against it (an autovacuum ANALYZE of uncommitted rows misled the
@@ -244,7 +243,7 @@ class ActionsVolume(
         c.exec("analyze av_action")
     }
 
-    /** The timelines, contributors and date requests. */
+    /** The timelines, contributors, date requests and follow-up memo links. */
     private fun timelineStage(c: Connection) {
         entries(c)
         c.exec(
@@ -275,7 +274,17 @@ class ActionsVolume(
             from av_action a where a.open and a.status <> 'DONE_PENDING' and not a.revised and (a.k + a.a) % 13 = 0
             """,
         )
-        c.commitAndAnalyse("actions_entry", "actions_contributor", "actions_due_request")
+        // Follow-up memos (E07 T6): one in 29 actions raised or linked one (about 1,000), the long timeline's two.
+        c.exec(
+            """
+            insert into actions_memo (tenant_id, action_id, memo_id, kind, linked_by, linked_at)
+            select '$tenant'::uuid, a.id, md5('avmemo' || a.id || '-' || m)::uuid, case when (a.h + m) % 2 = 0 then 'RAISED' else 'LINKED' end,
+                   a.holder, a.issued_at + (a.span_end - a.issued_at) * 0.5
+            from av_action a, generate_series(1, case when a.u = ${TIMELINE - 2} then 2 else 1 end) m
+            where a.h % 29 = 0 or a.u = ${TIMELINE - 2}
+            """,
+        )
+        c.commitAndAnalyse("actions_entry", "actions_contributor", "actions_due_request", "actions_memo")
     }
 
     /** Each action's timeline: drafted, issued, its updates, a date change, done, closed or cancelled. */
@@ -596,6 +605,7 @@ class ActionsVolume(
                 "actions_report",
                 "actions_report_row",
                 "actions_report_hold",
+                "actions_memo",
                 "notification_item",
                 "identity_user",
             )

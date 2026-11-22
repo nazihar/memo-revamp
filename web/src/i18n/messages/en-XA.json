@@ -43222,6 +43222,20 @@
       "value": "]"
     }
   ],
+  "mail.template.minutesCorrectionProposed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧīǿǿƞ ŧǿǿ ḿīƞŭŭŧḗḗş ŧǿǿ ȧȧƥƥřǿǿṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.minutesReturned": [
     {
       "type": 0,
@@ -68153,6 +68167,36 @@
     {
       "type": 0,
       "value": " ȧȧřḗḗ řḗḗȧȧḓẏ ƒǿǿř ẏǿǿŭŭř ȧȧƥƥřǿǿṽȧȧŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesCorrectionProposed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƈǿǿřřḗḗƈŧīǿǿƞ ŧǿǿ ŧħḗḗ ȧȧƥƥřǿǿṽḗḗḓ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧẇȧȧīŧş ẏǿǿŭŭř ȧȧƥƥřǿǿṽȧȧŀ"
     },
     {
       "type": 0,

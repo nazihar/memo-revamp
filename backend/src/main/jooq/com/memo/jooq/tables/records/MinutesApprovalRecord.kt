@@ -76,6 +76,14 @@ open class MinutesApprovalRecord private constructor() : UpdatableRecordImpl<Min
         set(value): Unit = set(13, value)
         get(): OffsetDateTime = get(13) as OffsetDateTime
 
+    open var correctionId: UUID?
+        set(value): Unit = set(14, value)
+        get(): UUID? = get(14) as UUID?
+
+    open var correctionSha256: String?
+        set(value): Unit = set(15, value)
+        get(): String? = get(15) as String?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -85,7 +93,7 @@ open class MinutesApprovalRecord private constructor() : UpdatableRecordImpl<Min
     /**
      * Create a detached, initialised MinutesApprovalRecord
      */
-    constructor(id: UUID, tenantId: UUID, meetingId: UUID, forumId: UUID, kind: String, actorId: UUID, role: String, authentication: JSONB, client: JSONB, docxVersionId: UUID, docxSha256: String, previousHash: String? = null, recordHash: String, at: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, meetingId: UUID, forumId: UUID, kind: String, actorId: UUID, role: String, authentication: JSONB, client: JSONB, docxVersionId: UUID, docxSha256: String, previousHash: String? = null, recordHash: String, at: OffsetDateTime, correctionId: UUID? = null, correctionSha256: String? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.meetingId = meetingId
@@ -100,6 +108,8 @@ open class MinutesApprovalRecord private constructor() : UpdatableRecordImpl<Min
         this.previousHash = previousHash
         this.recordHash = recordHash
         this.at = at
+        this.correctionId = correctionId
+        this.correctionSha256 = correctionSha256
         resetTouchedOnNotNull()
     }
 }

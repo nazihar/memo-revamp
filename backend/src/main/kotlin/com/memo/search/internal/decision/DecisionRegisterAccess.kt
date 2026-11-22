@@ -14,6 +14,7 @@ import com.memo.meeting.Recusals
 import com.memo.org.OrgDirectory
 import com.memo.search.DecisionCursor
 import com.memo.search.DecisionFacets
+import com.memo.search.DecisionFact
 import com.memo.search.DecisionPage
 import com.memo.search.DecisionQuery
 import com.memo.search.LineReason
@@ -123,15 +124,16 @@ class DecisionRegisterAccess(
     }
 
     /**
-     * The FULL decisions per committee the viewer sees (`search_decision_stats`, stubbed in T1 for analytics, E08 T4):
-     * [forumIds] (empty: all in scope) between [from] and [to]. Empty without a scope.
+     * The decisions on SUBMISSION items the viewer sees in FULL (`search_decision_stats`, design E08 §2.2, M3 and M4) in
+     * [forumIds] (empty: all in scope) with a meeting date from [from] to [to]; a LINE row is never among them. Empty
+     * without a scope.
      */
     fun stats(
         forumIds: Set<UUID>,
-        from: LocalDate?,
-        to: LocalDate?,
-    ): Map<UUID, Long> {
-        val viewer = parameters() ?: return emptyMap()
+        from: LocalDate,
+        to: LocalDate,
+    ): List<DecisionFact> {
+        val viewer = parameters() ?: return emptyList()
         val call =
             SEARCH_DECISION_STATS.call(
                 tenantDsl.tenant().value,
@@ -151,8 +153,19 @@ class DecisionRegisterAccess(
                 .current()
                 .selectFrom(call)
                 .queryTimeout(SearchFinder.TIMEOUT_SECONDS)
-                .fetch { checkNotNull(it.forumId) to (it.decisions ?: 0L) }
-                .toMap()
+                .fetch {
+                    DecisionFact(
+                        forumId = checkNotNull(it.forumId),
+                        memoTypeId = it.memoTypeId,
+                        memoId = it.memoId,
+                        submissionId = checkNotNull(it.submissionId),
+                        meetingDate = checkNotNull(it.meetingDate),
+                        decidedAt = checkNotNull(it.decidedAt).toInstant(),
+                        chainSubmittedAt = it.chainSubmittedAt?.toInstant(),
+                        outcomeKind = checkNotNull(it.outcomeKind),
+                        priorDeferrals = it.priorDeferrals ?: 0,
+                    )
+                }
         }
     }
 

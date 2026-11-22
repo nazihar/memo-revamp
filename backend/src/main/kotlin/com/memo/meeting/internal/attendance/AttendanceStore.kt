@@ -12,6 +12,7 @@ import com.memo.meeting.AttendanceMode
 import com.memo.meeting.AttendanceSource
 import com.memo.meeting.AttendanceState
 import com.memo.meeting.QuorumChangeKind
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.Instant
@@ -74,6 +75,42 @@ class AttendanceStore(
             .where(MEETING_ATTENDANCE.MEETING_ID.eq(meetingId))
             .orderBy(MEETING_ATTENDANCE.USER_ID)
             .fetch { it.row() }
+
+    /** The register rows of each of [meetingIds], in one query on the primary key (analytics, design E08 §2.1 M1). */
+    fun rowsOf(meetingIds: Collection<UUID>): Map<UUID, List<AttendanceRow>> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(MEETING_ATTENDANCE)
+                .where(MEETING_ATTENDANCE.MEETING_ID.`in`(meetingIds))
+                .orderBy(MEETING_ATTENDANCE.MEETING_ID, MEETING_ATTENDANCE.USER_ID)
+                .fetch { it.row() }
+                .groupBy { it.meetingId }
+        }
+
+    /**
+     * How each person of [meetingIds] first arrived (in person or remote), from their first ARRIVED event that was not
+     * voided, in time order as the register replays them: one query, by meeting and person.
+     */
+    fun firstArrivalModes(meetingIds: Collection<UUID>): Map<Pair<UUID, UUID>, AttendanceMode> {
+        if (meetingIds.isEmpty()) return emptyMap()
+        val e = MEETING_ATTENDANCE_EVENT
+        val v = MEETING_ATTENDANCE_EVENT.`as`("v")
+        return tenantDsl
+            .current()
+            .selectDistinct(e.MEETING_ID, e.USER_ID, e.MODE)
+            .on(e.MEETING_ID, e.USER_ID)
+            .from(e)
+            .where(
+                e.MEETING_ID.`in`(meetingIds),
+                e.KIND.eq(AttendanceEventKind.ARRIVED.name),
+                DSL.notExists(DSL.selectOne().from(v).where(v.TENANT_ID.eq(e.TENANT_ID), v.VOIDS_EVENT_ID.eq(e.ID))),
+            ).orderBy(e.MEETING_ID, e.USER_ID, e.AT, e.RECORDED_AT, e.ID)
+            .fetch()
+            .associate { (it.value1()!! to it.value2()!!) to AttendanceMode.valueOf(it.value3()!!) }
+    }
 
     fun row(
         meetingId: UUID,

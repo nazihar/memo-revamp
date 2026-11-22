@@ -69,6 +69,10 @@ object PaperSurfaceRegistry {
                 "comments, the officers everyone's but on items they are recused from; once approved (E06 T7), the record or the " +
                 "reader's approved copy (a PDF/A record of the same set), its versions and its check",
         ),
+        ANALYTICS(
+            "Meeting analytics, the committee's detail and its attendance export (E08 T4): counts only, never an item; a recused or " +
+                "restricted viewer's decision, deferral, late-paper and action counts leave the item out (AnalyticsLeakIT's differential)",
+        ),
     }
 
     /** The meeting module's endpoints that any person of the audience may call, and the surface each one is. */
@@ -136,6 +140,10 @@ object PaperSurfaceRegistry {
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
             "GET /api/v1/forums/{forumId}/actions" to Surface.TRACKER,
             "GET /api/v1/forums/{forumId}/actions/export" to Surface.TRACKER,
+            // E08 T4: analytics, counts of what the viewer sees in full (members their own attendance row, no late counts).
+            "GET /api/v1/analytics/committees" to Surface.ANALYTICS,
+            "GET /api/v1/analytics/committees/{forumId}" to Surface.ANALYTICS,
+            "GET /api/v1/analytics/committees/{forumId}/attendance/export" to Surface.ANALYTICS,
         )
 
     /**
@@ -264,7 +272,7 @@ object PaperSurfaceRegistry {
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
     val modules: List<String> =
-        listOf("com.memo.meeting", "com.memo.forum", "com.memo.minutes", "com.memo.actions", "com.memo.decision")
+        listOf("com.memo.meeting", "com.memo.forum", "com.memo.minutes", "com.memo.actions", "com.memo.analytics")
 
     /**
      * What reaches a person about an item beyond the meeting module's endpoints (test plan E04, "Surfaces"): each has a
@@ -360,7 +368,7 @@ object PaperSurfaceRegistry {
             Pending(
                 "E08",
                 "The decision register, `search_decision` and analytics, with their exports: rows carry the item's recused ids",
-                listOf("/api/v1/decisions", "/api/v1/decision-register", "/api/v1/analytics"),
+                listOf("/api/v1/decisions", "/api/v1/decision-register"),
             ),
         )
 }

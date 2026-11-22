@@ -27,6 +27,9 @@ export type CataloguePart =
   | 'dashboard'
   | 'imports'
   | 'legacy'
+  | 'decisions'
+  | 'resolutions'
+  | 'forumMinutes'
 
 const routes = Object.entries(definition)
   .filter(([name]) => !name.startsWith('$'))

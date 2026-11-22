@@ -11,7 +11,9 @@ import { pageAs } from '../roles'
  * - marks everyone who said yes as present (quorate: 3 of the 4 members, 3 needed) and moves to the first decision item;
  * - records Demo Head of Finance leaving, which loses the quorum (announced politely), and their return, which restores it;
  * - reads the quorum of the item by name.
- * All with the keyboard; axe finds nothing serious on the register in English or Arabic. The meeting is ended afterwards.
+ * - (E06 T10, flow AA) records “Approved” on the limit item in the Decisions tab, marks the meeting as held after reading
+ *   what will happen, and sees the resolution number the release job gives.
+ * All with the keyboard; axe finds nothing serious on the register in English or Arabic, nor on the decision panel.
  */
 interface Meeting {
   id: string
@@ -148,8 +150,33 @@ test.describe('attendance and quorum at the meeting', () => {
     await page.getByRole('menuitemradio', { name: 'English' }).click()
     await expect(page.locator('html')).toHaveAttribute('dir', 'ltr')
 
-    // The meeting ends, so it does not stay in progress on a shared environment.
-    const running = await api.get<Meeting>(`/meetings/${created.id}`)
-    await api.send(`/meetings/${created.id}/end`, {}, { version: running.version })
+    // E06 T10 (flow AA): the secretary records the decision on the limit item in the Decisions tab, marks the meeting as
+    // held, and the decision gets its resolution number (MCC/2026/001 with the committee type's default format).
+    await press(page.getByRole('tab', { name: 'Decisions' }))
+    const item = page.getByRole('navigation', { name: 'Agenda' }).getByRole('button', { name: new RegExp(LIMIT) })
+    await press(item)
+    const decision = page.getByRole('region', { name: new RegExp(`^Item \\d+ — ${LIMIT}$`) })
+    await expect(decision).toContainText(/Quorate for Item \d+: 3 of 4 voting members present, 3 needed\./)
+    await decision.getByRole('radio', { name: 'Approved', exact: true }).check()
+    await decision
+      .getByLabel(/^Resolution \(as it will be minuted\)/)
+      .fill('It was RESOLVED that the working capital limit be renewed.')
+    await press(decision.getByRole('button', { name: 'Record the decision' }))
+    await expect(page.getByText('The decision is recorded.')).toBeVisible()
+    await expect(item).toContainText('Approved — numbered when the meeting ends')
+    await checkPageA11y(page)
+
+    // Marking the meeting as held says what will happen, then numbers the resolution (the release job, in seconds).
+    await press(page.getByRole('button', { name: /^Actions for / }))
+    await page.getByRole('menuitem', { name: 'Mark as held…' }).press('Enter')
+    const held = page.getByRole('dialog', { name: /as held\?$/ })
+    await expect(held).toContainText(/1 decision is recorded\. 1 is a resolution and will be numbered/)
+    await press(held.getByRole('button', { name: 'Mark as held' }))
+    await expect(async () => {
+      await page.reload()
+      await expect(
+        page.getByRole('navigation', { name: 'Agenda' }).getByRole('button', { name: new RegExp(LIMIT) }),
+      ).toContainText(/Approved — MCC\/\d{4}\/\d{3}/, { timeout: 2_000 })
+    }).toPass({ timeout: 60_000 })
   })
 })

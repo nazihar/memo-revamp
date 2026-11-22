@@ -1569,10 +1569,12 @@ export type ForumPolicyResponse = {
     defaultClassificationId?: string | null;
     description?: string | null;
     memberAttributes: Array<MemberAttribute>;
+    memoResumes: 'AT_MEETING_END' | 'ON_MINUTES_APPROVAL';
     outcomes: Array<Outcome>;
     quorum: QuorumRule;
     quorumBasis: number;
     quorumNeeded: number;
+    quorumOverride: 'NEVER' | 'WITH_REASON';
     submissionPolicy: SubmissionPolicy;
     termPolicy: TermPolicy;
     typeId: string;

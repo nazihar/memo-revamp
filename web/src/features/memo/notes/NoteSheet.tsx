@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { MoreHorizontal, ShieldCheck } from 'lucide-react'
 import { lazy, Suspense, useState } from 'react'
 import { defineMessages, useIntl, type IntlShape } from 'react-intl'
@@ -12,6 +13,7 @@ import type { HistoryAction, NoteEntryView, StampView } from '@/api/generated/ty
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
+import { pdm, pdmv } from '@/features/forums/papers-decision-messages'
 import { pmv } from '@/features/forums/papers-messages'
 import { cn } from '@/lib/utils'
 import { actionLabels, mm, mmv } from '../memo-messages'
@@ -194,6 +196,8 @@ function Byline({ name, actingFor, label, at }: { name: string; actingFor?: stri
 }
 
 function noteLabel(intl: IntlShape, note: NoteEntryView): string {
+  // A committee's corrected wording, conditions or validity (E06 T4, flow AH1): a system note, not a comment.
+  if (note.actionKind === 'FORUM_DECISION_CORRECTED') return intl.formatMessage(pdm.corrected)
   if (note.kind === 'COMMENT') return intl.formatMessage(m.comment)
   if (note.kind === 'CORRECTION') return intl.formatMessage(m.correction)
   // A committee's return, decline or decision (ADR-0058): "Returned by the Management Credit Committee".
@@ -253,6 +257,7 @@ function NoteItem({ note, onCorrect }: { note: NoteEntryView; onCorrect: () => v
           <span className="text-xs text-muted-foreground">{intl.formatMessage(m.correctionOf)}</span>
         ) : null}
         <NoteRender doc={note.body as unknown as NoteDoc} readableMemos={note.readableMemos} />
+        {note.resolution ? <ResolutionLine note={note} /> : null}
         {note.attachments.length > 0 ? (
           <ul className="flex flex-wrap gap-2 text-xs">
             {note.attachments.map((a) => (
@@ -377,5 +382,29 @@ function CheckDialog({ memoId, onClose }: { memoId: string; onClose: () => void 
         )}
       </div>
     </Dialog>
+  )
+}
+
+/** "Resolution MCC/2026/001 · MCC 4/2026" with "Open the resolution" (flow AH1), under a committee's decision. */
+function ResolutionLine({ note }: { note: NoteEntryView }) {
+  const intl = useIntl()
+  const number = note.resolution ?? ''
+  return (
+    <p className="flex flex-wrap items-center gap-x-3 text-sm">
+      <span className="font-medium">
+        {note.meetingLabel
+          ? intl.formatMessage(pdmv.resolution, { number, meeting: note.meetingLabel })
+          : intl.formatMessage(pdmv.resolutionOnly, { number })}
+      </span>
+      {note.resolutionId ? (
+        <Link
+          to="/resolutions/$resolutionId"
+          params={{ resolutionId: note.resolutionId }}
+          className="inline-flex min-h-11 items-center underline underline-offset-4"
+        >
+          {intl.formatMessage(pdm.openResolution)}
+        </Link>
+      ) : null}
+    </p>
   )
 }

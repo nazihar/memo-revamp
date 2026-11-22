@@ -126,16 +126,19 @@ class ActionItemEffects(
         kind: ActionChange,
     ) = events.publishEvent(ActionChanged(TenantContext.current().value, row.id, row.forumId, kind))
 
-    /** Tells [user] of [kind] on [row]: the committee, the reference and [details] (dates, words), never its text. */
+    /**
+     * Tells [user] of [kind] on [row]: the committee, the reference and [details] (dates, words), never its text; the link
+     * opens the action, or [link] for someone who does not see it (an escalation to a supervisor).
+     */
     fun notify(
         user: UUID,
         kind: NotificationKind,
         row: ActionRow,
         details: Map<String, String> = emptyMap(),
+        link: String = "/actions/${row.id}",
     ) {
         val recipient = recipients.recipient(user) ?: return
         val tenant = registry.current()
-        val link = "/actions/${row.id}"
         notifications.notify(
             recipient,
             kind,

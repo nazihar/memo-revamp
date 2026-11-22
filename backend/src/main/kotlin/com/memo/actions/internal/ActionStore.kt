@@ -127,8 +127,8 @@ class ActionStore(
     /** The actions raised from [decisionId]. */
     fun ofDecision(decisionId: UUID): List<ActionRow> = where(ACTIONS_ITEM.DECISION_ID.eq(decisionId))
 
-    /** The actions of [meetingId] raised from an item. */
-    fun ofMeetingItems(meetingId: UUID): List<ActionRow> = where(ACTIONS_ITEM.MEETING_ID.eq(meetingId).and(ACTIONS_ITEM.ITEM_ID.isNotNull))
+    /** The actions of [meetingId], drafts included, oldest first. */
+    fun ofMeeting(meetingId: UUID): List<ActionRow> = where(ACTIONS_ITEM.MEETING_ID.eq(meetingId))
 
     /** Writes the new draft [row] (its contributors are [ActionLines]'). */
     fun insert(row: ActionRow) {

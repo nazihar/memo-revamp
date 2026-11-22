@@ -15,6 +15,17 @@ import java.util.Locale
 internal object MinutesTemplateSample {
     private const val DEFERRED_ITEM = 3
 
+    /** The sample's one action (E07), agreed on item 1. */
+    const val ACTION_REFERENCE = "ACT/2026/007"
+
+    private val ACTION =
+        mapOf(
+            "reference" to ACTION_REFERENCE,
+            "action" to "Report the security perfected to the committee",
+            "owner" to "Head of Credit",
+            "due" to "31 January 2027",
+        )
+
     fun data(today: LocalDate): TemplateData {
         val date = today.format(DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH))
         val values =
@@ -34,6 +45,7 @@ internal object MinutesTemplateSample {
                 "minutes.approvedOn" to "",
                 "minutes.approvedBy" to "",
                 "quorum.opening" to "The meeting was quorate (5 of 7 voting members present, 4 needed).",
+                "actions.count" to "1",
             )
         check(values.keys == MinutesTemplateTags.MEETING.keys) { "the sample covers every meeting tag" }
         val rows =
@@ -59,6 +71,7 @@ internal object MinutesTemplateSample {
                             "text" to "The facility is approved.",
                         ),
                     ),
+                "actions" to listOf(ACTION + ("item" to "1")),
             )
         check(rows.keys == MinutesTemplateTags.LOOPS.keys) { "the sample covers every loop" }
         val items = listOf(approved(today), noted(), deferred())
@@ -81,7 +94,8 @@ internal object MinutesTemplateSample {
             "item.vote" to "For 4, against 1, abstaining 0",
             "item.dissent" to "Ms S. Karim asked that her dissent be recorded: the tenor is too long.",
             "item.quorum" to "The meeting remained quorate (5 of 7 voting members, 4 needed).",
-        )
+            "item.actionCount" to "1",
+        ).let { it.copy(rows = mapOf(MinutesTemplateTags.ITEM_ACTIONS to listOf(ACTION))) }
 
     private fun noted() =
         item(
@@ -119,6 +133,7 @@ internal object MinutesTemplateSample {
         val given = mapOf("item.number" to number.toString(), "item.title" to title, "item.section" to "Matters for decision") + values
         return TemplateData(
             values = MinutesTemplateTags.ITEM.keys.associateWith { given[it].orEmpty() },
+            rows = mapOf(MinutesTemplateTags.ITEM_ACTIONS to emptyList()),
             control = ControlMark("memo-item:sample-$number", "Item $number"),
         )
     }

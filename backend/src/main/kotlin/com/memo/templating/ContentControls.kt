@@ -20,6 +20,17 @@ data class ControlParagraph(
     val bold: Boolean = false,
 )
 
+/**
+ * What is left unresolved in a document's body (design E06 §1.6.1): tracked changes (insertions, deletions, moves and
+ * formatting changes, as review mode saves them) and comments, counted in `word/document.xml`.
+ */
+data class DocumentMarks(
+    val trackedChanges: Int,
+    val comments: Int,
+) {
+    val clean: Boolean get() = trackedChanges == 0 && comments == 0
+}
+
 /** The document is not a readable .docx, or the control asked for is not in it. */
 class ContentControlException(
     message: String,
@@ -57,4 +68,19 @@ interface DocxControls {
         tag: String,
         after: String?,
     ): ByteArray
+
+    /**
+     * [docx] with the body-level control tagged [tag] replaced, content and properties, by the one tagged so in [source]
+     * (a fresh fill of the same template), in the same place: an item filled again from its decision and notes. Every
+     * other control and everything between them stay as they are. Refused as [restore] is when the copied content refers
+     * to parts of [source]; the tag must be found exactly once in each.
+     */
+    fun refill(
+        docx: InputStream,
+        source: InputStream,
+        tag: String,
+    ): ByteArray
+
+    /** The tracked changes and comments left in [docx]'s body, read with StAX as [scan] reads it. */
+    fun marks(docx: InputStream): DocumentMarks
 }

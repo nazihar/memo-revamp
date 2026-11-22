@@ -1,0 +1,22 @@
+# Phase 4 E06 T5 drafting the minutes (design E06 §1.5, §1.6.1, §3, §4; ADR-0066). Meeting and item ids are random here,
+# so every subject allowed through is answered 404 before any role check. Who may do what on a real meeting (the
+# secretary, forums.manage, the chair, a member, a recused secretary) is MinutesDraftIT and MinutesEditingIT; another tenant
+# MinutesCrossTenantIT. The draft itself is edited through docedit's `POST /files/{fileId}/edit-sessions` (purpose
+# `minutes.draft`, p2-e02-docedit.yaml).
+#
+# Recusal columns (E04 T5's leak suite), on the planted (scheduled) meeting: filling an item again is the drafting
+# secretaries' only, refused before the meeting's state is looked at: 403 to anyone who does not draft the minutes, and
+# 403 `RECUSED` to a secretary recused from any minuted item. RecusalLeakIT runs them.
+epic: P4-E06
+endpoints:
+  # The minutes page: the committee's secretaries and forums.manage while the minutes are a draft; 404 to everyone else.
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes", rule: signedIn }
+  # Make the draft (again): secretaries and forums.manage not recused from any item, the meeting held.
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/draft"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+  # Fill one item again, or restore its block.
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }

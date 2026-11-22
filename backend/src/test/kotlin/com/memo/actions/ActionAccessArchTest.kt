@@ -62,13 +62,14 @@ class ActionAccessArchTest {
 
     private companion object {
         /**
-         * The rule, the services and listeners that write (they read what they lock), the subject and its slots, and the
-         * follow-up memos' own reads: the action page's memos (by the memo's rule) and the memo's "Raised from action" (an
-         * action's id only through the rule's `sees`).
+         * The rule, the services and listeners that write (they read what they lock), the minutes' port, the subject and its
+         * slots, and the follow-up memos' own reads: the action page's memos (by the memo's rule) and the memo's "Raised from
+         * action" (an action's id only through the rule's `sees`).
          */
         val WRITERS =
             listOf(
-                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionWorkflowListener|ActionSourceListener)""",
+                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionMinutes)""",
+                """internal\.(ActionWorkflowListener|ActionSourceListener)""",
                 """internal\.(ActionFollowUps|ActionMemoListener|ActionMemoOrigins|ActionMemoViews)""",
                 """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionMemoStore)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",

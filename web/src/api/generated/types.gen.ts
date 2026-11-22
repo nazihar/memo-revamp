@@ -2614,6 +2614,32 @@ export type MigrationResponse = {
     toVersion: number;
 };
 
+export type MinutesDraftRequest = {
+    replaceEdits?: boolean;
+};
+
+export type MinutesDraftResponse = {
+    fileId: string;
+    number: number;
+    savedAt: string;
+    savedBy?: MinutesPerson | null;
+    versionId: string;
+};
+
+export type MinutesItemRequest = {
+    restore?: boolean;
+};
+
+export type MinutesItemResponse = {
+    itemId: string;
+    number: string;
+};
+
+export type MinutesPerson = {
+    id: string;
+    name: string;
+};
+
 export type MinutesPolicy = {
     approval: 'AT_NEXT_MEETING' | 'BY_CIRCULATION';
     circulationWorkingDays: number;
@@ -2621,6 +2647,33 @@ export type MinutesPolicy = {
     memoResumes: 'AT_MEETING_END' | 'ON_MINUTES_APPROVAL';
     resolutionNumbering: ResolutionNumbering;
     templateFileId?: string | null;
+};
+
+export type MinutesResponse = {
+    approval: 'AT_NEXT_MEETING' | 'BY_CIRCULATION';
+    draft?: MinutesDraftResponse | null;
+    forumId: string;
+    heldAt?: string | null;
+    items: Array<MinutesItemResponse>;
+    mayEdit: boolean;
+    mayGenerate: boolean;
+    meetingId: string;
+    state: 'DRAFT' | 'CHAIR_REVIEW' | 'CIRCULATED' | 'AWAITING_CHAIR' | 'APPROVED';
+    structure: MinutesStructureResponse;
+    undecided: Array<MinutesItemResponse>;
+    version: number;
+    viewerRecused: boolean;
+    work?: MinutesWorkResponse | null;
+};
+
+export type MinutesStructureResponse = {
+    checkedAt?: string | null;
+    checkedVersionId?: string | null;
+    comments: number;
+    ok?: boolean | null;
+    pending: boolean;
+    problems: Array<StructureProblemResponse>;
+    trackedChanges: number;
 };
 
 export type MinutesTemplateFileView = {
@@ -2663,6 +2716,14 @@ export type MinutesTemplateView = {
     refusals: Array<MinutesTemplateRefusalView>;
     tags: Array<string>;
     template?: MinutesTemplateFileView | null;
+};
+
+export type MinutesWorkResponse = {
+    error?: string | null;
+    itemId?: string | null;
+    kind: 'ALL' | 'ITEM';
+    requestedAt?: string | null;
+    state: 'PENDING' | 'FAILED';
 };
 
 export type MoveOrgUnitRequest = {
@@ -4195,6 +4256,13 @@ export type StartAgendaRequest = {
 export type StepUpRequest = {
     code?: string | null;
     password?: string | null;
+};
+
+export type StructureProblemResponse = {
+    itemId?: string | null;
+    number?: string | null;
+    problem: 'MISSING' | 'DUPLICATED' | 'NESTED' | 'UNLOCKED' | 'UNKNOWN';
+    tag?: string | null;
 };
 
 export type SubmissionPolicy = {
@@ -10011,6 +10079,67 @@ export type SaveItemNotesResponses = {
 };
 
 export type SaveItemNotesResponse = SaveItemNotesResponses[keyof SaveItemNotesResponses];
+
+export type GetMinutesData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes';
+};
+
+export type GetMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type GetMinutesResponse = GetMinutesResponses[keyof GetMinutesResponses];
+
+export type MakeMinutesDraftData = {
+    body?: MinutesDraftRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/draft';
+};
+
+export type MakeMinutesDraftResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type MakeMinutesDraftResponse = MakeMinutesDraftResponses[keyof MakeMinutesDraftResponses];
+
+export type RegenerateMinutesItemData = {
+    body?: MinutesItemRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate';
+};
+
+export type RegenerateMinutesItemResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type RegenerateMinutesItemResponse = RegenerateMinutesItemResponses[keyof RegenerateMinutesItemResponses];
 
 export type GetMeetingPaperContentData = {
     body?: never;

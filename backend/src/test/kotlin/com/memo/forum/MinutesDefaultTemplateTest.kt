@@ -52,6 +52,8 @@ class MinutesDefaultTemplateTest {
         assertThat(controls).allSatisfy { assertThat(it.lock).isEqualTo("sdtLocked") }
         val text = Docx.text(filled)
         assertThat(text).contains("BRC 3/2026", "BRC/2026/014", "Dr A. Rahman").doesNotContain("{{", "[name]")
+        // E07's actions: on the item that agreed one, and in the meeting's table.
+        assertThat(text.split(MinutesTemplateSample.ACTION_REFERENCE)).hasSize(3)
     }
 
     @Test
@@ -99,6 +101,11 @@ object MinutesDefaultTemplates {
         val chairSignature: String,
         val approvedOn: String,
         val headings: List<String>,
+        val itemActions: String,
+        val actionsArising: String,
+        /** Reference, action, owner, due; the meeting's table adds the item after the reference. */
+        val actionColumns: List<String>,
+        val itemColumn: String,
     )
 
     private val ENGLISH =
@@ -120,6 +127,10 @@ object MinutesDefaultTemplates {
             chairSignature = "Chair",
             approvedOn = "Approved on {{minutes.approvedOn}} by {{minutes.approvedBy}}",
             headings = listOf("Attendance", "Business of the meeting"),
+            itemActions = "Actions agreed:",
+            actionsArising = "Actions arising",
+            actionColumns = listOf("Reference", "Action", "Owner", "Due"),
+            itemColumn = "Item",
         )
 
     private val ARABIC =
@@ -141,6 +152,10 @@ object MinutesDefaultTemplates {
             chairSignature = "رئيس الاجتماع",
             approvedOn = "اعتُمد بتاريخ {{minutes.approvedOn}} من قِبل {{minutes.approvedBy}}",
             headings = listOf("الحضور", "أعمال الاجتماع"),
+            itemActions = "الإجراءات المتفق عليها:",
+            actionsArising = "الإجراءات المترتبة",
+            actionColumns = listOf("المرجع", "الإجراء", "المسؤول", "تاريخ الاستحقاق"),
+            itemColumn = "البند",
         )
 
     fun write(language: MinutesLanguage): ByteArray {
@@ -186,7 +201,22 @@ object MinutesDefaultTemplates {
             listOf("item.vote", "item.dissent", "item.abstentions", "item.tookNoPart", "item.ratification", "item.quorum").forEach {
                 section(it) { p("{{$it}}") }
             }
+            // E07's actions on the item (design E07 §11), shown only when there are some.
+            section("item.actionCount") {
+                p(w.itemActions)
+                table(
+                    listOf(w.actionColumns[0] + "{{item.actions}}") + w.actionColumns.drop(1),
+                    listOf("[reference]", "[action]", "[owner]", "[due]"),
+                )
+            }
             p("{{/items}}")
+            section("actions.count") {
+                p(w.actionsArising, bold = true)
+                table(
+                    listOf(w.actionColumns[0] + "{{actions}}", w.itemColumn) + w.actionColumns.drop(1),
+                    listOf("[reference]", "[item]", "[action]", "[owner]", "[due]"),
+                )
+            }
             p(w.closed)
             p("")
             p("________________________________")

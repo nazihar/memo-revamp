@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { CommitteeDecisionsLink } from '@/features/decision-register/links'
 import { MeetingsTab } from '@/features/meetings/MeetingsTab'
 import { mm } from '@/features/meetings/messages'
 import { useTerms } from '@/features/terms/terms'
@@ -81,6 +82,7 @@ export function ForumPage({
         description={<Summary forum={f} policy={policy.data} />}
         actions={
           <>
+            <CommitteeDecisionsLink forum={f} />
             {f.canManageMembers ? (
               <Button
                 onClick={() => {

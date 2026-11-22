@@ -78,6 +78,14 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   inbox: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'inbox' }, import: 'default' }),
   dashboard: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'dashboard' }, import: 'default' }),
   analytics: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'analytics' }, import: 'default' }),
+  decisionRegister: import.meta.glob<Messages>('./messages/*.json', {
+    query: { part: 'decisionRegister' },
+    import: 'default',
+  }),
+  registerLinks: import.meta.glob<Messages>('./messages/*.json', {
+    query: { part: 'registerLinks' },
+    import: 'default',
+  }),
   imports: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'imports' }, import: 'default' }),
   legacy: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'legacy' }, import: 'default' }),
 }

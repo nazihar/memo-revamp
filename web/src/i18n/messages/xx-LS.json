@@ -5499,6 +5499,18 @@
       "value": " detailSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "analytics.link.decisions": [
+    {
+      "type": 0,
+      "value": "Open these decisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.deferred": [
+    {
+      "type": 0,
+      "value": "Open deferred itemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "analytics.link.detail": [
     {
       "type": 1,
@@ -10237,6 +10249,1441 @@
     {
       "type": 0,
       "value": "Approvals dashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.activeFilters": [
+    {
+      "type": 0,
+      "value": "Active filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.allCommittees": [
+    {
+      "type": 0,
+      "value": "All my "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.any": [
+    {
+      "type": 0,
+      "value": "AnySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.byCommittee": [
+    {
+      "type": 0,
+      "value": "By "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.byOutcome": [
+    {
+      "type": 0,
+      "value": "By outcomeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.byYear": [
+    {
+      "type": 0,
+      "value": "By yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check": [
+    {
+      "type": 0,
+      "value": "Check the numbersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.checking": [
+    {
+      "type": 0,
+      "value": "Checking the numbers…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.complete": [
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": resolutions "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": " are all accounted for ("
+    },
+    {
+      "type": 1,
+      "value": "inForce"
+    },
+    {
+      "type": 0,
+      "value": " in force, "
+    },
+    {
+      "type": 1,
+      "value": "void"
+    },
+    {
+      "type": 0,
+      "value": " void).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.duplicates": [
+    {
+      "type": 0,
+      "value": "Numbers given twice: "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.failed": [
+    {
+      "type": 0,
+      "value": "The numbers could not be checked. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s secretaries, chair and oversight can check its numbers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.missing": [
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": resolutions "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " number is missing"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " numbers are missing"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.more": [
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.none": [
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": no resolution has a number yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.check.outOfRange": [
+    {
+      "type": 0,
+      "value": "Numbers outside the range: "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.chip": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.committee": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.committeeType": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.conditions": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " condition"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " conditions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.corrected": [
+    {
+      "type": 0,
+      "value": "correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No decisions"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Showing "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Showing "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.countCapped": [
+    {
+      "type": 0,
+      "value": "Showing more than "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " decisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.dissolved": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (dissolved)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.empty": [
+    {
+      "type": 0,
+      "value": "No decisions match.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.emptyAll": [
+    {
+      "type": 0,
+      "value": "No decision has been recorded in your "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.emptyHint": [
+    {
+      "type": 0,
+      "value": "Try a wider date range or fewer filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.exceptions": [
+    {
+      "type": 0,
+      "value": "ExceptionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export": [
+    {
+      "type": 0,
+      "value": "Export…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.about": [
+    {
+      "type": 0,
+      "value": "The export includes a page “About this export” with these filters, your name and the time, and a number check for each "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " and year.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.allCommittees": [
+    {
+      "type": 0,
+      "value": "All your "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.allDates": [
+    {
+      "type": 0,
+      "value": "All datesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision matches your filters:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions match your filters:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.countCapped": [
+    {
+      "type": 0,
+      "value": "More than "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " decisions match your filters:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.dates": [
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.download": [
+    {
+      "type": 0,
+      "value": "DownloadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.downloaded": [
+    {
+      "type": 0,
+      "value": "The register has been downloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.failed": [
+    {
+      "type": 0,
+      "value": "The export could not be made. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "’ secretaries, chairs and oversight can export the register.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.format": [
+    {
+      "type": 0,
+      "value": "FormatSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.fromOnly": [
+    {
+      "type": 0,
+      "value": "From "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.outOfScope": [
+    {
+      "type": 0,
+      "value": "You can export the decisions of the "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " where you are a secretary or the chair. Choose one of those.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.pdf": [
+    {
+      "type": 0,
+      "value": "PDFSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.pdfHint": [
+    {
+      "type": 0,
+      "value": "For filing, up to 2,000 rows.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.preparing": [
+    {
+      "type": 0,
+      "value": "Preparing the file…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.rateLimited": [
+    {
+      "type": 0,
+      "value": "You have exported 5 times in the last hour. Please try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.rateLimitedAt": [
+    {
+      "type": 0,
+      "value": "You have exported 5 times in the last hour. Please try again at "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.restricted": [
+    {
+      "type": 0,
+      "value": "Restricted items show their number only. Each export is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.someCommittees": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "forums"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.title": [
+    {
+      "type": 0,
+      "value": "Export decisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.toOnly": [
+    {
+      "type": 0,
+      "value": "Up to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.tooManyMore": [
+    {
+      "type": 0,
+      "value": "This is more than "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " decisions; the "
+    },
+    {
+      "type": 5,
+      "value": "format",
+      "options": {
+        "PDF": {
+          "value": [
+            {
+              "type": 0,
+              "value": "PDF holds up to 2,000"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "spreadsheet holds up to 20,000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ". Narrow the dates or the filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.tooManyPdf": [
+    {
+      "type": 0,
+      "value": "This is "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " decisions; a PDF holds up to 2,000. Narrow the dates or choose a spreadsheet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.tooManyXlsx": [
+    {
+      "type": 0,
+      "value": "This is "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " decisions; a spreadsheet holds up to 20,000. Narrow the dates or the filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.words": [
+    {
+      "type": 0,
+      "value": "Words: “"
+    },
+    {
+      "type": 1,
+      "value": "words"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.xlsx": [
+    {
+      "type": 0,
+      "value": "Spreadsheet (.xlsx)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.export.xlsxHint": [
+    {
+      "type": 0,
+      "value": "For sorting and checking, up to 20,000 rows.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.facetHint": [
+    {
+      "type": 0,
+      "value": "Outcome counts include only decisions you can see in full.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.facetValue": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.filters": [
+    {
+      "type": 0,
+      "value": "FiltersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.flag.corrected": [
+    {
+      "type": 0,
+      "value": "CorrectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.flag.toBeRatified": [
+    {
+      "type": 0,
+      "value": "To be ratifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.flag.validityPassed": [
+    {
+      "type": 0,
+      "value": "Validity passedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.flag.withConditions": [
+    {
+      "type": 0,
+      "value": "With conditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.flag.withDissent": [
+    {
+      "type": 0,
+      "value": "With dissentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.inForce": [
+    {
+      "type": 0,
+      "value": "In forceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.lead": [
+    {
+      "type": 0,
+      "value": "Search decisions and resolutions of the "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " you can see.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.loadingMore": [
+    {
+      "type": 0,
+      "value": "Loading more decisions…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.meetingItem": [
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": ", item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.meetingOnly": [
+    {
+      "type": 0,
+      "value": "Meeting of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.memoLink": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.memoLinkNoNumber": [
+    {
+      "type": 0,
+      "value": "The memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.memoType": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.minutesApprovedOn": [
+    {
+      "type": 0,
+      "value": "Minutes approved "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.moreFilters": [
+    {
+      "type": 0,
+      "value": "More filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.noNumber": [
+    {
+      "type": 0,
+      "value": "No resolution numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.noScope": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "You are not a member or officer of any "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.noScopeHint": [
+    {
+      "type": 0,
+      "value": "The register is for "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " members, officers and oversight.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome": [
+    {
+      "type": 0,
+      "value": "OutcomeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.approved": [
+    {
+      "type": 0,
+      "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "Approved with conditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.deferred": [
+    {
+      "type": 0,
+      "value": "DeferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.noted": [
+    {
+      "type": 0,
+      "value": "NotedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.referred": [
+    {
+      "type": 0,
+      "value": "ReferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.returned": [
+    {
+      "type": 0,
+      "value": "Returned for more informationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.outcome.withdrawn": [
+    {
+      "type": 0,
+      "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.cursor": [
+    {
+      "type": 0,
+      "value": "The list has changed since it was shown. Search again to see it from the start.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.invalid": [
+    {
+      "type": 0,
+      "value": "This search cannot be made. Check the filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.outOfScope": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " is not in your register. Choose one from the list, or reset the filters."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.range": [
+    {
+      "type": 0,
+      "value": "The end date must be on or after the start date, and at most 25 years after it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.rateLimited": [
+    {
+      "type": 0,
+      "value": "You have searched many times in the last minute. Wait a moment, then try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.sortNeedsOne": [
+    {
+      "type": 0,
+      "value": "Number order needs one "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ". Choose a "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.textTooLong": [
+    {
+      "type": 0,
+      "value": "Use at most 200 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.timeout": [
+    {
+      "type": 0,
+      "value": "The search took too long. Add words or narrow the dates, then try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.tooManyTerms": [
+    {
+      "type": 0,
+      "value": "Use at most 12 words.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.problem.tooManyValues": [
+    {
+      "type": 0,
+      "value": "A filter has too many values.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.query": [
+    {
+      "type": 0,
+      "value": "Words, a resolution number or a memo numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.queryHint": [
+    {
+      "type": 0,
+      "value": "For example: liquidity, BRC/2026/014, or 14 with one "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " chosen.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.ratified": [
+    {
+      "type": 0,
+      "value": "ratifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.reason.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.reason.restricted": [
+    {
+      "type": 0,
+      "value": "This item is restricted to named members.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.removeFilter": [
+    {
+      "type": 0,
+      "value": "Remove filter "
+    },
+    {
+      "type": 1,
+      "value": "filter"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.reset": [
+    {
+      "type": 0,
+      "value": "ResetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.resolution": [
+    {
+      "type": 0,
+      "value": "Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.resolutionsOnly": [
+    {
+      "type": 0,
+      "value": "Resolutions onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.restricted": [
+    {
+      "type": 0,
+      "value": "Restricted itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.restrictedNote": [
+    {
+      "type": 0,
+      "value": "Restricted items are not matched by words, an outcome, a memo type or an exception. A resolution number still finds them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.results": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.search": [
+    {
+      "type": 0,
+      "value": "SearchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.searchAgain": [
+    {
+      "type": 0,
+      "value": "Search againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.searching": [
+    {
+      "type": 0,
+      "value": "Searching…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.showMore": [
+    {
+      "type": 0,
+      "value": "Show more decisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.sort": [
+    {
+      "type": 0,
+      "value": "OrderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.sort.newest": [
+    {
+      "type": 0,
+      "value": "Newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.sort.number": [
+    {
+      "type": 0,
+      "value": "Number orderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.sort.oldest": [
+    {
+      "type": 0,
+      "value": "Oldest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.sort.relevance": [
+    {
+      "type": 0,
+      "value": "Best matchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state": [
+    {
+      "type": 0,
+      "value": "StateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state.final": [
+    {
+      "type": 0,
+      "value": "Minutes approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state.numbered": [
+    {
+      "type": 0,
+      "value": "NumberedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state.recorded": [
+    {
+      "type": 0,
+      "value": "Recorded at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state.released": [
+    {
+      "type": 0,
+      "value": "Sent to the memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.state.void": [
+    {
+      "type": 0,
+      "value": "VoidSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.title": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.toBeRatified": [
+    {
+      "type": 0,
+      "value": "to be ratifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.toBeforeFrom": [
+    {
+      "type": 0,
+      "value": "The end date must be on or after the start date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.untitled": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.untitledNoItem": [
+    {
+      "type": 0,
+      "value": "Decision without a titleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.validUntil": [
+    {
+      "type": 0,
+      "value": "valid until "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.validityPassed": [
+    {
+      "type": 0,
+      "value": "validity passed on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.withDissent": [
+    {
+      "type": 0,
+      "value": "with dissentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "declarations.builder.previewHidden": [
@@ -36231,6 +37678,12 @@
       "value": "DashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.decisions": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.declarations": [
     {
       "type": 0,
@@ -41189,6 +42642,50 @@
     {
       "type": 0,
       "value": "Recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "registerLinks.inTheRegister": [
+    {
+      "type": 0,
+      "value": "In the registerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "registerLinks.inTheRegisterNamed": [
+    {
+      "type": 0,
+      "value": "Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " in the registerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "registerLinks.ofCommittee": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Decisions of this "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "reset.back": [

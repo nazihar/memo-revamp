@@ -116,6 +116,8 @@ Page size 50. Totals up to 10,000 exactly, beyond that "more than 10,000" (`capp
 - From a resolution or decision on the meeting page, "In the register" opens the register at that row.
 - From analytics, each figure's link (§2.6).
 
+**As built (T6):** the register is `/decisions` (its own catalogue part, `decisionRegister`), "Decisions" in Work beside Committees for a seat in office or `forum.read`/`forums.manage` (the analytics audience). "Decisions of this committee" is on the committee page's header for its officers and members and oversight (`/decisions?committee={id}`). "In the register" is `InTheRegisterLink` (`features/decision-register/links.tsx`: the committee and the number as the words, `/decisions?committee={id}#q={number}`), ready for E06 T10's resolution page and the meeting page's decisions, which are not merged yet; the links' words are in a small `registerLinks` part loaded on `/committees`; the page that places "In the register" adds its route to that part. AW's "Time from submission to decision" and "Items deferred" figures link to the register for the committee and the period ("Open these decisions", "Open deferred items" with outcome DEFERRED); the register has no filter for decisions on a submission, so the first lists every decision of the period.
+
 ## 2. Meeting analytics (ADR-0070)
 
 ### 2.1 The measures

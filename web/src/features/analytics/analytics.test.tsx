@@ -420,6 +420,15 @@ describe("a committee's detail (flow AW)", () => {
     expect(
       within(figure('Items deferred')).getByText('Items deferred: 5 of 46 (11%); 1 item deferred twice.'),
     ).toBeInTheDocument()
+    // The decisions behind both figures open in the register (design §2.6, E08 T6).
+    expect(within(timing).getByRole('link', { name: 'Open these decisions' })).toHaveAttribute(
+      'href',
+      `/decisions?committee=${BRC}&from=2025-11-23&to=2026-11-22`,
+    )
+    expect(within(figure('Items deferred')).getByRole('link', { name: 'Open deferred items' })).toHaveAttribute(
+      'href',
+      `/decisions?committee=${BRC}&from=2025-11-23&to=2026-11-22&outcome=DEFERRED`,
+    )
 
     const actions = figure('Actions overdue by owner')
     expect(actions).toHaveAttribute('id', 'actions')

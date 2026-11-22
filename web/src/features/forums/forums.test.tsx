@@ -342,6 +342,23 @@ describe('committees (Phase 4 E01 T5, flow K)', () => {
     )
   }, 20_000)
 
+  it('links to the decisions of this committee for officers, members and oversight (Phase 4 E08 T6)', async () => {
+    server.use(...handlers({ ...brc, canManage: false, canManageMembers: false, myRole: 'MEMBER' }, []))
+    const page = renderRoute('/committees/f1')
+    expect(await screen.findByRole('link', { name: 'Decisions of this committee' }, { timeout: 5000 })).toHaveAttribute(
+      'href',
+      '/decisions?committee=f1',
+    )
+    expect(partsForPath('/committees/f1')).toContain('registerLinks')
+    page.unmount()
+
+    // An observer without oversight has no register.
+    server.use(...handlers({ ...brc, canManage: false, canManageMembers: false, myRole: 'OBSERVER' }, []))
+    renderRoute('/committees/f1')
+    expect(await screen.findByRole('tab', { name: 'Members' }, { timeout: 5000 })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Decisions of this committee' })).not.toBeInTheDocument()
+  }, 20_000)
+
   it('adds a person with an alternate, a term from the type and an authority', async () => {
     const user = userEvent.setup()
     const bodies: MemberRequest[] = []

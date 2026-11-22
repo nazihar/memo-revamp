@@ -6,6 +6,7 @@ package com.memo.jooq.indexes
 
 
 import com.memo.jooq.tables.ActionsContributor
+import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.ActionsMemo
 import com.memo.jooq.tables.AuditAnchor
@@ -121,6 +122,8 @@ import org.jooq.impl.Internal
 val ACTIONS_CONTRIBUTOR_ACTION_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_action_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID), false)
 val ACTIONS_CONTRIBUTOR_CURRENT_UK: Index = Internal.createIndex(DSL.name("actions_contributor_current_uk"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), true)
 val ACTIONS_CONTRIBUTOR_USER_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_user_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), false)
+val ACTIONS_DUE_REQUEST_ACTION_IDX: Index = Internal.createIndex(DSL.name("actions_due_request_action_idx"), ActionsDueRequest.ACTIONS_DUE_REQUEST, arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ACTION_ID), false)
+val ACTIONS_DUE_REQUEST_PENDING_UK: Index = Internal.createIndex(DSL.name("actions_due_request_pending_uk"), ActionsDueRequest.ACTIONS_DUE_REQUEST, arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ACTION_ID), true)
 val ACTIONS_ITEM_DECISION_IDX: Index = Internal.createIndex(DSL.name("actions_item_decision_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.DECISION_ID), false)
 val ACTIONS_ITEM_FORUM_IDX: Index = Internal.createIndex(DSL.name("actions_item_forum_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.FORUM_ID, ActionsItem.ACTIONS_ITEM.STATUS, ActionsItem.ACTIONS_ITEM.DUE_DATE, ActionsItem.ACTIONS_ITEM.ID), false)
 val ACTIONS_ITEM_HOLDER_IDX: Index = Internal.createIndex(DSL.name("actions_item_holder_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.HOLDER_USER_ID, ActionsItem.ACTIONS_ITEM.STATUS, ActionsItem.ACTIONS_ITEM.DUE_DATE), false)
@@ -320,6 +323,7 @@ val WORKFLOW_DOA_VERSION_EFFECTIVE_IDX: Index = Internal.createIndex(DSL.name("w
 val WORKFLOW_DOA_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_doa_version_one_open_idx"), WorkflowDoaVersion.WORKFLOW_DOA_VERSION, arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.TENANT_ID), true)
 val WORKFLOW_INSTANCE_DEFINITION_IDX: Index = Internal.createIndex(DSL.name("workflow_instance_definition_idx"), WorkflowInstance.WORKFLOW_INSTANCE, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.DEFINITION_VERSION_ID), false)
 val WORKFLOW_INSTANCE_DOA_VERSION_IDX: Index = Internal.createIndex(DSL.name("workflow_instance_doa_version_idx"), WorkflowInstance.WORKFLOW_INSTANCE, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.DOA_VERSION_ID), false)
+val WORKFLOW_INSTANCE_SUBJECT_RUNNING_UK: Index = Internal.createIndex(DSL.name("workflow_instance_subject_running_uk"), WorkflowInstance.WORKFLOW_INSTANCE, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_TYPE, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_ID), true)
 val WORKFLOW_QUEUE_MEMBER_POSITION_IDX: Index = Internal.createIndex(DSL.name("workflow_queue_member_position_idx"), WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER, arrayOf(WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.TENANT_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.QUEUE_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.POSITION_ID), true)
 val WORKFLOW_QUEUE_MEMBER_USER_IDX: Index = Internal.createIndex(DSL.name("workflow_queue_member_user_idx"), WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER, arrayOf(WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.TENANT_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.QUEUE_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.USER_ID), true)
 val WORKFLOW_ROUND_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_round_one_open_idx"), WorkflowRound.WORKFLOW_ROUND, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID), true)

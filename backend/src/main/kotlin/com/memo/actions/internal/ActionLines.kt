@@ -69,13 +69,17 @@ class ActionLines(
         }
     }
 
-    /** Appends an entry of [kind] to [actionId]'s timeline; returns its number. */
+    /**
+     * Appends an entry of [kind] to [actionId]'s timeline; returns its number. [more] carries what people wrote and how
+     * (an update's text, confidence and files, on whose behalf, the entry it corrects; design E07 §1.6).
+     */
     fun entry(
         actionId: UUID,
         kind: String,
         actorId: UUID?,
         details: Map<String, Any?>,
         at: Instant,
+        more: EntryMore = EntryMore(),
     ): Int {
         val e = ACTIONS_ENTRY
         val dsl = tenantDsl.current()
@@ -96,10 +100,22 @@ class ActionLines(
             .set(e.KIND, kind)
             .set(e.ACTOR_ID, actorId)
             .set(e.DETAILS, JSONB.jsonb(json.writeValueAsString(details)))
+            .set(e.ON_BEHALF_OF, more.onBehalfOf)
+            .set(e.HOW, more.how?.name)
+            .set(e.TEXT, more.text)
+            .set(e.CONFIDENCE, more.confidence?.name)
+            .set(e.FILE_IDS, more.fileIds.toTypedArray<UUID?>())
+            .set(e.CORRECTS_SEQ, more.corrects)
             .set(e.AT, at.atOffset(ZoneOffset.UTC))
             .execute()
         return seq
     }
+
+    /** Entry [seq] of [actionId]; null when there is none. */
+    fun entryOf(
+        actionId: UUID,
+        seq: Int,
+    ): EntryRow? = entries(actionId).firstOrNull { it.seq == seq }
 
     /** [actionId]'s timeline, the newest first. */
     fun entries(actionId: UUID): List<EntryRow> =
@@ -116,6 +132,14 @@ class ActionLines(
                     it.actorId,
                     it.details?.let { d -> json.readValue(d.data(), DETAILS) }.orEmpty(),
                     it.at.toInstant(),
+                    EntryMore(
+                        onBehalfOf = it.onBehalfOf,
+                        how = it.how?.let(How::valueOf),
+                        text = it.text,
+                        confidence = it.confidence?.let(Confidence::valueOf),
+                        fileIds = it.fileIds?.filterNotNull().orEmpty(),
+                        corrects = it.correctsSeq,
+                    ),
                 )
             }
 

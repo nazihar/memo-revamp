@@ -561,6 +561,7 @@ class RecusalLeakIT : RecusalActionsFixture() {
                 .replace("{declarationId}", p.observed.id.toString())
                 .replace("{forumId}", brc.toString())
                 .let { if ("{actionId}" in it) it.replace("{actionId}", actionsOf(p).draft.toString()) else it }
+                .replace("{requestId}", UUID.randomUUID().toString())
         val query = row.query?.let { "?" + substituted(p, it) }.orEmpty()
         if (row.method == "GET") return read(path + query, viewer.person().session)
         val body = row.body?.let { substituted(p, json.writeValueAsString(it)) } ?: "{}"

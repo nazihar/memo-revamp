@@ -55,6 +55,8 @@ class ActionItemEffects(
         after: ActionRow,
         contributorsBefore: List<UUID>,
         contributorsAfter: List<UUID>,
+        /** Why an issued action was edited (a draft needs none). */
+        reason: String? = null,
     ) {
         val was = people(before, contributorsBefore) + texts(before) + ("classificationId" to before.classificationId.toString())
         val now = people(after, contributorsAfter) + texts(after) + ("classificationId" to after.classificationId.toString())
@@ -64,7 +66,7 @@ class ActionItemEffects(
             OBJECT_TYPE,
             after.id.toString(),
             before = was.filterKeys { it in changed },
-            after = now.filterKeys { it in changed } + ("fields" to changed),
+            after = now.filterKeys { it in changed } + ("fields" to changed) + ("reasonSha256" to reason?.let(ActionRules::sha256)),
         )
     }
 
@@ -124,7 +126,8 @@ class ActionItemEffects(
         kind: ActionChange,
     ) = events.publishEvent(ActionChanged(TenantContext.current().value, row.id, row.forumId, kind))
 
-    internal fun notify(
+    /** Tells [user] of [kind] on [row]: the committee, the reference and [details] (dates, words), never its text. */
+    fun notify(
         user: UUID,
         kind: NotificationKind,
         row: ActionRow,

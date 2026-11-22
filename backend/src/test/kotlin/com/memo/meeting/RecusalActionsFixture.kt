@@ -1,6 +1,7 @@
 package com.memo.meeting
 
 import com.memo.actions.ActionPlanting
+import com.memo.actions.internal.ActionEvidencePurpose
 import com.memo.actions.internal.ActionStore
 import com.memo.actions.internal.ItemCopy
 import com.memo.testsupport.Person
@@ -63,6 +64,22 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         val ofHidden = plant(p, p.hidden, "$CANARY_ACTION of the hidden item", control)
         val d1s = plant(p, p.hidden, "Confirm the covenant waiver", d1)
         val hiddenToAll = listOf(draft, issued, ofHidden)
+
+        /**
+         * E07 T4: an evidence file on the issued action, uploaded by its owner (the control) through the whole pipeline and
+         * attached to an update; its content and the update are canaries.
+         */
+        val evidence: UUID by lazy {
+            val uri = "/api/v1/files?purpose=${ActionEvidencePurpose.KEY}&owner=$issued"
+            val uploaded = upload(control.session, "$CANARY_ACTION evidence".toByteArray(), uri, "evidence.txt")
+            assertThat(uploaded).hasStatus(HttpStatus.CREATED)
+            val file = UUID.fromString(uploaded.json()["fileId"].asString())
+            val version = read("/api/v1/actions/$issued", control.session).json()["version"].asLong()
+            val body = """{"text":"$CANARY_ACTION update","fileIds":["$file"]}"""
+            val headers = mapOf("If-Match" to "\"$version\"", "Idempotency-Key" to UUID.randomUUID().toString())
+            assertThat(send(HttpMethod.POST, "/api/v1/actions/$issued/updates", control, body, headers)).hasStatus(HttpStatus.CREATED)
+            file
+        }
     }
 
     private val plantedActions = mutableMapOf<java.util.UUID, PlantedActions>()
@@ -85,6 +102,10 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
             val one = read("/api/v1/actions/$id", person.session)
             assertThat(one).hasStatus(HttpStatus.NOT_FOUND)
             assertThat(one.response.contentAsString).doesNotContain(CANARY_ACTION)
+            // E07 T4: the timeline too.
+            val timeline = read("/api/v1/actions/$id/entries", person.session)
+            assertThat(timeline).hasStatus(HttpStatus.NOT_FOUND)
+            assertThat(timeline.response.contentAsString).doesNotContain(CANARY_ACTION)
         }
         val list = read("/api/v1/meetings/${p.meeting.id}/actions", person.session)
         clean(person, list)
@@ -92,12 +113,14 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         val listed = list.json()["actions"].list().map { java.util.UUID.fromString(it["id"].asString()) }
         assertThat(listed).doesNotContainAnyElementsOf(planted.hiddenToAll)
         assertThat(list.json()["drafts"].asInt()).isZero()
+        evidenceProbe(planted, person)
         val mine = read("/api/v1/me/actions", person.session)
         clean(person, mine)
         assertThat(mine.response.contentAsString).doesNotContain(CANARY_ACTION)
         if (v == Viewer.RECUSED) {
             val own = read("/api/v1/actions/${planted.d1s}", person.session)
             clean(person, own)
+            clean(person, read("/api/v1/actions/${planted.d1s}/entries", person.session))
             assertThat(own.json()["viewerRecused"].asBoolean()).isTrue()
             assertThat(own.json()["source"].absent("itemTitle")).isTrue()
             assertThat(listed).containsExactly(planted.d1s)
@@ -105,6 +128,26 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         } else {
             assertThat(listed).doesNotContain(planted.d1s)
         }
+    }
+
+    /**
+     * E07 T4: the evidence through the generic files endpoints: the owner reads it, a recused viewer gets 403 or 404 for
+     * the file, its content and each version, naming nothing.
+     */
+    private fun evidenceProbe(
+        planted: PlantedActions,
+        person: Person,
+    ) {
+        val file = planted.evidence
+        assertThat(read("/api/v1/files/$file/content", control.session).response.contentAsString).contains(CANARY_ACTION)
+        val versions = read("/api/v1/files/$file", control.session).json()["versions"].list().map { it["versionId"].asString() }
+        (listOf("/api/v1/files/$file", "/api/v1/files/$file/content") + versions.map { "/api/v1/files/$file/versions/$it/content" })
+            .forEach { uri ->
+                val result = read(uri, person.session)
+                assertThat(result.response.status).describedAs(uri).isIn(403, 404)
+                clean(person, result, statusBelow = 500)
+                assertThat(result.response.contentAsString).doesNotContain(CANARY_ACTION)
+            }
     }
 
     /**

@@ -104,6 +104,8 @@ object PaperSurfaceRegistry {
             "GET /api/v1/resolutions/{resolutionId}" to Surface.RESOLUTIONS,
             // E06 T5: the minutes page (secretaries and forums.manage while drafting; 404 to everyone else).
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
+            // E07 T4: the timeline, by the same rule.
+            "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
         )
 
     /**
@@ -192,6 +194,23 @@ object PaperSurfaceRegistry {
                     "involved (recusal columns)",
                 "POST /api/v1/actions/{actionId}/memos/link" to
                     "linking a follow-up memo (E07 T6): the owner, contributors and secretaries not recused (recusal columns)",
+                // E07 T4: progress, dates, owners and endings; every one finds the action by the one rule first, so a recused
+                // viewer who is not involved gets 404, and a recused officer who is gets 403 RECUSED (ActionStateMachineTest).
+                "POST /api/v1/actions/{actionId}/updates" to
+                    "a progress update (E07 T4): the owner, contributors and secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/started" to
+                    "I have started (E07 T4): the owner, or a secretary for them (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due-requests" to "asking for a new date (E07 T4): the owner (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due-requests/{requestId}/decide" to
+                    "answering a date request (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due" to
+                    "changing the date (E07 T4): secretaries not recused, or the owner (recusal columns)",
+                "POST /api/v1/actions/{actionId}/rag" to
+                    "overriding the colour (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "DELETE /api/v1/actions/{actionId}/rag" to "clearing the override (E07 T4): as overriding (recusal columns)",
+                "POST /api/v1/actions/{actionId}/owner" to "a new owner (E07 T4): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/cancel" to "cancelling (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/reopen" to "reopening (E07 T4): secretaries not recused (recusal columns)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */

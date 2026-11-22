@@ -9,11 +9,49 @@ export type AcceptRequest = {
 };
 
 export type ActionAbilities = {
+    acceptRisk: boolean;
+    cancel: boolean;
+    changeDue: boolean;
+    changeOwner: boolean;
+    confidence: boolean;
+    decideDue: boolean;
     discard: boolean;
     edit: boolean;
     issue: boolean;
     linkMemo: boolean;
+    overrideRag: boolean;
     raiseMemo: boolean;
+    reopen: boolean;
+    requestDue: boolean;
+    start: boolean;
+    update: boolean;
+    updateOnBehalf: boolean;
+};
+
+export type ActionDueRequest = {
+    newDate?: string | null;
+    reason?: string | null;
+};
+
+export type ActionEntriesResponse = {
+    actionId: string;
+    entries: Array<ActionEntryResponse>;
+};
+
+export type ActionEntryResponse = {
+    actor?: ActionPerson | null;
+    at: string;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
+    corrects?: number | null;
+    details: {
+        [key: string]: unknown;
+    };
+    files: Array<EvidenceFile>;
+    how?: 'PHONE' | 'EMAIL' | 'IN_PERSON' | 'MEETING';
+    kind: string;
+    onBehalfOf?: ActionPerson | null;
+    seq: number;
+    text?: string | null;
 };
 
 export type ActionFieldsRequest = {
@@ -24,6 +62,7 @@ export type ActionFieldsRequest = {
     dueDate?: string | null;
     owner?: OwnerInput | null;
     priority?: 'NORMAL' | 'HIGH';
+    reason?: string | null;
     sourceNote?: string | null;
     title?: string | null;
 };
@@ -55,27 +94,50 @@ export type ActionPosition = {
     title: string;
 };
 
+export type ActionRagOverride = {
+    by?: ActionPerson | null;
+    rag: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+    reason: string;
+    until?: string | null;
+};
+
+export type ActionRagResponse = {
+    colour: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+    override?: ActionRagOverride | null;
+    word: 'DRAFT' | 'CLOSED' | 'CANCELLED' | 'TO_VERIFY' | 'OVERRIDE_RED' | 'OVERRIDE_AMBER' | 'OVERRIDE_GREEN' | 'OVERDUE' | 'OFF_TRACK' | 'DUE_SOON' | 'AT_RISK' | 'NO_RECENT_UPDATE' | 'ON_TRACK';
+};
+
 export type ActionResponse = {
     can: ActionAbilities;
+    cancelKind?: 'NO_LONGER_NEEDED' | 'SUPERSEDED' | 'RISK_ACCEPTED' | 'DISCARDED' | 'DUPLICATE';
+    cancelReason?: string | null;
     classificationId: string;
+    closedAt?: string | null;
     committee: string;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
     context?: string | null;
     contributors: Array<ActionPerson>;
     createdAt: string;
     description?: string | null;
+    dueChange: 'SECRETARY_AGREES' | 'CHAIR_AGREES' | 'OWNER_WITH_REASON';
     dueDate?: string | null;
     dueRevisions: number;
     forumId: string;
     id: string;
     issuedAt?: string | null;
+    lastUpdateAt?: string | null;
     memos: Array<ActionMemoResponse>;
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
+    pendingRequest?: DueRequestResponse | null;
     priority: 'NORMAL' | 'HIGH';
+    rag: ActionRagResponse;
     reference?: string | null;
+    reopenCount: number;
     source: ActionSourceResponse;
     status: 'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED';
     stepName?: string | null;
+    supersededBy?: string | null;
     title: string;
     version: number;
     viewerRecused: boolean;
@@ -94,6 +156,11 @@ export type ActionSourceResponse = {
     note?: string | null;
 };
 
+export type ActionStartedRequest = {
+    how?: 'PHONE' | 'EMAIL' | 'IN_PERSON' | 'MEETING';
+    onBehalfOf?: string | null;
+};
+
 export type ActionSummary = {
     committee: string;
     conditionIndex?: number | null;
@@ -107,6 +174,7 @@ export type ActionSummary = {
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
     priority: 'NORMAL' | 'HIGH';
+    rag: ActionRagResponse;
     reference?: string | null;
     sourceKind: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
     sourceLabel: string;
@@ -114,6 +182,15 @@ export type ActionSummary = {
     stepName?: string | null;
     title: string;
     version: number;
+};
+
+export type ActionUpdateRequest = {
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
+    corrects?: number | null;
+    fileIds?: Array<string>;
+    how?: 'PHONE' | 'EMAIL' | 'IN_PERSON' | 'MEETING';
+    onBehalfOf?: string | null;
+    text?: string | null;
 };
 
 export type ActionWarning = {
@@ -632,6 +709,13 @@ export type CalendarWeekRequest = {
     };
 };
 
+export type CancelActionRequest = {
+    how?: 'PHONE' | 'EMAIL' | 'IN_PERSON' | 'MEETING';
+    kind?: 'NO_LONGER_NEEDED' | 'SUPERSEDED' | 'RISK_ACCEPTED' | 'DISCARDED' | 'DUPLICATE';
+    reason?: string | null;
+    supersededBy?: string | null;
+};
+
 export type CancelMeetingRequest = {
     reason?: string | null;
 };
@@ -861,6 +945,11 @@ export type CycleTime = {
     medianDays: number;
     p90Days: number;
     type: Named;
+};
+
+export type DecideDueRequest = {
+    decision?: 'AGREE' | 'DECLINE';
+    note?: string | null;
 };
 
 export type DecisionDissentResponse = {
@@ -1251,6 +1340,14 @@ export type DuePreviewResponse = {
     due?: string | null;
 };
 
+export type DueRequestResponse = {
+    id: string;
+    newDate: string;
+    reason: string;
+    requestedAt: string;
+    requestedBy: ActionPerson;
+};
+
 export type EditSessionView = {
     id: string;
     reason?: string | null;
@@ -1272,6 +1369,13 @@ export type EscalationTarget = {
     code?: string;
     key?: string;
     name?: string;
+};
+
+export type EvidenceFile = {
+    id: string;
+    mediaType: string;
+    name: string;
+    sizeBytes: number;
 };
 
 export type FacetView = {
@@ -3117,6 +3221,11 @@ export type Outcome = {
     resolution?: boolean;
 };
 
+export type OwnerChangeRequest = {
+    owner?: OwnerInput | null;
+    reason?: string | null;
+};
+
 export type OwnerInput = {
     kind?: 'PERSON' | 'POSITION';
     positionId?: string | null;
@@ -3503,6 +3612,12 @@ export type QuorumWarningResponse = {
     unmet: Array<UnmetCondition>;
 };
 
+export type RagOverrideRequest = {
+    rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+    reason?: string | null;
+    until?: string | null;
+};
+
 export type RaiseActionRequest = {
     classificationId?: string | null;
     conditionIndex?: number | null;
@@ -3666,6 +3781,11 @@ export type RenditionView = {
 export type RenewRequest = {
     authority?: string | null;
     termEndsOn?: string | null;
+};
+
+export type ReopenActionRequest = {
+    dueDate?: string | null;
+    reason?: string | null;
 };
 
 export type RepliesResponse = {
@@ -4648,6 +4768,28 @@ export type EditActionResponses = {
 
 export type EditActionResponse = EditActionResponses[keyof EditActionResponses];
 
+export type CancelActionData = {
+    body: CancelActionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/cancel';
+};
+
+export type CancelActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type CancelActionResponse = CancelActionResponses[keyof CancelActionResponses];
+
 export type DiscardActionData = {
     body?: DiscardActionRequest;
     headers: {
@@ -4669,6 +4811,91 @@ export type DiscardActionResponses = {
 };
 
 export type DiscardActionResponse = DiscardActionResponses[keyof DiscardActionResponses];
+
+export type ChangeActionDueData = {
+    body: ActionDueRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/due';
+};
+
+export type ChangeActionDueResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type ChangeActionDueResponse = ChangeActionDueResponses[keyof ChangeActionDueResponses];
+
+export type RequestActionDueData = {
+    body: ActionDueRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/due-requests';
+};
+
+export type RequestActionDueResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type RequestActionDueResponse = RequestActionDueResponses[keyof RequestActionDueResponses];
+
+export type DecideActionDueData = {
+    body: DecideDueRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+        requestId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/due-requests/{requestId}/decide';
+};
+
+export type DecideActionDueResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type DecideActionDueResponse = DecideActionDueResponses[keyof DecideActionDueResponses];
+
+export type GetActionEntriesData = {
+    body?: never;
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/entries';
+};
+
+export type GetActionEntriesResponses = {
+    /**
+     * OK
+     */
+    200: ActionEntriesResponse;
+};
+
+export type GetActionEntriesResponse = GetActionEntriesResponses[keyof GetActionEntriesResponses];
 
 export type IssueActionData = {
     body?: never;
@@ -4733,6 +4960,137 @@ export type LinkActionMemoResponses = {
 };
 
 export type LinkActionMemoResponse = LinkActionMemoResponses[keyof LinkActionMemoResponses];
+
+export type ChangeActionOwnerData = {
+    body: OwnerChangeRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/owner';
+};
+
+export type ChangeActionOwnerResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type ChangeActionOwnerResponse = ChangeActionOwnerResponses[keyof ChangeActionOwnerResponses];
+
+export type ClearActionRagData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/rag';
+};
+
+export type ClearActionRagResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type ClearActionRagResponse = ClearActionRagResponses[keyof ClearActionRagResponses];
+
+export type OverrideActionRagData = {
+    body: RagOverrideRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/rag';
+};
+
+export type OverrideActionRagResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type OverrideActionRagResponse = OverrideActionRagResponses[keyof OverrideActionRagResponses];
+
+export type ReopenActionData = {
+    body: ReopenActionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/reopen';
+};
+
+export type ReopenActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type ReopenActionResponse = ReopenActionResponses[keyof ReopenActionResponses];
+
+export type StartActionData = {
+    body?: ActionStartedRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/started';
+};
+
+export type StartActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type StartActionResponse = StartActionResponses[keyof StartActionResponses];
+
+export type PostActionUpdateData = {
+    body: ActionUpdateRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/updates';
+};
+
+export type PostActionUpdateResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type PostActionUpdateResponse = PostActionUpdateResponses[keyof PostActionUpdateResponses];
 
 export type QueryAuditData = {
     body?: never;

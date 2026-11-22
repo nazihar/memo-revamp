@@ -46,6 +46,9 @@ class ActionItemSubject(
     /** The secretary who issues an action may own it, or verify others' (ADR-0068): independence is the verifier slot's. */
     override val initiatorTakesPart = true
 
+    /** A closed or cancelled action reopened within 90 days runs again on a new instance (design E07 §1.10). */
+    override val runsAgain = true
+
     override val seededDefinitions = listOf(SeededDefinition(DEFINITION_KEY, DEFINITION_NAME, DEFINITION_DESCRIPTION, DEFINITION_BODY))
 
     override fun slot(

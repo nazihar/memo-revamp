@@ -169,6 +169,19 @@ enum class NotificationKind(
     // the app (the email comes in the daily digest, T5). Parameters `committee`, `reference`, `organisation`, `link` and
     // `outcome` (APPROVED, REJECTED, WITHDRAWN or CANCELLED). Never the memo's or the action's text.
     ACTION_MEMO_DECIDED(NotificationCategory.WORKFLOW, null),
+
+    // Progress, dates, owners and endings (E07 T4, design E07 §2.3): the owner of an action changed (to the previous and
+    // the new owner, in the app and by email); a secretary recorded the risk accepted on the chair's behalf (to the chair,
+    // by email at once). In the app only, their emails in the daily digest from T5: the action was cancelled or reopened
+    // (to its owner and contributors), a new date was asked for (to whoever decides), the request was decided (to the
+    // owner; `decision` AGREED or DECLINED), the date changed (to the owner and contributors; `date` the new date, ISO).
+    ACTION_OWNER_CHANGED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_OWNER_CHANGED),
+    ACTION_RISK_ACCEPTED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_RISK_ACCEPTED),
+    ACTION_CANCELLED(NotificationCategory.WORKFLOW, null),
+    ACTION_REOPENED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_REQUESTED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_DECIDED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_CHANGED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -94,3 +94,24 @@ describe('action items (design E07 §2.3)', () => {
     )
   })
 })
+
+describe('action progress, dates and endings (design E07 §2.3)', () => {
+  const action = { committee: 'Board Risk Committee', reference: 'BRC A14/2026', date: '2027-01-20' }
+
+  it('name the committee, the reference and the date, never the action', () => {
+    expect(notificationText(english, 'ACTION_DUE_DECIDED', { ...action, decision: 'AGREED' })).toBe(
+      'Your request to move action BRC A14/2026 of Board Risk Committee to 2027-01-20 was agreed',
+    )
+    expect(notificationText(english, 'ACTION_DUE_DECIDED', { ...action, decision: 'DECLINED' })).toContain(
+      'was declined',
+    )
+    expect(notificationText(english, 'ACTION_DUE_CHANGED', action)).toBe(
+      'Action BRC A14/2026 of Board Risk Committee is now due 2027-01-20',
+    )
+    expect(notificationText(english, 'ACTION_CANCELLED', action)).toBe(
+      'Action BRC A14/2026 of Board Risk Committee was cancelled',
+    )
+    expect(templateLabel(english, 'ACTION_RISK_ACCEPTED')).toBe('Committee action risk accepted')
+    expect(notificationText(arabic, 'ACTION_OWNER_CHANGED', action)).toContain('BRC A14/2026')
+  })
+})

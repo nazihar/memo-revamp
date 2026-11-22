@@ -48,7 +48,9 @@ class ActionAccessArchTest {
         noClasses()
             .that()
             .haveNameNotMatching(
-                """com\.memo\.actions\.internal\.(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking""" +
+                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL; T6: the memo links.
+                """com\.memo\.actions\.internal\.""" +
+                    """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns""" +
                     """|ActionMemoStore)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
@@ -68,10 +70,14 @@ class ActionAccessArchTest {
          */
         val WRITERS =
             listOf(
-                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionMinutes)""",
+                """internal\.(ActionAccess|ActionRaising|ActionRaisingKt|ActionIssuing|ActionScenes|ActionMinutes)""",
                 """internal\.(ActionWorkflowListener|ActionSourceListener)""",
+                // T4: progress, dates, owners and endings, their effects, and the evidence files' purpose.
+                """internal\.(ActionProgress|ActionDates|ActionOwnership|ActionEnding)""",
+                """internal\.(ActionProgressEffects|ActionDateEffects|ActionEvidencePurpose)""",
+                // T6: follow-up memos, their listener, the memo's origins port and the action page's memos.
                 """internal\.(ActionFollowUps|ActionMemoListener|ActionMemoOrigins|ActionMemoViews)""",
-                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionMemoStore)""",
+                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|ActionMemoStore)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }

@@ -182,7 +182,7 @@ open class MinutesEvent(
     val minutes: MinutesPath by lazy { MinutesPath(this, MINUTES_EVENT__MINUTES_EVENT_TENANT_ID_MEETING_ID_FKEY, null) }
     override fun getChecks(): List<Check<MinutesEventRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_event_how_check"), "(((char_length(how) >= 1) AND (char_length(how) <= 40)))", true),
-        Internal.createCheck(this, DSL.name("minutes_event_kind_check"), "((kind = ANY (ARRAY['GENERATED'::text, 'ITEM_REGENERATED'::text, 'ITEM_RESTORED'::text, 'RETURNED_TO_DRAFT'::text, 'SENT_FOR_REVIEW'::text, 'AGREED'::text, 'RETURNED'::text, 'CIRCULATED'::text, 'COMMENTS_REQUESTED'::text, 'WITHDRAWN'::text, 'DEADLINE_PASSED'::text, 'LINKED_TO_MEETING'::text, 'APPROVED_AT_MEETING'::text, 'CONFIRMED'::text, 'CORRECTION_APPROVED'::text])))", true),
+        Internal.createCheck(this, DSL.name("minutes_event_kind_check"), "((kind = ANY (ARRAY['GENERATED'::text, 'ITEM_REGENERATED'::text, 'ITEM_RESTORED'::text, 'RETURNED_TO_DRAFT'::text, 'SENT_FOR_REVIEW'::text, 'AGREED'::text, 'RETURNED'::text, 'CIRCULATED'::text, 'COMMENTS_REQUESTED'::text, 'WITHDRAWN'::text, 'DEADLINE_PASSED'::text, 'DEADLINE_CHANGED'::text, 'CIRCULATION_ENDED'::text, 'LINKED_TO_MEETING'::text, 'APPROVED_AT_MEETING'::text, 'CONFIRMED'::text, 'CORRECTION_APPROVED'::text])))", true),
         Internal.createCheck(this, DSL.name("minutes_event_note_check"), "((char_length(note) <= 1000))", true),
         Internal.createCheck(this, DSL.name("minutes_event_sha256_check"), "((sha256 ~ '^[0-9a-f]{64}\$'::text))", true)
     )

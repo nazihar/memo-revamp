@@ -11,10 +11,19 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
+import java.time.Clock
+import java.time.Duration
 import java.util.UUID
 
 /** The `minutes-draft` job's data (ADR-0018): ids only; [seq] is the request it answers (a later one supersedes it). */
 data class DraftTask(
+    override val tenantId: UUID,
+    val meetingId: UUID,
+    val seq: Int,
+) : TenantScopedPayload
+
+/** The `minutes-copies` job's data: the build asked for ([seq], the minutes' `copies_seq`). */
+data class CopiesTask(
     override val tenantId: UUID,
     val meetingId: UUID,
     val seq: Int,
@@ -36,6 +45,8 @@ class MinutesJobs(
     private val scheduler: ObjectProvider<SchedulerClient>,
     @param:Lazy @param:Qualifier("minutesDraftTask") private val draftTask: OneTimeTask<DraftTask>,
     @param:Lazy @param:Qualifier("minutesStructureTask") private val structureTask: OneTimeTask<StructureTask>,
+    @param:Lazy @param:Qualifier("minutesCopiesTask") private val copiesTask: OneTimeTask<CopiesTask>,
+    private val clock: Clock,
 ) {
     /** False only while a test runs the jobs itself (test contexts share the scheduler table). */
     @Volatile var jobs: Boolean = true
@@ -57,6 +68,25 @@ class MinutesJobs(
         val data = StructureTask(TenantContext.current().value, meetingId, versionId)
         scheduler.ifAvailable?.scheduleIfNotExists(structureTask.schedulableInstance("$meetingId:$versionId", data))
     }
+
+    /**
+     * The readers' copies, built now or, [delayed], two minutes later (edits made while circulated are debounced: a later
+     * save asks again, and each build reads the then current version).
+     */
+    fun copies(
+        meetingId: UUID,
+        seq: Int,
+        delayed: Boolean = false,
+    ) {
+        if (!jobs) return
+        val data = CopiesTask(TenantContext.current().value, meetingId, seq)
+        val at = if (delayed) clock.instant().plus(COPIES_DEBOUNCE) else clock.instant()
+        scheduler.ifAvailable?.scheduleIfNotExists(copiesTask.instance("$meetingId:$seq", data), at)
+    }
+
+    private companion object {
+        val COPIES_DEBOUNCE: Duration = Duration.ofMinutes(2)
+    }
 }
 
 /**
@@ -76,6 +106,15 @@ class MinutesJobTasks {
         }
 
     @Bean
+    fun minutesCopiesTask(
+        jobs: Jobs,
+        copies: MinutesCopies,
+    ): OneTimeTask<CopiesTask> =
+        jobs.tenantTaskCounting(COPIES, CopiesTask::class.java, MAX_RETRIES) { data, failures ->
+            copies.build(data.meetingId, last = failures + 1 >= MAX_RETRIES)
+        }
+
+    @Bean
     fun minutesStructureTask(
         jobs: Jobs,
         checks: MinutesStructureChecks,
@@ -84,6 +123,7 @@ class MinutesJobTasks {
     companion object {
         const val DRAFT = "minutes-draft"
         const val STRUCTURE = "minutes-structure"
+        const val COPIES = "minutes-copies"
         const val MAX_RETRIES = 3
     }
 }

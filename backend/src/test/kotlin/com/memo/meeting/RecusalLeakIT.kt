@@ -205,21 +205,19 @@ class RecusalLeakIT : RecusalActionsFixture() {
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
+            // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
+            Surface.TRACKER to { p, v -> trackerProbe(p, v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
-            Surface.RESOLUTIONS to { _, v ->
-                listOf(
-                    "/api/v1/forums/$brc/resolutions",
-                    "/api/v1/forums/$brc/resolutions/check",
-                    "/api/v1/resolutions/${UUID.randomUUID()}",
-                ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
-            },
+            Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
             // E06 T5: the minutes page, the secretaries' while drafting; nothing on a meeting not held (404), never a canary.
             Surface.MINUTES to { p, v ->
-                val page = read("/api/v1/meetings/${p.meeting.id}/minutes", v.person().session)
-                assertThat(page).hasStatus(HttpStatus.NOT_FOUND)
-                clean(v.person(), page, statusBelow = 500)
+                val calls = minutesCalls(p, v.person())
+                assertThat(calls.first()).describedAs("the page: nothing on a meeting not held").hasStatus(HttpStatus.NOT_FOUND)
+                calls.forEach { clean(v.person(), it, statusBelow = 500) }
             },
+            // E06 T6: the reader's copy and the comments: the copy of a recused reader is MinutesRedactionIT's; here nothing.
+            Surface.MINUTES_COPIES to { p, v -> minutesCopyCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -411,7 +409,7 @@ class RecusalLeakIT : RecusalActionsFixture() {
             // Delivered through SMTP and read back from Mailpit: RecusalMailIT.
             Channel.MAIL to { _, _ -> },
             Channel.EXPORTS to { p, v ->
-                // The register's workbook is in the REGISTERS probe; the meeting's calendar file:
+                // The register's workbook is in the REGISTERS probe, the tracker's in TRACKER; the meeting's calendar file:
                 clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/calendar.ics", v.person().session), statusBelow = 500)
             },
             Channel.SEARCH to { _, v ->
@@ -589,7 +587,7 @@ class RecusalLeakIT : RecusalActionsFixture() {
 
     private fun meetingVersion(p: Planted): Long = asUser(secretary2.account) { reads.get(p.meeting.id) }.version
 
-    private fun versioned(version: Long) = mapOf("If-Match" to "\"$version\"", "Idempotency-Key" to UUID.randomUUID().toString())
+    internal fun versioned(version: Long) = mapOf("If-Match" to "\"$version\"", "Idempotency-Key" to UUID.randomUUID().toString())
 
     /**
      * The officers' endpoints that name no item (sections, publishing, the chair's part, running the meeting, invitations,
@@ -691,6 +689,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             // Making the minutes' draft (E06 T5): the recused secretary is refused (403 `RECUSED`), naming nothing.
             "POST /api/v1/meetings/{meetingId}/minutes/draft" to
                 { p -> send(HttpMethod.POST, "${base(p)}/minutes/draft", secretary, """{"replaceEdits":true}""") },
+            // The minutes' circulation and the preview "as" (E06 T6): the recused secretary is refused or finds nothing.
+            *minutesOfficerProbes().toList().toTypedArray(),
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to

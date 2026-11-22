@@ -68,6 +68,37 @@ describe('meeting reminders (design E05 §9)', () => {
   })
 })
 
+describe('minutes notifications (design E06 §2)', () => {
+  const minutes = { committee: 'Board Risk Committee', date: '2026-12-12' }
+
+  it('name the committee, the date and the deadline, never the minutes', () => {
+    expect(notificationText(english, 'MINUTES_REVIEW_REQUESTED', minutes)).toBe(
+      'The draft minutes of Board Risk Committee on 2026-12-12 are ready for your review',
+    )
+    expect(notificationText(english, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toBe(
+      'The draft minutes of Board Risk Committee on 2026-12-12 are circulated: please send any comments by 2026-12-19',
+    )
+    expect(notificationText(english, 'MINUTES_COMMENT_ADDED', { ...minutes, kind: 'NO_COMMENTS' })).toBe(
+      'A reader has no comments on the draft minutes of Board Risk Committee on 2026-12-12',
+    )
+    expect(notificationText(english, 'MINUTES_COMMENT_ADDED', { ...minutes, kind: 'SUGGESTION' })).toBe(
+      'A correction to the draft minutes of Board Risk Committee on 2026-12-12 was suggested',
+    )
+    expect(notificationText(english, 'DECISIONS_RELEASE_FAILED', { ...minutes, count: '2' })).toBe(
+      '2 decisions of Board Risk Committee on 2026-12-12 were not sent to their memos: open the meeting to try again',
+    )
+    expect(notificationText(english, 'MINUTES_CONFIRMATION_REQUESTED', minutes)).toBe(
+      'The minutes of Board Risk Committee on 2026-12-12 are ready for your approval',
+    )
+    expect(templateLabel(english, 'MINUTES_APPROVED')).toBe('Minutes approved')
+  })
+
+  it('read in Arabic', () => {
+    expect(notificationText(arabic, 'MINUTES_APPROVED', minutes)).toContain('اعتُمد محضر')
+    expect(notificationText(arabic, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toContain('2026-12-19')
+  })
+})
+
 describe('action items (design E07 §2.3)', () => {
   const action = { committee: 'Board Risk Committee', reference: 'BRC A14/2026', date: '2027-03-12' }
 
@@ -101,5 +132,35 @@ describe('action progress, dates and endings (design E07 §2.3)', () => {
     )
     expect(templateLabel(english, 'ACTION_RISK_ACCEPTED')).toBe('Committee action risk accepted')
     expect(notificationText(arabic, 'ACTION_OWNER_CHANGED', action)).toContain('BRC A14/2026')
+  })
+})
+
+describe('action reminders, escalation and closure (design E07 §1.8, §1.9)', () => {
+  const action = { committee: 'Board Risk Committee', reference: 'BRC A9/2026', date: '2026-11-28' }
+
+  it('name the committee, the reference and the date, never the action', () => {
+    expect(notificationText(english, 'ACTION_DUE_SOON', action)).toBe(
+      'Action BRC A9/2026 of Board Risk Committee is due soon, on 2026-11-28',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'DUE' })).toBe(
+      'Action BRC A9/2026 of Board Risk Committee, due 2026-11-28, is overdue',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'ESCALATED' })).toContain(
+      'is overdue and was escalated',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'REMINDER' })).toContain('is still overdue')
+    expect(notificationText(english, 'ACTION_ESCALATED', { ...action, holder: 'A. Karim (Head of Treasury)' })).toBe(
+      'Action BRC A9/2026 of Board Risk Committee, held by A. Karim (Head of Treasury), is overdue since 2026-11-28',
+    )
+    expect(notificationText(english, 'ACTION_TO_VERIFY', action)).toBe(
+      'Action BRC A9/2026 of Board Risk Committee was marked as done: please verify it',
+    )
+    expect(notificationText(english, 'ACTION_SENT_BACK', action)).toContain('was sent back to you')
+    expect(notificationText(english, 'ACTION_CLOSED', action)).toContain('was verified and closed')
+    expect(notificationText(english, 'ACTION_NOT_RUNNING', action)).toContain('has no running workflow')
+    expect(templateLabel(english, 'ACTIONS_DIGEST')).toBe('Daily digest of committee actions')
+    expect(templateLabel(english, 'ACTION_ESCALATED')).toBe('Committee action escalated')
+    expect(notificationText(arabic, 'ACTION_OVERDUE', { ...action, stage: 'ESCALATED' })).toContain('صُعّد')
+    expect(notificationText(arabic, 'ACTION_TO_VERIFY', action)).toContain('BRC A9/2026')
   })
 })

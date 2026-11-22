@@ -144,6 +144,18 @@ const kindsWithValues = defineMessages<{
   meetingReplyReminder: { committee: string; date: string }
   meetingReminder: { committee: string; date: string; unanswered: string; toReview: number }
   meetingQuorumAtRisk: { committee: string; date: string }
+  minutesReviewRequested: { committee: string; date: string }
+  minutesReturned: { committee: string; date: string }
+  minutesAgreed: { committee: string; date: string }
+  minutesCirculated: { committee: string; date: string; until: string }
+  minutesCommentsRequested: { committee: string; date: string; until: string }
+  minutesCommentsClosing: { committee: string; date: string; until: string }
+  minutesConfirmationRequested: { committee: string; date: string }
+  minutesApproved: { committee: string; date: string }
+  minutesCommentAdded: { committee: string; date: string; kind: string }
+  minutesDraftOverdue: { committee: string; date: string }
+  minutesDraftReady: { committee: string; date: string }
+  decisionsReleaseFailed: { committee: string; date: string; count: number }
   actionAssigned: { committee: string; reference: string; date: string }
   actionSourceCorrected: { committee: string; reference: string }
   actionOwnerChanged: { committee: string; reference: string }
@@ -153,6 +165,13 @@ const kindsWithValues = defineMessages<{
   actionDueRequested: { committee: string; reference: string; date: string }
   actionDueDecided: { committee: string; reference: string; date: string; decision: string }
   actionDueChanged: { committee: string; reference: string; date: string }
+  actionDueSoon: { committee: string; reference: string; date: string }
+  actionOverdue: { committee: string; reference: string; date: string; stage: string }
+  actionToVerify: { committee: string; reference: string }
+  actionClosed: { committee: string; reference: string }
+  actionNotRunning: { committee: string; reference: string }
+  actionEscalated: { committee: string; reference: string; date: string; holder: string }
+  actionSentBack: { committee: string; reference: string; date: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -328,6 +347,57 @@ const kindsWithValues = defineMessages<{
     defaultMessage:
       'From the replies so far, the meeting of {committee} on {date} or some of its items may not be quorate',
   },
+  minutesReviewRequested: {
+    id: 'notificationKinds.minutesReviewRequested',
+    defaultMessage: 'The draft minutes of {committee} on {date} are ready for your review',
+  },
+  minutesReturned: {
+    id: 'notificationKinds.minutesReturned',
+    defaultMessage: 'The draft minutes of {committee} on {date} were sent back with comments',
+  },
+  minutesAgreed: {
+    id: 'notificationKinds.minutesAgreed',
+    defaultMessage:
+      'The chair agreed the draft minutes of {committee} on {date}: accept their suggested changes, then circulate them',
+  },
+  minutesCirculated: {
+    id: 'notificationKinds.minutesCirculated',
+    defaultMessage: 'The draft minutes of {committee} on {date} are circulated: please send any comments by {until}',
+  },
+  minutesCommentsRequested: {
+    id: 'notificationKinds.minutesCommentsRequested',
+    defaultMessage: 'Your comments on the draft minutes of {committee} on {date} are asked for, by {until}',
+  },
+  minutesCommentsClosing: {
+    id: 'notificationKinds.minutesCommentsClosing',
+    defaultMessage: 'Comments on the draft minutes of {committee} on {date} close today, {until}',
+  },
+  minutesConfirmationRequested: {
+    id: 'notificationKinds.minutesConfirmationRequested',
+    defaultMessage: 'The minutes of {committee} on {date} are ready for your approval',
+  },
+  minutesApproved: {
+    id: 'notificationKinds.minutesApproved',
+    defaultMessage: 'The minutes of {committee} on {date} have been approved',
+  },
+  minutesCommentAdded: {
+    id: 'notificationKinds.minutesCommentAdded',
+    defaultMessage:
+      '{kind, select, NO_COMMENTS {A reader has no comments on the draft minutes of {committee} on {date}} other {A correction to the draft minutes of {committee} on {date} was suggested}}',
+  },
+  minutesDraftOverdue: {
+    id: 'notificationKinds.minutesDraftOverdue',
+    defaultMessage: 'The minutes of {committee} on {date} are not circulated yet',
+  },
+  minutesDraftReady: {
+    id: 'notificationKinds.minutesDraftReady',
+    defaultMessage: 'The draft minutes of {committee} on {date} are ready',
+  },
+  decisionsReleaseFailed: {
+    id: 'notificationKinds.decisionsReleaseFailed',
+    defaultMessage:
+      '{count, plural, one {A decision of {committee} on {date} was not sent to its memo} other {# decisions of {committee} on {date} were not sent to their memos}}: open the meeting to try again',
+  },
   actionAssigned: {
     id: 'notificationKinds.actionAssigned',
     defaultMessage: '{committee} has given you an action, due {date} ({reference})',
@@ -364,6 +434,35 @@ const kindsWithValues = defineMessages<{
   actionDueChanged: {
     id: 'notificationKinds.actionDueChanged',
     defaultMessage: 'Action {reference} of {committee} is now due {date}',
+  },
+  actionDueSoon: {
+    id: 'notificationKinds.actionDueSoon',
+    defaultMessage: 'Action {reference} of {committee} is due soon, on {date}',
+  },
+  actionOverdue: {
+    id: 'notificationKinds.actionOverdue',
+    defaultMessage:
+      'Action {reference} of {committee}, due {date}, {stage, select, ESCALATED {is overdue and was escalated} REMINDER {is still overdue} other {is overdue}}',
+  },
+  actionToVerify: {
+    id: 'notificationKinds.actionToVerify',
+    defaultMessage: 'Action {reference} of {committee} was marked as done: please verify it',
+  },
+  actionClosed: {
+    id: 'notificationKinds.actionClosed',
+    defaultMessage: 'Action {reference} of {committee} was verified and closed',
+  },
+  actionNotRunning: {
+    id: 'notificationKinds.actionNotRunning',
+    defaultMessage: 'Action {reference} of {committee} has no running workflow: check it',
+  },
+  actionEscalated: {
+    id: 'notificationKinds.actionEscalated',
+    defaultMessage: 'Action {reference} of {committee}, held by {holder}, is overdue since {date}',
+  },
+  actionSentBack: {
+    id: 'notificationKinds.actionSentBack',
+    defaultMessage: 'Action {reference} of {committee}, due {date}, was sent back to you',
   },
 })
 
@@ -533,6 +632,45 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'MEETING_QUORUM_AT_RISK':
       return intl.formatMessage(kindsWithValues.meetingQuorumAtRisk, meetingValues(params))
+    case 'MINUTES_REVIEW_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesReviewRequested, meetingValues(params))
+    case 'MINUTES_RETURNED':
+      return intl.formatMessage(kindsWithValues.minutesReturned, meetingValues(params))
+    case 'MINUTES_AGREED':
+      return intl.formatMessage(kindsWithValues.minutesAgreed, meetingValues(params))
+    case 'MINUTES_CIRCULATED':
+      return intl.formatMessage(kindsWithValues.minutesCirculated, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_COMMENTS_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesCommentsRequested, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_COMMENTS_CLOSING':
+      return intl.formatMessage(kindsWithValues.minutesCommentsClosing, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_CONFIRMATION_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesConfirmationRequested, meetingValues(params))
+    case 'MINUTES_APPROVED':
+      return intl.formatMessage(kindsWithValues.minutesApproved, meetingValues(params))
+    case 'MINUTES_COMMENT_ADDED':
+      return intl.formatMessage(kindsWithValues.minutesCommentAdded, {
+        ...meetingValues(params),
+        kind: params.kind ?? '',
+      })
+    case 'MINUTES_DRAFT_OVERDUE':
+      return intl.formatMessage(kindsWithValues.minutesDraftOverdue, meetingValues(params))
+    case 'MINUTES_DRAFT_READY':
+      return intl.formatMessage(kindsWithValues.minutesDraftReady, meetingValues(params))
+    case 'DECISIONS_RELEASE_FAILED':
+      return intl.formatMessage(kindsWithValues.decisionsReleaseFailed, {
+        ...meetingValues(params),
+        count: Number(params.count ?? '1') || 1,
+      })
     case 'ACTION_ASSIGNED':
       return intl.formatMessage(kindsWithValues.actionAssigned, {
         committee: params.committee ?? '',
@@ -565,6 +703,28 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'ACTION_DUE_CHANGED':
       return intl.formatMessage(kindsWithValues.actionDueChanged, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_DUE_SOON':
+      return intl.formatMessage(kindsWithValues.actionDueSoon, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_OVERDUE':
+      return intl.formatMessage(kindsWithValues.actionOverdue, {
+        ...actionValues(params),
+        date: params.date ?? '',
+        stage: params.stage ?? '',
+      })
+    case 'ACTION_TO_VERIFY':
+      return intl.formatMessage(kindsWithValues.actionToVerify, actionValues(params))
+    case 'ACTION_CLOSED':
+      return intl.formatMessage(kindsWithValues.actionClosed, actionValues(params))
+    case 'ACTION_NOT_RUNNING':
+      return intl.formatMessage(kindsWithValues.actionNotRunning, actionValues(params))
+    case 'ACTION_ESCALATED':
+      return intl.formatMessage(kindsWithValues.actionEscalated, {
+        ...actionValues(params),
+        date: params.date ?? '',
+        holder: params.holder ?? '',
+      })
+    case 'ACTION_SENT_BACK':
+      return intl.formatMessage(kindsWithValues.actionSentBack, { ...actionValues(params), date: params.date ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -663,9 +823,28 @@ const mailTemplates = defineMessages({
   MEETING_REPLY_REMINDER: { id: 'mail.template.meetingReplyReminder', defaultMessage: 'Meeting reply reminder' },
   MEETING_REMINDER: { id: 'mail.template.meetingReminder', defaultMessage: 'Meeting reminder' },
   MEETING_QUORUM_AT_RISK: { id: 'mail.template.meetingQuorumAtRisk', defaultMessage: 'Meeting quorum at risk' },
+  MINUTES_REVIEW_REQUESTED: { id: 'mail.template.minutesReviewRequested', defaultMessage: 'Draft minutes to review' },
+  MINUTES_RETURNED: { id: 'mail.template.minutesReturned', defaultMessage: 'Draft minutes sent back' },
+  MINUTES_CIRCULATED: { id: 'mail.template.minutesCirculated', defaultMessage: 'Draft minutes for comments' },
+  MINUTES_COMMENTS_REQUESTED: {
+    id: 'mail.template.minutesCommentsRequested',
+    defaultMessage: 'Comments on draft minutes asked for',
+  },
+  MINUTES_COMMENTS_CLOSING: {
+    id: 'mail.template.minutesCommentsClosing',
+    defaultMessage: 'Comments on draft minutes close today',
+  },
+  MINUTES_CONFIRMATION_REQUESTED: {
+    id: 'mail.template.minutesConfirmationRequested',
+    defaultMessage: 'Minutes to approve',
+  },
+  MINUTES_APPROVED: { id: 'mail.template.minutesApproved', defaultMessage: 'Minutes approved' },
   ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
   ACTION_OWNER_CHANGED: { id: 'mail.template.actionOwnerChanged', defaultMessage: 'Committee action owner changed' },
   ACTION_RISK_ACCEPTED: { id: 'mail.template.actionRiskAccepted', defaultMessage: 'Committee action risk accepted' },
+  ACTION_ESCALATED: { id: 'mail.template.actionEscalated', defaultMessage: 'Committee action escalated' },
+  ACTION_SENT_BACK: { id: 'mail.template.actionSentBack', defaultMessage: 'Committee action sent back' },
+  ACTIONS_DIGEST: { id: 'mail.template.actionsDigest', defaultMessage: 'Daily digest of committee actions' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

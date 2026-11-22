@@ -144,13 +144,17 @@ class ActionStore(
             .where(ACTIONS_ITEM.ID.eq(id))
             .fetchOne { it.actionRow() }
 
-    /** The actions matching [condition], oldest first. */
-    fun where(condition: Condition): List<ActionRow> =
+    /** The actions matching [condition], oldest first, at most [limit]. */
+    fun where(
+        condition: Condition,
+        limit: Int = Int.MAX_VALUE,
+    ): List<ActionRow> =
         tenantDsl
             .current()
             .selectFrom(ACTIONS_ITEM)
             .where(condition)
             .orderBy(ACTIONS_ITEM.CREATED_AT, ACTIONS_ITEM.ID)
+            .limit(limit)
             .fetch { it.actionRow() }
 
     /** [meetingId]'s drafts, oldest first. */
@@ -410,3 +414,6 @@ internal fun ActionsItemRecord.actionRow() =
         supersededBy = supersededBy,
         closedBy = closedBy,
     )
+
+/** The issued actions not finished (OPEN, IN_PROGRESS, DONE_PENDING), as the daily check reads them ([ActionStore.where]). */
+internal val OPEN_ACTIONS: Condition get() = ACTIONS_ITEM.STATUS.`in`(ActionChecks.OPEN.map { it.name })

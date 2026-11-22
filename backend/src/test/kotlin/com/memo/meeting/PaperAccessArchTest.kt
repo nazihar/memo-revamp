@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test
 
 /**
  * The guards of the one paper rule (test plan E03, T4; ADR-0061, design E03 §1.9): no class but [PaperAccess] and the
- * revision store reads the revision tables, so no read path can skip the rule; and only the meeting module calls the
- * files module's `FileServing`, which streams a version without the purpose's `mayRead`.
+ * revision store reads the revision tables, so no read path can skip the rule; and only the meeting module (papers) and the
+ * minutes module's copy endpoint (E06 T6: a reader's copy, chosen by their redaction set) call the files module's
+ * `FileServing`, which streams a version without the purpose's `mayRead`.
  */
 class PaperAccessArchTest {
     private val classes: JavaClasses =
@@ -42,10 +43,12 @@ class PaperAccessArchTest {
     }
 
     @Test
-    fun `only the meeting module streams a file through FileServing`() {
+    fun `only the meeting module and the minutes' copy endpoint stream a file through FileServing`() {
         noClasses()
             .that()
             .resideOutsideOfPackages("com.memo.meeting..", "com.memo.files..")
+            .and()
+            .haveNameNotMatching("""com\.memo\.minutes\.internal\.MinutesReadingController(\$.*)?""")
             .should()
             .dependOnClassesThat()
             .haveFullyQualifiedName("com.memo.files.FileServing")

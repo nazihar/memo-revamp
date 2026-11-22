@@ -234,6 +234,43 @@
   - ktlint, detekt and SpotBugs are clean.
   - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged at 13.5 KiB; the texts are in `notificationKinds` and `admin`) and the notification texts' tests pass.
 
+## 2026-11-22 — T6: follow-up memos
+- **Built:**
+  - **The memo module's published additions** (no dependency on actions):
+    - `MemoDrafts.create(fields, origin)`: the service behind `POST /memos`, in the caller's transaction, with the origin's line on the note sheet. `MemoDrafts.fillTemplate(memoId)` fills the template after the caller's commit, under the same condition as `POST /memos`. The memo's refusals come back as `MemoDraftRejectedException`.
+    - The `MemoOrigins` port, with `NoMemoOrigins` as the default. The memo view shows its labels as `followsUp`.
+    - `MemoBrief.status`, and `MemoReaders.statuses` for the verifier and secretaries.
+    - The "Raised from action" line on the note sheet, through E06 T4's system entry (a comment marked `RAISED_FROM_ACTION`, never corrected). No memo migration.
+  - **`actions/V3__memos.sql`:** `actions_memo`, insert only, RLS forced. It needs T4's `actions/V2` first, so T4 merges before T6.
+  - **Raising** (`POST /actions/{id}/memos`): by the owner or a contributor with `memo.create`, while the action is open. The draft is of the chosen type, at the action's level (a lower one needs the person's confirmation), with the action's title as the subject by default and the type's template filled. Its note sheet says "Raised from action BRC A1/2026 (Board Risk Committee)". The action lists it and the memo names the action.
+  - **Linking** (`POST /actions/{id}/memos/link`): a memo the person reads, by the owner, a contributor or a secretary not recused, until the action is verified. Once per memo and at most ten per action.
+  - **The memo's state on the action**, by the memo's rule: number, subject and status for those who read the memo; for anyone else only that there is a memo, with its status for the secretaries and the verifier.
+  - **A memo decided** (approved, rejected, withdrawn or cancelled): an entry MEMO_DECIDED on every action it follows up, and `ACTION_MEMO_DECIDED` in the app to the holder of an open action. The action does not change.
+  - **Audit:** `actions.memo.raised`, `.linked` and `.decided`, with ids and the outcome only. Matrix rows with recusal columns, and the leak-suite registry (both endpoints 404 to a recused person who is not involved).
+  - **Web:** the note sheet's label for a system line, and the notification text (en/ar), both outside core. The "Raise a memo" dialog and "Raised from action" on the memo page are T11's.
+- **Choices made while building** (design §1.11 "As built in T6"):
+  - **The note sheet line uses E06 T4's system entry** (merged meanwhile), not a note kind of its own. A first draft added `memo/V21` with a `SYSTEM` kind; merging master made it unnecessary.
+  - **The port answers a list for the signed-in reader** (`labels(memoId)`), not one label for a given viewer. That way it carries linked memos too.
+  - **A linked memo names its action only to those who see the action**; a raised one names it to all its readers, without a link, as its note sheet already does.
+  - Linking is allowed while the action is done and awaiting verification, so a secretary can add a memo before verifying. Raising is not.
+  - No If-Match on the two endpoints: the action's row does not change.
+- **Tests:** `FollowUpMemoIT`, which runs in the files context for the template fill, on direct actions issued through the services. It covers the acceptance criterion (the template filled, the note line never corrected, both directions, approved → entry and notice, the action still open), the outcome shown to the verifier (the chair, when the only secretary owns the action) but not to a member, rejected and withdrawn, the level confirmation, the memo's own 422, linking (once, readable only, not discarded, the ten-memo cap, shown only to action viewers), who may and when, the idempotent replay, and another tenant together with the app role's insert-only rights. Also `ActionAccessArchTest` (the new store and its readers), matrix rows and the leak-suite registry.
+- **Results (local, after merging `origin/phase4/e07-t3` and `master`, E06 T5 included):**
+  - Before the last merge: 2,919 tests in 139 classes green (10 skipped, none of them new). They covered `com.memo.actions.*`, `com.memo.memo.*` (create, templates, notes, final record and the rest, unchanged), `com.memo.meeting.*` (`PaperLeakIT`, `RecusalLeakIT` with the new recusal columns), `com.memo.notification.*`, `SeparationOfDutiesIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
+  - After it: the same suites without `com.memo.memo.*` and `com.memo.notification.*`, plus `com.memo.minutes.*`, all green.
+  - ktlint, detekt and SpotBugs are clean.
+  - Web: typecheck, lint, Prettier and `i18n:verify` pass; the Arabic core is 13.5 KiB, unchanged. The memo and notification tests are green.
+- **Merge order:** T4 (`actions/V2`) before T6 (`actions/V3`).
+- **After merging T4 (#227) from `master`:**
+  - Merged with T4's abilities, notification kinds, messages and matrix rows; `actions/V3` now follows master's `V2`.
+  - 2,762 tests in 77 classes ran: `com.memo.actions.*`, `com.memo.memo.*`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
+  - All green but `NumberingConcurrencyIT` (no free JDBC connection) and one `MemoPerformanceIT` budget (495 ms against 300). Both are load effects of the hour-long run on the dev machine, and both pass when run alone.
+  - ktlint, detekt and SpotBugs are clean; web typecheck, lint, Prettier and `i18n` pass.
+- **After merging T5 (#231) from `master`:**
+  - Both sides kept in `ActionAccessArchTest` (the digest store, closure and timers beside the memo links and readers), `ar.json` (in key order) and this log; everything generated was regenerated.
+  - 2,627 tests in 30 classes green: `com.memo.actions.*` with `FollowUpMemoIT`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
+  - ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass, and the notification, memo, memo-type and action tests pass. Two of them timed out while Gradle ran beside them, and passed when run again on their own.
+
 ## 2026-11-22 — T8: the tracker and its export
 - **Built:**
   - **`GET /forums/{fid}/actions`, the committee's tracker** (flow AN): its issued actions and its direct drafts (secretaries and `forums.manage`), by the one rule (`ActionAccess.seen`).
@@ -269,3 +306,9 @@
   - ktlint, detekt and SpotBugs are clean.
   - Web: typecheck, lint and Prettier on the generated client pass.
 - **Left for later tasks:** T9 measures the tracker (with and without text) and the export at the design's volumes. T10 builds the screen on `ForumActionsResponse`. E08 T4 reads `ActionStats`.
+- **After merging T8 (#232) from `master`:**
+  - Both sides kept in `ActionAccessArchTest` (`ActionTrackerReads` beside `ActionMemoStore`), `PaperSurfaceRegistry` and this log.
+  - The same suites as after T5 are green (`BUILD SUCCESSFUL`); ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass. The `memo-types` and `memo-documents` tests timed out while Gradle ran beside them, and passed when run on their own.
+- **After merging E06 T6 (#229) from `master`:** only the generated client conflicted, and it was regenerated. 2,737 tests in 32 classes are green (the same suites as after T5). ktlint, detekt and SpotBugs are clean; the web checks and tests pass.
+- **After merging E06 T7 (#234) from `master`:** `PaperSurfaceRegistry`'s notes were merged by hand and the generated client was regenerated. 2,755 tests in 32 classes are green. ktlint, detekt and SpotBugs are clean. The web checks pass; one memo inbox test timed out under load and passed when run again on its own.
+- **After merging E08 T4 (#236) from `master`:** only the generated client conflicted, and it was regenerated. 2,773 tests in 32 classes are green; static analysis is clean; the web checks and tests pass.

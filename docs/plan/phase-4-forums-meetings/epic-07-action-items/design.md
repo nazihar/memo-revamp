@@ -261,6 +261,27 @@ Derived on read from stored columns and today's date in the tenant's zone. No sw
   - the holder is told: "The follow-up memo was approved. You can now mark the action as done."
   - **The action is not closed automatically.** The loop closes when the owner marks it done and the verifier verifies it with the memo's outcome in view (overview E07).
 - **The chain for the exit criterion:** memo → submission → item → decision and resolution → action → follow-up memo, with every link stored. The action reaches its decision through `decisionId` and E06's `Resolutions.ofDecision`; the follow-up memo reaches the action through `action_memo`. The `committee-cycle` IT walks it in both directions (test plan).
+- **As built in T6** (2026-11-22):
+  - **The memo module's published additions:**
+    - `MemoDrafts.create(MemoDraftFields, DraftOrigin?)`, inside the caller's transaction, is `Memos.create`, the service behind `POST /memos`: `memo.create`, a type the actor may raise, the level rules, the actor as initiator, `memo.created` audited. The origin's line goes on the note sheet in the same transaction.
+    - `MemoDrafts.fillTemplate(memoId)` runs after the caller's commit, outside any transaction, under the same condition as `POST /memos` (`FILL_FROM_TEMPLATE` offered).
+    - The memo's refusals come back as `MemoDraftRejectedException` with the memo's field problems. The actions module answers them as its own 422.
+  - **The note sheet line reuses E06 T4's system entry** (`MemoNotes.system`, ADR-0065): a comment marked with `actionKind` `RAISED_FROM_ACTION`, written by the person whose act wrote it, never corrected (409 `NOT_YOURS`). So there is **no memo migration**, as §7 planned. The note sheet labels it "Recorded by the system".
+    - The text is "Raised from action BRC A1/2026 (Board Risk Committee)": the reference and the committee's name, never the action's text.
+  - **The port is `MemoOrigins.labels(memoId)`**, a list for the signed-in reader, with no viewer argument. It answers `MemoOriginLabel` (`RAISED_FROM` or `LINKED_TO`, `recordType` `ACTION`, the reference, the committee, and `recordId` only for those who see the action). The memo view shows it as `followsUp`.
+    - Without an implementation, the memo module falls back on `NoMemoOrigins`, the meeting module's `DecidedItems` pattern.
+    - A **raised** memo names its action to every reader of the memo, as its note sheet does, with the link only for those who see the action.
+    - A **linked** memo names the action only to those who see it, so linking never tells a memo's readers of an action they may not know of.
+  - `MemoBrief` gained `status`, the memo's own status as a string. `MemoReaders.statuses(memoIds)` reads statuses without the read rule, for the verifier and secretaries; the caller decides who sees them.
+  - **`actions/V3__memos.sql`:** `actions_memo` (PK `(tenant_id, action_id, memo_id)`, index `(tenant_id, memo_id)`), insert only. It needs T4's `actions/V2` before it.
+  - **Who and when:**
+    - Raising (`POST /actions/{id}/memos`, `{typeId, subject?, classificationId?, confirmLowerLevel?}`): the owner, meaning the holder, the person owner or the owner position's holder, or a contributor, with `memo.create`, while OPEN or IN_PROGRESS. It answers 201 with `{memoId, templateFilled, action}` and the memo's `Location`.
+    - Linking (`POST /actions/{id}/memos/link`, `{memoId}`): also the secretaries and `forums.manage` not recused, while OPEN, IN_PROGRESS or DONE_PENDING (until verified).
+    - Refusals: 404 for an unseen action; 403 `NOT_INVOLVED`; 409 `WRONG_STATE`; 409 `ALREADY_LINKED`; 422 `memos:TOO_MANY` (ten), `classificationId:LOWER_THAN_ACTION` (without the confirmation), `memoId:NOT_READABLE` (unknown or unreadable, the same answer) and `memoId:DISCARDED`. The memo's own 422s also come through (`typeId:unknown`, `NOT_ALLOWED_TO_RAISE`, `below-type-default`).
+    - The subject defaults to the action's title. The level defaults to the action's.
+    - Both endpoints take an `Idempotency-Key` and no If-Match: the action's row does not change, and each link is a row of its own.
+  - **The action page:** `ActionResponse.memos` and `can.raiseMemo` / `can.linkMemo`. A memo the viewer does not read shows without its number and subject. Its status shows only to a secretary or `forums.manage` not recused, or to the verifier (the action is DONE_PENDING and its open task is the viewer's to hold or claim).
+  - **A memo decided:** `WorkflowInstanceEnded` for subject `memo` (APPROVED, REJECTED, WITHDRAWN or CANCELLED). Each action it follows up, raised or linked, gets an entry MEMO_DECIDED (`{memoId, outcome}`), audited `actions.memo.decided`. The holder of an open action is told in the app (`ACTION_MEMO_DECIDED`); its email waits for T5's digest. A memo is closed only after its approval, so closing tells nothing new. The timeline's read (`GET /actions/{id}/entries`) is not part of T6.
 
 ### 1.12 Carry-forward: the action taken report on "Matters arising"
 - **When** a revision of a meeting's agenda is published (`AgendaPublished`) and it has a MATTERS_ARISING standing item, the actions module builds an **action taken report** for that revision in the publishing transaction.

@@ -16,11 +16,12 @@ package com.memo.meeting
  * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
  * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E06
  * T7 made its record placeholder real: the record, its versions and its check (MINUTES_COPIES). E07 T3 made its actions
- * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
- * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
- * totals and its export (TRACKER). E08 T2 made the register part of its placeholder real: the decision register's scope and
- * search (REGISTER), probed in both suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints
- * listed in [search], and `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits.
+ * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing
+ * (officers, with recusal columns or an officer probe). E07 T6 added raising and linking an action's follow-up memos (recusal
+ * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E08
+ * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
+ * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
+ * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -238,6 +239,11 @@ object PaperSurfaceRegistry {
                     "making the minutes' draft (E06 T5): secretaries not recused from any item; answered with the page (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate" to
                     "filling an item of the draft again (E06 T5): secretaries not recused from any item (recusal columns)",
+                "POST /api/v1/actions/{actionId}/memos" to
+                    "raising a follow-up memo (E07 T6): the action's owner and contributors; 404 to anyone recused who is not " +
+                    "involved (recusal columns)",
+                "POST /api/v1/actions/{actionId}/memos/link" to
+                    "linking a follow-up memo (E07 T6): the owner, contributors and secretaries not recused (recusal columns)",
                 // E07 T4: progress, dates, owners and endings; every one finds the action by the one rule first, so a recused
                 // viewer who is not involved gets 404, and a recused officer who is gets 403 RECUSED (ActionStateMachineTest).
                 "POST /api/v1/actions/{actionId}/updates" to

@@ -108,6 +108,54 @@ open class MinutesRecord private constructor() : UpdatableRecordImpl<MinutesReco
         set(value): Unit = set(21, value)
         get(): Long? = get(21) as Long?
 
+    open var reviewerId: UUID?
+        set(value): Unit = set(22, value)
+        get(): UUID? = get(22) as UUID?
+
+    open var reviewerRole: String?
+        set(value): Unit = set(23, value)
+        get(): String? = get(23) as String?
+
+    open var commentsUntil: OffsetDateTime?
+        set(value): Unit = set(24, value)
+        get(): OffsetDateTime? = get(24) as OffsetDateTime?
+
+    open var circulatedAt: OffsetDateTime?
+        set(value): Unit = set(25, value)
+        get(): OffsetDateTime? = get(25) as OffsetDateTime?
+
+    open var linkedMeetingId: UUID?
+        set(value): Unit = set(26, value)
+        get(): UUID? = get(26) as UUID?
+
+    open var linkedItemId: UUID?
+        set(value): Unit = set(27, value)
+        get(): UUID? = get(27) as UUID?
+
+    open var approvingMeetingId: UUID?
+        set(value): Unit = set(28, value)
+        get(): UUID? = get(28) as UUID?
+
+    open var approvingDecisionId: UUID?
+        set(value): Unit = set(29, value)
+        get(): UUID? = get(29) as UUID?
+
+    open var awaitingSince: OffsetDateTime?
+        set(value): Unit = set(30, value)
+        get(): OffsetDateTime? = get(30) as OffsetDateTime?
+
+    open var confirmedApprovalId: UUID?
+        set(value): Unit = set(31, value)
+        get(): UUID? = get(31) as UUID?
+
+    open var approvedAt: OffsetDateTime?
+        set(value): Unit = set(32, value)
+        get(): OffsetDateTime? = get(32) as OffsetDateTime?
+
+    open var copiesSeq: Int?
+        set(value): Unit = set(33, value)
+        get(): Int? = get(33) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -117,7 +165,7 @@ open class MinutesRecord private constructor() : UpdatableRecordImpl<MinutesReco
     /**
      * Create a detached, initialised MinutesRecord
      */
-    constructor(tenantId: UUID, meetingId: UUID, forumId: UUID, policy: JSONB, state: String? = null, fileId: UUID? = null, workSeq: Int? = null, workKind: String? = null, workItemId: UUID? = null, workState: String? = null, workError: String? = null, workRequestedBy: UUID? = null, workRequestedAt: OffsetDateTime? = null, checkedVersionId: UUID? = null, structureOk: Boolean? = null, structureProblems: JSONB? = null, trackedChanges: Int? = null, comments: Int? = null, checkedAt: OffsetDateTime? = null, heldAt: OffsetDateTime, createdAt: OffsetDateTime, version: Long? = null): this() {
+    constructor(tenantId: UUID, meetingId: UUID, forumId: UUID, policy: JSONB, state: String? = null, fileId: UUID? = null, workSeq: Int? = null, workKind: String? = null, workItemId: UUID? = null, workState: String? = null, workError: String? = null, workRequestedBy: UUID? = null, workRequestedAt: OffsetDateTime? = null, checkedVersionId: UUID? = null, structureOk: Boolean? = null, structureProblems: JSONB? = null, trackedChanges: Int? = null, comments: Int? = null, checkedAt: OffsetDateTime? = null, heldAt: OffsetDateTime, createdAt: OffsetDateTime, version: Long? = null, reviewerId: UUID? = null, reviewerRole: String? = null, commentsUntil: OffsetDateTime? = null, circulatedAt: OffsetDateTime? = null, linkedMeetingId: UUID? = null, linkedItemId: UUID? = null, approvingMeetingId: UUID? = null, approvingDecisionId: UUID? = null, awaitingSince: OffsetDateTime? = null, confirmedApprovalId: UUID? = null, approvedAt: OffsetDateTime? = null, copiesSeq: Int? = null): this() {
         this.tenantId = tenantId
         this.meetingId = meetingId
         this.forumId = forumId
@@ -140,6 +188,18 @@ open class MinutesRecord private constructor() : UpdatableRecordImpl<MinutesReco
         this.heldAt = heldAt
         this.createdAt = createdAt
         this.version = version
+        this.reviewerId = reviewerId
+        this.reviewerRole = reviewerRole
+        this.commentsUntil = commentsUntil
+        this.circulatedAt = circulatedAt
+        this.linkedMeetingId = linkedMeetingId
+        this.linkedItemId = linkedItemId
+        this.approvingMeetingId = approvingMeetingId
+        this.approvingDecisionId = approvingDecisionId
+        this.awaitingSince = awaitingSince
+        this.confirmedApprovalId = confirmedApprovalId
+        this.approvedAt = approvedAt
+        this.copiesSeq = copiesSeq
         resetTouchedOnNotNull()
     }
 }

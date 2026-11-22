@@ -9,6 +9,7 @@ import com.memo.minutes.internal.DraftTask
 import com.memo.minutes.internal.MinutesDrafting
 import com.memo.minutes.internal.MinutesDrafts
 import com.memo.minutes.internal.MinutesJobs
+import com.memo.minutes.internal.MinutesRole
 import com.memo.minutes.internal.MinutesStage
 import com.memo.minutes.internal.MinutesStore
 import com.memo.minutes.internal.MinutesStructure
@@ -135,6 +136,38 @@ class MinutesEditingIT : ReleaseFixture() {
         }
         assertThat(openEditor(fileId, secretary2)).hasStatus(HttpStatus.FORBIDDEN)
         assertThat(openEditor(fileId, secretary2, mode = "VIEW")).hasStatusOk()
+    }
+
+    @Test
+    fun `the reviewer opens the draft in review mode, and their save is the draft's next version`() {
+        val r = running("Term loan, Delta Textiles")
+        decide(r, r.items.single().item, APPROVED)
+        held(r)
+        asUser(secretary.account) { drafts.request(r.meeting.id, null, false) }
+        val seq = checkNotNull(transactions.readInTenant(tenant.id) { minutesStore.find(r.meeting.id) }).workSeq
+        TenantContext.call(
+            tenant.id,
+        ) { ActorContext.asSystem("minutes-draft") { drafting.run(DraftTask(tenant.id.value, r.meeting.id, seq)) } }
+        val fileId = checkNotNull(transactions.readInTenant(tenant.id) { minutesStore.find(r.meeting.id) }?.fileId).toString()
+        // With the chair for review (T6's send-for-review sets the reviewer).
+        transactions.inTenant(tenant.id) {
+            val locked = checkNotNull(minutesStore.lock(r.meeting.id))
+            val reviewing = locked.copy(state = MinutesStage.CHAIR_REVIEW, reviewerId = chair.id, reviewerRole = MinutesRole.CHAIR)
+            check(minutesStore.update(locked, reviewing))
+        }
+        val opened = openEditor(fileId, chair)
+        assertThat(opened).hasStatusOk()
+        val permissions = opened.json()["config"]["document"]["permissions"]
+        assertThat(permissions["edit"].asBoolean() to permissions["review"].asBoolean()).isEqualTo(false to true)
+        assertThat(opened.json()["config"]["editorConfig"]["mode"].asString()).isEqualTo("edit")
+        // The secretaries may not edit it meanwhile; a member cannot open it.
+        assertThat(openEditor(fileId, secretary)).hasStatus(HttpStatus.FORBIDDEN)
+        assertThat(openEditor(fileId, director)).hasStatus(HttpStatus.NOT_FOUND)
+        // The chair's save (tracked changes) lands as the chair's version.
+        saved.set(current(fileId))
+        assertThat(callback(opened.json()["config"], STATUS_SAVE)["error"].asInt()).isZero()
+        val latest = transactions.readInTenant(tenant.id) { files.info(UUID.fromString(fileId))?.currentVersionId?.let(files::version) }
+        assertThat(latest?.uploadedBy).isEqualTo(chair.id)
     }
 
     private fun openEditor(

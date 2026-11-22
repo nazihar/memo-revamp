@@ -84,3 +84,18 @@ interface DocxControls {
     /** The tracked changes and comments left in [docx]'s body, read with StAX as [scan] reads it. */
     fun marks(docx: InputStream): DocumentMarks
 }
+
+/** A minutes document made into a reader's copy (ADR-0066), pure; throws [ContentControlException]. */
+interface DocxCopies {
+    /**
+     * [docx] made fit to be a reader's copy once its controls are replaced (ADR-0066): footnotes, endnotes and comments the
+     * body no longer refers to are dropped, and the document properties (title, author, company, custom ones) are emptied.
+     */
+    fun forCopy(docx: ByteArray): ByteArray
+
+    /**
+     * Every text of [docx]'s parts (body, headers, footers, notes and comments, deleted text included), a paragraph a line:
+     * what a copy's leak check reads.
+     */
+    fun text(docx: InputStream): String
+}

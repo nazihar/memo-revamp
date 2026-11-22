@@ -16,6 +16,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.references.MEETING
 import com.memo.jooq.tables.references.MEETING_AGENDA
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.MeetingSweepStep
 import com.memo.meeting.internal.invite.InvitationSafetyNet
 import com.memo.notification.NotificationKind
 import org.jooq.Condition
@@ -177,7 +178,8 @@ class MeetingSweepStore(
  * review are reminded to declare their interests (`MEETING_DECLARATIONS_DUE`, [DeclarationReminders]), once per person
  * and revision. (e)–(g, design E05 §9) The meeting reminder, the reply reminder and the quorum-at-risk warning
  * ([MeetingReminders]) run before (d): a person who gets the meeting reminder gets E04's declarations line in it, and not
- * E04's reminder as well.
+ * E04's reminder as well. (i)–(l, design E06 §9) The minutes' circulation deadline and reminders are the minutes module's
+ * [MeetingSweepStep], run last.
  */
 @Component
 class MeetingSweep(
@@ -190,6 +192,7 @@ class MeetingSweep(
     private val reminders: DeclarationReminders,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val steps: ObjectProvider<MeetingSweepStep>,
 ) {
     /**
      * Sends what is due in the current tenant; how many meetings had reminders sent. First schedules again any meeting
@@ -198,7 +201,9 @@ class MeetingSweep(
     fun sweep(): Int {
         invitations.rescheduleOverdue()
         val now = clock.instant()
-        return agendaDue() + notHeld() + meetingReminders.due(now) + reminders.due(now)
+        val own = agendaDue() + notHeld() + meetingReminders.due(now) + reminders.due(now)
+        // Other modules' parts (E06: the minutes' deadlines and reminders), after the meeting's own.
+        return own + steps.orderedStream().toList().sumOf { it.sweep(now) }
     }
 
     private fun agendaDue(): Int {

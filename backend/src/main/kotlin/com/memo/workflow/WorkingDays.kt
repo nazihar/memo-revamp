@@ -50,4 +50,37 @@ class WorkingDays(
                 .associate { it.day to it.periods.isNotEmpty() }
         return WorkingDayRules.after(date, n) { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
     }
+
+    /**
+     * When the working day [date] ends: the end of its last working period on the tenant's calendar (its exception's, else
+     * its weekday's), in the tenant's zone; the last second of the day when it has none (a day off).
+     */
+    fun closeOf(date: LocalDate): Instant {
+        val zone = org.zone()
+        val periods = calendars.days(date, date).firstOrNull()?.periods ?: calendars.week().week[date.dayOfWeek].orEmpty()
+        val end = periods.maxOfOrNull { it.end }
+        return end?.let { date.atTime(it).atZone(zone).toInstant() } ?: date
+            .plusDays(1)
+            .atStartOfDay(zone)
+            .toInstant()
+            .minusSeconds(1)
+    }
+
+    /** The working days after the day of [start] up to and including the day of [end], in the tenant's zone: 0 on the same day. */
+    fun between(
+        start: Instant,
+        end: Instant,
+    ): Int = calendars.workingDays(dayOf(start), dayOf(end))
+
+    /** Today on the tenant's calendar, in its zone. */
+    fun today(): LocalDate = org.today()
+
+    /** [time] on [date] in the tenant's zone. */
+    fun at(
+        date: LocalDate,
+        time: java.time.LocalTime,
+    ): Instant = date.atTime(time).atZone(org.zone()).toInstant()
+
+    /** [instant]'s day on the tenant's calendar. */
+    fun dayOf(instant: Instant): LocalDate = instant.atZone(org.zone()).toLocalDate()
 }

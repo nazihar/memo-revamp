@@ -2,7 +2,7 @@ package com.memo.workflow.calendar
 
 import java.time.LocalDate
 
-/** Counting working days backwards (design E03 §1.4: the paper deadline), pure so property tests run in milliseconds. */
+/** Counting working days backwards (design E03 §1.4: the paper deadline) and forwards (E06: the comment deadline), pure. */
 object WorkingDayRules {
     /** How far back [before] looks: two years, more than any deadline needs; a calendar with no working day gives null. */
     const val MAX_DAYS = 731

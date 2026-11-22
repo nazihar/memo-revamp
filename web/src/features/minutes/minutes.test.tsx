@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it, vi } from 'vitest'
 import type {
+  ItemLink,
   MeetingResponse,
   MeetingSummaryResponse,
   MemberAgendaResponse,
@@ -890,32 +891,45 @@ describe('Minutes elsewhere', () => {
     ).toHaveAttribute('href', '/meetings/2/minutes')
   }, 20_000)
 
+  /** The next meeting's agenda with its "Minutes of the previous meeting" item carrying [link]. */
+  const previousMinutesAgenda = (link: ItemLink) => [
+    http.get(`${API}/meetings/m1/agenda`, () =>
+      HttpResponse.json<MemberAgendaResponse>({
+        ...agenda,
+        sections: [
+          {
+            id: 's0',
+            kind: 'STANDARD',
+            title: 'Opening',
+            membersOnly: false,
+            items: [
+              item('i3', '3', 'Minutes of the previous meeting', {
+                kind: 'STANDING',
+                standingKind: 'PREVIOUS_MINUTES',
+                links: [link],
+              }),
+            ],
+          },
+        ],
+      }),
+    ),
+    http.get(`${API}/meetings/m1/declarations/mine`, () =>
+      HttpResponse.json({ meetingId: 'm1', latestRevision: 1, declarations: [], toReview: [] }),
+    ),
+    ...handlers({ posts: [] }, [base]),
+  ]
+
   it('the next meeting’s “Minutes of the previous meeting” item links to the minutes', async () => {
     server.use(
-      http.get(`${API}/meetings/m1/agenda`, () =>
-        HttpResponse.json<MemberAgendaResponse>({
-          ...agenda,
-          sections: [
-            {
-              id: 's0',
-              kind: 'STANDARD',
-              title: 'Opening',
-              membersOnly: false,
-              items: [
-                item('i3', '3', 'Minutes of the previous meeting', {
-                  kind: 'STANDING',
-                  standingKind: 'PREVIOUS_MINUTES',
-                  links: [{ kind: 'MINUTES', meetingId: 'm0', label: 'Minutes of BRC 2/2026', state: 'CIRCULATED' }],
-                }),
-              ],
-            },
-          ],
-        }),
-      ),
-      http.get(`${API}/meetings/m1/declarations/mine`, () =>
-        HttpResponse.json({ meetingId: 'm1', latestRevision: 1, declarations: [], toReview: [] }),
-      ),
-      ...handlers({ posts: [] }, [base]),
+      ...previousMinutesAgenda({
+        kind: 'MINUTES',
+        meetingId: 'm0',
+        label: 'Minutes of BRC 2/2026',
+        state: 'CIRCULATED',
+        meetingLabel: 'BRC 2/2026',
+        meetingStartsAt: '2026-11-14T04:00:00Z',
+        meetingTimeZone: 'Asia/Dhaka',
+      }),
     )
     renderRoute('/meetings/m1')
     expect(await screen.findByRole('link', { name: 'Minutes of BRC 2/2026 (draft) — read your copy' })).toHaveAttribute(
@@ -925,6 +939,43 @@ describe('Minutes elsewhere', () => {
     // The officers' card on the meeting page.
     expect(await screen.findByRole('region', { name: 'Minutes' })).toHaveTextContent('The minutes: Draft.')
   }, 20_000)
+
+  it('in Arabic the previous-minutes link is in Arabic words, never the server’s English label', async () => {
+    // An unnumbered meeting: the link names it by its date on its own calendar.
+    server.use(
+      ...previousMinutesAgenda({
+        kind: 'MINUTES',
+        meetingId: 'm0',
+        label: 'Minutes of the meeting of 2026-11-14',
+        state: 'APPROVED',
+        meetingLabel: null,
+        meetingStartsAt: '2026-11-14T04:00:00Z',
+        meetingTimeZone: 'Asia/Dhaka',
+      }),
+    )
+    const first = renderRoute('/meetings/m1', { locale: 'ar' })
+    const link = await screen.findByRole('link', { name: /^محضر اجتماع / })
+    expect(link).toHaveAttribute('href', '/meetings/m0/minutes')
+    expect(link.textContent).toMatch(/\(معتمد\) — اقرأ نسختك$/)
+    expect(link.textContent).not.toMatch(/[A-Za-z]/)
+    first.unmount()
+
+    // A numbered one: the meeting's number, inside Arabic words.
+    server.use(
+      ...previousMinutesAgenda({
+        kind: 'MINUTES',
+        meetingId: 'm0',
+        label: 'Minutes of BRC 2/2026',
+        state: 'CIRCULATED',
+        meetingLabel: 'BRC 2/2026',
+        meetingStartsAt: '2026-11-14T04:00:00Z',
+        meetingTimeZone: 'Asia/Dhaka',
+      }),
+    )
+    renderRoute('/meetings/m1', { locale: 'ar' })
+    const numbered = await screen.findByRole('link', { name: 'محضر BRC 2/2026 (مسودة) — اقرأ نسختك' })
+    expect(numbered.textContent.replace('BRC 2/2026', '')).not.toMatch(/[A-Za-z]/)
+  }, 30_000)
 
   it('reads right to left in Arabic without accessibility violations (the secretary and a reader)', async () => {
     const calls: Calls = { posts: [] }

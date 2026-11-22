@@ -36889,6 +36889,12 @@
       "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "minutes.previousMeeting": [
+    {
+      "type": 0,
+      "value": "the previous meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "minutes.problem.answered": [
     {
       "type": 0,
@@ -38263,6 +38269,20 @@
     {
       "type": 0,
       "value": " left. Accept or reject them in the editor before the minutes are circulated.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.meetingOn": [
+    {
+      "type": 0,
+      "value": "the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "minutes.v.noCommentsFrom": [

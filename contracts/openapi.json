@@ -6789,6 +6789,16 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingStartsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "meetingTimeZone" : {
+            "type" : [ "string", "null" ]
+          },
           "state" : {
             "type" : [ "string", "null" ]
           }

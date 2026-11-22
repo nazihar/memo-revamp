@@ -61,6 +61,9 @@ class PreviousMinutes(
                     label = "Minutes of ${meeting?.label ?: "the meeting of ${meeting?.date()}"}",
                     state = row.state.name,
                     at = row.approvedAt.takeIf { row.policy.approval == MinutesApproval.BY_CIRCULATION },
+                    meetingLabel = meeting?.label,
+                    meetingStartsAt = meeting?.startsAt,
+                    meetingTimeZone = meeting?.timeZone?.id,
                 )
             }
 

@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { FileText } from 'lucide-react'
-import { useIntl } from 'react-intl'
+import { useIntl, type IntlShape } from 'react-intl'
 import type { ItemLink, MeetingResponse } from '@/api/generated/types.gen'
 import { Button } from '@/components/ui/button'
 import { fullName } from '@/features/meetings/shared'
@@ -57,10 +57,18 @@ export function MinutesCard({ meeting: m }: { meeting: MeetingResponse }) {
   )
 }
 
-/** The meeting's label in the server's "Minutes of BRC 3/2026" (kept in English there), for our own words. */
-function meetingOf(label: string | undefined): string {
-  const prefix = 'Minutes of '
-  return label?.startsWith(prefix) ? label.slice(prefix.length) : (label ?? '')
+/**
+ * The linked meeting in the reader's words, from its own fields (never the server's English `label`): its number
+ * ("BRC 3/2026"), else "the meeting of 12 December 2026" on its own calendar, else "the previous meeting".
+ */
+function meetingOf(intl: IntlShape, link: ItemLink): string {
+  if (link.meetingLabel) return link.meetingLabel
+  if (link.meetingStartsAt) {
+    return intl.formatMessage(mnv.meetingOn, {
+      date: day(intl, link.meetingStartsAt, link.meetingTimeZone ?? undefined),
+    })
+  }
+  return intl.formatMessage(mn.previousMeeting)
 }
 
 /**
@@ -75,7 +83,7 @@ export function PreviousMinutesLinks({ links }: { links: ItemLink[] | undefined 
   return (
     <ul className="flex flex-col gap-2 print:hidden">
       {minutes.map((l) => {
-        const meeting = meetingOf(l.label)
+        const meeting = meetingOf(intl, l)
         return (
           <li key={l.meetingId}>
             <Button

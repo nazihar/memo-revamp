@@ -2183,6 +2183,9 @@ export type ItemLink = {
     kind?: string;
     label?: string;
     meetingId?: string;
+    meetingLabel?: string | null;
+    meetingStartsAt?: string | null;
+    meetingTimeZone?: string | null;
     state?: string | null;
 };
 

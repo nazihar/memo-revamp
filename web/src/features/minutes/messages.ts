@@ -325,6 +325,7 @@ export const mn = defineMessages({
   // The meeting page's card
   cardTitle: { id: 'minutes.card.title', defaultMessage: 'Minutes' },
   openMinutes: { id: 'minutes.card.open', defaultMessage: 'Open the minutes' },
+  previousMeeting: { id: 'minutes.previousMeeting', defaultMessage: 'the previous meeting' },
   // Refusals in words
   NO_DRAFT: { id: 'minutes.problem.noDraft', defaultMessage: 'Make the draft first.' },
   NOT_AGREED: {
@@ -453,6 +454,7 @@ export const mnv = defineMessages<{
   removePerson: { name: string }
   cardStage: { stage: string }
   respondNamed: { action: string; name: string; part: string }
+  meetingOn: { date: string }
   paren: { text: string }
   correctionDecidedNote: { state: string; name: string; date: string; note: string }
   partSent: { part: string; date: string }
@@ -590,6 +592,7 @@ export const mnv = defineMessages<{
   removePerson: { id: 'minutes.v.removePerson', defaultMessage: 'Remove {name}' },
   cardStage: { id: 'minutes.v.cardStage', defaultMessage: 'The minutes: {stage}.' },
   respondNamed: { id: 'minutes.v.respondNamed', defaultMessage: '{action}: {name}, {part}' },
+  meetingOn: { id: 'minutes.v.meetingOn', defaultMessage: 'the meeting of {date}' },
   paren: { id: 'minutes.v.paren', defaultMessage: '({text})' },
   correctionDecidedNote: {
     id: 'minutes.v.correctionDecidedNote',

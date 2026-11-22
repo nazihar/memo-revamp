@@ -66457,6 +66457,20 @@
       "value": "‬"
     }
   ],
+  "minutes.previousMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʇɥǝ dɹǝʌıons ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "minutes.problem.answered": [
     {
       "type": 0,
@@ -68719,6 +68733,24 @@
     {
       "type": 0,
       "value": " ʅǝɟʇ. ∀ɔɔǝdʇ oɹ ɹǝɾǝɔʇ ʇɥǝɯ ıu ʇɥǝ ǝpıʇoɹ qǝɟoɹǝ ʇɥǝ ɯıunʇǝs ɐɹǝ ɔıɹɔnʅɐʇǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "minutes.v.meetingOn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "date"
     },
     {
       "type": 0,

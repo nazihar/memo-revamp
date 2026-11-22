@@ -8804,6 +8804,3404 @@
       "value": "]"
     }
   ],
+  "analytics.actions.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ȧȧƈŧīǿǿƞ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īş ǿǿṽḗḗřḓŭŭḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.actions.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧƈŧīǿǿƞ īş ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧƈŧīǿǿƞş ȧȧřḗḗ ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "over90",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿƞḗḗ ƒǿǿř ǿǿṽḗḗř 90 ḓȧȧẏş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒǿǿř ǿǿṽḗḗř 90 ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.actions.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ǿǿṽḗḗřḓŭŭḗḗ ƀẏ ǿǿẇƞḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.allCommittees": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḿẏ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.altNote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "“Ɓẏ ȧȧŀŧḗḗřƞȧȧŧḗḗ”: ȧȧƞ ȧȧŀŧḗḗřƞȧȧŧḗḗ ȧȧŧŧḗḗƞḓḗḗḓ īƞ ŧħḗḗ ḿḗḗḿƀḗḗř’ş ƥŀȧȧƈḗḗ; ŧħīş īş ƞǿǿŧ ƈǿǿŭŭƞŧḗḗḓ ȧȧş ŧħḗḗ ḿḗḗḿƀḗḗř’ş ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.apologiesAlt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "apologies"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "alternate"
+    },
+    {
+      "type": 0,
+      "value": " ƀẏ ȧȧŀŧḗḗřƞȧȧŧḗḗ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.atMeetings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧŧ "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.expectedFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "expected"
+    },
+    {
+      "type": 0,
+      "value": " (ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.export": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋƥǿǿřŧ ƒǿǿř ŧħḗḗ ȧȧƞƞŭŭȧȧŀ řḗḗƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.exportFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗẋƥǿǿřŧ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ḿȧȧḓḗḗ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.exportHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ şƥřḗḗȧȧḓşħḗḗḗḗŧ ǿǿƒ ŧħīş ŧȧȧƀŀḗḗ ẇīŧħ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ", ŧħḗḗ ƥḗḗřīǿǿḓ ȧȧƞḓ ẇħǿǿ ƥřǿǿḓŭŭƈḗḗḓ īŧ. Ḗȧȧƈħ ḗḗẋƥǿǿřŧ īş řḗḗƈǿǿřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.exportTooMany": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ḗḗẋƥǿǿřŧḗḗḓ 5 ŧīḿḗḗş īƞ ŧħḗḗ ŀȧȧşŧ ħǿǿŭŭř. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ ŀȧȧŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.exported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ ẇǿǿřķƀǿǿǿǿķ ħȧȧş ƀḗḗḗḗƞ ḓǿǿẇƞŀǿǿȧȧḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.heading": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " — ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ ħḗḗŀḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş ħḗḗŀḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Ǿṽḗḗřȧȧŀŀ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.membersOmitted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ ƥḗḗř ḿḗḗḿƀḗḗř ƈǿǿṽḗḗřş ȧȧŧ ḿǿǿşŧ 5 ẏḗḗȧȧřş. Ƈħǿǿǿǿşḗḗ ȧȧ şħǿǿřŧḗḗř ƥḗḗřīǿǿḓ ŧǿǿ şḗḗḗḗ ḗḗȧȧƈħ ḿḗḗḿƀḗḗř ȧȧƞḓ ŧǿǿ ḗḗẋƥǿǿřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.noOwnRow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħḗḗŀḓ ƞǿǿ şḗḗȧȧŧ ȧȧŧ ȧȧ ḿḗḗḗḗŧīƞɠ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.noRows": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ ħḗḗŀḓ ȧȧ şḗḗȧȧŧ ȧȧŧ ȧȧ ḿḗḗḗḗŧīƞɠ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.ownRow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 6,
+      "value": "expected",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": "). Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ǿǿṽḗḗřȧȧŀŀ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "overall"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendance.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.attendedOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "expected"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.basis": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɓȧȧşḗḗḓ ǿǿƞ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɓȧȧşḗḗḓ ǿǿƞ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.byMemoType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓẏ ḿḗḗḿǿǿ ŧẏƥḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "list"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.closed.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " ƀẏ ŧħḗḗ ǿǿřīɠīƞȧȧŀ ḓȧȧŧḗḗ; "
+    },
+    {
+      "type": 1,
+      "value": "agreed"
+    },
+    {
+      "type": 0,
+      "value": " ƀẏ ŧħḗḗ ȧȧɠřḗḗḗḗḓ ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.closed.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "closed",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ ȧȧƈŧīǿǿƞ ẇȧȧş ƈŀǿǿşḗḗḓ īƞ ŧħḗḗ ƥḗḗřīǿǿḓ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈŀǿǿşḗḗḓ īƞ ŧħḗḗ ƥḗḗřīǿǿḓ: "
+            },
+            {
+              "type": 1,
+              "value": "original"
+            },
+            {
+              "type": 0,
+              "value": " ƀẏ ŧħḗḗ ǿǿřīɠīƞȧȧŀ ḓȧȧŧḗḗ, "
+            },
+            {
+              "type": 1,
+              "value": "agreed"
+            },
+            {
+              "type": 0,
+              "value": " ƀẏ ŧħḗḗ ȧȧɠřḗḗḗḗḓ ḓȧȧŧḗḗ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈŀǿǿşḗḗḓ īƞ ŧħḗḗ ƥḗḗřīǿǿḓ: "
+            },
+            {
+              "type": 1,
+              "value": "original"
+            },
+            {
+              "type": 0,
+              "value": " ƀẏ ŧħḗḗ ǿǿřīɠīƞȧȧŀ ḓȧȧŧḗḗ, "
+            },
+            {
+              "type": 1,
+              "value": "agreed"
+            },
+            {
+              "type": 0,
+              "value": " ƀẏ ŧħḗḗ ȧȧɠřḗḗḗḗḓ ḓȧȧŧḗḗ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.1to30": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "1–30 ḓȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.31to90": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "31–90 ḓȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.absent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀşḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.apologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.attendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.attended": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.attendedOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.date": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.decisions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.deferred": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƒḗḗřřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŧȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.expected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋƥḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.lateItems": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧŧḗḗ īŧḗḗḿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.latePapers": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧŧḗḗ ƥȧȧƥḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.measure": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗȧȧşŭŭřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.median": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḓīȧȧƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.meeting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.member": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.over90": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿṽḗḗř 90 ḓȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.overdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿṽḗḗřḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.owner": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿẇƞḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.p90": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "9 īƞ 10 ẇīŧħīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.papers": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ ȧȧƞḓ ƥȧȧƥḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.quarter": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɋŭŭȧȧřŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.rate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.remote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƒ ẇħīƈħ řḗḗḿǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.revised": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.share": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħȧȧřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.col.value": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.committee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.days": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.deferrals.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿş ḓḗḗƒḗḗřřḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "deferred"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": "); "
+    },
+    {
+      "type": 6,
+      "value": "twice",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿ īŧḗḗḿ ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿ ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿş ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.deferrals.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿş ḓḗḗƒḗḗřřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.deferred.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "twice",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿ īŧḗḗḿ ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿ ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿş ḓḗḗƒḗḗřřḗḗḓ ŧẇīƈḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.attendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ ƥḗḗř ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.backToAttendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧƈķ ŧǿǿ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.backToDetail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧƈķ ŧǿǿ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗŧȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗŧȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.meetings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠş ǿǿƒ ŧħīş "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.attendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ƈŀǿǿşḗḗḓ ǿǿƞ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.deferred": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿş ḓḗḗƒḗḗřřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.overdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ǿǿṽḗḗřḓŭŭḗḗ ƞǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.papers": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧƥḗḗřş ǿǿƞ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.measure.timing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīḿḗḗ ŧǿǿ ḓḗḗƈīşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.meetingOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.member.heading": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.member.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 6,
+      "value": "expected",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": ")."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.member.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥḗḗřşǿǿƞ ħḗḗŀḓ ƞǿǿ şḗḗȧȧŧ ȧȧŧ ȧȧ ḿḗḗḗḗŧīƞɠ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.member.showingRole": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "showing"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.member.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠş ȧȧƞḓ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.memoType.few": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ": ŧǿǿǿǿ ƒḗḗẇ ŧǿǿ şħǿǿẇ ("
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.memoType.timing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noActionsClosed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ȧȧƈŧīǿǿƞ ẇȧȧş ƈŀǿǿşḗḗḓ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noDeadline": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠ ħȧȧḓ ȧȧ ƥȧȧƥḗḗřş ḓḗḗȧȧḓŀīƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noDecisions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noMeetings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠ ẇȧȧş ħḗḗŀḓ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noMemoType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḿǿǿ ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.noScope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞȧȧŀẏŧīƈş ȧȧřḗḗ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ḿḗḗḿƀḗḗřş, ǿǿƒƒīƈḗḗřş ȧȧƞḓ ǿǿṽḗḗřşīɠħŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.notFound": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħīş "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " īş ƞǿǿŧ īƞ ẏǿǿŭŭř ȧȧƞȧȧŀẏŧīƈş. Ƈħǿǿǿǿşḗḗ ǿǿƞḗḗ ƒřǿǿḿ ŧħḗḗ ǿǿṽḗḗřṽīḗḗẇ."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.notShown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ şħǿǿẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.ofTotal": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.overdue.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "over90",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿƞḗḗ ǿǿṽḗḗř 90 ḓȧȧẏş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ǿǿṽḗḗř 90 ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "revised",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿ ḓȧȧŧḗḗ ƈħȧȧƞɠḗḗḓ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇīŧħ īŧş ḓȧȧŧḗḗ ƈħȧȧƞɠḗḗḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇīŧħ ŧħḗḗīř ḓȧȧŧḗḗ ƈħȧȧƞɠḗḗḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.overview.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗşḗḗ ƒīɠŭŭřḗḗş ƈǿǿŭŭƞŧ ǿǿƞŀẏ ŧħḗḗ ḿḗḗḗḗŧīƞɠş, ḓḗḗƈīşīǿǿƞş ȧȧƞḓ ȧȧƈŧīǿǿƞş ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.overview.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞȧȧŀẏŧīƈş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.ownerHolder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ ḿḗḗḗḗŧīƞɠş ƥŭŭƀŀīşħḗḗḓ ƀẏ ŧħḗḗ ƥȧȧƥḗḗřş ḓḗḗȧȧḓŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.detailLate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ ḿḗḗḗḗŧīƞɠş ƥŭŭƀŀīşħḗḗḓ ƀẏ ŧħḗḗ ƥȧȧƥḗḗřş ḓḗḗȧȧḓŀīƞḗḗ; "
+    },
+    {
+      "type": 1,
+      "value": "late"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.late": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.lateCounts": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "items",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ īŧḗḗḿ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ īŧḗḗḿş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "papers",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ ƥȧȧƥḗḗř"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ ƥȧȧƥḗḗřş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.lateSummary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "papers",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ ƥȧȧƥḗḗř"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ ƥȧȧƥḗḗřş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ "
+    },
+    {
+      "type": 6,
+      "value": "items",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ īŧḗḗḿ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŀȧȧŧḗḗ īŧḗḗḿş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ŧħḗḗ ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.noDeadline": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓḗḗȧȧḓŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠ ẇȧȧş ħḗḗŀḓ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.onTime": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧƥḗḗřş ǿǿƞ ŧīḿḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "onTime"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŧħ ȧȧ ḓḗḗȧȧḓŀīƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.papers.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧƥḗḗřş ǿǿƞ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřīǿǿḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.12m": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ 12 ḿǿǿƞŧħş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.2y": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ 2 ẏḗḗȧȧřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.5y": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ 5 ẏḗḗȧȧřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.apply": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.backwards": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥḗḗřīǿǿḓ ḿŭŭşŧ ḗḗƞḓ ǿǿƞ ǿǿř ȧȧƒŧḗḗř ŧħḗḗ ḓȧȧẏ īŧ şŧȧȧřŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.custom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ḓȧȧŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.lastYear": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ ƈȧȧŀḗḗƞḓȧȧř ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.thisYear": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ẏḗḗȧȧř şǿǿ ƒȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.period.tooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥḗḗřīǿǿḓ ƈȧȧƞ ƀḗḗ ȧȧŧ ḿǿǿşŧ 10 ẏḗḗȧȧřş. Ƈħǿǿǿǿşḗḗ ȧȧ şħǿǿřŧḗḗř ǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.quarter": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɋ"
+    },
+    {
+      "type": 1,
+      "value": "quarter"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "year"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.chair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.member": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.observer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƀşḗḗřṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.secretary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƈřḗḗŧȧȧřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧƞḓīƞɠ īƞṽīŧḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.role.viceChair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽīƈḗḗ-ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.absent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀşḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.apologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.byAlternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řḗḗƥřḗḗşḗḗƞŧḗḗḓ ƀẏ ŧħḗḗīř ȧȧŀŧḗḗřƞȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓḗḗḓ īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.joinedLate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ĵǿǿīƞḗḗḓ ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.leftEarly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŀḗḗƒŧ ḗḗȧȧřŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seat.remote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓḗḗḓ řḗḗḿǿǿŧḗḗŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.seatWithNotes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "seat"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "notes"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.showing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇīƞɠ "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.sort.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿřŧ ƀẏ ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.sort.rate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿřŧ ƀẏ řȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "attendance"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "actions"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "timing"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.summary.attendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ ȧȧŧ "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḗḗŧīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.summary.median": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḓḗḗƈīşīǿǿƞş ŧǿǿǿǿķ ȧȧ ḿḗḗḓīȧȧƞ ǿǿƒ "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.summary.noMeetings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƞǿǿ ḿḗḗḗḗŧīƞɠş ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.summary.overdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿ ȧȧƈŧīǿǿƞş ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧƈŧīǿǿƞ ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧƈŧīǿǿƞş ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿḗḗḓīȧȧƞ; 9 īƞ 10 ẇīŧħīƞ "
+    },
+    {
+      "type": 6,
+      "value": "p90",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 6,
+      "value": "decisions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.few": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ƒḗḗẇ ḓḗḗƈīşīǿǿƞş ŧǿǿ şħǿǿẇ ȧȧ ŧẏƥīƈȧȧŀ ŧīḿḗḗ ("
+    },
+    {
+      "type": 6,
+      "value": "decisions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞ ǿǿƞ ȧȧ şŭŭƀḿīşşīǿǿƞ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş ŧǿǿǿǿķ ȧȧ ḿḗḗḓīȧȧƞ ǿǿƒ "
+    },
+    {
+      "type": 6,
+      "value": "median",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; 9 īƞ 10 ẇīŧħīƞ "
+    },
+    {
+      "type": 6,
+      "value": "p90",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīḿḗḗ ƒřǿǿḿ şŭŭƀḿīşşīǿǿƞ ŧǿǿ ḓḗḗƈīşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.tooFew": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ƒḗḗẇ ḓḗḗƈīşīǿǿƞş ŧǿǿ şħǿǿẇ ȧȧ ŧẏƥīƈȧȧŀ ŧīḿḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.timing.value": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.toOverview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞȧȧŀẏŧīƈş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.tooFew": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ƒḗḗẇ ḓḗḗƈīşīǿǿƞş ŧǿǿ şħǿǿẇ ȧȧ ŧẏƥīƈȧȧŀ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.unknownOwner": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿẇƞḗḗř ƞǿǿŧ ķƞǿǿẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.unnamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ ƞǿǿŧ ȧȧṽȧȧīŀȧȧƀŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.workingDays": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŭŭƞŧ ẇǿǿřķīƞɠ ḓȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.workingDays.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧŀḗḗƞḓȧȧř ḓȧȧẏş ƀẏ ḓḗḗƒȧȧŭŭŀŧ; ẇǿǿřķīƞɠ ḓȧȧẏş ƒǿǿŀŀǿǿẇ ŧħḗḗ ƀŭŭşīƞḗḗşş ƈȧȧŀḗḗƞḓȧȧř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -61393,6 +64791,66 @@
       "value": "]"
     }
   ],
+  "nav.analytics": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞȧȧŀẏŧīƈş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.analyticsAttendance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓȧȧƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.analyticsCommittee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.analyticsMember": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.audit": [
     {
       "type": 0,
@@ -62369,6 +65827,118 @@
     {
       "type": 1,
       "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionMemoDecided": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş ȧȧƥƥřǿǿṽḗḗḓ. Ẏǿǿŭŭ ƈȧȧƞ ƞǿǿẇ ḿȧȧřķ ŧħḗḗ ȧȧƈŧīǿǿƞ ȧȧş ḓǿǿƞḗḗ."
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş řḗḗĵḗḗƈŧḗḗḓ"
+            }
+          ]
+        },
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş ẇīŧħḓřȧȧẇƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş şŧǿǿƥƥḗḗḓ"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,
@@ -67419,6 +70989,20 @@
           ]
         }
       }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "papers.note.system": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƀẏ ŧħḗḗ şẏşŧḗḗḿ"
     },
     {
       "type": 0,

@@ -8,6 +8,7 @@ import com.memo.jooq.Memo
 import com.memo.jooq.tables.records.SearchDecisionStatsRecord
 
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.util.UUID
 
 import org.jooq.Condition
@@ -68,9 +69,44 @@ open class SearchDecisionStats(
     val FORUM_ID: TableField<SearchDecisionStatsRecord, UUID?> = createField(DSL.name("forum_id"), SQLDataType.UUID, this, "")
 
     /**
-     * The column <code>memo.search_decision_stats.decisions</code>.
+     * The column <code>memo.search_decision_stats.memo_type_id</code>.
      */
-    val DECISIONS: TableField<SearchDecisionStatsRecord, Long?> = createField(DSL.name("decisions"), SQLDataType.BIGINT, this, "")
+    val MEMO_TYPE_ID: TableField<SearchDecisionStatsRecord, UUID?> = createField(DSL.name("memo_type_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.memo_id</code>.
+     */
+    val MEMO_ID: TableField<SearchDecisionStatsRecord, UUID?> = createField(DSL.name("memo_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.submission_id</code>.
+     */
+    val SUBMISSION_ID: TableField<SearchDecisionStatsRecord, UUID?> = createField(DSL.name("submission_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.meeting_date</code>.
+     */
+    val MEETING_DATE: TableField<SearchDecisionStatsRecord, LocalDate?> = createField(DSL.name("meeting_date"), SQLDataType.LOCALDATE, this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.decided_at</code>.
+     */
+    val DECIDED_AT: TableField<SearchDecisionStatsRecord, OffsetDateTime?> = createField(DSL.name("decided_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.chain_submitted_at</code>.
+     */
+    val CHAIN_SUBMITTED_AT: TableField<SearchDecisionStatsRecord, OffsetDateTime?> = createField(DSL.name("chain_submitted_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.outcome_kind</code>.
+     */
+    val OUTCOME_KIND: TableField<SearchDecisionStatsRecord, String?> = createField(DSL.name("outcome_kind"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.search_decision_stats.prior_deferrals</code>.
+     */
+    val PRIOR_DEFERRALS: TableField<SearchDecisionStatsRecord, Int?> = createField(DSL.name("prior_deferrals"), SQLDataType.INTEGER, this, "")
 
     private constructor(alias: Name, aliased: Table<SearchDecisionStatsRecord>?): this(alias, null, null, null, aliased, arrayOf(
         DSL.value(null, SQLDataType.UUID),

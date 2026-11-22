@@ -209,9 +209,14 @@ class RecusalLeakIT : RecusalActionsFixture() {
             Surface.ACTION_REPORT to { p, v -> actionReportProbe(p, v) },
             // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
             Surface.TRACKER to { p, v -> trackerProbe(p, v) },
+            // E08 T4: analytics and the attendance export (counts only; the differential is AnalyticsLeakIT).
+            Surface.ANALYTICS to { _, v -> analyticsProbe(v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
+            // E08 T2: the register is every viewer's (each is in office); nothing of the planted items can be found or counted
+            // by its words. The items decided, with canaries in the decisions' text and conditions, are RegisterLeakIT.
+            Surface.REGISTER to { _, v -> registerProbe(v.person()) },
             // E06 T5: the minutes page, the secretaries' while drafting; nothing on a meeting not held (404), never a canary.
             Surface.MINUTES to { p, v ->
                 val calls = minutesCalls(p, v.person())
@@ -670,13 +675,9 @@ class RecusalLeakIT : RecusalActionsFixture() {
 
     @Test
     fun `every controller of the meeting, forum and later modules is registered with a recusal probe, and placeholders wait`() {
-        val all =
-            mapping.handlerMethods.flatMap { (info, handler) ->
-                val methods = info.methodsCondition.methods.map { it.name }
-                info.patternValues.flatMap { path -> methods.map { Triple("$it $path", path, handler.beanType.packageName) } }
-            }
+        val all = handlerEndpoints(mapping)
         val ours = all.filter { (_, _, pkg) -> PaperSurfaceRegistry.modules.any { pkg.startsWith(it) } }.map { it.first }.toSet()
-        val registered = PaperSurfaceRegistry.endpoints.keys + PaperSurfaceRegistry.officersOnly.keys + PaperSurfaceRegistry.forum.keys
+        val registered = PaperSurfaceRegistry.registered
         assertThat(ours - registered).describedAs("controller methods without a recusal probe (PaperSurfaceRegistry)").isEmpty()
         assertThat(registered - ours).describedAs("registry entries without an endpoint").isEmpty()
         assertThat(

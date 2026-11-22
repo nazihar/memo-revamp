@@ -22,6 +22,7 @@ import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
 import com.memo.minutes.internal.ResolutionNumbers
 import com.memo.notification.Mail
+import com.memo.search.internal.decision.DecisionIndex
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
 import com.memo.testsupport.Person
@@ -86,6 +87,8 @@ class PaperLeakIT : RecusalFixture() {
 
     @Autowired lateinit var numbers: ResolutionNumbers
 
+    @Autowired lateinit var decisionIndex: DecisionIndex
+
     /** d1's alternate, standing in for them at the planted meeting. */
     lateinit var alt: Person
 
@@ -133,6 +136,9 @@ class PaperLeakIT : RecusalFixture() {
 
         /** E06 T4: each planted decision's resolution number, by item. */
         val resolutions = linkedMapOf<UUID, UUID>()
+
+        /** E08 T2: each planted decision, by item (in the register). */
+        val decisions = linkedMapOf<UUID, UUID>()
 
         init {
             // d1 sends apologies and their alternate attends: the alternate is in the audience from now on.
@@ -225,6 +231,9 @@ class PaperLeakIT : RecusalFixture() {
             decided[recusedHidden] = planting.decision(tenant.id, meeting.id, brc, recusedHidden, secretary.id, CANARY_RECUSED_HIDDEN)
             // E06 T4: every planted decision numbered, as the meeting's end numbers them.
             decided.forEach { (item, decision) -> resolutions[item] = planting.number(tenant.id, decision, decisionReads, numbers) }
+            // E08 T2: every planted decision in the register, as the indexer writes it in the recording transaction.
+            transactions.inTenant(tenant.id) { decided.values.forEach { check(decisionIndex.put(it)) } }
+            decisions.putAll(decided)
             planting.note(tenant.id, meeting.id, recused, secretary.id, CANARY_RECUSED_PAPER)
             val agenda = transactions.readInTenant(tenant.id) { meetingItems.agenda(meeting.id) }
             val actionPlanting = ActionPlanting(transactions, actionStore, tenantDsl)
@@ -292,6 +301,34 @@ class PaperLeakIT : RecusalFixture() {
                 guest, alt -> 1
                 d1 -> 3
                 else -> 0
+            }
+
+        /**
+         * E08 T2: how [person] (who has a register: d1 and d3 hold seats, the auditor forum.read) sees each planted decision
+         * in it; absent is not returned. d1 is named on the restricted items and cleared, and recused from two; d3 is a member
+         * neither named nor cleared; forum.read reads no restricted, title-hidden or members-only item in full, nor above
+         * their clearance.
+         */
+        fun registerLevels(person: Person): Map<UUID, String> =
+            when (person) {
+                d1 -> {
+                    mapOf(
+                        restricted to "FULL",
+                        hidden to "FULL",
+                        camera to "FULL",
+                        confidential to "FULL",
+                        recused to "LINE",
+                        recusedHidden to "LINE",
+                    )
+                }
+
+                d3 -> {
+                    mapOf(restricted to "LINE", hidden to "LINE", camera to "FULL", recused to "LINE", recusedHidden to "LINE")
+                }
+
+                else -> {
+                    mapOf(restricted to "LINE", hidden to "LINE", camera to "LINE", recused to "LINE", recusedHidden to "LINE")
+                }
             }
     }
 
@@ -572,6 +609,35 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(answer.response.status).describedAs("resolution of $item").isEqualTo(expected)
                 }
             },
+            // E08 T2: the register is for seats in office and oversight: the guest and the alternate (no seat of their own) are
+            // 403; for the others each planted decision is FULL, a restricted line or absent by the rule, a line never carries
+            // its content, and no word of a canary finds anything.
+            Surface.REGISTER to { p, person ->
+                val scope = read("/api/v1/decision-register/scope", person.session)
+                val all = post("/api/v1/decision-register/search", person.session, """{"forumIds":["$brc"]}""")
+                if (person == guest || person == alt) {
+                    listOf(scope, all).forEach { answer ->
+                        assertThat(answer).hasStatus(HttpStatus.FORBIDDEN)
+                        p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                    }
+                } else {
+                    clean(p, person, scope)
+                    clean(p, person, all)
+                    val rows = all.json()["rows"].list()
+                    val levels = rows.associate { UUID.fromString(it["itemId"].asString()) to it["level"].asString() }
+                    assertThat(levels.filterKeys { it in p.decisions.keys }).isEqualTo(p.registerLevels(person))
+                    rows.filter { it["level"].asString() == "LINE" }.forEach { line ->
+                        listOf("title", "outcomeKind", "text", "conditions", "memoNumber", "hasDissent", "decidedAt").forEach {
+                            assertThat(line.absent(it)).describedAs("$it on a line").isTrue()
+                        }
+                    }
+                    p.canaries(person).forEach { term ->
+                        val found = post("/api/v1/decision-register/search", person.session, """{"text":"$term"}""")
+                        clean(p, person, found)
+                        assertThat(found.json()["total"].asInt()).describedAs("register hits for $term").isZero()
+                    }
+                }
+            },
             // E06 T5: the minutes page is the secretaries' while drafting: nobody probed has it (404), and nobody may draft.
             Surface.MINUTES to { p, person ->
                 val base = "/api/v1/meetings/${p.meeting.id}/minutes"
@@ -632,6 +698,37 @@ class PaperLeakIT : RecusalFixture() {
                             answer.response.contentAsString
                         }
                     p.canaries(person).forEach { assertThat(text).describedAs("a canary in $path").doesNotContain(it) }
+                }
+            },
+            // E08 T4: analytics are counts, never an item: members (d1, d3) have their committee's, forum.read every
+            // committee's and the attendance export (whose workbook names no item); a guest and an alternate standing in hold
+            // no seat, so analytics are not theirs (403). The planted meeting is not held: what a recused or restricted viewer
+            // counts is AnalyticsLeakIT's differential.
+            Surface.ANALYTICS to { p, person ->
+                val base = "/api/v1/analytics/committees"
+                val answers = listOf(read(base, person.session), read("$base/$brc", person.session))
+                val export = read("$base/$brc/attendance/export", person.session)
+                (answers + export).forEach { answer ->
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+                when (person) {
+                    guest, alt -> {
+                        (answers + export).forEach { assertThat(it).hasStatus(HttpStatus.FORBIDDEN) }
+                    }
+
+                    auditor -> {
+                        answers.forEach { clean(p, person, it) }
+                        assertThat(export).hasStatusOk()
+                        val cells = workbookText(export)
+                        p.canaries(person).forEach { assertThat(cells).doesNotContain(it) }
+                    }
+
+                    else -> {
+                        answers.forEach { clean(p, person, it) }
+                        assertThat(answers[1].json()["attendance"]["ownRowOnly"].asBoolean()).isTrue()
+                        assertThat(answers[1].json()["papers"]["summary"].absent("lateItems")).isTrue()
+                        assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+                    }
                 }
             },
         )
@@ -714,6 +811,7 @@ class PaperLeakIT : RecusalFixture() {
         val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
 
         /** The modules whose endpoints are all in [PaperSurfaceRegistry.endpoints] or [PaperSurfaceRegistry.officersOnly]. */
-        val MODULES = listOf("com.memo.meeting", "com.memo.minutes", "com.memo.actions")
+        val MODULES =
+            listOf("com.memo.meeting", "com.memo.minutes", "com.memo.actions", "com.memo.search.internal.decision", "com.memo.analytics")
     }
 }

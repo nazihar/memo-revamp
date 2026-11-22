@@ -187,6 +187,8 @@ Paper opens and reading time, meeting length, number of items or pages, composit
 | Items deferred | the register filtered to outcome DEFERRED |
 | Papers on time | the committee's meetings list for the period |
 
+**As built (T7).** The overview's numbers open their lists in the committee's detail (AW) until the screens they are drawn to exist: overdue and closed on time open "Actions overdue by owner" (`#actions`), time to decision and items deferred their quarters (`#timing`, `#deferrals`), papers on time the period's held meetings (`#papers`, each linking to its meeting page, with "Meetings of this committee" to the committee's Meetings tab). Attendance opens AV, and a member's row their meetings of the period. When E07's tracker web (T10, flow AN) and the register's web (T6, flow AS) are merged, the action and decision figures link to them with the filters above.
+
 ## 3. API
 Conventions as E03–E07: `/api/v1`, RFC 9457 errors, cursor paging, `Idempotency-Key` on mutating POSTs (none here mutate except exports' audit). Search inputs are POST bodies so that words stay out of URLs and logs (ADR-0054, Phase 3 threat model I4).
 
@@ -201,6 +203,14 @@ Conventions as E03–E07: `/api/v1`, RFC 9457 errors, cursor paging, `Idempotenc
 | `GET /resolutions/{rid}`, `GET /meetings/{id}/decisions` (E06) | E06 | The register's rows link to these |
 
 **Problems:** 403 (no scope; export by a member); 404 (a committee outside scope in a path); 422 `FORUM_OUT_OF_SCOPE` (in a body filter), `TEXT_TOO_LONG`, `TOO_MANY_TERMS`, `RANGE` (period), `SORT_NEEDS_ONE_FORUM`, `TOO_MANY_ROWS`, `cursor INVALID`; 429 on the limits.
+
+**As built (T2):**
+- The search body: `text`, `forumIds`, `forumTypeIds`, `from`, `to`, `outcomes` (E06's outcome kinds), `resolutionsOnly`, `states` (RECORDED, NUMBERED, RELEASED, FINAL, VOID), `memoTypeIds`, `flags`, `sort`, `cursor`, `limit` (1–50, default 50). Unknown enum values are 400 (an unreadable body); the rules' problems are 422 `validation` with `errors: [{field, code}]`: `text:TEXT_TOO_LONG`, `text:TOO_MANY_TERMS`, `forumIds:FORUM_OUT_OF_SCOPE` (also a committee that does not exist), `to:RANGE` (before `from`, or more than 25 years), `sort:SORT_NEEDS_ONE_FORUM`, `limit:RANGE`, `<filter>:TOO_MANY` (more than 50 values), `cursor:INVALID`.
+- The order defaults to RELEVANCE with words and NEWEST without; RELEVANCE without words is NEWEST. A number-like text is looked up whole (resolution numbers on FULL and LINE rows, memo numbers on FULL rows); otherwise the last word, when it is a plain word of 3+ letters or digits outside a phrase, matches as a prefix.
+- Rows: `level`, `reason` (on a LINE), `decisionId`, `forumId`, `forumName`, `meetingId`, `meetingLabel`, `meetingDate`, `itemId`, `itemNumber`, `state`, `resolutionId`, `resolutionNumber`, `resolutionState`; FULL rows add the title, outcome, `resolution`, text, conditions, validity, dissent, vote mode, ratification, `corrected`, `decidedAt`, `finalAt`, the submission and the memo (id, type and its name, number). A LINE never carries `decidedAt` or the entry number, which T1 returns for the cursor and the export's hash only.
+- **Cursors are sealed:** AES-256-GCM under the installation's data key (`DataKeys`), with the tenant, the viewer and a SHA-256 fingerprint of the search (normalised words, sorted filters, the order) as associated data. A client cannot read one (it holds a line's decision time), craft or alter one, or use it for another search, person or tenant: 422 `cursor INVALID`.
+- The scope: `committees` (id, names, type, `officer`, `member`, `dissolved`), `committeeTypes`, `outcomes`, `states`, `flags`, `memoTypes` (every memo type of the tenant), `canExport` and `canCheckNumbers` (officers, `forums.manage`, `forum.read`).
+- The rate limit is checked before the transaction (so a person without a scope who floods the endpoint is 429 too); its key is the tenant and the person.
 
 ## 4. Authorisation matrix
 Columns: **Sec** (secretary of the committee in office), **Chair** (chair or vice-chair in office), **Mgr** (`forums.manage`), **Member** (seat in office today), **Read** (`forum.read`), **Former** (former member), **Guest/Att** (guest or item attendee of a past meeting), **Memo** (reader of a decided memo only), **Owner** (an action owner outside the committee), **Recused** (a person in any of the first five columns who is recused from the row's item), **Other** (signed in, none of these).
@@ -223,7 +233,7 @@ Columns: **Sec** (secretary of the committee in office), **Chair** (chair or vic
 
 ## 5. Audit events
 In the request's transaction (AGENTS §3.3). Free text is kept only in the audit store as Phase 3's search does (search terms), never in logs.
-- `search.decisions.performed`: terms, filters, sort, total or capped, the decision ids on the returned page (Phase 3's `search.performed` shape).
+- `search.decisions.performed`: terms, filters, sort, total or capped, the decision ids on the returned page (Phase 3's `search.performed` shape). **As built (T2):** the terms as `textSha256` (SHA-256 of the trimmed, lower-case words with single spaces), `terms` (their number) and `numberLookup`, not the words: what a secretary types can name a borrower or an item that the audit's readers may not see; the hash still lets an investigator check a stated search. Also `nextPage` (a cursor was given).
 - `search.decisions.exported`: format, filters, row count, `rowsSha256`; written before the first byte is streamed.
 - `search.decisions.backfilled`: system actor, tenant, rows written (once per backfill run).
 - `analytics.attendance.exported`: committee, period, row count.
@@ -293,8 +303,8 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 | `Resolutions.check(forumId, period)` published (E06 has the endpoint) | E06 T4 | Planned as an endpoint | E08 T3 publishes the existing service method |
 | `MinutesApproved`, `DecisionReleased` | E06 T4, T6 | Planned | Rows stay RECORDED/NUMBERED until then (state shown as is) |
 | `Recusals.itemsOf(userId)`: items (with sub-items) the person may not see in full, including alternates' inheritance and awaiting rulings | meeting (E04's `RecusalStore`) | **New, E08 T1** | — |
-| `AttendanceStats.forMembers(forumIds, from, to, clearance)` and `.forCommittees(…)` | meeting | **New, E08 T4** (read-only over `meeting_attendance`, `meeting`, `ForumDirectory.membersOn`) | — |
-| `AgendaTimeliness.share(forumIds, from, to, clearance)` and `.lateCounts(viewer, meetingIds)` | meeting | **New, E08 T4**; uses `AgendaDeadlines.of` (E07 T7 publishes it, or E08 T4 if first) | — |
+| `AttendanceStats.forMembers(forumIds, from, to, clearance)` and `.forCommittees(…)` | meeting | **Built, E08 T4** as `AttendanceStats.held(forumIds, from, to, clearanceRank)`: the held meetings with their seats on the date (`ForumDirectory.membersOn`) and register lines; the measure itself is `analytics.measures.AttendanceMeasure` | — |
+| `AgendaTimeliness.share(forumIds, from, to, clearance)` and `.lateCounts(viewer, meetingIds)` | meeting | **Built, E08 T4** as `AgendaTimeliness.of(meetingIds)` (first revision against the deadline) and `.lateCounts(meetingIds)` for the signed-in actor (`PaperAccess.late`); `AgendaDeadlines.of` added byte for byte as E07 T7 has it, so either branch merges cleanly | — |
 | `SubmissionChains.chainStart(submissionId)` and `.chain(submissionId)`: the first `submitted_at` along `previous_id`, and the chain (named `SubmissionChains`: the forum module's internal `ForumSubmissions` service has the planned name) | forum | **Built, E08 T1** | — |
 | `ActionStats.overdue(viewer, forumIds, today)` and `.closedOnTime(viewer, forumIds, from, to)` on `ActionAccess`, replacing E07's viewer-less `ActionCounts.overdue(forumId)` | actions | **Built in E07 T8:** `ActionStats.overdue(forumIds, today)` and `.closedOnTime(forumIds, from, to)` for the signed-in viewer | — |
 | `ReportPages` landscape tables | memo (ADR-0052) | Built (used by E07's report PDF) | — |
@@ -302,4 +312,4 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 
 **Module boundaries** (`ApplicationModules.verify()`):
 - `search` → memo (as today), minutes, meeting, forum, identity, authz, audit, common. Nothing depends on search except `demo` and `analytics`.
-- **`analytics`** (new, `com.memo.analytics`, packages `api`, `measures`, `export`) → search (`DecisionStats`), meeting (`AttendanceStats`, `AgendaTimeliness`), actions (`ActionStats`), forum (`ForumDirectory`), identity, authz, audit, common. Nothing depends on analytics.
+- **`analytics`** (new, `com.memo.analytics`, packages `api`, `measures`, `export`) → search (`DecisionStats`), meeting (`AttendanceStats`, `AgendaTimeliness`), actions (`ActionStats`), forum (`ForumDirectory`), memo (`MemoSearchSource.typeNames`, the memo types' names for time to decision by memo type; added in T7), identity, authz, audit, common. Nothing depends on analytics.

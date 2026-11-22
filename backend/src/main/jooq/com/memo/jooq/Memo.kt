@@ -10,6 +10,7 @@ import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
+import com.memo.jooq.tables.ActionsMemo
 import com.memo.jooq.tables.ActionsReport
 import com.memo.jooq.tables.ActionsReportHold
 import com.memo.jooq.tables.ActionsReportRow
@@ -230,6 +231,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.actions_item</code>.
      */
     val ACTIONS_ITEM: ActionsItem get() = ActionsItem.ACTIONS_ITEM
+
+    /**
+     * The table <code>memo.actions_memo</code>.
+     */
+    val ACTIONS_MEMO: ActionsMemo get() = ActionsMemo.ACTIONS_MEMO
 
     /**
      * The table <code>memo.actions_report</code>.
@@ -1609,6 +1615,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ActionsDueRequest.ACTIONS_DUE_REQUEST,
         ActionsEntry.ACTIONS_ENTRY,
         ActionsItem.ACTIONS_ITEM,
+        ActionsMemo.ACTIONS_MEMO,
         ActionsReport.ACTIONS_REPORT,
         ActionsReportHold.ACTIONS_REPORT_HOLD,
         ActionsReportRow.ACTIONS_REPORT_ROW,

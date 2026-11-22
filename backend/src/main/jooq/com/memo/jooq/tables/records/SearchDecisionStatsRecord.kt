@@ -6,6 +6,8 @@ package com.memo.jooq.tables.records
 
 import com.memo.jooq.tables.SearchDecisionStats
 
+import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.util.UUID
 
 import org.jooq.impl.TableRecordImpl
@@ -21,16 +23,51 @@ open class SearchDecisionStatsRecord private constructor() : TableRecordImpl<Sea
         set(value): Unit = set(0, value)
         get(): UUID? = get(0) as UUID?
 
-    open var decisions: Long?
+    open var memoTypeId: UUID?
         set(value): Unit = set(1, value)
-        get(): Long? = get(1) as Long?
+        get(): UUID? = get(1) as UUID?
+
+    open var memoId: UUID?
+        set(value): Unit = set(2, value)
+        get(): UUID? = get(2) as UUID?
+
+    open var submissionId: UUID?
+        set(value): Unit = set(3, value)
+        get(): UUID? = get(3) as UUID?
+
+    open var meetingDate: LocalDate?
+        set(value): Unit = set(4, value)
+        get(): LocalDate? = get(4) as LocalDate?
+
+    open var decidedAt: OffsetDateTime?
+        set(value): Unit = set(5, value)
+        get(): OffsetDateTime? = get(5) as OffsetDateTime?
+
+    open var chainSubmittedAt: OffsetDateTime?
+        set(value): Unit = set(6, value)
+        get(): OffsetDateTime? = get(6) as OffsetDateTime?
+
+    open var outcomeKind: String?
+        set(value): Unit = set(7, value)
+        get(): String? = get(7) as String?
+
+    open var priorDeferrals: Int?
+        set(value): Unit = set(8, value)
+        get(): Int? = get(8) as Int?
 
     /**
      * Create a detached, initialised SearchDecisionStatsRecord
      */
-    constructor(forumId: UUID? = null, decisions: Long? = null): this() {
+    constructor(forumId: UUID? = null, memoTypeId: UUID? = null, memoId: UUID? = null, submissionId: UUID? = null, meetingDate: LocalDate? = null, decidedAt: OffsetDateTime? = null, chainSubmittedAt: OffsetDateTime? = null, outcomeKind: String? = null, priorDeferrals: Int? = null): this() {
         this.forumId = forumId
-        this.decisions = decisions
+        this.memoTypeId = memoTypeId
+        this.memoId = memoId
+        this.submissionId = submissionId
+        this.meetingDate = meetingDate
+        this.decidedAt = decidedAt
+        this.chainSubmittedAt = chainSubmittedAt
+        this.outcomeKind = outcomeKind
+        this.priorDeferrals = priorDeferrals
         resetTouchedOnNotNull()
     }
 }

@@ -248,6 +248,20 @@
         "required" : [ "id", "title" ],
         "type" : "object"
       },
+      "ActionRagKey" : {
+        "properties" : {
+          "amberWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "staleWorkingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "amberWorkingDays" ],
+        "type" : "object"
+      },
       "ActionRagOverride" : {
         "properties" : {
           "by" : {
@@ -490,6 +504,10 @@
             "format" : "int32",
             "type" : [ "integer", "null" ]
           },
+          "confidence" : {
+            "enum" : [ "ON_TRACK", "AT_RISK", "OFF_TRACK" ],
+            "type" : [ "string", "null" ]
+          },
           "decisionId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
@@ -512,6 +530,10 @@
           },
           "itemId" : {
             "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "lastUpdateAt" : {
+            "format" : "date-time",
             "type" : [ "string", "null" ]
           },
           "meetingId" : {
@@ -562,6 +584,40 @@
           }
         },
         "required" : [ "committee", "dueRevisions", "forumId", "id", "priority", "rag", "sourceKind", "sourceLabel", "status", "title", "version" ],
+        "type" : "object"
+      },
+      "ActionTotals" : {
+        "properties" : {
+          "all" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "amber" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "closed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "drafts" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "green" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "red" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "toVerify" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "all", "amber", "closed", "drafts", "green", "red", "toVerify" ],
         "type" : "object"
       },
       "ActionUpdateRequest" : {
@@ -4416,6 +4472,41 @@
           }
         },
         "required" : [ "importedOriginals", "mismatches", "promotionMismatches", "verified", "verifyProblems" ],
+        "type" : "object"
+      },
+      "ForumActionsResponse" : {
+        "properties" : {
+          "can" : {
+            "$ref" : "#/components/schemas/TrackerAbilities"
+          },
+          "committee" : {
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionSummary"
+            },
+            "type" : "array"
+          },
+          "key" : {
+            "$ref" : "#/components/schemas/ActionRagKey"
+          },
+          "matching" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "totals" : {
+            "$ref" : "#/components/schemas/ActionTotals"
+          }
+        },
+        "required" : [ "can", "committee", "forumId", "items", "key", "matching", "totals" ],
         "type" : "object"
       },
       "ForumPolicyResponse" : {
@@ -13734,6 +13825,18 @@
         "required" : [ "decidedAt", "decisionId", "itemId", "meetingId", "outcomeLabel" ],
         "type" : "object"
       },
+      "TrackerAbilities" : {
+        "properties" : {
+          "export" : {
+            "type" : "boolean"
+          },
+          "raise" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "export", "raise" ],
+        "type" : "object"
+      },
       "TriageRequest" : {
         "properties" : {
           "reason" : {
@@ -20740,6 +20843,137 @@
       }
     },
     "/api/v1/forums/{forumId}/actions" : {
+      "get" : {
+        "operationId" : "getForumActions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "DRAFT", "OPEN", "IN_PROGRESS", "DONE_PENDING", "CLOSED", "CANCELLED" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "rag",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "NONE", "GREY", "BLUE", "RED", "AMBER", "GREEN" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "owner",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "overdue",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "in" : "query",
+          "name" : "dueFrom",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "dueTo",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "meetingId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "itemId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "source",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "DECISION", "ITEM", "MEETING", "DIRECT" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "text",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "DUE", "UPDATED", "REFERENCE" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumActionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The committee's action tracker: filtered rows the viewer may see, totals per colour, 50 a page",
+        "tags" : [ "actions" ]
+      },
       "post" : {
         "operationId" : "raiseDirectAction",
         "parameters" : [ {
@@ -20781,6 +21015,127 @@
           }
         },
         "summary" : "Raise a direct draft action on a committee (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/actions/export" : {
+      "get" : {
+        "operationId" : "exportForumActions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "DRAFT", "OPEN", "IN_PROGRESS", "DONE_PENDING", "CLOSED", "CANCELLED" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "rag",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "NONE", "GREY", "BLUE", "RED", "AMBER", "GREEN" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "owner",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "overdue",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "in" : "query",
+          "name" : "dueFrom",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "dueTo",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "meetingId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "itemId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "source",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "DECISION", "ITEM", "MEETING", "DIRECT" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "text",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "DUE", "UPDATED", "REFERENCE" ],
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : {
+                "schema" : {
+                  "format" : "binary",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "The workbook"
+          },
+          "429" : {
+            "description" : "Too many exports"
+          }
+        },
+        "summary" : "The committee's action tracker under the filters as an Excel workbook, at most 5,000 rows (audited; 10 an hour)",
         "tags" : [ "actions" ]
       }
     },

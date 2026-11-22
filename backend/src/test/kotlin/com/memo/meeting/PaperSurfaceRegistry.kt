@@ -14,7 +14,8 @@ package com.memo.meeting
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
  * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E07 T3 made its actions placeholder
  * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
- * with recusal columns or an officer probe).
+ * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
+ * totals and its export (TRACKER).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -45,6 +46,10 @@ object PaperSurfaceRegistry {
         ACTIONS(
             "Action items (E07 T3): one action, a meeting's actions and My actions with their counts; a person recused from the " +
                 "item neither sees nor counts its actions unless involved, and then without the item's hidden title or papers",
+        ),
+        TRACKER(
+            "The committee's action tracker, its totals per colour and its XLSX export (E07 T8): rows by the one rule; a person " +
+                "recused from an item neither sees, counts nor exports its actions unless involved; members do not export",
         ),
         RESOLUTIONS(
             "The committee's resolution register and its check, and one resolution (E06 T4): a row in full only when its item's " +
@@ -106,6 +111,9 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
+            // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
+            "GET /api/v1/forums/{forumId}/actions" to Surface.TRACKER,
+            "GET /api/v1/forums/{forumId}/actions/export" to Surface.TRACKER,
         )
 
     /**
@@ -221,7 +229,7 @@ object PaperSurfaceRegistry {
     ) {
         IN_APP("In-app notifications (`/me/notifications`): publication, changes, declarations, requests"),
         MAIL("Every email of the scenario (agenda, declarations, late papers, invitations and their calendar files), from Mailpit"),
-        EXPORTS("The register's XLSX export and the meeting's calendar file"),
+        EXPORTS("The register's and the action tracker's XLSX exports (their surfaces' probes) and the meeting's calendar file"),
         SEARCH("Memo search: meeting papers and their extracted text are never indexed (design E04 §1.7, ADR-0054)"),
         AUDIT("The audit viewer and the verifiable export: declarations carry hashes of the nature, never the text"),
         FORUM_QUEUE("The committee's submissions: officers by role, everyone else by the memo's own rule (design E04 §1.4)"),
@@ -313,11 +321,6 @@ object PaperSurfaceRegistry {
                     "/api/v1/meetings/{meetingId}/minutes/record",
                     "/api/v1/minutes",
                 ),
-            ),
-            Pending(
-                "E07",
-                "The committee's action tracker, its totals and export (E07 T8): rows by the one rule, no row or count of a recused item",
-                listOf("/api/v1/forums/{forumId}/actions/"),
             ),
             Pending(
                 "E08",

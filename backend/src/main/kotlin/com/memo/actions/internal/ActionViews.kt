@@ -159,6 +159,58 @@ data class ActionSummary(
     val stepName: String? = null,
     /** Red, amber or green in words, from the SQL reading of the rule; without the override's reason. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rag: ActionRagResponse,
+    /** The owner's word with their latest update. */
+    val confidence: Confidence? = null,
+    val lastUpdateAt: Instant? = null,
+)
+
+/**
+ * The tracker's totals per colour (flow AN: "▲ Overdue 3 ● Due soon or at risk 2 ✓ On track 7 ◐ To verify 2"), from the
+ * same rule and predicate as its rows, under every filter but the colour ones (`rag`, `overdue`).
+ */
+data class ActionTotals(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val red: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val amber: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val green: Int,
+    /** Blue: done, to be verified. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val toVerify: Int,
+    /** Grey: closed or cancelled. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val closed: Int,
+    /** Direct drafts not yet issued (secretaries and `forums.manage`). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val drafts: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val all: Int,
+)
+
+/**
+ * The key the tracker prints with this committee type's numbers (design E07 §1.5): "Amber: due within 10 working days, at
+ * risk, or no update for 20 working days".
+ */
+data class ActionRagKey(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val amberWorkingDays: Int,
+    /** Null: the committee type has no "no recent update" rule. */
+    val staleWorkingDays: Int? = null,
+)
+
+/** What the viewer may do on the tracker. */
+data class TrackerAbilities(
+    /** "New action": a direct draft (secretaries and `forums.manage`). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raise: Boolean,
+    /** "Export" (secretaries, the chair, `forums.manage` and `forum.read`). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val export: Boolean,
+)
+
+/** A page of the committee's action tracker (design E07 §3, flow AN). */
+data class ForumActionsResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val committee: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val items: List<ActionSummary>,
+    /** Pass it as `cursor` (with the same filters and sort) for the next page; null on the last. */
+    val nextCursor: String? = null,
+    /** The rows under every filter, colour included. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val matching: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val totals: ActionTotals,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val key: ActionRagKey,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val can: TrackerAbilities,
 )
 
 /** A meeting's actions as the viewer may see them (drafts for its secretaries and `forums.manage`). */

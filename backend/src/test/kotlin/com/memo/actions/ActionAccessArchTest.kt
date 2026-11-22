@@ -47,9 +47,11 @@ class ActionAccessArchTest {
         noClasses()
             .that()
             .haveNameNotMatching(
-                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL.
+                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL. T8: the tracker's and
+                // E08's statistics' reads, every one on ActionAccess.seen (the one rule) and RagRule.shows.
                 """com\.memo\.actions\.internal\.""" +
-                    """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns)(\$.*)?""",
+                    """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns""" +
+                    """|ActionTrackerReads)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
             .should()

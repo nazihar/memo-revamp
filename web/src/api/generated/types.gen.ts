@@ -82,6 +82,11 @@ export type ActionPosition = {
     title: string;
 };
 
+export type ActionRagKey = {
+    amberWorkingDays: number;
+    staleWorkingDays?: number | null;
+};
+
 export type ActionRagOverride = {
     by?: ActionPerson | null;
     rag: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
@@ -151,12 +156,14 @@ export type ActionStartedRequest = {
 export type ActionSummary = {
     committee: string;
     conditionIndex?: number | null;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
     decisionId?: string | null;
     dueDate?: string | null;
     dueRevisions: number;
     forumId: string;
     id: string;
     itemId?: string | null;
+    lastUpdateAt?: string | null;
     meetingId?: string | null;
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
@@ -169,6 +176,16 @@ export type ActionSummary = {
     stepName?: string | null;
     title: string;
     version: number;
+};
+
+export type ActionTotals = {
+    all: number;
+    amber: number;
+    closed: number;
+    drafts: number;
+    green: number;
+    red: number;
+    toVerify: number;
 };
 
 export type ActionUpdateRequest = {
@@ -1434,6 +1451,17 @@ export type FixityTotals = {
     promotionMismatches: number;
     verified: number;
     verifyProblems: number;
+};
+
+export type ForumActionsResponse = {
+    can: TrackerAbilities;
+    committee: string;
+    forumId: string;
+    items: Array<ActionSummary>;
+    key: ActionRagKey;
+    matching: number;
+    nextCursor?: string | null;
+    totals: ActionTotals;
 };
 
 export type ForumPolicyResponse = {
@@ -4543,6 +4571,11 @@ export type ToBeRatifiedResponse = {
     meetingId: string;
     meetingLabel?: string | null;
     outcomeLabel: string;
+};
+
+export type TrackerAbilities = {
+    export: boolean;
+    raise: boolean;
 };
 
 export type TriageRequest = {
@@ -8304,6 +8337,38 @@ export type UpdateForumResponses = {
 
 export type UpdateForumResponse = UpdateForumResponses[keyof UpdateForumResponses];
 
+export type GetForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/forums/{forumId}/actions';
+};
+
+export type GetForumActionsResponses = {
+    /**
+     * OK
+     */
+    200: ForumActionsResponse;
+};
+
+export type GetForumActionsResponse = GetForumActionsResponses[keyof GetForumActionsResponses];
+
 export type RaiseDirectActionData = {
     body: ActionFieldsRequest;
     headers: {
@@ -8324,6 +8389,43 @@ export type RaiseDirectActionResponses = {
 };
 
 export type RaiseDirectActionResponse = RaiseDirectActionResponses[keyof RaiseDirectActionResponses];
+
+export type ExportForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+    };
+    url: '/api/v1/forums/{forumId}/actions/export';
+};
+
+export type ExportForumActionsErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportForumActionsResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportForumActionsResponse = ExportForumActionsResponses[keyof ExportForumActionsResponses];
 
 export type CloneForumData = {
     body: CloneRequest;

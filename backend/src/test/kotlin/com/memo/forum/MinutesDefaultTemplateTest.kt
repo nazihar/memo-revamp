@@ -52,8 +52,18 @@ class MinutesDefaultTemplateTest {
         assertThat(controls).allSatisfy { assertThat(it.lock).isEqualTo("sdtLocked") }
         val text = Docx.text(filled)
         assertThat(text).contains("BRC 3/2026", "BRC/2026/014", "Dr A. Rahman").doesNotContain("{{", "[name]")
-        // E07's actions: on the item that agreed one, and in the meeting's table.
-        assertThat(text.split(MinutesTemplateSample.ACTION_REFERENCE)).hasSize(3)
+        // E07's actions: an item's in its block only (so a reader's copy that redacts the item drops them, E06 T7); the
+        // meeting's own, on no item, in the meeting's table.
+        assertThat(text.split(MinutesTemplateSample.ACTION_REFERENCE)).hasSize(2)
+        assertThat(text.split(MinutesTemplateSample.MEETING_ACTION_REFERENCE)).hasSize(2)
+        val redacted =
+            PoiDocxControls().replace(
+                filled.inputStream(),
+                mapOf("memo-item:sample-1" to listOf(com.memo.templating.ControlParagraph("Item 1 — restricted"))),
+            )
+        assertThat(Docx.text(redacted))
+            .doesNotContain(MinutesTemplateSample.ACTION_REFERENCE)
+            .contains(MinutesTemplateSample.MEETING_ACTION_REFERENCE)
     }
 
     @Test
@@ -103,9 +113,8 @@ object MinutesDefaultTemplates {
         val headings: List<String>,
         val itemActions: String,
         val actionsArising: String,
-        /** Reference, action, owner, due; the meeting's table adds the item after the reference. */
+        /** Reference, action, owner, due (in an item's table and the meeting's own). */
         val actionColumns: List<String>,
-        val itemColumn: String,
     )
 
     private val ENGLISH =
@@ -128,9 +137,8 @@ object MinutesDefaultTemplates {
             approvedOn = "Approved on {{minutes.approvedOn}} by {{minutes.approvedBy}}",
             headings = listOf("Attendance", "Business of the meeting"),
             itemActions = "Actions agreed:",
-            actionsArising = "Actions arising",
+            actionsArising = "Other actions arising",
             actionColumns = listOf("Reference", "Action", "Owner", "Due"),
-            itemColumn = "Item",
         )
 
     private val ARABIC =
@@ -153,9 +161,8 @@ object MinutesDefaultTemplates {
             approvedOn = "اعتُمد بتاريخ {{minutes.approvedOn}} من قِبل {{minutes.approvedBy}}",
             headings = listOf("الحضور", "أعمال الاجتماع"),
             itemActions = "الإجراءات المتفق عليها:",
-            actionsArising = "الإجراءات المترتبة",
+            actionsArising = "إجراءات أخرى مترتبة",
             actionColumns = listOf("المرجع", "الإجراء", "المسؤول", "تاريخ الاستحقاق"),
-            itemColumn = "البند",
         )
 
     fun write(language: MinutesLanguage): ByteArray {
@@ -213,8 +220,8 @@ object MinutesDefaultTemplates {
             section("actions.count") {
                 p(w.actionsArising, bold = true)
                 table(
-                    listOf(w.actionColumns[0] + "{{actions}}", w.itemColumn) + w.actionColumns.drop(1),
-                    listOf("[reference]", "[item]", "[action]", "[owner]", "[due]"),
+                    listOf(w.actionColumns[0] + "{{actions}}") + w.actionColumns.drop(1),
+                    listOf("[reference]", "[action]", "[owner]", "[due]"),
                 )
             }
             p(w.closed)

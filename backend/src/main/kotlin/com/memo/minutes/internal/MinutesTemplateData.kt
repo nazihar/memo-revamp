@@ -88,7 +88,7 @@ object MinutesTemplateData {
                 "minutes.approvedOn" to "",
                 "minutes.approvedBy" to "",
                 "quorum.opening" to attendance.opening(),
-                "actions.count" to count(source.actions.size),
+                "actions.count" to count(meetingActions(source).size),
             )
         val rows =
             mapOf(
@@ -99,7 +99,8 @@ object MinutesTemplateData {
                 "absent" to attendance.absent(),
                 "quorumChanges" to attendance.quorumChanges(),
                 "resolutions" to items.resolutions(minuted),
-                "actions" to source.actions.map { action(it) + ("item" to words.number(it.itemId)) },
+                // The meeting's own actions only: an item's are in its block (its `item.actions`), never outside it.
+                "actions" to meetingActions(source).map { action(it) + ("item" to "") },
             )
         return TemplateData(
             values.mapValues { clean(it.value) },
@@ -125,6 +126,13 @@ object MinutesTemplateData {
                 i += Character.charCount(cp)
             }
         }.replace("\r\n", "\n").replace('\r', '\n')
+
+    /**
+     * The meeting's own actions, those agreed on no item (E06 T7): an item's actions are printed only inside its block, so a
+     * reader's copy that redacts the item drops them with it (ADR-0066's leak check refuses a copy that names them anywhere
+     * else). Pure.
+     */
+    fun meetingActions(source: DraftSource): List<MinutesActionLine> = source.actions.filter { it.itemId == null }
 
     /** A count as the template prints it: blank for none, so its section disappears. */
     fun count(n: Int): String = if (n > 0) n.toString() else ""

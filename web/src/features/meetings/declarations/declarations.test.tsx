@@ -47,6 +47,7 @@ const item = (id: string, extra: Partial<MemberItemResponse>): MemberItemRespons
   id,
   access: 'FULL',
   kind: 'ITEM',
+  links: [],
   late: 'NONE',
   changes: [],
   papers: [],

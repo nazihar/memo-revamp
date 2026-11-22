@@ -151,6 +151,45 @@ object CopyBlocks {
     /** [text] for comparison: lower case, whitespace collapsed. */
     fun normal(text: String): String = text.lowercase(Locale.ROOT).replace(WHITESPACE, " ").trim()
 
+    /**
+     * [docx] made into the copy for [redacted] (the draft's or the approved one's, ADR-0066): no unresolved changes left
+     * (else `UNRESOLVED_CHANGES`), each redacted item's control replaced by its block, the notes, comments and properties a
+     * copy must not carry dropped, and checked that nothing recorded of a redacted item appears anywhere in it (else
+     * `LEAK`, with the items' numbers: closed, never served).
+     */
+    fun redacted(
+        docx: ByteArray,
+        redacted: List<Redaction>,
+        from: DraftSource,
+        controls: DocxControls,
+        packages: DocxCopies,
+    ): ByteArray {
+        val marks = controls.marks(docx.inputStream())
+        if (!marks.clean) copyFailed("UNRESOLVED_CHANGES")
+        val items = from.items.associateBy { it.id }
+        val contents =
+            redacted.associate { r ->
+                val item = items[r.itemId] ?: copyFailed("ITEM_GONE")
+                val decision = from.decisions[r.itemId]
+                MinutesStructure.tag(r.itemId) to block(item, r.kind, decision, decision?.let { from.resolutions[it.decision.id] })
+            }
+        val replaced = if (contents.isEmpty()) docx else controls.replace(docx.inputStream(), contents)
+        val cleaned = packages.forCopy(replaced)
+        requireNoLeak(from, RedactionSet(redacted), packages.text(cleaned.inputStream()))
+        return cleaned
+    }
+
+    /** Fails `LEAK` (with the items' numbers) when [text] holds anything recorded of an item [set] redacts. */
+    fun requireNoLeak(
+        from: DraftSource,
+        set: RedactionSet,
+        text: String,
+    ) {
+        val normalised = normal(text)
+        val leaks = sensitive(from, set).filterValues { strings -> strings.any { it in normalised } }.keys
+        if (leaks.isNotEmpty()) copyFailed("LEAK", leaks.mapNotNull { id -> from.items.firstOrNull { it.id == id }?.number })
+    }
+
     const val RECUSED = "You declared an interest in this item and took no part."
     const val RESTRICTED = "The record of this item is restricted."
     const val NO_DECISION = "No decision is recorded."
@@ -225,6 +264,7 @@ class MinutesCopies(
     private val ids: IdGenerator,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val approved: ApprovedCopies,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -266,6 +306,19 @@ class MinutesCopies(
      * copy is marked FAILED with a code.
      */
     fun build(
+        meetingId: UUID,
+        last: Boolean,
+    ) {
+        // Approved minutes: their copies are records of their own (E06 T7).
+        if (transactions.readInTenant(TenantContext.current()) { store.find(meetingId)?.state } == MinutesStage.APPROVED) {
+            approved.build(meetingId, last)
+        } else {
+            buildDraft(meetingId, last)
+        }
+    }
+
+    /** The draft's copies (see [build]). */
+    private fun buildDraft(
         meetingId: UUID,
         last: Boolean,
     ) {
@@ -312,22 +365,7 @@ class MinutesCopies(
         docx: ByteArray,
         from: DraftSource,
     ): ByteArray {
-        val marks = controls.marks(docx.inputStream())
-        if (!marks.clean) copyFailed("UNRESOLVED_CHANGES")
-        val set = RedactionSet(copy.redacted)
-        val items = from.items.associateBy { it.id }
-        val contents =
-            copy.redacted.associate { r ->
-                val item = items[r.itemId] ?: copyFailed("ITEM_GONE")
-                val decision = from.decisions[r.itemId]
-                MinutesStructure.tag(r.itemId) to
-                    CopyBlocks.block(item, r.kind, decision, decision?.let { from.resolutions[it.decision.id] })
-            }
-        val replaced = if (contents.isEmpty()) docx else controls.replace(docx.inputStream(), contents)
-        val cleaned = packages.forCopy(replaced)
-        val text = CopyBlocks.normal(packages.text(cleaned.inputStream()))
-        val leaks = CopyBlocks.sensitive(from, set).filterValues { strings -> strings.any { it in text } }.keys
-        if (leaks.isNotEmpty()) copyFailed("LEAK", leaks.mapNotNull { id -> items[id]?.number })
+        val cleaned = CopyBlocks.redacted(docx, copy.redacted, from, controls, packages)
         val convert = converter.ifAvailable ?: copyFailed("NO_CONVERTER")
         val pdf = ByteArrayOutputStream()
         val input = RenditionInput("minutes-copy.docx", FileType.DOCX, cleaned.size.toLong()) { cleaned.inputStream() }
@@ -429,12 +467,12 @@ class MinutesCopies(
 }
 
 /** A copy that cannot be built from this version: [code] is stored, [items] (numbers) audited. */
-private class CopyFailed(
+internal class CopyFailed(
     val code: String,
     val items: List<String> = emptyList(),
 ) : RuntimeException(code)
 
-private fun copyFailed(
+internal fun copyFailed(
     code: String,
     items: List<String> = emptyList(),
 ): Nothing = throw CopyFailed(code, items)

@@ -31,7 +31,7 @@ object MinutesTemplateTags {
             "minutes.approvedOn" to "Date the minutes were approved",
             "minutes.approvedBy" to "Who approved the minutes",
             "quorum.opening" to "The quorum when the meeting opened (a sentence)",
-            "actions.count" to "How many actions the meeting agreed (empty when none)",
+            "actions.count" to "How many actions the meeting agreed on no item (empty when none)",
         )
 
     /** Table-row loops with their row fields: `{{present}}` in a table row, `[name]` in the row below. */
@@ -52,7 +52,7 @@ object MinutesTemplateTags {
             "absent" to linkedMapOf("name" to "Name"),
             "quorumChanges" to linkedMapOf("at" to "Time", "item" to "During item", "text" to "What happened"),
             "resolutions" to linkedMapOf("number" to "Resolution number", "item" to "Item", "outcome" to "Outcome", "text" to "Text"),
-            "actions" to ACTION_FIELDS + ("item" to "Item"),
+            "actions" to ACTION_FIELDS + ("item" to "Item (always empty: an item's actions are in its block)"),
         )
 
     /** The actions agreed on an item (E07, design E07 §11): a row loop inside the items block. */

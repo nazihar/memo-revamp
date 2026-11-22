@@ -6,15 +6,17 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font
 /**
  * The four Noto Sans faces of one document, embedded as subsets (ADR-0052), and the text clean-up every string goes
  * through before it is measured or drawn: control characters removed, characters the font lacks replaced by U+FFFD and
- * counted. The faces share one character set, so one check serves all four.
+ * counted. The faces share one character set, so one check serves all four. [regularOnly] embeds the regular face alone
+ * (and draws every run in it), for a single line such as a record's stamp.
  */
 class PageFonts(
     document: PDDocument,
+    regularOnly: Boolean = false,
 ) {
     val regular: PDType0Font = load(document, "Regular")
-    val bold: PDType0Font = load(document, "Bold")
-    val italic: PDType0Font = load(document, "Italic")
-    val boldItalic: PDType0Font = load(document, "BoldItalic")
+    val bold: PDType0Font = if (regularOnly) regular else load(document, "Bold")
+    val italic: PDType0Font = if (regularOnly) regular else load(document, "Italic")
+    val boldItalic: PDType0Font = if (regularOnly) regular else load(document, "BoldItalic")
 
     private val known = HashMap<Int, Boolean>()
 

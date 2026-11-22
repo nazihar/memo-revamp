@@ -15,7 +15,7 @@ import java.util.Locale
 internal object MinutesTemplateSample {
     private const val DEFERRED_ITEM = 3
 
-    /** The sample's one action (E07), agreed on item 1. */
+    /** The sample's action on item 1 (E07), printed in that item's block only. */
     const val ACTION_REFERENCE = "ACT/2026/007"
 
     private val ACTION =
@@ -24,6 +24,17 @@ internal object MinutesTemplateSample {
             "action" to "Report the security perfected to the committee",
             "owner" to "Head of Credit",
             "due" to "31 January 2027",
+        )
+
+    /** The sample's action of the meeting as a whole, on no item: the meeting's `actions` table. */
+    const val MEETING_ACTION_REFERENCE = "ACT/2026/008"
+
+    private val MEETING_ACTION =
+        mapOf(
+            "reference" to MEETING_ACTION_REFERENCE,
+            "action" to "Review the committee's terms of reference",
+            "owner" to "Company Secretary",
+            "due" to "28 February 2027",
         )
 
     fun data(today: LocalDate): TemplateData {
@@ -71,7 +82,7 @@ internal object MinutesTemplateSample {
                             "text" to "The facility is approved.",
                         ),
                     ),
-                "actions" to listOf(ACTION + ("item" to "1")),
+                "actions" to listOf(MEETING_ACTION + ("item" to "")),
             )
         check(rows.keys == MinutesTemplateTags.LOOPS.keys) { "the sample covers every loop" }
         val items = listOf(approved(today), noted(), deferred())

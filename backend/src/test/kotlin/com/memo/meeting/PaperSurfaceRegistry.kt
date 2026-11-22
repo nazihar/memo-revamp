@@ -14,7 +14,8 @@ package com.memo.meeting
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
  * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E06 T6 made the copies real
  * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
- * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'.
+ * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E06
+ * T7 made its record placeholder real: the record, its versions and its check (MINUTES_COPIES).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -54,7 +55,8 @@ object PaperSurfaceRegistry {
         MINUTES_COPIES(
             "A reader's copy of the draft minutes and the comments (E06 T6): the copy of their redaction set (ADR-0066: the recused " +
                 "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
-                "comments, the officers everyone's but on items they are recused from",
+                "comments, the officers everyone's but on items they are recused from; once approved (E06 T7), the record or the " +
+                "reader's approved copy (a PDF/A record of the same set), its versions and its check",
         ),
     }
 
@@ -110,6 +112,10 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/minutes/document" to Surface.MINUTES_COPIES,
             "GET /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
             "POST /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
+            // E06 T7: the approved minutes' record (the reader's approved copy), its versions and its check.
+            "GET /api/v1/meetings/{meetingId}/minutes/record" to Surface.MINUTES_COPIES,
+            "GET /api/v1/meetings/{meetingId}/minutes/records" to Surface.MINUTES_COPIES,
+            "POST /api/v1/meetings/{meetingId}/minutes/records/{version}/check" to Surface.MINUTES_COPIES,
         )
 
     /**
@@ -295,12 +301,6 @@ object PaperSurfaceRegistry {
      */
     val pending: List<Pending> =
         listOf(
-            Pending(
-                "E06",
-                "The approved minutes' record and its copies (T7): the recused version (heading, own declaration and decision; no " +
-                    "discussion; ADR-0062)",
-                listOf("/api/v1/meetings/{meetingId}/minutes/record", "/api/v1/minutes"),
-            ),
             Pending(
                 "E07",
                 "Actions from the item: not shown to a recused person unless they own the action",

@@ -113,6 +113,7 @@ import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesRecord
 import com.memo.jooq.tables.MinutesReminder
 import com.memo.jooq.tables.MinutesResolution
 import com.memo.jooq.tables.MinutesResolutionCounter
@@ -734,6 +735,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MINUTES_ITEM_NOTE: MinutesItemNote get() = MinutesItemNote.MINUTES_ITEM_NOTE
 
     /**
+     * The table <code>memo.minutes_record</code>.
+     */
+    val MINUTES_RECORD: MinutesRecord get() = MinutesRecord.MINUTES_RECORD
+
+    /**
      * The table <code>memo.minutes_reminder</code>.
      */
     val MINUTES_REMINDER: MinutesReminder get() = MinutesReminder.MINUTES_REMINDER
@@ -1295,6 +1301,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
         MinutesEvent.MINUTES_EVENT,
         MinutesItemNote.MINUTES_ITEM_NOTE,
+        MinutesRecord.MINUTES_RECORD,
         MinutesReminder.MINUTES_REMINDER,
         MinutesResolution.MINUTES_RESOLUTION,
         MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER,

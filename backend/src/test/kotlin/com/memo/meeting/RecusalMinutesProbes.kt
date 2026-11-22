@@ -48,7 +48,10 @@ internal fun RecusalLeakIT.minutesCalls(
     )
 }
 
-/** The reader's copy and the comments (E06 T6): the copy of a recused reader is MinutesRedactionIT's; here nothing. */
+/**
+ * The reader's copy and the comments (E06 T6), and the approved minutes' record, its versions and its check (E06 T7): the
+ * copies of a recused reader are MinutesRedactionIT's and MinutesRecordIT's; here nothing.
+ */
 internal fun RecusalLeakIT.minutesCopyCalls(
     p: RecusalLeakFixture.Planted,
     person: com.memo.testsupport.Person,
@@ -58,5 +61,9 @@ internal fun RecusalLeakIT.minutesCopyCalls(
         read("$base/document", person.session),
         read("$base/comments", person.session),
         send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.item}","text":"x"}"""),
+        read("$base/record", person.session),
+        read("$base/record?version=1", person.session),
+        read("$base/records", person.session),
+        send(HttpMethod.POST, "$base/records/1/check", person),
     )
 }

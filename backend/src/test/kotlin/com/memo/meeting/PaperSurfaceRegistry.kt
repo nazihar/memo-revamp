@@ -21,10 +21,11 @@ package com.memo.meeting
  * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E08
  * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
  * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
- * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits. E06 T8 added the
- * corrections after approval (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with
- * recusal columns) and the certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an
- * officer's, with an officer probe).
+ * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). E08 T3 added the register's export to REGISTER, and its two
+ * files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel. E06 T8 added the corrections after approval
+ * (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with recusal columns) and the
+ * certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an officer's, with an
+ * officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -88,7 +89,9 @@ object PaperSurfaceRegistry {
         REGISTER(
             "The decision register across committees (E08 T2): its scope, and the search's rows, totals, facets and order; a decision " +
                 "the viewer may not see in full is a restricted line (committee, meeting, item number, number and state) that no text, " +
-                "outcome, memo type or exception filter matches and no outcome facet counts; nothing above clearance or outside scope",
+                "outcome, memo type or exception filter matches and no outcome facet counts; nothing above clearance or outside scope. " +
+                "Its export (E08 T3): the same rows as XLSX or PDF for officers and oversight (members 403), lines as " +
+                "\"Restricted item\", the number check without the reason of a void the viewer may not see in full",
         ),
     }
 
@@ -167,6 +170,8 @@ object PaperSurfaceRegistry {
             // the one rule in search_find_decisions with the viewer's recusals read in the request.
             "GET /api/v1/decision-register/scope" to Surface.REGISTER,
             "POST /api/v1/decision-register/search" to Surface.REGISTER,
+            // E08 T3: its export, the same rows by the same rule (officers and oversight; members 403), its files in EXPORTS.
+            "POST /api/v1/decision-register/export" to Surface.REGISTER,
             // E08 T4: analytics, counts of what the viewer sees in full (members their own attendance row, no late counts).
             "GET /api/v1/analytics/committees" to Surface.ANALYTICS,
             "GET /api/v1/analytics/committees/{forumId}" to Surface.ANALYTICS,
@@ -334,7 +339,10 @@ object PaperSurfaceRegistry {
     ) {
         IN_APP("In-app notifications (`/me/notifications`): publication, changes, declarations, requests"),
         MAIL("Every email of the scenario (agenda, declarations, late papers, invitations and their calendar files), from Mailpit"),
-        EXPORTS("The register's and the action tracker's XLSX exports (their surfaces' probes) and the meeting's calendar file"),
+        EXPORTS(
+            "The registers' and the action tracker's XLSX exports (their surfaces' probes), the decision register's XLSX and PDF " +
+                "(every cell and the PDF's text, E08 T3) and the meeting's calendar file",
+        ),
         SEARCH("Memo search: meeting papers and their extracted text are never indexed (design E04 §1.7, ADR-0054)"),
         AUDIT("The audit viewer and the verifiable export: declarations carry hashes of the nature, never the text"),
         FORUM_QUEUE("The committee's submissions: officers by role, everyone else by the memo's own rule (design E04 §1.4)"),
@@ -414,13 +422,5 @@ object PaperSurfaceRegistry {
      * file in INVITATIONS) and their changes as officer probes in [RecusalLeakIT]; who counts for an item a holder is recused
      * from is E05's `ItemQuorumProperties`, `PresenceBuilderProperties` and `QuorumSnapshotsIT`.
      */
-    val pending: List<Pending> =
-        listOf(
-            Pending(
-                "E08",
-                "The decision register's export (T3): XLSX and PDF of the rows as the viewer sees them, restricted lines as \"Restricted " +
-                    "item\", the number check without a void's reason for an item the viewer may not see (EXPORTS probe)",
-                listOf("/api/v1/decision-register/export"),
-            ),
-        )
+    val pending: List<Pending> = emptyList()
 }

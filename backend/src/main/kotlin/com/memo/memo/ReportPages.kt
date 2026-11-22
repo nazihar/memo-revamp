@@ -2,22 +2,44 @@ package com.memo.memo
 
 import java.io.OutputStream
 
-/** One section of a report: a heading, then paragraphs, then label and value lines. */
+/**
+ * One section of a report: a heading, then paragraphs, then label and value lines, then a [table] (the register's rows,
+ * E08 T3).
+ */
 data class ReportSection(
     val heading: String,
     val paragraphs: List<String> = emptyList(),
     val lines: List<Pair<String, String>> = emptyList(),
+    val table: ReportTable? = null,
+)
+
+/**
+ * A table of a report: its columns (each with its share of the width) and rows of text cells. The header is repeated on
+ * every page the table runs onto; a row too tall for a page continues on the next.
+ */
+data class ReportTable(
+    val columns: List<ReportColumn>,
+    val rows: List<List<String>>,
+)
+
+/** A column of a [ReportTable]: its heading and its width relative to the other columns. */
+data class ReportColumn(
+    val name: String,
+    val weight: Float = 1f,
 )
 
 /**
  * A plain report to draw as PDF pages: a [title], a running [header] and a [footer] on every page, and [sections]. Text is
- * drawn exactly as given (no markup); characters the font lacks are drawn as a replacement and counted.
+ * drawn exactly as given (no markup); characters the font lacks are drawn as a replacement and counted. [landscape] turns
+ * the pages for wide tables; [pagesInWords] numbers them "Page n of N" rather than "n / N".
  */
 data class ReportDocument(
     val title: String,
     val header: String,
     val footer: String,
     val sections: List<ReportSection>,
+    val landscape: Boolean = false,
+    val pagesInWords: Boolean = false,
 )
 
 /** How drawing went: the pages written, and the characters the font lacks. */
@@ -28,8 +50,9 @@ data class ReportRendered(
 
 /**
  * Draws simple reports through ADR-0052's renderer (PDFBox with Noto Sans, English only), for modules that need a PDF
- * summary of their own, such as the legacy import's reconciliation report (design E06 §8). The renderer itself stays
- * internal to the memo module. The pages do not depend on the clock (the PDF file identifier PDFBox writes does).
+ * summary of their own, such as the legacy import's reconciliation report (design E06 §8) and the decision register's
+ * export (design E08 §1.5, landscape tables). The renderer itself stays internal to the memo module. The pages do not
+ * depend on the clock (the PDF file identifier PDFBox writes does).
  */
 interface ReportPages {
     fun render(

@@ -12,6 +12,10 @@ import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.ActionsMemo
+import com.memo.jooq.tables.ActionsReport
+import com.memo.jooq.tables.ActionsReportHold
+import com.memo.jooq.tables.ActionsReportRow
+import com.memo.jooq.tables.ActionsUpdateAsk
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -217,6 +221,26 @@ val ACTIONS_ITEM: ActionsItem = ActionsItem.ACTIONS_ITEM
  * The table <code>memo.actions_memo</code>.
  */
 val ACTIONS_MEMO: ActionsMemo = ActionsMemo.ACTIONS_MEMO
+
+/**
+ * The table <code>memo.actions_report</code>.
+ */
+val ACTIONS_REPORT: ActionsReport = ActionsReport.ACTIONS_REPORT
+
+/**
+ * The table <code>memo.actions_report_hold</code>.
+ */
+val ACTIONS_REPORT_HOLD: ActionsReportHold = ActionsReportHold.ACTIONS_REPORT_HOLD
+
+/**
+ * The table <code>memo.actions_report_row</code>.
+ */
+val ACTIONS_REPORT_ROW: ActionsReportRow = ActionsReportRow.ACTIONS_REPORT_ROW
+
+/**
+ * The table <code>memo.actions_update_ask</code>.
+ */
+val ACTIONS_UPDATE_ASK: ActionsUpdateAsk = ActionsUpdateAsk.ACTIONS_UPDATE_ASK
 
 /**
  * The table <code>memo.audit_anchor</code>.

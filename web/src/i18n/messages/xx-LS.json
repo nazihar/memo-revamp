@@ -26529,6 +26529,12 @@
       "value": "Committee action sent backSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.actionUpdateRequested": [
+    {
+      "type": 0,
+      "value": "Committee action update asked forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.actionsDigest": [
     {
       "type": 0,
@@ -39506,6 +39512,62 @@
     {
       "type": 0,
       "value": " was marked as done: please verify itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionUpdateRequested": [
+    {
+      "type": 0,
+      "value": "Please post an update on action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 5,
+      "value": "when",
+      "options": {
+        "DEADLINE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "before "
+            },
+            {
+              "type": 1,
+              "value": "deadline"
+            },
+            {
+              "type": 0,
+              "value": ", when the committee's papers are published"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "before the committee's next papers"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.decisionsReleaseFailed": [

@@ -118,6 +118,8 @@ data class DailyRun(
     /** Whether the digest of the day is done (no one left over the cap). */
     val complete: Boolean = false,
     val safety: SafetyRun = SafetyRun(),
+    /** The owners asked for an update before a committee's papers (part (b), on the day's first run). */
+    val updatesAsked: Int = 0,
 ) {
     companion object {
         val NOTHING = DailyRun()
@@ -132,7 +134,9 @@ data class DailyRun(
  *   no more that day (`actions_digest`). Notices written after 09:00 wait for the next working day's. At most
  *   [PEOPLE_MAX] people a run; the rest go on the next hourly run. Escalations, new actions and send-backs are emailed at
  *   once by their own kinds, not here.
- * - (b) the update requests before an agenda deadline are T7's.
+ * - (b) **the update requests** ([ActionUpdateRequests.daily]), on the run that starts the day: the holders of open
+ *   actions with no update since the previous meeting, from the committee type's `updateRequestWorkingDays` before the
+ *   next meeting's agenda deadline, once per meeting.
  * - (c) **the safety net** ([ActionSafetyNet]), on the run that starts the day.
  */
 @Service
@@ -147,6 +151,7 @@ class ActionsDaily(
     private val org: OrgDirectory,
     private val workingDays: WorkingDays,
     private val safetyNet: ActionSafetyNet,
+    private val updateRequests: ActionUpdateRequests,
     private val audit: AuditLog,
     private val clock: Clock,
 ) {
@@ -162,12 +167,14 @@ class ActionsDaily(
         val today = local.toLocalDate()
         val due = local.toLocalTime() >= DIGEST_TIME && workingDays.after(today.minusDays(1), 1) == today
         if (!due || digests.complete(today)) return DailyRun.NOTHING
-        // The day's first run (the one that records its start) checks the actions too.
-        val safety = if (digests.record(ActionDigestStore.STARTED, today, now)) safetyNet.check() else SafetyRun()
+        // The day's first run (the one that records its start) checks the actions and asks for updates too.
+        val first = digests.record(ActionDigestStore.STARTED, today, now)
+        val safety = if (first) safetyNet.check() else SafetyRun()
+        val asked = if (first) updateRequests.daily(now) else 0
         val (sent, complete) = digest(today, now, zone)
         if (complete) digests.record(ActionDigestStore.COMPLETE, today, now)
         if (sent > 0) audit.record("actions.digest.sent", DIGEST, today.toString(), after = mapOf("people" to sent, "complete" to complete))
-        return DailyRun(sent, complete, safety)
+        return DailyRun(sent, complete, safety, asked)
     }
 
     /** The digests of [today]: how many were sent, and whether everyone was reached. */

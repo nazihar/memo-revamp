@@ -8,8 +8,6 @@ import com.memo.testsupport.Person
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import tools.jackson.databind.JsonNode
-import java.time.LocalDate
-import java.time.ZoneId
 
 /**
  * The leak suite's ANALYTICS surface, its differential probe (ADR-0070 "Confirmation"; test plan E08 §4): for a recused or
@@ -67,7 +65,7 @@ class AnalyticsLeakIT : AnalyticsFixture() {
                 },
             )
         val hidden = second.items.single().item
-        val target = LocalDate.now(ZoneId.of("Asia/Dhaka")).plusDays(30)
+        val target = today().plusDays(30)
         asUser(admin) {
             recorder.record(second.meeting.id, hidden, DecisionInput(OutcomeKind.DEFERRED, deferTo = DeferTarget(date = target)), null)
         }

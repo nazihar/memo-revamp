@@ -71,7 +71,10 @@ class WorkflowRunner(
     ): WorkflowView {
         val subject = subject(subjectType)
         subject.lock(subjectId)
-        if (instances.instanceOfSubject(subjectType, subjectId) != null) throw WorkflowRefusedException(ALREADY_STARTED)
+        // One instance per item, unless its type runs again after the last run ended (ADR-0068 amendment).
+        val last = instances.latestRun(subjectType, subjectId)
+        if (last != null && !(subject.runsAgain && last.third)) throw WorkflowRefusedException(ALREADY_STARTED)
+        val run = last?.second?.plus(1) ?: 1
         // New instances pin the newest published version (ADR-0038).
         val version = definitions.publishedVersion(definitionKey)
         val definition = compiled.get(version)
@@ -91,7 +94,7 @@ class WorkflowRunner(
                 ).start(actor.userId, route, remark, entries),
             )
         val instanceId = ids.next()
-        instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now(), doaVersion)
+        instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now(), doaVersion, run)
         val loaded = LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state, definition, version, doaVersion)
         return record(loaded, null, subject, outcome, actor)
     }

@@ -24,6 +24,7 @@ import com.memo.minutes.DecisionFixture
 import com.memo.org.OrgSeeding
 import com.memo.testsupport.aPassword
 import com.memo.testsupport.anActiveUser
+import com.memo.testsupport.query
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.Workflows
 import org.junit.jupiter.api.BeforeEach
@@ -56,6 +57,80 @@ abstract class ActionFixture : DecisionFixture() {
     @Autowired lateinit var workflowQueries: WorkflowQueries
 
     @Autowired lateinit var clearanceLevels: Clearances
+
+    @Autowired lateinit var progress: com.memo.actions.internal.ActionProgress
+
+    @Autowired lateinit var dates: com.memo.actions.internal.ActionDates
+
+    @Autowired lateinit var ownership: com.memo.actions.internal.ActionOwnership
+
+    @Autowired lateinit var ending: com.memo.actions.internal.ActionEnding
+
+    @Autowired lateinit var forumPolicies: com.memo.forum.ForumPolicies
+
+    /** Publishes the next version of the committee's type with [policy] as its actions policy (a second administrator approves). */
+    fun actionsPolicy(policy: com.memo.forum.ActionsPolicy) {
+        val checker = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)
+        val draft = asUser(admin) { typeVersions.newDraft(typeId) }
+        val saved = asUser(admin) { typeVersions.replace(typeId, draft.number, draft.revision, draft.settings.copy(actions = policy)) }
+        asUser(admin) { typeVersions.submit(typeId, draft.number, saved.revision) }
+        asUser(checker) { typeVersions.approve(typeId, draft.number, null) }
+    }
+
+    /** An issued action on [item] of a running meeting, owned by [owner] (a person by default); its row. */
+    fun issued(
+        owner: OwnerInput? = null,
+        contributors: List<UUID> = emptyList(),
+        deciding: DecisionFixture.Deciding = deciding(),
+        item: UUID? = deciding.credit,
+    ): ActionRow {
+        val id = raise(deciding.meeting.id, item, fields(owner = owner ?: person(director2), contributors = contributors))
+        return issue(id)
+    }
+
+    /** [account]'s open task on [actionId], or null. */
+    fun taskOf(
+        actionId: UUID,
+        account: UserAccount,
+    ) = asUser(account) { workflowQueries.myTask(com.memo.forum.ActionsPolicy.SUBJECT, actionId, account.id.value) }
+
+    /** The kinds of [actionId]'s timeline, the newest first. */
+    fun timeline(actionId: UUID): List<String> = transactions.readInTenant(tenant.id) { actionLines.entries(actionId).map { it.kind } }
+
+    @Autowired lateinit var actionsDsl: com.memo.common.tenant.TenantDsl
+
+    /** Sets [sql] (an `UPDATE actions_item SET …` fragment) on [actionId] as the app role, committed, moving its version. */
+    fun alter(
+        actionId: UUID,
+        set: String,
+        vararg values: Any,
+    ) = transactions.inTenant(tenant.id) {
+        actionsDsl.current().execute("update actions_item set $set, version = version + 1 where id = ?", *values, actionId)
+    }
+
+    /** The pending timers of [instanceId], by kind, with when they fire. */
+    fun pendingTimers(instanceId: UUID): List<Pair<String, java.time.Instant>> =
+        com.memo.testsupport.AppRoleJdbc.inTransaction(tenant.id) { c ->
+            c.query(
+                "select kind, fires_at from workflow_timer where instance_id = ? and state = 'PENDING' order by fires_at",
+                instanceId,
+            ) { it.getString(1) to it.getObject(2, java.time.OffsetDateTime::class.java).toInstant() }
+        }
+
+    /** The 403 reason of [block] ("" for a plain 403), or "404", or the 409 or 422 code. */
+    fun outcome(
+        by: UserAccount,
+        block: () -> Any,
+    ): String =
+        when (val e = runCatching { asUser(by, block) }.exceptionOrNull()) {
+            null -> "OK"
+            is ForbiddenException -> "403 ${e.reason.orEmpty()}".trim()
+            is ActionNotFoundException -> "404"
+            is RefusedException -> "409 ${e.reason}"
+            is ActionRejectedException -> "422 " + e.problems.joinToString(",") { it.code }
+            is com.memo.common.concurrency.ConcurrentModificationException -> "409 CONFLICT"
+            else -> throw AssertionError("unexpected", e)
+        }
 
     /** The holder of "Head of Treasury", outside every committee. */
     lateinit var treasurer: UserAccount

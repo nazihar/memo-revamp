@@ -44,6 +44,8 @@ data class ActionFieldsRequest(
     val classificationId: UUID? = null,
     /** DIRECT only: "Chair's instruction of 3 December", up to 300 characters. */
     val sourceNote: String? = null,
+    /** An issued action only: why it is edited, up to 500 characters (required then). */
+    val reason: String? = null,
 ) {
     fun fields() = ActionFields(title, description, context, owner, contributors, dueDate, priority, classificationId, sourceNote)
 }
@@ -212,7 +214,7 @@ class ActionController(
 
     @PatchMapping("/api/v1/actions/{actionId}")
     @SignedIn
-    @Operation(operationId = "editAction", summary = "Replace a draft action's fields (secretaries)")
+    @Operation(operationId = "editAction", summary = "Replace a draft action's fields, or edit an issued one with a reason (secretaries)")
     fun edit(
         @PathVariable actionId: UUID,
         @RequestHeader("If-Match", required = false) ifMatch: String?,
@@ -222,7 +224,7 @@ class ActionController(
         val version = ifMatchVersion(ifMatch)
         return tagged(
             calls.write {
-                raising.edit(actionId, version, body.fields())
+                raising.edit(actionId, version, body.fields(), body.reason)
                 access.action(actionId)
             },
         )

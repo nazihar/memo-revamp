@@ -500,6 +500,10 @@ class PaperLeakIT : RecusalFixture() {
                         assertThat(one.response.status).isIn(200, 404)
                     }
                     p.canaries(person).forEach { assertThat(one.response.contentAsString).doesNotContain(it) }
+                    // E07 T4: the timeline answers as the action does.
+                    val timeline = read("/api/v1/actions/$id/entries", person.session)
+                    assertThat(timeline.response.status).isEqualTo(one.response.status)
+                    p.canaries(person).forEach { assertThat(timeline.response.contentAsString).doesNotContain(it) }
                 }
                 if (person == d1) {
                     val listed = read("/api/v1/meetings/${p.meeting.id}/actions", person.session).response.contentAsString

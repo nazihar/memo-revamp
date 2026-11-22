@@ -60,8 +60,9 @@ class ActionIssuing(
         val year = today.year
         val number = store.nextNumber(row.forumId, year)
         val reference = ActionReferences.reference(codes.lock(row.forumId), number, year)
-        val issue =
-            ActionStore.Issue(year, number, reference, due, workingDays.before(due, actions.amberWorkingDays), actor(), now())
+        val stale = actions.staleWorkingDays.takeIf { it != ActionsPolicy.OFF }?.let { workingDays.after(today, it) }
+        val amber = workingDays.before(due, actions.amberWorkingDays)
+        val issue = ActionStore.Issue(year, number, reference, due, amber, actor(), now(), stale)
         val current = version ?: row.version
         if (current != row.version || !store.issue(row.id, current, issue)) {
             throw ConcurrentModificationException("action $actionId", current)

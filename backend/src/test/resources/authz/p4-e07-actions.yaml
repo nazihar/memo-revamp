@@ -40,3 +40,57 @@ endpoints:
     headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
     recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
   - { endpoint: "GET /api/v1/me/actions", rule: signedIn }
+  # Phase 4 E07 T4: progress, dates, the colour, owners, cancelling and reopening, and the timeline. Who may do what on a
+  # real action is ActionProgressIT, DueChangeIT, OwnerChangeIT, CancelReopenIT and ActionStateMachineTest; the draft of
+  # the item ({actionId} in the recusal columns) is invisible to every recused viewer, so each answers 404.
+  - endpoint: "GET /api/v1/actions/{actionId}/entries"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/updates"
+    rule: signedIn
+    body: { text: "The valuer is appointed", confidence: "ON_TRACK" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/started"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/due-requests"
+    rule: signedIn
+    body: { newDate: "2099-01-20", reason: "The valuer needs more time" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/due-requests/{requestId}/decide"
+    rule: signedIn
+    body: { decision: "AGREE" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/due"
+    rule: signedIn
+    body: { newDate: "2099-01-20", reason: "Moved at the meeting" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/rag"
+    rule: signedIn
+    body: { rag: "RED", reason: "The valuer has withdrawn" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "DELETE /api/v1/actions/{actionId}/rag"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/owner"
+    rule: signedIn
+    body: { owner: { kind: "PERSON", userId: "{random}" }, reason: "Treasury leads it now" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/cancel"
+    rule: signedIn
+    body: { kind: "NO_LONGER_NEEDED", reason: "The loan was withdrawn" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/reopen"
+    rule: signedIn
+    body: { dueDate: "2099-01-20", reason: "Not done after all" }
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }

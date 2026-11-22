@@ -1,5 +1,6 @@
 package com.memo.actions.internal
 
+import com.memo.forum.DueChange
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
 import java.time.LocalDate
@@ -49,11 +50,31 @@ data class ActionSourceResponse(
     val conditionIndex: Int? = null,
 )
 
-/** What the viewer may do with the action now. */
+/** What the viewer may do with the action now (design E07 §4). */
 data class ActionAbilities(
+    /** Edit the draft, or the issued action with a reason. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val edit: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val issue: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val discard: Boolean,
+    /** Post an update: the owner, a contributor, or a secretary for the owner ([updateOnBehalf]). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val update: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updateOnBehalf: Boolean = false,
+    /** Say how it is going with an update (the owner). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val confidence: Boolean = false,
+    /** "I have started". */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val start: Boolean = false,
+    /** Ask for a new date (the owner, when the committee agrees dates). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val requestDue: Boolean = false,
+    /** Agree to or decline the pending request. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val decideDue: Boolean = false,
+    /** Change the date directly (a secretary, or the owner when the committee lets them). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val changeDue: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overrideRag: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val changeOwner: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val cancel: Boolean = false,
+    /** Cancel with the risk accepted without saying how (the chair). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val acceptRisk: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reopen: Boolean = false,
 )
 
 /**
@@ -97,6 +118,22 @@ data class ActionResponse(
     /** For the secretaries only. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val warnings: List<ActionWarning>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val can: ActionAbilities,
+    /** Red, amber or green, in words (design E07 §1.5). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rag: ActionRagResponse,
+    /** The owner's word with their latest update. */
+    val confidence: Confidence? = null,
+    val lastUpdateAt: Instant? = null,
+    /** The committee type's rule for new dates today: whether the owner asks or changes it. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val dueChange: DueChange,
+    /** "New date requested: 20 January". */
+    val pendingRequest: DueRequestResponse? = null,
+    val cancelKind: CancelKind? = null,
+    val cancelReason: String? = null,
+    /** SUPERSEDED: the action that replaces it. */
+    val supersededBy: UUID? = null,
+    /** When it was closed or cancelled. */
+    val closedAt: Instant? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reopenCount: Int = 0,
 )
 
 /** An action in a list: the meeting's actions and "My actions". */
@@ -120,6 +157,8 @@ data class ActionSummary(
     val originalDueDate: LocalDate? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val dueRevisions: Int,
     val stepName: String? = null,
+    /** Red, amber or green in words, from the SQL reading of the rule; without the override's reason. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rag: ActionRagResponse,
 )
 
 /** A meeting's actions as the viewer may see them (drafts for its secretaries and `forums.manage`). */
@@ -158,4 +197,65 @@ data class IssueResult(
 /** `POST /meetings/{id}/actions/issue`: one result per draft the actor may issue, each in its own transaction. */
 data class IssueResultsResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val results: List<IssueResult>,
+)
+
+/** An override of an action's colour, as it is shown: "set by {name}: {reason}". */
+data class ActionRagOverride(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rag: RagColour,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reason: String,
+    val by: ActionPerson? = null,
+    /** Until this day; null: until the next update. */
+    val until: LocalDate? = null,
+)
+
+/** An action's red, amber or green, never a colour alone: the [word] always comes with it (design E07 §1.5). */
+data class ActionRagResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val colour: RagColour,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val word: RagWord,
+    /** The override in force, on the action's page. */
+    val override: ActionRagOverride? = null,
+)
+
+/** The owner's pending request for a new date. */
+data class DueRequestResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val newDate: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reason: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val requestedBy: ActionPerson,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val requestedAt: Instant,
+)
+
+/** An evidence file on an entry: its name and size (read through the files endpoints by those who see the action). */
+data class EvidenceFile(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mediaType: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sizeBytes: Long,
+)
+
+/**
+ * One entry of the timeline (design E07 §1.6): an update with its confidence and evidence, a date asked for or changed,
+ * a new owner, an override, an edit, a cancellation, a reopening, a source correction. [details] carries its ids, dates
+ * and kinds; what people wrote is [text].
+ */
+data class ActionEntryResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val seq: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: String,
+    val actor: ActionPerson? = null,
+    /** The owner a secretary wrote for, and how they heard. */
+    val onBehalfOf: ActionPerson? = null,
+    val how: How? = null,
+    val text: String? = null,
+    val confidence: Confidence? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val files: List<EvidenceFile>,
+    /** The earlier entry this one corrects ("Correction to the update of 3 December"). */
+    val corrects: Int? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val details: Map<String, Any?>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val at: Instant,
+)
+
+/** An action's timeline, the newest first. */
+data class ActionEntriesResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val actionId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val entries: List<ActionEntryResponse>,
 )

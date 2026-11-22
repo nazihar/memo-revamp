@@ -14,12 +14,14 @@ import com.memo.jooq.indexes.ACTIONS_ITEM_OWNER_POSITION_IDX
 import com.memo.jooq.indexes.ACTIONS_ITEM_OWNER_USER_IDX
 import com.memo.jooq.indexes.ACTIONS_ITEM_SUPERSEDED_IDX
 import com.memo.jooq.keys.ACTIONS_CONTRIBUTOR__ACTIONS_CONTRIBUTOR_TENANT_ID_ACTION_ID_FKEY
+import com.memo.jooq.keys.ACTIONS_DUE_REQUEST__ACTIONS_DUE_REQUEST_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.keys.ACTIONS_ENTRY__ACTIONS_ENTRY_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.keys.ACTIONS_ITEM_NUMBER_UK
 import com.memo.jooq.keys.ACTIONS_ITEM_PKEY
 import com.memo.jooq.keys.ACTIONS_ITEM_REFERENCE_UK
 import com.memo.jooq.keys.ACTIONS_ITEM__ACTIONS_ITEM_TENANT_ID_SUPERSEDED_BY_FKEY
 import com.memo.jooq.tables.ActionsContributor.ActionsContributorPath
+import com.memo.jooq.tables.ActionsDueRequest.ActionsDueRequestPath
 import com.memo.jooq.tables.ActionsEntry.ActionsEntryPath
 import com.memo.jooq.tables.records.ActionsItemRecord
 
@@ -425,6 +427,22 @@ open class ActionsItem(
 
     val actionsContributor: ActionsContributorPath
         get(): ActionsContributorPath = actionsContributor()
+
+    private lateinit var _actionsDueRequest: ActionsDueRequestPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.actions_due_request</code> table
+     */
+    fun actionsDueRequest(): ActionsDueRequestPath {
+        if (!this::_actionsDueRequest.isInitialized)
+            _actionsDueRequest = ActionsDueRequestPath(this, null, ACTIONS_DUE_REQUEST__ACTIONS_DUE_REQUEST_TENANT_ID_ACTION_ID_FKEY.inverseKey)
+
+        return _actionsDueRequest;
+    }
+
+    val actionsDueRequest: ActionsDueRequestPath
+        get(): ActionsDueRequestPath = actionsDueRequest()
 
     private lateinit var _actionsEntry: ActionsEntryPath
 

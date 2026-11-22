@@ -3,10 +3,15 @@ package com.memo.actions.internal
 import com.memo.common.authz.Clearances
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.web.Cursors
+import com.memo.files.Files
+import com.memo.forum.ActionsPolicy
+import com.memo.forum.DueChange
 import com.memo.forum.ForumDirectory
+import com.memo.forum.ForumPolicies
 import com.memo.identity.UserSummaries
 import com.memo.jooq.tables.references.ACTIONS_CONTRIBUTOR
 import com.memo.jooq.tables.references.ACTIONS_ITEM
+import com.memo.meeting.AgendaItemRef
 import com.memo.meeting.ItemColumns
 import com.memo.meeting.MeetingItems
 import com.memo.meeting.MeetingViewers
@@ -20,6 +25,7 @@ import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 /**
@@ -55,6 +61,10 @@ class ActionAccess(
     private val items: MeetingItems,
     private val recusals: Recusals,
     private val clearances: Clearances,
+    private val policies: ForumPolicies,
+    private val requests: ActionDueRequests,
+    private val abilityRules: ActionAbilityRules,
+    private val files: Files,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {
@@ -95,10 +105,18 @@ class ActionAccess(
     fun ofMeeting(meetingId: UUID): MeetingActionsResponse {
         val meeting = meetings.find(meetingId) ?: throw ActionNotFoundException("meeting")
         val viewer = viewers.actor()
-        val rows = store.where(ACTIONS_ITEM.MEETING_ID.eq(meetingId).and(seen(viewer, meeting.forumId)))
+        val a = ACTIONS_ITEM
+        val rows =
+            tenantDsl
+                .current()
+                .select(a.asterisk(), RagRule.field(org.today()).`as`(RAG))
+                .from(a)
+                .where(a.MEETING_ID.eq(meetingId).and(seen(viewer, meeting.forumId)))
+                .orderBy(a.CREATED_AT, a.ID)
+                .fetch { it.into(a).actionRow() to RagWord.valueOf(it.get(RAG, String::class.java)) }
         if (rows.isEmpty() && meetingViewers.find(meetingId) == null) throw ActionNotFoundException("meeting")
         val summaries = summaries(rows)
-        return MeetingActionsResponse(meetingId, summaries, rows.count { it.status == ActionStatus.DRAFT })
+        return MeetingActionsResponse(meetingId, summaries, rows.count { it.first.status == ActionStatus.DRAFT })
     }
 
     /**
@@ -135,13 +153,14 @@ class ActionAccess(
         val rows =
             tenantDsl
                 .current()
-                .selectFrom(a)
+                .select(a.asterisk(), RagRule.field(org.today()).`as`(RAG))
+                .from(a)
                 .where(condition, after)
                 .orderBy(a.DUE_DATE, a.ID)
                 .limit(size + 1)
-                .fetch { it.actionRow() }
+                .fetch { it.into(a).actionRow() to RagWord.valueOf(it.get(RAG, String::class.java)) }
         val page = rows.take(size)
-        val next = if (rows.size > size) page.last().let { Cursors.encode(day(checkNotNull(it.dueDate)), it.id) } else null
+        val next = if (rows.size > size) page.last().first.let { Cursors.encode(day(checkNotNull(it.dueDate)), it.id) } else null
         val count = tenantDsl.current().fetchCount(a, condition)
         return MyActionsResponse(tab, summaries(page), next, MyActionCounts(count))
     }
@@ -226,11 +245,18 @@ class ActionAccess(
         recused: Boolean,
     ): ActionResponse {
         val contributors = lines.contributorsOf(row.id)
-        val people = People.of(listOf(row), contributors, users, org)
+        val pending = requests.pending(row.id)
+        val people = People.of(listOf(row), contributors + listOfNotNull(row.ragOverrideBy, pending?.requestedBy), users, org)
         val committee = directory.forum(row.forumId)?.name.orEmpty()
         val item = row.meetingId?.let { m -> row.itemId?.let { items.agenda(m).item(it) } }
         val manages = viewer.manages(row.forumId) && !recused
-        val draft = row.status == ActionStatus.DRAFT
+        val policy = policies.current(row.forumId)?.actions ?: ActionsPolicy()
+        val today = org.today()
+        val word = RagRule.word(row.ragFacts, today)
+        val override =
+            row.ragOverride?.takeIf { word.name.startsWith(OVERRIDE) }?.let {
+                ActionRagOverride(it, row.ragOverrideReason.orEmpty(), row.ragOverrideBy?.let(people::person), row.ragOverrideUntil)
+            }
         return ActionResponse(
             id = row.id,
             version = row.version,
@@ -243,18 +269,7 @@ class ActionAccess(
             description = row.description,
             context = row.context,
             classificationId = row.classificationId,
-            source =
-                ActionSourceResponse(
-                    kind = row.source,
-                    label = row.sourceLabel,
-                    note = row.sourceNote,
-                    meetingId = row.meetingId,
-                    itemId = row.itemId,
-                    itemNumber = item?.number,
-                    itemTitle = item?.title?.takeIf { itemTitled },
-                    decisionId = row.decisionId,
-                    conditionIndex = row.conditionIndex,
-                ),
+            source = sourceOf(row, item, itemTitled),
             owner = people.owner(row),
             contributors = contributors.map(people::person),
             dueDate = row.dueDate,
@@ -265,7 +280,50 @@ class ActionAccess(
             createdAt = row.createdAt,
             viewerRecused = recused,
             warnings = if (manages) warnings(row, contributors) else emptyList(),
-            can = ActionAbilities(edit = manages && draft, issue = manages && draft, discard = manages && draft),
+            can = abilityRules.of(viewer, row, recused, contributors, policy.dueChange, pending, today),
+            rag = ActionRagResponse(word.colour, word, override),
+            confidence = row.confidence,
+            lastUpdateAt = row.lastUpdateAt,
+            dueChange = policy.dueChange,
+            pendingRequest =
+                pending?.let {
+                    DueRequestResponse(it.id, it.newDate, it.reason, people.person(it.requestedBy), it.requestedAt)
+                },
+            cancelKind = row.cancelKind,
+            cancelReason = row.cancelReason,
+            supersededBy = row.supersededBy,
+            closedAt = row.closedAt,
+            reopenCount = row.reopenCount,
+        )
+    }
+
+    /** [actionId]'s timeline as the actor may see it, newest first; 404 when they may not see the action. */
+    fun entries(actionId: UUID): ActionEntriesResponse {
+        val viewer = viewers.actor()
+        val forumId = store.find(actionId)?.forumId ?: throw ActionNotFoundException("action")
+        notFoundUnless(sees(viewer, actionId, forumId), "action")
+        val entries = lines.entries(actionId)
+        val names = users.names(entries.flatMap { listOfNotNull(it.actorId, it.more.onBehalfOf) }.toSet())
+        val versions = files.currentVersions(entries.flatMap { it.more.fileIds }.toSet())
+        val person = { id: UUID -> ActionPerson(id, names[id].orEmpty()) }
+        return ActionEntriesResponse(
+            actionId,
+            entries.map { e ->
+                ActionEntryResponse(
+                    seq = e.seq,
+                    kind = e.kind,
+                    actor = e.actorId?.let(person),
+                    onBehalfOf = e.more.onBehalfOf?.let(person),
+                    how = e.more.how,
+                    text = e.more.text,
+                    confidence = e.more.confidence,
+                    files = e.more.fileIds.mapNotNull { id -> versions[id]?.let { EvidenceFile(id, it.name, it.mediaType, it.sizeBytes) } },
+                    corrects = e.more.corrects,
+                    // What people wrote is never in the details, only its hash, which the timeline does not show.
+                    details = e.details.filterKeys { !it.endsWith("Sha256") }.filterValues { it != null },
+                    at = e.at,
+                )
+            },
         )
     }
 
@@ -292,11 +350,13 @@ class ActionAccess(
         }
     }
 
-    private fun summaries(rows: List<ActionRow>): List<ActionSummary> {
-        if (rows.isEmpty()) return emptyList()
+    /** Lists' lines, each with its red, amber or green from the SQL reading of the rule. */
+    private fun summaries(found: List<Pair<ActionRow, RagWord>>): List<ActionSummary> {
+        if (found.isEmpty()) return emptyList()
+        val rows = found.map { it.first }
         val people = People.of(rows, emptyList(), users, org)
         val forums = directory.forums(rows.map { it.forumId }.toSet())
-        return rows.map { row ->
+        return found.map { (row, word) ->
             ActionSummary(
                 id = row.id,
                 version = row.version,
@@ -317,6 +377,7 @@ class ActionAccess(
                 originalDueDate = row.originalDueDate,
                 dueRevisions = row.dueRevisions,
                 stepName = row.stepName,
+                rag = ActionRagResponse(word.colour, word),
             )
         }
     }
@@ -359,6 +420,8 @@ class ActionAccess(
         const val OWNER_RECUSED = "OWNER_RECUSED"
         const val NOT_CLEARED = "NOT_CLEARED"
         private const val MAX_LIMIT = 100
+        private const val RAG = "rag"
+        private const val OVERRIDE = "OVERRIDE_"
         private val OPEN = listOf(ActionStatus.OPEN, ActionStatus.IN_PROGRESS, ActionStatus.DONE_PENDING)
 
         /** The action's copied item columns, as the paper rule reads an item's (no attendee reads an action). */
@@ -376,3 +439,20 @@ class ActionAccess(
         private fun day(date: LocalDate) = date.atStartOfDay().toInstant(ZoneOffset.UTC)
     }
 }
+
+/** Where [row] comes from, with [item]'s number, and its title only when [titled] (the item rule). */
+private fun sourceOf(
+    row: ActionRow,
+    item: AgendaItemRef?,
+    titled: Boolean,
+) = ActionSourceResponse(
+    kind = row.source,
+    label = row.sourceLabel,
+    note = row.sourceNote,
+    meetingId = row.meetingId,
+    itemId = row.itemId,
+    itemNumber = item?.number,
+    itemTitle = item?.title?.takeIf { titled },
+    decisionId = row.decisionId,
+    conditionIndex = row.conditionIndex,
+)

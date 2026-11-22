@@ -7,6 +7,8 @@ package com.memo.jooq.tables.references
 
 import com.memo.jooq.tables.ActionsContributor
 import com.memo.jooq.tables.ActionsCounter
+import com.memo.jooq.tables.ActionsDigest
+import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.AuditAnchor
@@ -174,6 +176,16 @@ val ACTIONS_CONTRIBUTOR: ActionsContributor = ActionsContributor.ACTIONS_CONTRIB
  * The table <code>memo.actions_counter</code>.
  */
 val ACTIONS_COUNTER: ActionsCounter = ActionsCounter.ACTIONS_COUNTER
+
+/**
+ * The table <code>memo.actions_digest</code>.
+ */
+val ACTIONS_DIGEST: ActionsDigest = ActionsDigest.ACTIONS_DIGEST
+
+/**
+ * The table <code>memo.actions_due_request</code>.
+ */
+val ACTIONS_DUE_REQUEST: ActionsDueRequest = ActionsDueRequest.ACTIONS_DUE_REQUEST
 
 /**
  * The table <code>memo.actions_entry</code>.

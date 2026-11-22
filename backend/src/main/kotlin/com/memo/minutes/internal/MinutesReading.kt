@@ -70,22 +70,16 @@ class MinutesReading(
         return view?.takeIf { readerOf(it, checkNotNull(row)) != null } ?: throw MinutesNotFoundException("minutes")
     }
 
-    /** [view]'s person on [row], or null when they do not read the minutes now. */
+    /**
+     * [view]'s person on [row], or null when they do not read the minutes now. The [readers] are read only when needed (E06
+     * T9: "My meetings" asked for each meeting's register); [managerKind]: a manager's reader kind too (it names their
+     * copy's set; "My meetings" needs none).
+     */
     fun readerOf(
         view: MeetingView,
         row: MinutesRow,
-        readers: Map<UUID, ReaderKind> = people.readers(row),
-    ): MinutesReader? = readerOf(view, row, lazyOf(readers), managerKind = true)
-
-    /**
-     * [readerOf], reading the minutes' readers only when it needs them (E06 T9: "My meetings" asked for each meeting's
-     * register). [managerKind]: a manager's reader kind too (it names their copy's set; "My meetings" needs none).
-     */
-    private fun readerOf(
-        view: MeetingView,
-        row: MinutesRow,
-        readers: Lazy<Map<UUID, ReaderKind>>,
-        managerKind: Boolean,
+        readers: Lazy<Map<UUID, ReaderKind>> = lazy { people.readers(row) },
+        managerKind: Boolean = true,
     ): MinutesReader? {
         val reads = row.state in READ_STAGES
         val access: Pair<MinutesAccessKind, ReaderKind?>? =
@@ -110,7 +104,7 @@ class MinutesReading(
     /** The redaction set of the actor's own copy. */
     fun ownSet(reader: MinutesReader): RedactionSet =
         when (reader.kind) {
-            ReaderKind.ASKED, ReaderKind.LINKED -> people.setOf(reader.row, reader.userId, reader.kind)
+            ReaderKind.ASKED, ReaderKind.LINKED -> people.setsOf(reader.row, mapOf(reader.userId to reader.kind)).getValue(reader.userId)
             else -> people.setOf(reader.view)
         }
 
@@ -144,7 +138,7 @@ class MinutesReading(
         requireNoProblems(
             listOfNotNull(FieldProblem("as", "NOT_A_READER", "Choose someone who reads these minutes.").takeIf { kind == null }),
         )
-        val set = people.setOf(reader.row, userId, kind) + people.setOf(reader.view)
+        val set = people.setsOf(reader.row, mapOf(userId to kind)).getValue(userId) + people.setOf(reader.view)
         return reader to copies.lookup(reader.row, set)
     }
 
@@ -166,12 +160,7 @@ class MinutesReading(
     /** What [reader] has to do: REVIEW, CONFIRM, COMMENT (not answered yet), READ; null for a secretary while drafting. */
     fun action(
         reader: MinutesReader,
-        readers: Map<UUID, ReaderKind> = people.readers(reader.row),
-    ): String? = action(reader, lazyOf(readers))
-
-    private fun action(
-        reader: MinutesReader,
-        readers: Lazy<Map<UUID, ReaderKind>>,
+        readers: Lazy<Map<UUID, ReaderKind>> = lazy { people.readers(reader.row) },
     ): String? {
         val row = reader.row
         val secretary = reader.userId in people.secretaries(row.forumId)
@@ -184,7 +173,8 @@ class MinutesReading(
                 "CONFIRM"
             }
 
-            row.state == MinutesStage.CIRCULATED && !secretary && reads(readers, reader) && !answered(row, reader.userId) -> {
+            row.state == MinutesStage.CIRCULATED && !secretary && readers.value.containsKey(reader.userId) &&
+                !answered(row, reader.userId) -> {
                 "COMMENT"
             }
 
@@ -197,11 +187,6 @@ class MinutesReading(
             }
         }
     }
-
-    private fun reads(
-        readers: Lazy<Map<UUID, ReaderKind>>,
-        reader: MinutesReader,
-    ): Boolean = readers.value.containsKey(reader.userId)
 
     private fun answered(
         row: MinutesRow,

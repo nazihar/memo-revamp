@@ -23,8 +23,10 @@ import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.MinutesAccess
 import com.memo.minutes.internal.MinutesJobs
 import com.memo.minutes.internal.MinutesPages
+import com.memo.minutes.internal.MinutesPeople
 import com.memo.minutes.internal.MinutesReading
 import com.memo.minutes.internal.MinutesReleaseScheduler
+import com.memo.minutes.internal.MinutesStore
 import com.memo.minutes.internal.MinutesSweep
 import com.memo.minutes.internal.ResolutionAccess
 import com.memo.minutes.internal.VoteMode
@@ -75,6 +77,10 @@ class MinutesVolumeIT : MeetingVolumeSupport() {
 
     @Autowired lateinit var pages: MinutesPages
 
+    @Autowired lateinit var minutesStore: MinutesStore
+
+    @Autowired lateinit var minutesPeople: MinutesPeople
+
     @Autowired lateinit var reading: MinutesReading
 
     @Autowired lateinit var minutesSweep: MinutesSweep
@@ -120,6 +126,8 @@ class MinutesVolumeIT : MeetingVolumeSupport() {
                 json.writeValueAsString(MinutesPolicy()),
                 json.writeValueAsString(MinutesPolicy(approval = MinutesApproval.BY_CIRCULATION)),
             ).generate()
+        // The first committee's seats were moved by SQL (their start dates): its cached roster is stale.
+        invalidation.invalidate("forum.roster", tenant.id, focalForum.toString())
         println("MinutesVolumeIT generated the minutes in ${(System.nanoTime() - started) / NANOS_PER_MILLI} ms: $stages")
         transactions.readInTenant(tenant.id) {
             val rows = MinutesVolume.TABLES.associateWith { tenantDsl.current().fetchValue("select count(*) from $it") }
@@ -229,6 +237,13 @@ class MinutesVolumeIT : MeetingVolumeSupport() {
         assertThat(asUser(people.secretary) { reads.mine(null) }.mapNotNull { it.minutes }.size).isGreaterThan(MINE_MINUTES)
         measure("my meetings with minutes (secretary of $FORUMS)", MINE_BUDGET_MS, people.secretary) { reads.mine(null) }
         assertThat(asUser(people.director) { pages.view(held) }.mayComment).isTrue()
+        // The readers' sets planned together are the sets planned one by one.
+        asUser(people.secretary) {
+            val row = checkNotNull(minutesStore.find(held))
+            val readers = minutesPeople.readers(row)
+            val oneByOne = readers.mapValues { (user, kind) -> minutesPeople.setsOf(row, mapOf(user to kind)).getValue(user) }
+            assertThat(minutesPeople.setsOf(row, readers)).isEqualTo(oneByOne)
+        }
         measure("minutes page (circulated, director)", PAGE_BUDGET_MS, people.director) { pages.view(held) }
         measure("minutes page (circulated, secretary)", PAGE_BUDGET_MS, people.secretary) { pages.view(held) }
         measure("minutes page (circulated, chair)", PAGE_BUDGET_MS, people.chair) { pages.view(held) }

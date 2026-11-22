@@ -96,6 +96,13 @@ class MinutesVolume(
                                ends_at = date_trunc('minute', now()) + interval '140 minutes'
             where id = '$focal'
             """,
+            // The people seated through the services (the chair, the director, the secretary) took their seats today; at the
+            // first committee's past meetings they were in office already (a quorum needs the chair or a vice-chair).
+            """
+            update forum_member set starts_on = date '2010-01-01', version = version + 1
+            where forum_id = (select forum_id from meeting where id = '$held')
+              and user_id in ('${people.chair}', '${people.director}', '${people.secretary}')
+            """,
             // The chair, who sent apologies to the held focal meeting in E05's replies, came after all (five minutes in): a
             // decision recorded on it after the meeting needs the chair present to be quorate.
             """
@@ -141,6 +148,11 @@ class MinutesVolume(
                 by_circulation = rank = 1 and f % 8 = 5
             """,
             "analyze mn_meeting",
+        ) + planItems()
+
+    /** The plan's items from the first revision with their agenda order, and the decisions to write with their outcomes. */
+    private fun planItems(): List<String> =
+        listOf(
             """
             create temp table mn_item as
             select mm.id as meeting_id, mm.forum_id, mm.f, mm.code, mm.forum_type_id, mm.starts_at, mm.ends_at, mm.focal,
@@ -375,15 +387,9 @@ class MinutesVolume(
             """,
         )
 
-    /** The history, the records of approved minutes, the copies, the comments, the requests and the reminders. */
-    private fun rest(): List<String> {
-        val circulated = "least(now() - interval '2 days', ends_at + interval '3 days')"
-        val past = "mstate in ('CIRCULATED', 'AWAITING_CHAIR', 'APPROVED')"
-        val firstItem = "md5('mvi' || id || '-1-0')::uuid"
-        val recusedSet = "jsonb_build_array(jsonb_build_object('itemId', $firstItem::text, 'kind', 'RECUSED'))"
-        val recusedKey = "encode(sha256(convert_to($firstItem::text || ':RECUSED', 'UTF8')), 'hex')"
-        val fullKey = "encode(sha256(''::bytea), 'hex')"
-        return listOf(
+    /** The minutes' history, then [copiesAndComments]. */
+    private fun rest(): List<String> =
+        listOf(
             """
             insert into minutes_event (id, tenant_id, meeting_id, kind, item_id, actor, on_behalf_by, how, note, file_version_id, sha256, at)
             select md5('mne' || m.id || e.kind)::uuid, '$tenant'::uuid, m.id, e.kind, null, e.actor, null, null, null,
@@ -400,6 +406,17 @@ class MinutesVolume(
               and e.stage <= case m.mstate when 'DRAFT' then 0 when 'CHAIR_REVIEW' then 1 when 'CIRCULATED' then 2
                                            when 'AWAITING_CHAIR' then 3 else 4 end
             """,
+        ) + copiesAndComments()
+
+    /** The records of approved minutes, the copies, the comments, the requests for comments and the reminders. */
+    private fun copiesAndComments(): List<String> {
+        val circulated = "least(now() - interval '2 days', ends_at + interval '3 days')"
+        val past = "mstate in ('CIRCULATED', 'AWAITING_CHAIR', 'APPROVED')"
+        val firstItem = "md5('mvi' || id || '-1-0')::uuid"
+        val recusedSet = "jsonb_build_array(jsonb_build_object('itemId', $firstItem::text, 'kind', 'RECUSED'))"
+        val recusedKey = "encode(sha256(convert_to($firstItem::text || ':RECUSED', 'UTF8')), 'hex')"
+        val fullKey = "encode(sha256(''::bytea), 'hex')"
+        return listOf(
             """
             insert into minutes_record (id, tenant_id, meeting_id, forum_id, record_version, approval_id, docx_version_id, docx_sha256, state,
                                         file_id, file_version_id, sha256, size_bytes, pages, compliant, created_at, built_at, version)

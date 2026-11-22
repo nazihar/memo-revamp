@@ -129,7 +129,7 @@ class MeetingItems(
         if (ids.isEmpty()) return emptyMap()
         val heads = revisions.heads(ids).mapValues { it.value.last() }
         val open = requests.openOf(ids)
-        val snapshots = revisions.snapshots(heads.values.map { it.id })
+        val snapshots = revisions.snapshots(heads.values.map { it.id }, withPapers = false)
         val liveSections = sections.liveOf(ids)
         val liveItems = items.liveOf(ids)
         return ids.associateWith { meetingId ->
@@ -340,6 +340,44 @@ class MeetingViewers(
         return view(meeting, userId, viewer, secretary)
     }
 
+    /**
+     * [ofUser] for each of [users] (with their `asMember`) on [meetingId], the meeting, its agenda, its latest revision and
+     * the people's seats, audience rows and clearances read once for them all, and the paper rule in one statement (E06's
+     * copies are planned for every reader of the minutes at once, design E06 §8). Empty when there is no such meeting.
+     */
+    fun ofUsers(
+        meetingId: UUID,
+        users: Map<UUID, Boolean>,
+    ): Map<UUID, MeetingView> {
+        val meeting = store.find(meetingId) ?: return emptyMap()
+        val seen = viewers.ofAll(meeting, users.keys)
+        val secretaries =
+            directory
+                .membersOn(meeting.forumId)
+                .filter { it.role == ForumRole.SECRETARY }
+                .map { it.userId }
+                .toSet()
+        val agenda = items.agenda(meeting.id)
+        val head = revisions.heads(meeting.id).lastOrNull()
+        val viewersOf =
+            users.mapValues { (userId, asMember) ->
+                val one = seen.getValue(userId)
+                if (asMember && !one.member) one.copy(member = true, membersOnly = false) else one
+            }
+        // The paper rule in one statement for up to fifty of them (the papers are not part of a view).
+        val lines =
+            if (head == null) {
+                emptyMap()
+            } else {
+                viewersOf.values.chunked(VIEWERS_PER_QUERY).fold(emptyMap<UUID, Visibility>()) { all, chunk ->
+                    all + paperAccess.linesOf(chunk, head.id)
+                }
+            }
+        return viewersOf.mapValues { (userId, viewer) ->
+            view(meeting, userId, viewer, userId in secretaries, agenda, head?.let { lines.getValue(userId) })
+        }
+    }
+
     private fun view(meeting: MeetingRow): MeetingView {
         val user = checkNotNull(actorOrNull()) { "a meeting view needs a signed-in user" }
         return view(meeting, user, checkNotNull(viewers.actor(meeting)), access.manages(meeting.forumId))
@@ -355,7 +393,6 @@ class MeetingViewers(
         val meetings = store.findAll(meetingIds.distinct())
         val relations = access.relations(meetings)
         val seen = meetings.filter { relations[it.id] != null }
-        if (seen.isEmpty()) return emptyMap()
         val actors = viewers.actors(seen)
         val agendas = items.agendas(seen.map { it.id })
         val heads = revisions.heads(seen.map { it.id }).mapValues { it.value.last().id }
@@ -365,7 +402,7 @@ class MeetingViewers(
                 .filter { it.id in heads }
                 .groupBy { checkNotNull(actors[it.id]) }
                 .flatMap { (viewer, group) ->
-                    val seenBy = paperAccess.revisions(viewer, group.map { heads.getValue(it.id) })
+                    val seenBy = paperAccess.revisions(viewer, group.map { heads.getValue(it.id) }, withPapers = false)
                     group.map { it.id to seenBy.getValue(heads.getValue(it.id)) }
                 }.toMap()
         return seen.associate { meeting ->
@@ -386,7 +423,7 @@ class MeetingViewers(
             viewer,
             manages,
             items.agenda(meeting.id),
-            revisions.heads(meeting.id).lastOrNull()?.let { paperAccess.revision(viewer, it.id) },
+            revisions.heads(meeting.id).lastOrNull()?.let { paperAccess.revision(viewer, it.id, withPapers = false) },
         )
 
     /** The view from the meeting's [agenda] and what [viewer] sees of its latest revision ([published], none without one). */
@@ -437,3 +474,6 @@ interface DecidedItems {
 object NoDecidedItems : DecidedItems {
     override fun isDecided(itemId: UUID): Boolean = false
 }
+
+/** People judged in one statement of the paper rule (a `UNION ALL` of their conditions), as E04's review. */
+private const val VIEWERS_PER_QUERY = 50

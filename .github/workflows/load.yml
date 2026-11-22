@@ -200,7 +200,7 @@ jobs:
     # minutes line, the minutes page, the reader's copy and a sweep pass with the minutes' steps; every statement's plan may
     # not scan a minutes table or a large meeting table sequentially. MinutesJobsVolumeIT runs the release at 60 decisions,
     # the draft, the copies and the 200-page record (on the fake document converter: the CI runner has no ONLYOFFICE).
-    # Budgets have 2x headroom; the values and the plans are in the uploaded test report.
+    # Budgets have 2x headroom; the values and the plans are in the uploaded test reports. The two run in separate JVMs.
     name: Minutes at volume (MinutesVolumeIT, MinutesJobsVolumeIT)
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -213,15 +213,25 @@ jobs:
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
           cache-read-only: true
-      - name: MinutesVolumeIT and MinutesJobsVolumeIT at 3,600 meetings
+      - name: MinutesVolumeIT at 3,600 meetings
         env:
           MEETING_VOLUME: '3600'
-        run: ./gradlew :backend:test --tests com.memo.minutes.MinutesVolumeIT --tests com.memo.minutes.MinutesJobsVolumeIT --rerun --console=plain
+        run: ./gradlew :backend:test --tests com.memo.minutes.MinutesVolumeIT --rerun --console=plain
+      # The next Gradle run starts its test results afresh: keep this one's report.
+      - if: always()
+        run: mkdir -p build/minutes-volume && cp backend/build/test-results/test/TEST-com.memo.minutes.MinutesVolumeIT.xml build/minutes-volume/ || true
+      # A JVM of its own: test contexts share the scheduler table, and the volume's context (no object storage) would pick up
+      # the jobs test's renditions and fail them (the memos could then not be submitted).
+      - name: MinutesJobsVolumeIT (60 decisions, a 200-page record)
+        if: ${{ !cancelled() }}
+        env:
+          MEETING_VOLUME: '3600'
+        run: ./gradlew :backend:test --tests com.memo.minutes.MinutesJobsVolumeIT --rerun --console=plain
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: minutes-volume-report
           path: |
-            backend/build/test-results/test/TEST-com.memo.minutes.MinutesVolumeIT.xml
+            build/minutes-volume/TEST-com.memo.minutes.MinutesVolumeIT.xml
             backend/build/test-results/test/TEST-com.memo.minutes.MinutesJobsVolumeIT.xml
           retention-days: 30

@@ -527,6 +527,7 @@ In the business transaction (AGENTS §3.3); jobs audit as the system actor with 
 
 - **Volumes** (E03 T5's generator, extended in T9): 3,600 meetings, 54,000 decisions with 70,000 entries, 30,000 resolutions, 3,600 minutes with 7,000 copies, 20,000 comments.
 - `EXPLAIN` is reviewed for the register, the decisions list, `/me/meetings` with minutes and the sweep.
+- **As built (T9):** `MinutesVolume` writes 55,000 decisions, 75,000 entries, 27,000 numbers, 3,240 minutes (one per held meeting), 8,000 copies and 19,000 comments over E03's meeting volume with E05's rows; `MinutesVolumeIT` checks every statement's plan and p95 (also the minutes page and the reader's copy), `MinutesJobsVolumeIT` the jobs at their sizes; measured values in the E06 log (T9). Found at volume: the index of `minutes/V7`; the register and "My meetings" read their meetings' views together (`MeetingViewers.findAll`), the minutes' readers' sets are planned together (`MeetingViewers.ofUsers`), "My meetings" reads the minutes' readers only when needed. Not built as this table says: a consent section takes a quorum snapshot per item (E05's `take`), and E08's decision index is written in each decision's transaction; both are most of the section's statements.
 - Resource limits: at most 50 copies per minutes (`TOO_MANY_COPIES`), jobs on the existing rendition pool (no new pool), POI and ONLYOFFICE limits as ADR-0048 and ADR-0047.
 
 ## 9. Background work

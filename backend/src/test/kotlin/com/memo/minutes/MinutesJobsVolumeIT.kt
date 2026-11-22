@@ -6,11 +6,20 @@ import com.memo.files.FileType
 import com.memo.files.RenditionInput
 import com.memo.files.RenditionOutcome
 import com.memo.forum.MinutesApproval
+import com.memo.meeting.AttendanceMode
+import com.memo.meeting.MeetingKind
+import com.memo.meeting.MeetingMode
+import com.memo.meeting.internal.AgendaOrigin
+import com.memo.meeting.internal.LateDecision
+import com.memo.meeting.internal.MeetingInput
+import com.memo.meeting.internal.MeetingPlace
+import com.memo.meeting.internal.TimesInput
 import com.memo.minutes.internal.DraftTask
 import com.memo.minutes.internal.MinutesRecordStore
 import com.memo.minutes.internal.MinutesRecords
 import com.memo.minutes.internal.RecordState
 import com.memo.minutes.internal.ReleaseTrigger
+import com.memo.testsupport.SqlRecorder
 import org.apache.pdfbox.Loader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -19,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.time.Clock
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 /**
@@ -41,10 +53,12 @@ class MinutesJobsVolumeIT : MinutesFixture() {
 
     @Autowired lateinit var recordStore: MinutesRecordStore
 
+    @Autowired lateinit var sql: SqlRecorder
+
     @Test
     fun `the release at 60 decisions, the draft, the copies and the record run within their budgets`() {
         minutesApproved(MinutesApproval.BY_CIRCULATION)
-        val r = running(*(1..DECISIONS).map { "Credit proposal $it" }.toTypedArray())
+        val r = runningMany((1..DECISIONS).map { "Credit proposal $it" })
         val m = r.meeting.id
         declare(director, r.meeting, r.items.first().item)
         r.items.forEachIndexed { i, placed ->
@@ -55,7 +69,9 @@ class MinutesJobsVolumeIT : MinutesFixture() {
         endMeeting(r.meeting)
 
         var pass: com.memo.minutes.internal.ReleasePass? = null
-        val release = timed { pass = job(m, ReleaseTrigger.HELD) }
+        var statements = 0
+        val release = timed { statements = sql.record { pass = job(m, ReleaseTrigger.HELD) }.second.size }
+        println("MinutesJobsVolumeIT minutes-release ran $statements statements (${statements / DECISIONS} a decision)")
         assertThat(checkNotNull(pass).numbered).hasSize(DECISIONS)
         assertThat(checkNotNull(pass).released).hasSize(DECISIONS)
         assertThat(checkNotNull(pass).failed).isEmpty()
@@ -87,6 +103,41 @@ class MinutesJobsVolumeIT : MinutesFixture() {
 
         onlyOffice(current(m))
         assertThat(missed).describedAs("budgets missed").isEmpty()
+    }
+
+    /**
+     * [running] for [subjects], each memo raised by one of several initiators (an initiator uploads at most 30 documents a
+     * minute, the rate limit of uploads): escalated, placed in that order, published, and the meeting started with the
+     * chair, the vice-chair and both directors present.
+     */
+    private fun runningMany(subjects: List<String>): Running {
+        val placed =
+            subjects.mapIndexed { i, s ->
+                if (i % MEMOS_PER_INITIATOR == 0) initiator = person()
+                escalated(s).let { (memo, submission) -> Triple(s, memo, submission) }
+            }
+        val zone = ZoneId.of("Asia/Dhaka")
+        val start = LocalDateTime.now(zone).truncatedTo(ChronoUnit.MINUTES).minusMinutes(1)
+        val meeting =
+            asUser(secretary.account) {
+                val created =
+                    lifecycle.create(
+                        brc,
+                        MeetingInput(MeetingKind.ORDINARY, MeetingPlace(null, MeetingMode.IN_PERSON, "Board room", null, null), null),
+                        TimesInput(start, start.plusHours(3), zone.id),
+                    )
+                starts.start(created.id, AgendaOrigin.TEMPLATE, null)
+                created
+            }
+        val items = placed.map { (s, memo, submission) -> Placed(s, memo, submission, place(meeting, submission)) }
+        asUser(secretary.account) { lifecycle.schedule(meeting.id, reads.get(meeting.id).version) }
+        items.forEach { asUser(chair.account) { chairing.decideItem(meeting.id, it.item, version(meeting), LateDecision(true)) } }
+        publish(meeting)
+        startMeeting(meeting)
+        asUser(secretary.account) {
+            attendance.arrivals(meeting.id, listOf(chair.id, vice.id, director.id, colleague.id), AttendanceMode.IN_PERSON, null)
+        }
+        return Running(meeting, items)
     }
 
     /**
@@ -160,6 +211,7 @@ class MinutesJobsVolumeIT : MinutesFixture() {
 
     private companion object {
         const val DECISIONS = 60
+        const val MEMOS_PER_INITIATOR = 20
         const val CONDITIONS_EVERY = 5
         const val NOTE_CHARS = 10_000
         const val NOTE_LINE = "Members discussed the borrower's cash flows, the security offered and the sector outlook. "

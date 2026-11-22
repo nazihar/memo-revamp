@@ -65,3 +65,52 @@ test.describe('as an action’s owner', () => {
     await checkPageA11y(page)
   })
 })
+
+/**
+ * The secretary's side (Phase 4 E07 T10, flows AN and AJ2): on the Board Risk Committee's Actions tab the company
+ * secretary raises a direct action with "New action", names Demo Director as its owner, picks the date with a quick pick
+ * and sends it at once. The page says it was sent, the tracker lists it with its colour in words, and its page offers the
+ * officers' buttons. axe finds nothing serious on the tracker or the action page.
+ */
+test.describe('as the committee’s secretary', () => {
+  test.use({ role: 'secretary' })
+
+  test('raises a direct action from the tracker and sends it to its owner', async ({ app, page }) => {
+    test.setTimeout(180_000)
+    const title = `E2E secretary action ${String(Date.now())}`
+    const brc = await committeeId(new MeetingApi(page), 'BRC')
+
+    await app.visit(`/committees/${brc}?tab=actions`)
+    const tracker = page.getByRole('region', { name: /— Actions$/ })
+    await expect(tracker.getByRole('group', { name: 'Totals' })).toBeVisible()
+    await checkPageA11y(page)
+
+    await tracker.getByRole('button', { name: 'New action' }).click()
+    const form = page.getByRole('dialog', { name: /^New action for the / })
+    await form.getByRole('textbox', { name: 'What is to be done' }).fill(title)
+    await form.getByRole('textbox', { name: /Where it comes from/ }).fill('Chair’s instruction (end-to-end test)')
+    await form.getByRole('radio', { name: 'A person' }).check()
+    await form.getByRole('combobox', { name: 'Who' }).fill('Demo Dir')
+    await form.getByRole('option', { name: /Demo Director/ }).click()
+    if (await form.getByRole('radio', { name: 'On a date' }).isVisible()) {
+      await form.getByRole('radio', { name: 'On a date' }).check()
+    }
+    await form.getByRole('button', { name: 'In a month' }).click()
+    await form.getByRole('button', { name: 'Save and send to the owner' }).click()
+
+    const said = tracker.getByRole('status').filter({ hasText: /^BRC A\d+\/\d{4} was sent to its owner\.$/ })
+    await expect(said).toBeFocused()
+    const reference = ((await said.textContent()) ?? '').replace(' was sent to its owner.', '')
+    const row = tracker.getByRole('row').filter({ hasText: title })
+    await expect(row).toContainText(reference)
+    await expect(row).toContainText('Demo Director')
+    await expect(row.locator('[data-rag]')).toHaveText(/On track|Due soon|No recent update/)
+
+    await row.getByRole('link', { name: reference }).click()
+    await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible()
+    const officer = page.getByRole('region', { name: 'For the committee’s officers' })
+    await expect(officer.getByRole('button', { name: 'Change the owner' })).toBeVisible()
+    await expect(officer.getByRole('button', { name: 'Cancel the action' })).toBeVisible()
+    await checkPageA11y(page)
+  })
+})

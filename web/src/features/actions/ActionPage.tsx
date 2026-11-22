@@ -17,6 +17,7 @@ import { useTerms } from '@/features/terms/terms'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { ActionDialog, type ActionDialogKind } from './ActionDialogs'
 import { FollowUpMemos, LinkMemoDialog, RaiseMemoDialog } from './FollowUpMemos'
+import { OfficerActions } from './officer/OfficerActions'
 import { am } from './messages'
 import { actionRefusal, staleRefusal } from './problems'
 import { RagBadge } from './RagBadge'
@@ -30,7 +31,8 @@ type Open = ActionDialogKind | 'raiseMemo' | 'linkMemo'
  * `/actions/{id}`, the action page (flow AL, design §1.6–§1.11): what is asked, by whom and by when in words; where it
  * comes from as far as the viewer may see (a recused owner gets the item's number only, with no link); "Post an update",
  * "I have started", "Ask for a new date", "Raise a memo", "Link an existing memo", "Mark as done" (and "Verify" for the
- * verifier), each shown only when the server says the viewer may; follow-up memos; the timeline. After each change the
+ * verifier), each shown only when the server says the viewer may; the officers' own buttons (T10, OfficerActions); follow-up
+ * memos; the timeline. After each change the
  * page says what happened in a live region and moves focus there. An action the viewer may not see is "not there" (404).
  */
 export function ActionPage({ actionId }: { actionId: string }) {
@@ -110,6 +112,18 @@ export function ActionPage({ actionId }: { actionId: string }) {
     ...offer(can.markDone, 'done', intl.formatMessage(am.markDone), true),
     ...offer(can.verify, 'verify', intl.formatMessage(am.verify), true),
   ]
+  // An officer with buttons of their own (OfficerActions) is not told there is nothing to do.
+  const officerCan = [
+    can.edit,
+    can.issue,
+    can.discard,
+    can.decideDue,
+    can.updateOnBehalf,
+    can.changeOwner,
+    can.overrideRag,
+    can.cancel,
+    can.reopen,
+  ].some(Boolean)
   const press = (key: Open | 'start') => {
     if (key === 'start') void start()
     else setOpen(key)
@@ -174,7 +188,7 @@ export function ActionPage({ actionId }: { actionId: string }) {
               </Button>
             ))}
           </div>
-        ) : (
+        ) : officerCan ? null : (
           <p className="text-muted-foreground">
             {a.status === 'DONE_PENDING'
               ? intl.formatMessage(am.verifyLater, terms)
@@ -182,6 +196,17 @@ export function ActionPage({ actionId }: { actionId: string }) {
           </p>
         )}
       </section>
+
+      <OfficerActions
+        action={a}
+        busy={starting}
+        onDone={(next, sentence) => {
+          if (next) queryClient.setQueryData(getActionQueryKey({ path: { actionId } }), next)
+          void reload()
+          announce(sentence)
+        }}
+        onStale={() => void reload()}
+      />
 
       <FollowUpMemos action={a} />
       <Timeline action={a} />

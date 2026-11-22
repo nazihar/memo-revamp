@@ -5,6 +5,7 @@ import type {
   LateRequestsResponse,
   MyAccess,
   MyActionsResponse,
+  MeetingActionsResponse,
   MeetingSummaryResponse,
   MyForumResponse,
   Session,
@@ -132,6 +133,12 @@ export const myActionsHandler = (body: Partial<MyActionsResponse> = {}) =>
     }),
   )
 
+/** A meeting's actions (Phase 4 E07 T10): none, unless a test says so; the meeting page and the decision panel ask. */
+export const meetingActionsHandler = (body: Partial<MeetingActionsResponse> = {}) =>
+  http.get(`${API_ORIGIN}/api/v1/meetings/:meetingId/actions`, ({ params }) =>
+    HttpResponse.json<MeetingActionsResponse>({ meetingId: String(params.meetingId), actions: [], drafts: 0, ...body }),
+  )
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -149,4 +156,5 @@ export const server = setupServer(
   myMeetingsHandler(),
   lateRequestsHandler(),
   myActionsHandler(),
+  meetingActionsHandler(),
 )

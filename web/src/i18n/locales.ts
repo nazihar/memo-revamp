@@ -85,6 +85,11 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   decisions: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'decisions' }, import: 'default' }),
   resolutions: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'resolutions' }, import: 'default' }),
   forumMinutes: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'forumMinutes' }, import: 'default' }),
+  actionsOfficer: import.meta.glob<Messages>('./messages/*.json', {
+    query: { part: 'actionsOfficer' },
+    import: 'default',
+  }),
+  forumActions: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'forumActions' }, import: 'default' }),
 }
 
 /** [part] of [locale]'s messages; empty for English (the source locale). */

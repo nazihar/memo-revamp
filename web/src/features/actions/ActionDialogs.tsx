@@ -16,6 +16,8 @@ import { useTerms } from '@/features/terms/terms'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { EvidenceFiles, type Attached } from './Evidence'
 import { am } from './messages'
+import { DoneSummary } from './officer/DoneSummary'
+import { ao } from './officer/messages'
 import { actionRefusal, fieldProblems, staleRefusal } from './problems'
 import { confidenceWord, day, type Confidence } from './words'
 
@@ -267,10 +269,13 @@ function DueDialog({ action, onClose, onDone, onStale, direct }: DialogProps & {
   const [newDate, setNewDate] = useState('')
   const [reason, setReason] = useState('')
   const current = action.dueDate ? day(s.intl, action.dueDate) : ''
+  // An officer changes the date at once; an owner under OWNER_WITH_REASON changes it and the secretaries are told.
   const explain = direct
-    ? action.can.requestDue
-      ? undefined
-      : s.intl.formatMessage(am.dueOwnerChanges, s.terms)
+    ? action.can.changeOwner
+      ? s.intl.formatMessage(ao.dueOfficer)
+      : action.can.requestDue
+        ? undefined
+        : s.intl.formatMessage(am.dueOwnerChanges, s.terms)
     : action.dueChange === 'CHAIR_AGREES'
       ? s.intl.formatMessage(am.dueChairAgrees, { date: current })
       : s.intl.formatMessage(am.dueSecretaryAgrees, { ...s.terms, date: current })
@@ -396,7 +401,7 @@ function DoneDialog({ action, onClose, onDone, onStale }: DialogProps) {
   )
 }
 
-/** The verifier's choice (flow AM1): close it, or send it back with what is missing. */
+/** The verifier's choice (flow AM1): what was done, its evidence and memos (T10), then close it, or send it back with what is missing. */
 function VerifyDialog({ action, onClose, onDone, onStale }: DialogProps) {
   const s = useSend(onStale)
   const [decision, setDecision] = useState<'CLOSE' | 'SEND_BACK'>('CLOSE')
@@ -427,6 +432,7 @@ function VerifyDialog({ action, onClose, onDone, onStale }: DialogProps) {
       onClose={onClose}
       onSubmit={submit}
     >
+      <DoneSummary action={action} />
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-sm font-medium">{s.intl.formatMessage(am.verifyChoice)}</legend>
         <Choice

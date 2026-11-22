@@ -373,3 +373,92 @@
   - `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes) and `build` pass.
   - `pnpm test`: 496 of 499 green on the first run. The three that failed (`forum-types`, `meetings`, `doa`) waited past their timeouts while 75 files ran at once; run again on their own, all 29 of their tests pass.
   - The backend was not changed. The contract and the client were regenerated after the merges, and were unchanged.
+
+## 2026-11-23 — T10: the web, the secretary's side (flows AJ, AM, AN, AQ)
+- **Built** (`web/src/features/actions/officer/`, `web/src/features/forum-types/ActionsTab.tsx`; no backend change):
+  - **Raising from the decision panel** (flow AJ1): under each item, "Actions from this item (1 draft)" lists the item's actions: the colour or "Draft" in words, the reference, what is to be done, the owner and the date. A draft has "Edit", a sent action "Open". "Add an action" raises from the decision when there is one, else from the item. Each condition of a decision has "Make this an action", which opens the form with the condition as the title and as what the owner is told. Shown while the meeting runs, is held or has its minutes approved, to its secretaries and `forums.manage` (`canManage`), never on an item they declared an interest in.
+  - **The action form** (flow AJ2), a modal dialog:
+    - what is to be done, details, and what the owner is told ("They will not see the item's papers or the discussion"); the source note for a direct action;
+    - the owner: "A person" or "A position", then the directory's picker; a position shows who holds it now;
+    - up to five people also involved, each with "Remove {name}", announced as they come and go;
+    - the due date: "By the next meeting (date)" when one is planned, else "On a date" with "In two weeks", "In a month" and "In three months";
+    - priority and level.
+    - "Save as draft". Once the meeting is held (and always for a direct action) also "Save and send to the owner", which raises and then issues, with its own key and If-Match. A refused send leaves the saved draft and keeps the form open on it, with the field's problem and "Saved as a draft, but not sent: …".
+    - Editing a sent action changes only what may change, with a reason.
+    - The server's warnings (`OWNER_RECUSED`, `NOT_CLEARED`) are said in words with the person's name, in the form and on the action page.
+  - **The meeting page** (flow AJ3), for the officers from the start of the meeting: "Actions from this meeting" with "n actions sent to their owners" and "n draft actions not sent", every action of the meeting with its source, and "Add an action for the meeting". After the meeting is held, "Send the n drafts to their owners" gives the results per draft in words ("1 sent. 1 draft was not sent: …: Choose who owns the action.").
+  - **"Mark as held"** (E03's End dialog, also from the committee page's menu) gains "Send the n draft actions to their owners now", ticked by default. The drafts go once the meeting is held, and the toast says how many were sent, or that some were not.
+  - **The officers' buttons on the action page** (flow AN), each only when the server's `can` allows it:
+    - "Send to the owner", "Edit", "Discard the draft";
+    - "Answer the date request" (agree or decline, with a note);
+    - "Record an update for the owner" (how they heard, how it is going);
+    - "Change the owner" (a person or a position, with a reason);
+    - "Set the colour" (red, amber or green, a reason, until a date) and "Take away the colour set by hand";
+    - "Keep out of the next report";
+    - "Cancel the action": no longer needed, replaced by another action of the committee, a duplicate, or risk accepted by the chair (recorded for the chair, with how they said so, when the viewer is not the chair);
+    - "Reopen".
+    - T11's "Change the date" serves the secretary too, with the officer's sentence. A recused officer gets none of them: the server's `can` is false (ADR-0062).
+  - **Verification** (flow AM1): T11's Verify dialog now shows who marked the action done and when, what they wrote, the evidence files and the follow-up memos with their status, before "Close" or "Send back".
+  - **Closing at the meeting** (flow AM2): on the action taken report of a meeting that runs, is held or has its minutes approved, its officers tick the actions proposed to close and press "Close the actions the committee agreed (n)", with an optional remark (the server's default names the meeting and item). The results come back per action in words, for example "you are its owner or involved in it, so another officer closes it" for `NOT_VERIFIER`.
+  - **The committee's tracker** (flow AN): a new "Actions" tab on the committee page (`?tab=actions`) for its officers, members, `forum.read` and `forums.manage`.
+    - "New action" (a direct draft) and "Export" when the server's `can` allows them; "Ask owners for an update".
+    - Filters: status (open by default), colour (overdue, red, amber, green, to verify), owner (a person or a position), meeting, words, and the sort.
+    - The totals per colour in words with their icons, each a toggle for its colour.
+    - The rows in one table, which becomes a card per action on a phone with the status first; "Show more".
+    - The key, with this committee type's numbers (amber and "no recent update").
+    - Members get the rows without the buttons. Someone without a tracker (404) is told there is nothing for them.
+  - **The committee type's Actions tab** (flow AQ): amber within n working days; the "no recent update" rule (a tick, 0 when off); who agrees a new date; who verifies; evidence on "Mark as done"; the default due date; asking owners for an update before the papers (a tick, 0 when off); and the workflow (the definitions bound to action items, with "Open in the builder").
+    - "Start from an example" copies a preset's actions settings into the draft.
+    - It is edited on a draft and read-only in review and once published, so a second administrator reviews it like the rest of the type. T2's changes view words it.
+  - **Strings:** en and real Arabic in two new catalogue parts.
+    - `actionsOfficer` (Arabic 5.6 KiB gzip) loads with `/meetings`, `/committees` and `/actions`.
+    - `forumActions` (1.1 KiB) loads with `/admin/committee-types`.
+    - The `actions` part now also loads with `/meetings` and `/committees`, whose lists and tracker use its words (colours, statuses, owners, dates).
+    - The Arabic core is unchanged at 13.6 KiB.
+  - **Shared files, kept small:**
+    - `DecisionText` takes an optional `conditionAction`; `DecisionsPanel` renders the item's actions; `MeetingPage` the meeting's.
+    - `MeetingDialogs`' End step has the drafts line; `useChange` also takes the toast text as a function.
+    - `ForumPage` and `forum-tabs` have the new tab; `ForumTypePage` the Actions tab.
+    - T11's `ActionPage`, `ActionDialogs` and `ActionReportPage` have the officer parts.
+    - `test/msw.ts` has a default "no actions" answer for a meeting.
+    - The meeting tests that list the parts of `/meetings/m1` exactly now include `actions` and `actionsOfficer`.
+- **Decisions under the delegated gate:**
+  - **The tracker is a tab of the committee page,** like the resolution register, not a page of its own.
+  - **After each change** the list or page says what happened in a live region (`role=status`), and focus moves there. A dialog's field problem goes to its field, which takes focus. A refusal is said above the dialog's buttons (`role=alert`). A lost race reloads the action. Each dialog has one idempotency key, so a retry acts once; sending after saving uses a key of its own.
+  - **The colour is never alone:** the badge's word and icon on every row, the totals in words with their icons, and the key under the tracker.
+  - **"Keep out of the next report"** is offered to whoever may edit a sent open action (`can.edit`: the secretaries and `forums.manage` not recused, the same people the server lets hold back), because `ActionAbilities` has no flag of its own. "Ask owners for an update" goes to those who may raise on the tracker (`can.raise`: the same people). The server decides, and its refusals come back in words.
+  - **Closing at the meeting** is offered to the report's officers (the report gives `heldBack` to officers only). The server verifies each action and says which ones the viewer may not close.
+  - **The level** offers the source's level by default when raising, since the client does not know the item's level, and only the action's level or higher when editing. A lower one is the server's 422 `CLASSIFICATION`, in words.
+- **Deviations from the drawings:**
+  - **The committee type's default due date is not a quick pick.** `defaultDue` WORKING_DAYS needs the business calendar, which the client does not have. The server stores and checks the policy but does not apply it: no endpoint suggests a date, and issuing needs one. The form offers the next meeting and three calendar quick picks instead. A suggested date on the meeting's or the committee's action answer would let a later task add it.
+  - **"Now held by S. Chowdhury"** reads the directory's line for the position ("Credit Risk · S. Chowdhury").
+  - **The due date is a date field,** as on T11's dialogs, so a typed date follows the browser's form rather than the tenant's. `DUE_IN_PAST` says "Please enter a date on or after today, for example 12/03/2027".
+  - **Warnings come after saving:** the server works them out when the draft is saved. So the form shows them when the draft is opened again, and the action page shows them to the secretaries.
+  - **Closing at the meeting is on the report page,** which the Matters arising item links to, not on the agenda item itself.
+- **Tests** (`officer.test.tsx`, 23 tests, vitest and Testing Library, with axe in the main paths):
+  - **Flow AJ:**
+    - A condition made an action: prefilled, a position owner with its holder, due by the next meeting, sent at once with If-Match and its own key, the result announced with focus, 44 px buttons.
+    - During the meeting only "Save as draft": the title asked for at its field, `DUE_IN_PAST` and 403 `RECUSED` in words with one key for every try, and an edited draft's `OWNER_RECUSED` warning by name.
+    - The meeting's drafts sent, one not sent and why.
+    - "Mark as held" with the drafts line ticked, ending then issuing.
+    - A recused secretary with no buttons on their item (ADR-0062); a member with no officer lists.
+  - **Flow AN:**
+    - The officer buttons exactly as `can` allows.
+    - Changing the owner: missing fields, the picker, If-Match.
+    - Cancelling with the risk accepted, recorded for the chair (`how` required), then Reopen offered.
+    - Setting the colour, 409 `NO_MEETING` on holding back, and agreeing a date request.
+    - An update recorded for the owner.
+    - A recused secretary or a member with no officer buttons.
+    - The tracker's rows, colours in words, totals as toggles and the key's numbers, with the filters sent to the server.
+    - Asking twice (409 `ALREADY_ASKED`) and an export over the limit (429), in words.
+    - "New action" from the tracker with a source note, a quick-pick date and a person involved.
+    - Members without the buttons, and 404 as "nothing for you".
+    - Arabic, right to left, with axe.
+  - **Flow AM:** the verifier's dialog with what was done, the evidence and the memo; closing the actions the committee agreed, with one refused as `NOT_VERIFIER` and an empty choice refused at the first box; not offered to members.
+  - **Flow AQ:** a draft's rules changed, a range problem at its field, a preset copied, the changes view, the save with If-Match and the actions body. Maker-checker: the version in review is read-only for the approver, with Approve and no preset.
+  - The catalogue parts per path, and every officer refusal and field problem of design §3 in words.
+  - **Playwright:** a second test in `e2e/smoke/committee-actions.spec.ts`. The company secretary raises a direct BRC action for Demo Director from the tracker's "New action" and sends it. It is on the tracker with its colour in words, and its page has the officers' buttons. axe runs on both pages. It needs the stack, so it was not run locally; CI runs it.
+- **Results (local, after merging #244 and `master`):**
+  - `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes) and `build` pass.
+  - `pnpm test`: 541 of 541 green in one run of 78 files.
+  - The backend was not changed. The contract and the client were regenerated after the merges.

@@ -6550,6 +6550,4489 @@
       "value": "‬"
     }
   ],
+  "actionsOfficer.behalf.confidence": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ıs ıʇ ƃoıuƃ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ndpɐʇǝ ʍɐs ɹǝɔoɹpǝp ɟoɹ ʇɥǝ oʍuǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.email": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑʎ ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ʍɥɐʇ ʇɥǝ oʍuǝɹ ʇoʅp ʎon. ⊥ɥǝ ʇıɯǝʅıuǝ sɥoʍs ʇɥɐʇ ʎon ʍɹoʇǝ ıʇ ɟoɹ ʇɥǝɯ, ɐup ɥoʍ ʎon ɥǝɐɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.how": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʎon ɥǝɐɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.inPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.meeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ɐ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.phone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑʎ dɥouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɹp ʇɥǝ ndpɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.text": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ɥɐs ɥɐddǝuǝp?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.behalf.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɹp ɐu ndpɐʇǝ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ɐu ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔʇıou ʍɐs ɔɐuɔǝʅʅǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.duplicate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pndʅıɔɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ ɐup ʇɥǝ dǝodʅǝ ıuʌoʅʌǝp ɐɹǝ ʇoʅp. Iʇ ɔɐu qǝ ɹǝodǝuǝp ʍıʇɥıu 90 pɐʎs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.howChair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʇɥǝ ɔɥɐıɹ ʇoʅp ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.noLongerNeeded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʅouƃǝɹ uǝǝpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.option": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.replacedBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔʇıou ʇɥɐʇ ɹǝdʅɐɔǝs ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.riskAccepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚısʞ ɐɔɔǝdʇǝp qʎ ʇɥǝ ɔɥɐıɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.riskForChair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ouʅʎ ʇɥǝ ɔɥɐıɹ ɐɔɔǝdʇs ʇɥǝ ɹısʞ. ⅄on ɹǝɔoɹp ıʇ ɟoɹ ʇɥǝ ɔɥɐıɹ: sɐʎ ɥoʍ ʇɥǝʎ ʇoʅp ʎon."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ ʇɥǝ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.superseded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝdʅɐɔǝp qʎ ɐuoʇɥǝɹ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ ʇɥǝ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.cancel.why": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥʎ ıʇ ıs ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıou ʍɐs ɔʅosǝp."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıous ʍǝɹǝ ɔʅosǝp."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.chooseOne": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ıɔʞ ɐʇ ʅǝɐsʇ ouǝ ɐɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ıɔʞ ʇɥǝ ɐɔʇıous ʇɥǝ ɔoɯɯıʇʇǝǝ ɐƃɹǝǝp ʇo ɔʅosǝ ɐʇ ʇɥıs ɯǝǝʇıuƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.notVerifier": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʎon ɐɹǝ ıʇs oʍuǝɹ oɹ ıuʌoʅʌǝp ıu ıʇ, so ɐuoʇɥǝɹ oɟɟıɔǝɹ ɔʅosǝs ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.remark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.remarkHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝɟʇ ǝɯdʇʎ, ǝɐɔɥ ɐɔʇıou ɹǝɔoɹps ʇɥɐʇ ıʇ ʍɐs ɐƃɹǝǝp ɐʇ ʇɥıs ɯǝǝʇıuƃ, nupǝɹ ıʇs ıʇǝɯ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.row": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃɹǝǝp ʇo ɔʅosǝ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝ ʇɥǝ ɐɔʇıous ʇɥǝ ɔoɯɯıʇʇǝǝ ɐƃɹǝǝp ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.some": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 2,
+      "value": "closed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ɔʅosǝp. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs uoʇ ɔʅosǝp:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍǝɹǝ uoʇ ɔʅosǝp:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.close.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝ ʍɥɐʇ ʇɥǝ ɔoɯɯıʇʇǝǝ ɐƃɹǝǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.amber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɯqǝɹ: ɐʇ ɹısʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.choice": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoʅonɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.cleared": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔoʅonɹ sǝʇ qʎ ɥɐup ʍɐs ʇɐʞǝu ɐʍɐʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔoʅonɹ ʍɐs sǝʇ qʎ ɥɐup."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎouǝ sǝǝs ʇɥɐʇ ıʇ ʍɐs sǝʇ qʎ ɥɐup, qʎ ʍɥoɯ ɐup ʍɥʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.green": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ɹǝǝu: ou ʇɹɐɔʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.red": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝp: oɟɟ ʇɹɐɔʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ ʇɥǝ ɔoʅonɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ ʇɥǝ ɔoʅonɹ qʎ ɥɐup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.until": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʇıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.colour.untilHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝɐʌǝ ıʇ ǝɯdʇʎ ʇo ʞǝǝd ʇɥǝ ɔoʅonɹ nuʇıʅ ʇɥǝ uǝxʇ ndpɐʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.agree": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃɹǝǝ ʇo ʇɥǝ uǝʍ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.agreed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ uǝʍ pɐʇǝ ʍɐs ɐƃɹǝǝp. ⊥ɥǝ oʍuǝɹ ıs ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.asked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ɐsʞs ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıusʇǝɐp oɟ "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.decline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝ: ʞǝǝd ʇɥǝ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.declined": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹǝbnǝsʇ ʍɐs pǝɔʅıuǝp. ⊥ɥǝ oʍuǝɹ ıs ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.note": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇǝ ɟoɹ ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀usʍǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.decide.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ ɐsʞs ɟoɹ ɐ uǝʍ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.discard.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ pɹɐɟʇ ʍɐs pısɔɐɹpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.discard.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pısɔɐɹpǝp pɹɐɟʇ ıs ʞǝdʇ ıu ʇɥǝ ɹǝɔoɹp, uǝʌǝɹ unɯqǝɹǝp ɐup uǝʌǝɹ sǝuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.discard.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɔɐɹp ʇɥǝ pɹɐɟʇ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.discard.why": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ ʇɥǝ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.changeOwner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.clearColour": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɐʞǝ ɐʍɐʎ ʇɥǝ ɔoʅonɹ sǝʇ qʎ ɥɐup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.decideDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀usʍǝɹ ʇɥǝ pɐʇǝ ɹǝbnǝsʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.discard": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɔɐɹp ʇɥǝ pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.holdBack": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝǝd onʇ oɟ ʇɥǝ uǝxʇ ɹǝdoɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.issue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup ʇo ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.onBehalf": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɹp ɐu ndpɐʇǝ ɟoɹ ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.reopen": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝodǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.do.setColour": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ ʇɥǝ ɔoʅonɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.due.officer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ pɐʇǝ ɔɥɐuƃǝs ɐʇ ouɔǝ. ⊥ɥǝ oʍuǝɹ ɐup ʇɥǝ dǝodʅǝ ıuʌoʅʌǝp ɐɹǝ ʇoʅp, ɐup ıʇs ɹǝɯıupǝɹs ɯoʌǝ ʍıʇɥ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.editNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.classification": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀u ɐɔʇıou ıs uǝʌǝɹ qǝʅoʍ ıʇs sonɹɔǝ’s ʅǝʌǝʅ, uoɹ ɐqoʌǝ ʎonɹ oʍu ɔʅǝɐɹɐuɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.condition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ pǝɔısıou ɥɐs uo snɔɥ ɔoupıʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.contributorsTooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ɯosʇ ɟıʌǝ dǝodʅǝ qǝsıpǝs ʇɥǝ oʍuǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.decision.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃɹǝǝ oɹ pǝɔʅıuǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.dueDate.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʍɥǝu ıʇ ıs pnǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.dueInPast": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅǝɐsǝ ǝuʇǝɹ ɐ pɐʇǝ ou oɹ ɐɟʇǝɹ ʇopɐʎ, ɟoɹ ǝxɐɯdʅǝ "
+    },
+    {
+      "type": 1,
+      "value": "example"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.duplicate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ ǝɐɔɥ dǝɹsou ouɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.how.chair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ɥoʍ ʇɥǝ ɔɥɐıɹ ʇoʅp ʎon ʇɥǝʎ ɐɔɔǝdʇ ʇɥǝ ɹısʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.how.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ɥoʍ ʎon ɥǝɐɹp ɟɹoɯ ʇɥǝ oʍuǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.kind.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ʍɥʎ ʇɥǝ ɐɔʇıou ıs ɔɐuɔǝʅʅǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.length": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ıs ʇoo ʅouƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.notCleared": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ıs uoʇ ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɐɔʇıou’s ʅǝʌǝʅ, oɹ ıs uoʇ ɐɔʇıʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.notEditable": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ouɔǝ ʇɥǝ ɐɔʇıou ıs sǝuʇ, ʇɥıs ɔɥɐuƃǝs ʍıʇɥ ıʇs oʍu qnʇʇou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.owner.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʍɥo oʍus ʇɥǝ ɐɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.ownerNotCleared": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ıs uoʇ ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɐɔʇıou’s ʅǝʌǝʅ, oɹ ıs uoʇ ɐɔʇıʌǝ, ɐup ɔɐuuoʇ oʍu ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.rag.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ɹǝp, ɐɯqǝɹ oɹ ƃɹǝǝu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.reason.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ıʌǝ ɐ ɹǝɐsou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.recusedNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou pǝɔʅɐɹǝp ɐu ıuʇǝɹǝsʇ ıu ʇɥǝ ıʇǝɯ ɐup ɔɐuuoʇ ɥǝʅd ʍıʇɥ ʇɥıs ɐɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.sameOwner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ıs ʇɥǝ ɐɔʇıou’s oʍuǝɹ ɐʅɹǝɐpʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.samePerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ ıs uoʇ ɐʅso ɐɯouƃ ʇɥǝ dǝodʅǝ ıuʌoʅʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.supersededBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʇɥǝ ıssnǝp ɐɔʇıou oɟ ʇɥıs ɔoɯɯıʇʇǝǝ ʇɥɐʇ ɹǝdʅɐɔǝs ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.title.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ʍɥɐʇ ıs ʇo qǝ pouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.field.unknownPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ soɯǝouǝ ɟɹoɯ ʇɥǝ ʅısʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.addPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ʇɥıs dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.context": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʇɥǝ oʍuǝɹ ıs ʇoʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contextHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ ʍıʅʅ sǝǝ ʇɥıs ʇǝxʇ. ⊥ɥǝʎ ʍıʅʅ uoʇ sǝǝ ʇɥǝ ıʇǝɯ’s dɐdǝɹs oɹ ʇɥǝ pısɔnssıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contributorAdded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ɐppǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contributorRemoved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ɹǝɯoʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contributors": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅso ıuʌoʅʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contributorsFull": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎıʌǝ dǝodʅǝ ɐɹǝ ıuʌoʅʌǝp ɐʅɹǝɐpʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.contributorsHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩d ʇo 5 dǝodʅǝ. ⊥ɥǝʎ ɔɐu dosʇ ndpɐʇǝs; ouʅʎ ʇɥǝ oʍuǝɹ ɯɐɹʞs ıʇ ɐs pouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.description": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʇɐıʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueChosen": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueDate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ʎdǝ ɐ pɐʇǝ oɹ dıɔʞ ouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueNextMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑʎ ʇɥǝ uǝxʇ ɯǝǝʇıuƃ ("
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueOnDate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ou ɐ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.dueQuick": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ònıɔʞ dıɔʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.editDraft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ ʇɥǝ pɹɐɟʇ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.editIssued": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.findPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎıup ɐ dǝɹsou ʇo ɐpp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.in1Month": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu ɐ ɯouʇɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.in2Weeks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu ʇʍo ʍǝǝʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.in3Months": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu ʇɥɹǝǝ ɯouʇɥs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.inMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnɹıuƃ ʇɥǝ ɯǝǝʇıuƃ, ɐɔʇıous ɐɹǝ sɐʌǝp ɐs pɹɐɟʇs. Sǝup ʇɥǝɯ ʇo ʇɥǝıɹ oʍuǝɹs ouɔǝ ıʇ ıs ɥǝʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.level": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝʌǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.levelHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀u ɐɔʇıou ıs uǝʌǝɹ qǝʅoʍ ıʇs sonɹɔǝ’s ʅǝʌǝʅ. ∀ ɥıƃɥǝɹ ʅǝʌǝʅ ʞǝǝds ıʇ ɟɹoɯ dǝodʅǝ uoʇ ɔʅǝɐɹǝp ɟoɹ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.levelSource": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀s ıʇs sonɹɔǝ (ʇɥǝ ıʇǝɯ oɹ ʇɥǝ ɯǝǝʇıuƃ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.newDirect": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐɔʇıou ɟoɹ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.newFromCondition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐɔʇıou — ɟɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ", ɔoupıʇıou "
+    },
+    {
+      "type": 2,
+      "value": "number",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.newFromItem": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐɔʇıou — ɟɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.newFromMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐɔʇıou — ɟɹoɯ ʇɥıs ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.owner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.ownerHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ ıu ʇɥǝ oɹƃɐuısɐʇıou ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɐɔʇıou’s ʅǝʌǝʅ. ∀ dosıʇıou ɟoʅʅoʍs ʍɥoǝʌǝɹ ɥoʅps ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.ownerNow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʍ: "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.ownerPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.ownerPosition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.ownerWho": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.priority": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹıoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.priorityHigh": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hıƃɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.priorityNormal": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noɹɯɐʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥʎ ıʇ ɔɥɐuƃǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.reasonHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝdʇ ou ʇɥǝ ɐɔʇıou’s ʇıɯǝʅıuǝ. ⊥ɥǝ oʍuǝɹ ɐup ʇɥǝ dǝodʅǝ ıuʌoʅʌǝp sǝǝ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.removePerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ʇɥǝ ɔɥɐuƃǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.saveDraft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ɐs pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.saveSend": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ɐup sǝup ʇo ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.saved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔʇıou ʍɐs ɔɥɐuƃǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.savedDraft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝp ɐs ɐ pɹɐɟʇ: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.savedSent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs sǝuʇ ʇo ıʇs oʍuǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.savedSentNot": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝp ɐs ɐ pɹɐɟʇ, qnʇ uoʇ sǝuʇ: "
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.sourceNote": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝɹǝ ıʇ ɔoɯǝs ɟɹoɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.sourceNoteHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ǝxɐɯdʅǝ: Ↄɥɐıɹ’s ıusʇɹnɔʇıou oɟ 3 ᗡǝɔǝɯqǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.form.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ıs ʇo qǝ pouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.held.notSent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ ıs ɥǝʅp. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ʍɐs uoʇ sǝuʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇs ʍǝɹǝ uoʇ sǝuʇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": ɹǝʌıǝʍ ʇɥǝɯ ou ʇɥǝ ɯǝǝʇıuƃ dɐƃǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.held.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup ʇɥǝ "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ɐɔʇıou"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ɐɔʇıous"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ʇo "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ıʇs oʍuǝɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʇɥǝıɹ oʍuǝɹs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " uoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.held.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ ıs ɥǝʅp. "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıou ʍɐs sǝuʇ ʇo ıʇs oʍuǝɹ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıous ʍǝɹǝ sǝuʇ ʇo ʇɥǝıɹ oʍuǝɹs."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.hold.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ʍıʅʅ qǝ ʅǝɟʇ onʇ oɟ ʇɥǝ ɐɔʇıou ʇɐʞǝu ɹǝdoɹʇ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.hold.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ sʇɐʎs odǝu ou ʇɥǝ ʇɹɐɔʞǝɹ. ⊥ɥǝ uǝxʇ ɯǝǝʇıuƃ’s ɐɔʇıou ʇɐʞǝu ɹǝdoɹʇ ʅǝɐʌǝs ıʇ onʇ, ɐup ʇǝʅʅs ʇɥǝ oɟɟıɔǝɹs ʇɥɐʇ ouǝ ʍɐs ɥǝʅp qɐɔʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.hold.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝǝd ıʇ onʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.hold.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝǝd ıʇ onʇ oɟ ʇɥǝ uǝxʇ ɹǝdoɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.hold.why": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.issue.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ ʇo ʇɥǝ oʍuǝɹ ɐs "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.issue.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ƃǝʇs ıʇs ɹǝɟǝɹǝuɔǝ, ɐup "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʇoʅp qʎ ǝɯɐıʅ, ʍıʇɥonʇ ıʇs ʇıʇʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.issue.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.issue.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup ʇɥǝ ɐɔʇıou ʇo ıʇs oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐu ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.drafts": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.makeAction": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐʞǝ ʇɥıs ɐu ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.makeActionNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐʞǝ ɔoupıʇıou "
+    },
+    {
+      "type": 2,
+      "value": "number",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ɐu ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɐɔʇıous ɟɹoɯ ʇɥıs ıʇǝɯ ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.item.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ɟɹoɯ ʇɥıs ıʇǝɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐu ɐɔʇıou ɟoɹ ʇɥǝ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.drafts": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ɐɔʇıou uoʇ sǝuʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ɐɔʇıous uoʇ sǝuʇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎ ɐɔʇıou ɹɐısǝp ɐʇ ʇɥıs ɯǝǝʇıuƃ. ⊥ɥosǝ ɟɹoɯ ɐu ıʇǝɯ ɐɹǝ ɐʅso ou ʇɥǝ ᗡǝɔısıous ʇɐq."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɐɔʇıous ɟɹoɯ ʇɥıs ɯǝǝʇıuƃ ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.notSent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup ʇɥǝ "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "pɹɐɟʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ʇo ʇɥǝıɹ oʍuǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.sendLater": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɹɐɟʇs ɐɹǝ sǝuʇ ʇo ʇɥǝıɹ oʍuǝɹs ouɔǝ ʇɥǝ ɯǝǝʇıuƃ ıs ɥǝʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıou sǝuʇ ʇo ıʇs oʍuǝɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıous sǝuʇ ʇo ʇɥǝıɹ oʍuǝɹs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.sentAll": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıou ʍɐs sǝuʇ ʇo ıʇs oʍuǝɹ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıous ʍǝɹǝ sǝuʇ ʇo ʇɥǝıɹ oʍuǝɹs."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.sentNone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɹǝ ʍǝɹǝ uo pɹɐɟʇs ʎon ɯɐʎ sǝup."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.sentSome": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 2,
+      "value": "sent",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " sǝuʇ. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇ ʍɐs uoʇ sǝuʇ:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɹɐɟʇs ʍǝɹǝ uoʇ sǝuʇ:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.meeting.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ɟɹoɯ ʇɥıs ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.open": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.openNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.optional": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "(odʇıouɐʅ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.owner.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ ʍɐs ɔɥɐuƃǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.owner.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ odǝu ʇɐsʞ ɯoʌǝs ʇo ʇɥǝ uǝʍ oʍuǝɹ. Ԑoʇɥ ʇɥǝ dɹǝʌıons ɐup ʇɥǝ uǝʍ oʍuǝɹ ɐɹǝ ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.owner.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.owner.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝ oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.page.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ʇɥǝ ɔoɯɯıʇʇǝǝ’s oɟɟıɔǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.page.warnings": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ʇɥǝ sǝɔɹǝʇɐɹıǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.alreadyAsked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹs ʍǝɹǝ ɐsʞǝp ʇopɐʎ ɐʅɹǝɐpʎ. ⅄on ɔɐu ɐsʞ ɐƃɐıu ʇoɯoɹɹoʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.alreadyHeld": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɐɔʇıou ıs ʞǝdʇ onʇ oɟ ʇɥɐʇ ɯǝǝʇıuƃ’s ɹǝdoɹʇ ɐʅɹǝɐpʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.committee": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɐɔʇıou qǝʅouƃs ʇo ɐuoʇɥǝɹ ɔoɯɯıʇʇǝǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.noMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔoɯɯıʇʇǝǝ ɥɐs uo uǝxʇ ɯǝǝʇıuƃ ʎǝʇ, so ʇɥǝɹǝ ıs uo ɹǝdoɹʇ ʇo ʞǝǝd ıʇ onʇ oɟ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.noOverride": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɔoʅonɹ ıs sǝʇ qʎ ɥɐup ou ʇɥıs ɐɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.raiseWindow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ɐɹǝ ɹɐısǝp ouɔǝ ʇɥǝ ɯǝǝʇıuƃ ɥɐs sʇɐɹʇǝp, nuʇıʅ ıʇs ɯıunʇǝs ɐɹǝ ɐddɹoʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.refused.recused": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on pǝɔʅɐɹǝp ɐu ıuʇǝɹǝsʇ ıu ʇɥıs ıʇǝɯ, so ʎon ɔɐuuoʇ ɹɐısǝ oɹ ɔɥɐuƃǝ ıʇs ɐɔʇıous. ∀uoʇɥǝɹ sǝɔɹǝʇɐɹʎ ɔɐu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔʇıou ʍɐs ɹǝodǝuǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ pnǝ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.explain": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ sʇɐɹʇs ɐƃɐıu ʍıʇɥ ʇɥǝ oʍuǝɹ ɐup ʇɥǝ uǝʍ pɐʇǝ. ⊥ɥǝ oʍuǝɹ ıs ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝodǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝodǝu ʇɥǝ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.reopen.why": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥʎ ıʇ ıs ɹǝodǝuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.row.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "qʎ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.row.noOwner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No oʍuǝɹ ʎǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.row.withSource": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "facts"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.someone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ uɐɯǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.ask": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞ oʍuǝɹs ɟoɹ ɐu ndpɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.asked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No oʍuǝɹ uǝǝpǝp ɐsʞıuƃ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " oʍuǝɹ ʍɐs ɐsʞǝp ɟoɹ ɐu ndpɐʇǝ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " oʍuǝɹs ʍǝɹǝ ɐsʞǝp ɟoɹ ɐu ndpɐʇǝ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.col.action": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.col.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.col.owner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.col.ref": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.col.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoʅonɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.amber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɯqǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.blue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥o ʌǝɹıɟʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.green": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ɹǝǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.overdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.colour.red": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɔoɯɯıʇʇǝǝ ɥɐs uo ɐɔʇıous ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.export": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝxdoɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.exportFailed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ǝxdoɹʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.exportLimited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɥɐʌǝ ǝxdoɹʇǝp ʇǝu ʇıɯǝs ʇɥıs ɥonɹ. ⊥ɹʎ ɐƃɐıu ʅɐʇǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.exported": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔʇıous ʍǝɹǝ poʍuʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.filters": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎıʅʇǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.keyNoStale": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɔoɯɯıʇʇǝǝ: ɐɯqǝɹ ʍɥǝu pnǝ ʍıʇɥıu "
+    },
+    {
+      "type": 6,
+      "value": "amber",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", oɹ ɐʇ ɹısʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.keyStale": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɔoɯɯıʇʇǝǝ: ɐɯqǝɹ ʍɥǝu pnǝ ʍıʇɥıu "
+    },
+    {
+      "type": 6,
+      "value": "amber",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", ɐʇ ɹısʞ, oɹ ʍıʇɥ uo ndpɐʇǝ ɟoɹ "
+    },
+    {
+      "type": 6,
+      "value": "stale",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.matching": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No ɐɔʇıous ɯɐʇɔɥ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıou ɯɐʇɔɥǝs."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐɔʇıous ɯɐʇɔɥ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.meeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.meeting.any": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.new": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.noneMatch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɐɔʇıous ɯɐʇɔɥ ʇɥǝsǝ ɟıʅʇǝɹs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.notYours": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɹǝ ɐɹǝ uo ɐɔʇıous oɟ ʇɥıs ɔoɯɯıʇʇǝǝ ɟoɹ ʎon ʇo sǝǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.owner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʍuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.owner.anyone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.revised": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "(ɹǝʌ. "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.search": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝɐɹɔɥ ɐɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.sort": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɹʇ qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.sort.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.sort.reference": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹǝuɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.sort.updated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐʇǝsʇ ndpɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.cancelled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.draft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɹɐɟʇs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.open": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.status.toVerify": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ, ʇo qǝ ʌǝɹıɟıǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.tab": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — ∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.total.amber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ soou oɹ ɐʇ ɹısʞ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.total.blue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥o ʌǝɹıɟʎ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.total.green": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ou ʇɹɐɔʞ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.total.red": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ oɹ oɟɟ ʇɹɐɔʞ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.totals": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oʇɐʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.totalsMore": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp oɹ ɔɐuɔǝʅʅǝp: "
+    },
+    {
+      "type": 2,
+      "value": "closed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · ᗡɹɐɟʇs: "
+    },
+    {
+      "type": 2,
+      "value": "drafts",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.verify.doneBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ qʎ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ":"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.verify.doneNoNote": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐɹʞǝp ɐs pouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.verify.evidence": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌıpǝuɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.verify.memos": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍ-nd ɯǝɯos"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.verify.noEvidence": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɟıʅǝs ʍǝɹǝ ɐʇʇɐɔɥǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.warn.notCleared": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ıs uoʇ ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɐɔʇıou’s ʅǝʌǝʅ, oɹ ıs uo ʅouƃǝɹ ɐɔʇıʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.warn.ownerRecused": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " pǝɔʅɐɹǝp ɐu ıuʇǝɹǝsʇ ıu ʇɥıs ıʇǝɯ. ⊥ɥǝʎ ʍıʅʅ sǝǝ ʇɥıs ɐɔʇıou, qnʇ uoʇ ʇɥǝ ıʇǝɯ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.warnings": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑǝɟoɹǝ ʎon sǝup ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "admin.audit.action": [
     {
       "type": 0,
@@ -30898,6 +35381,522 @@
     {
       "type": 0,
       "value": "⅄on ɥɐʌǝ nusɐʌǝp ɔɥɐuƃǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.amber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɯqǝɹ ʍɥǝu pnǝ ʍıʇɥıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.amberHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs, 1 ʇo 60."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.default.nextMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ uǝxʇ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.default.workingDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ unɯqǝɹ oɟ ʍoɹʞıuƃ pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.defaultDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.defaultDaysHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "1 ʇo 120. ∀ʅso nsǝp ʍɥǝu uo uǝxʇ ɯǝǝʇıuƃ ıs sɔɥǝpnʅǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.defaultDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟɐnʅʇ pnǝ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.definition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹs ɐup ǝsɔɐʅɐʇıou ɟoʅʅoʍ ʇɥǝ ʍoɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.definitionHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dnqʅısɥǝp ʍoɹʞɟʅoʍ ɟoɹ ɐɔʇıou ıʇǝɯs. ᴚnuuıuƃ ɐɔʇıous ʞǝǝd ʇɥǝ ʌǝɹsıou ʇɥǝʎ sʇɐɹʇǝp ou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.definitionMissing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": " (uoʇ dnqʅısɥǝp)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.due.chair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔɥɐıɹ’s ɐƃɹǝǝɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.due.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ouʅʎ ɐ ɹǝɐsou: ʇɥǝ oʍuǝɹ ɔɥɐuƃǝs ıʇ, ɐup ʇɥǝ sǝɔɹǝʇɐɹıǝs ɐɹǝ ʇoʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.due.secretary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ sǝɔɹǝʇɐɹʎ’s ɐƃɹǝǝɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.dueChange": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ uǝʍ pnǝ pɐʇǝ uǝǝps"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.dueChangeHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oɹıƃıuɐʅ pɐʇǝ ıs ɐʅʍɐʎs sɥoʍu qǝsıpǝ ʇɥǝ uǝʍ ouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.evidence": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌıpǝuɔǝ ıs ɹǝbnıɹǝp ʍɥǝu ɐu ɐɔʇıou ıs ɯɐɹʞǝp ɐs pouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʇɥıs ʇʎdǝ’s "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ʇɹɐɔʞ ʇɥǝıɹ ɐɔʇıous. Ↄɥɐuƃǝs ɐɹǝ ɹǝʌıǝʍǝp qʎ ɐ sǝɔoup ɐpɯıuısʇɹɐʇoɹ, ɐup ɐddʅʎ ʇo odǝu ɐɔʇıous ɟɹoɯ ʇɥǝıɹ uǝxʇ ɔɥɐuƃǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.openBuilder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ıu ʇɥǝ qnıʅpǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.preset": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐɹʇ ɟɹoɯ ɐu ǝxɐɯdʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.presetChoose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ɐu ǝxɐɯdʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.presetHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄodıǝs ouʅʎ ʇɥǝ ɐɔʇıous sǝʇʇıuƃs oɟ ʇɥǝ ǝxɐɯdʅǝ. Noʇɥıuƃ ɐddʅıǝs nuʇıʅ ʇɥǝ ʌǝɹsıou ıs dnqʅısɥǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.presetUse": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ʇɥǝsǝ ʌɐʅnǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.presetUsed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ǝxɐɯdʅǝ’s ʌɐʅnǝs ɐɹǝ ıu ʇɥǝ pɹɐɟʇ. Sɐʌǝ ʇo ʞǝǝd ʇɥǝɯ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.stale": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "“No ɹǝɔǝuʇ ndpɐʇǝ” ɐɟʇǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.staleHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs ʍıʇɥonʇ ɐu ndpɐʇǝ, 5 ʇo 120, ɐɟʇǝɹ ʍɥıɔɥ ɐu ɐɔʇıou sɥoʍs ɐs ɐɯqǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.staleUse": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ʇɥǝ “uo ɹǝɔǝuʇ ndpɐʇǝ” ɹnʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.tab": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.updates": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞ oʍuǝɹs ɟoɹ ɐu ndpɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.updatesDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs qǝɟoɹǝ ʇɥǝ dɐdǝɹs ɐɹǝ pnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.updatesHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "1 ʇo 20. Oʍuǝɹs oɟ odǝu ɐɔʇıous ʍıʇɥ uo ndpɐʇǝ sıuɔǝ ʇɥǝ ʅɐsʇ ɯǝǝʇıuƃ ɐɹǝ ɐsʞǝp ouɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.updatesUse": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞ oʍuǝɹs ɟoɹ ɐu ndpɐʇǝ qǝɟoɹǝ ʇɥǝ dɐdǝɹs ɐɹǝ pnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.verified.chair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔɥɐıɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.verified.secretary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ sǝɔɹǝʇɐɹʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.verifiedBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ɐɹǝ ʌǝɹıɟıǝp qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.verifiedHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʌǝɹ ʇɥǝ oʍuǝɹ oɹ soɯǝouǝ ıuʌoʅʌǝp ıu ʇɥǝ ɐɔʇıou: ɐuoʇɥǝɹ sǝɔɹǝʇɐɹʎ, oɹ ʇɥǝ ʌıɔǝ-ɔɥɐıɹ, poǝs ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumActions.workingDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʍoɹʞıuƃ pɐʎs"
     },
     {
       "type": 0,

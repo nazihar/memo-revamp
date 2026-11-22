@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/form-controls'
 import { useTerms } from '@/features/terms/terms'
 import { am } from './messages'
+import { CloseAgreed } from './officer/CloseAgreed'
 import { RagBadge, RagKey } from './RagBadge'
 import { cancelWord, dayOf, dueWords } from './words'
 
@@ -32,7 +33,8 @@ const shown = (s: ActionReportSectionResponse): s is ActionReportSectionResponse
  * `/meetings/{id}/action-report`, the action taken report (flow AO, design §1.12): fixed when the agenda was published,
  * the sections that need the meeting first (proposed to close, overdue), then open, closed and cancelled since the last
  * meeting and corrections to earlier minutes; each reader's rows and counts by the one rule. "Print" opens the reader's
- * rows as a PDF (built on demand by the server). An earlier revision's report can be chosen; it never changed.
+ * rows as a PDF (built on demand by the server). An earlier revision's report can be chosen; it never changed. At the
+ * meeting, its officers close the actions the committee agreed (E07 T10, flow AM2).
  */
 export function ActionReportPage({
   meetingId,
@@ -119,6 +121,8 @@ export function ActionReportPage({
       {r.sections.filter(shown).map((s, i) => (
         <Section key={s.section} number={i + 1} section={s} />
       ))}
+
+      {revision ? null : <CloseAgreed report={r} />}
 
       {r.more > 0 ? <p className="text-lg">{intl.formatMessage(am.reportMore, { ...terms, count: r.more })}</p> : null}
       {r.heldBack ? (

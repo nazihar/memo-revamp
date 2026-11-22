@@ -326,7 +326,7 @@ describe('My actions in the inbox (Phase 4 E07 T11, flow AK)', () => {
 
   it('loads the actions part with the inbox, the action page and the report, never in core', () => {
     expect(partsForPath('/inbox')).toEqual(['inbox', 'actions'])
-    expect(partsForPath('/actions/a1')).toEqual(['actions'])
+    expect(partsForPath('/actions/a1')).toEqual(['actions', 'actionsOfficer'])
     expect(partsForPath('/meetings/m1/action-report')).toEqual(expect.arrayContaining(['actions', 'actionLinks']))
     expect(partsForPath('/memos/m1')).toContain('actionLinks')
     expect(partsForPath('/memos/m1')).not.toContain('actions')

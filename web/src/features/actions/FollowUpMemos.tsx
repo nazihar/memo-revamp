@@ -68,7 +68,7 @@ export function FollowUpMemos({ action }: { action: ActionResponse }) {
   )
 }
 
-function MemoLine({ memo: m }: { memo: ActionMemoResponse }) {
+export function MemoLine({ memo: m }: { memo: ActionMemoResponse }) {
   const intl = useIntl()
   const kind = intl.formatMessage(m.kind === 'RAISED' ? am.memoRaisedKind : am.memoLinkedKind)
   if (!m.readable) {

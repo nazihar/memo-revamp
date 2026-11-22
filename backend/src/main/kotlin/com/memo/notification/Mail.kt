@@ -52,6 +52,10 @@ import java.util.UUID
  * - ACTION_ASSIGNED: name, organisation, committee, reference, date (the due date), link (never the action's title or text)
  * - ACTION_OWNER_CHANGED: name, organisation, committee, reference, date (the due date), link (to the previous and the new owner)
  * - ACTION_RISK_ACCEPTED: name, organisation, committee, reference, link (to the chair, recorded on their behalf)
+ * - ACTION_ESCALATED: name, organisation, committee, reference, date (the due date), holder (the name, and the owner
+ *   position's title), days (working days overdue), link (to the holder's supervisor or the definition's target)
+ * - ACTION_SENT_BACK: name, organisation, committee, reference, date, link (to the holder; never the verifier's remark)
+ * - ACTIONS_DIGEST: name, organisation, lines (the references by kind, in the recipient's language), link (My actions)
  */
 enum class MailTemplate {
     INVITATION,
@@ -112,6 +116,9 @@ enum class MailTemplate {
     ACTION_ASSIGNED,
     ACTION_OWNER_CHANGED,
     ACTION_RISK_ACCEPTED,
+    ACTION_ESCALATED,
+    ACTION_SENT_BACK,
+    ACTIONS_DIGEST,
 }
 
 /**

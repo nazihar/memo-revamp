@@ -39,6 +39,9 @@
           "issue" : {
             "type" : "boolean"
           },
+          "markDone" : {
+            "type" : "boolean"
+          },
           "overrideRag" : {
             "type" : "boolean"
           },
@@ -56,9 +59,27 @@
           },
           "updateOnBehalf" : {
             "type" : "boolean"
+          },
+          "verify" : {
+            "type" : "boolean"
           }
         },
-        "required" : [ "acceptRisk", "cancel", "changeDue", "changeOwner", "confidence", "decideDue", "discard", "edit", "issue", "overrideRag", "reopen", "requestDue", "start", "update", "updateOnBehalf" ],
+        "required" : [ "acceptRisk", "cancel", "changeDue", "changeOwner", "confidence", "decideDue", "discard", "edit", "issue", "markDone", "overrideRag", "reopen", "requestDue", "start", "update", "updateOnBehalf", "verify" ],
+        "type" : "object"
+      },
+      "ActionDoneRequest" : {
+        "properties" : {
+          "fileIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "ActionDueRequest" : {
@@ -2568,6 +2589,21 @@
         },
         "type" : "object"
       },
+      "CloseAgreedRequest" : {
+        "properties" : {
+          "actionIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "remark" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "CloseRequest" : {
         "properties" : {
           "validTo" : {
@@ -2577,6 +2613,37 @@
           }
         },
         "required" : [ "validTo" ],
+        "type" : "object"
+      },
+      "CloseResult" : {
+        "properties" : {
+          "actionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "closed" : {
+            "type" : "boolean"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "actionId", "closed" ],
+        "type" : "object"
+      },
+      "CloseResultsResponse" : {
+        "properties" : {
+          "results" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CloseResult"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "results" ],
         "type" : "object"
       },
       "CoauthorsRequest" : {
@@ -9250,12 +9317,20 @@
       },
       "MyActionCounts" : {
         "properties" : {
+          "contributing" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
           "mine" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "toVerify" : {
             "format" : "int32",
             "type" : "integer"
           }
         },
-        "required" : [ "mine" ],
+        "required" : [ "contributing", "mine", "toVerify" ],
         "type" : "object"
       },
       "MyActionsResponse" : {
@@ -9273,7 +9348,7 @@
             "type" : [ "string", "null" ]
           },
           "tab" : {
-            "enum" : [ "MINE" ],
+            "enum" : [ "MINE", "TO_VERIFY", "CONTRIBUTING" ],
             "type" : "string"
           }
         },
@@ -14297,6 +14372,18 @@
         "required" : [ "problems", "valid" ],
         "type" : "object"
       },
+      "VerifyActionRequest" : {
+        "properties" : {
+          "decision" : {
+            "enum" : [ "CLOSE", "SEND_BACK" ],
+            "type" : [ "string", "null" ]
+          },
+          "remark" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "VersionComparison" : {
         "properties" : {
           "from" : {
@@ -14794,6 +14881,58 @@
           }
         },
         "summary" : "Discard a draft action, kept and never numbered (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/done" : {
+      "post" : {
+        "operationId" : "markActionDone",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ActionDoneRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark the action as done, with what was done and the evidence (the holder)",
         "tags" : [ "actions" ]
       }
     },
@@ -15320,6 +15459,58 @@
           }
         },
         "summary" : "Post a progress update (the owner, a contributor, or a secretary for the owner)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/verify" : {
+      "post" : {
+        "operationId" : "verifyAction",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/VerifyActionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close the action, or send it back to the owner with a remark (the verifier)",
         "tags" : [ "actions" ]
       }
     },
@@ -22645,7 +22836,7 @@
           "name" : "tab",
           "required" : false,
           "schema" : {
-            "enum" : [ "MINE" ],
+            "enum" : [ "MINE", "TO_VERIFY", "CONTRIBUTING" ],
             "type" : "string"
           }
         }, {
@@ -23174,6 +23365,51 @@
           }
         },
         "summary" : "Raise a draft action from a decision, an item or the meeting (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/actions/close-agreed" : {
+      "post" : {
+        "operationId" : "closeAgreedActions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CloseAgreedRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CloseResultsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close the actions the committee agreed at the meeting (the verifier)",
         "tags" : [ "actions" ]
       }
     },

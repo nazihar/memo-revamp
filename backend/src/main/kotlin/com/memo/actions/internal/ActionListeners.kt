@@ -9,6 +9,7 @@ import com.memo.meeting.Meetings
 import com.memo.meeting.Recusals
 import com.memo.minutes.DecisionRecorded
 import com.memo.minutes.ResolutionChanged
+import com.memo.notification.NotificationKind
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.WorkflowInstanceEnded
 import com.memo.workflow.WorkflowQueries
@@ -52,6 +53,8 @@ class ActionWorkflowListener(
                 status = ActionStatus.DONE_PENDING.takeIf { done },
                 doneAt = now.takeIf { done },
             )
+            // The verifiers (each candidate of the pool) are asked; their emails wait for the daily digest.
+            event.assigneeId?.let { effects.notify(it, NotificationKind.ACTION_TO_VERIFY, row, mapOf("date" to row.dueDate.toString())) }
         }
     }
 
@@ -63,7 +66,8 @@ class ActionWorkflowListener(
             } ?: return
         val now = clock.instant().truncatedTo(ChronoUnit.MICROS)
         if (event.status == InstanceStatus.APPROVED) {
-            tracking.track(row.id, stepName = null, status = ActionStatus.CLOSED, closedAt = now)
+            // Closed by whoever approved the last step (the verifier), or by the engine (null).
+            tracking.track(row.id, stepName = null, status = ActionStatus.CLOSED, closedAt = now, closedBy = actorOrNull())
             effects.changed(row, ActionChange.CLOSED)
         } else {
             tracking.track(

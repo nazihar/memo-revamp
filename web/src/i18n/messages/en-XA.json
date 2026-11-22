@@ -39166,6 +39166,20 @@
       "value": "]"
     }
   ],
+  "mail.template.actionEscalated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƈŧīǿǿƞ ḗḗşƈȧȧŀȧȧŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.actionOwnerChanged": [
     {
       "type": 0,
@@ -39188,6 +39202,34 @@
     {
       "type": 0,
       "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƈŧīǿǿƞ řīşķ ȧȧƈƈḗḗƥŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.actionSentBack": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƈŧīǿǿƞ şḗḗƞŧ ƀȧȧƈķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.actionsDigest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧīŀẏ ḓīɠḗḗşŧ ǿǿƒ ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƈŧīǿǿƞş"
     },
     {
       "type": 0,
@@ -62085,6 +62127,36 @@
       "value": "]"
     }
   ],
+  "notificationKinds.actionClosed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş ṽḗḗřīƒīḗḗḓ ȧȧƞḓ ƈŀǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notificationKinds.actionDueChanged": [
     {
       "type": 0,
@@ -62213,6 +62285,180 @@
       "value": "]"
     }
   ],
+  "notificationKinds.actionDueSoon": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " īş ḓŭŭḗḗ şǿǿǿǿƞ, ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionEscalated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", ħḗḗŀḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ", īş ǿǿṽḗḗřḓŭŭḗḗ şīƞƈḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionNotRunning": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ƞǿǿ řŭŭƞƞīƞɠ ẇǿǿřķƒŀǿǿẇ: ƈħḗḗƈķ īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionOverdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", ḓŭŭḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 5,
+      "value": "stage",
+      "options": {
+        "ESCALATED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "īş ǿǿṽḗḗřḓŭŭḗḗ ȧȧƞḓ ẇȧȧş ḗḗşƈȧȧŀȧȧŧḗḗḓ"
+            }
+          ]
+        },
+        "REMINDER": {
+          "value": [
+            {
+              "type": 0,
+              "value": "īş şŧīŀŀ ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "īş ǿǿṽḗḗřḓŭŭḗḗ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notificationKinds.actionOwnerChanged": [
     {
       "type": 0,
@@ -62307,6 +62553,44 @@
       "value": "]"
     }
   ],
+  "notificationKinds.actionSentBack": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", ḓŭŭḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", ẇȧȧş şḗḗƞŧ ƀȧȧƈķ ŧǿǿ ẏǿǿŭŭ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notificationKinds.actionSourceCorrected": [
     {
       "type": 0,
@@ -62331,6 +62615,36 @@
     {
       "type": 0,
       "value": " ƈȧȧḿḗḗ ƒřǿǿḿ ẇȧȧş ƈǿǿřřḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionToVerify": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş ḿȧȧřķḗḗḓ ȧȧş ḓǿǿƞḗḗ: ƥŀḗḗȧȧşḗḗ ṽḗḗřīƒẏ īŧ"
     },
     {
       "type": 0,

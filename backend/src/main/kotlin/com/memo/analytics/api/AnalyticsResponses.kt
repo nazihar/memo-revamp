@@ -2,6 +2,7 @@ package com.memo.analytics.api
 
 import com.memo.analytics.measures.SeatAttendance
 import com.memo.forum.ForumRole
+import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.util.UUID
 
@@ -16,9 +17,9 @@ enum class AnalyticsAccess {
 
 /** M1 for a committee: seat holders' attended meetings over expected ones, and the held meetings counted. */
 data class AttendanceSummary(
-    val heldMeetings: Int,
-    val expected: Int,
-    val attended: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val heldMeetings: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val expected: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attended: Int,
     /** attended ÷ expected in whole percent; null without an expected meeting. */
     val ratePercent: Int?,
 )
@@ -26,16 +27,16 @@ data class AttendanceSummary(
 /** M2 for a committee, from the actions the viewer may see. */
 data class ActionsSummary(
     /** Issued, OPEN or IN_PROGRESS, past the due date today. */
-    val overdue: Int,
-    val overdue1To30: Int,
-    val overdue31To90: Int,
-    val overdueOver90: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdue: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdue1To30: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdue31To90: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdueOver90: Int,
     /** Overdue ones whose date was changed at least once. */
-    val overdueRevised: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdueRevised: Int,
     /** Closed in the period. */
-    val closed: Int,
-    val closedByOriginalDate: Int,
-    val closedByAgreedDate: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val closed: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val closedByOriginalDate: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val closedByAgreedDate: Int,
     val closedByOriginalPercent: Int?,
     val closedByAgreedPercent: Int?,
 )
@@ -43,30 +44,30 @@ data class ActionsSummary(
 /** M3 over some decisions the viewer sees in full: calendar days with working days beside them. */
 data class TimingSummary(
     /** The basis: "based on n decisions you can see in full". */
-    val decisions: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val decisions: Int,
     val medianDays: Int?,
     val p90Days: Int?,
     val medianWorkingDays: Int?,
     val p90WorkingDays: Int?,
     /** At least five decisions: below that the screen lists the decisions instead of a typical time. */
-    val enough: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val enough: Boolean,
 )
 
 /** M4 over the decisions on submission items the viewer sees in full. */
 data class DeferralSummary(
-    val decisions: Int,
-    val deferred: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val decisions: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val deferred: Int,
     val deferredPercent: Int?,
     /** Items deferred for at least the second time in their chain. */
-    val deferredTwice: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val deferredTwice: Int,
 )
 
 /** M5 for a committee: its held meetings whose first agenda revision was published by the papers deadline. */
 data class PapersSummary(
-    val meetings: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: Int,
     /** The meetings with a deadline to compare with: the share's basis. */
-    val withDeadline: Int,
-    val onTime: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val withDeadline: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val onTime: Int,
     val onTimePercent: Int?,
     /** Items and papers flagged late or tabled that the viewer sees in full; null for members (the share only). */
     val lateItems: Int?,
@@ -75,65 +76,65 @@ data class PapersSummary(
 
 /** One committee's five measures (flow AU). */
 data class CommitteeSummaryResponse(
-    val forumId: UUID,
-    val code: String,
-    val name: String,
-    val shortName: String,
-    val access: AnalyticsAccess,
-    val attendance: AttendanceSummary,
-    val actions: ActionsSummary,
-    val timeToDecision: TimingSummary,
-    val deferrals: DeferralSummary,
-    val papers: PapersSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shortName: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val access: AnalyticsAccess,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attendance: AttendanceSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val actions: ActionsSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val timeToDecision: TimingSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val deferrals: DeferralSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val papers: PapersSummary,
 )
 
 /** The analytics overview: one block per committee in the viewer's scope, by name (flow AU). */
 data class AnalyticsSummaryResponse(
-    val from: LocalDate,
-    val to: LocalDate,
-    val committees: List<CommitteeSummaryResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val from: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val to: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val committees: List<CommitteeSummaryResponse>,
 )
 
 /** One held meeting of a seat holder's term. */
 data class MemberMeetingResponse(
-    val meetingId: UUID,
-    val date: LocalDate,
-    val attendance: SeatAttendance,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetingId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val date: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attendance: SeatAttendance,
     /** Their alternate attended in their place (not counted as theirs). */
-    val byAlternate: Boolean,
-    val joinedLate: Boolean,
-    val leftEarly: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byAlternate: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val joinedLate: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val leftEarly: Boolean,
 )
 
 /** A seat holder's attendance in the period (flow AV). */
 data class MemberAttendanceResponse(
-    val userId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val userId: UUID,
     val name: String?,
-    val role: ForumRole,
-    val seatFrom: LocalDate,
-    val seatTo: LocalDate,
-    val expected: Int,
-    val attended: Int,
-    val inPerson: Int,
-    val remote: Int,
-    val joinedLate: Int,
-    val leftEarly: Int,
-    val apologies: Int,
-    val absent: Int,
-    val byAlternate: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val role: ForumRole,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val seatFrom: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val seatTo: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val expected: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attended: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val inPerson: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val remote: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val joinedLate: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val leftEarly: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val apologies: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val absent: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byAlternate: Int,
     val ratePercent: Int?,
-    val meetings: List<MemberMeetingResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: List<MemberMeetingResponse>,
 )
 
 /** M1 in detail: the totals and the seat holders' rows. */
 data class AttendanceDetail(
-    val summary: AttendanceSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val summary: AttendanceSummary,
     /** By name; a member's own row only; empty when [membersOmitted]. */
-    val members: List<MemberAttendanceResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val members: List<MemberAttendanceResponse>,
     /** The viewer is a member: [members] holds their own row (when they held a seat at a held meeting) only. */
-    val ownRowOnly: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val ownRowOnly: Boolean,
     /** The period is longer than five years: per-member rows are not given (the committee's totals are). */
-    val membersOmitted: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val membersOmitted: Boolean,
 )
 
 /** One owner's overdue actions with ageing (flow AW). */
@@ -145,75 +146,77 @@ data class OwnerOverdueResponse(
     val ownerName: String?,
     /** Who holds the owner's task now. */
     val holderName: String?,
-    val overdue: Int,
-    val days1To30: Int,
-    val days31To90: Int,
-    val over90: Int,
-    val revised: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overdue: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val days1To30: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val days31To90: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val over90: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val revised: Int,
 )
 
 data class ActionsDetail(
-    val summary: ActionsSummary,
-    val owners: List<OwnerOverdueResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val summary: ActionsSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val owners: List<OwnerOverdueResponse>,
 )
 
 data class QuarterTimingResponse(
     /** "2026-Q1". */
-    val quarter: String,
-    val timing: TimingSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quarter: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val timing: TimingSummary,
 )
 
 data class MemoTypeTimingResponse(
     val memoTypeId: UUID?,
-    val timing: TimingSummary,
+    /** The memo type's name; null for submissions without a memo type. */
+    val memoTypeName: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val timing: TimingSummary,
 )
 
 data class TimingDetail(
-    val overall: TimingSummary,
-    val byQuarter: List<QuarterTimingResponse>,
-    val byMemoType: List<MemoTypeTimingResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overall: TimingSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byQuarter: List<QuarterTimingResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byMemoType: List<MemoTypeTimingResponse>,
 )
 
 data class QuarterDeferralResponse(
-    val quarter: String,
-    val deferrals: DeferralSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quarter: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val deferrals: DeferralSummary,
 )
 
 data class DeferralDetail(
-    val overall: DeferralSummary,
-    val byQuarter: List<QuarterDeferralResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val overall: DeferralSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val byQuarter: List<QuarterDeferralResponse>,
 )
 
 /** One held meeting: its papers and its seat holders' attendance (the committee's meetings of the period). */
 data class MeetingPapersResponse(
-    val meetingId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetingId: UUID,
     val label: String?,
-    val date: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val date: LocalDate,
     /** Null: no deadline to compare with. */
     val onTime: Boolean?,
     val lateItems: Int?,
     val latePapers: Int?,
-    val expected: Int,
-    val attended: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val expected: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attended: Int,
 )
 
 data class PapersDetail(
-    val summary: PapersSummary,
-    val meetings: List<MeetingPapersResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val summary: PapersSummary,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: List<MeetingPapersResponse>,
 )
 
 /** A committee's detail (flows AV, AW). */
 data class CommitteeDetailResponse(
-    val forumId: UUID,
-    val code: String,
-    val name: String,
-    val shortName: String,
-    val access: AnalyticsAccess,
-    val from: LocalDate,
-    val to: LocalDate,
-    val attendance: AttendanceDetail,
-    val actions: ActionsDetail,
-    val timeToDecision: TimingDetail,
-    val deferrals: DeferralDetail,
-    val papers: PapersDetail,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shortName: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val access: AnalyticsAccess,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val from: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val to: LocalDate,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attendance: AttendanceDetail,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val actions: ActionsDetail,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val timeToDecision: TimingDetail,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val deferrals: DeferralDetail,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val papers: PapersDetail,
 )

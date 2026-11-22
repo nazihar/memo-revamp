@@ -28,7 +28,10 @@ class DecisionPlanting(
     private val store: DecisionStore,
     private val notes: NoteStore,
 ) {
-    /** A decision APPROVED on [itemId] with a vote 3–1–1, [dissent] with a reason, [abstaining] and [tookNoPart]. */
+    /**
+     * A decision APPROVED on [itemId] with a vote 3–1–1, [dissent] with a reason, [abstaining], [tookNoPart] and
+     * [conditions].
+     */
     fun decision(
         tenant: TenantId,
         meetingId: UUID,
@@ -39,6 +42,7 @@ class DecisionPlanting(
         dissent: Dissent? = null,
         abstaining: UUID? = null,
         tookNoPart: List<UUID> = emptyList(),
+        conditions: List<String> = listOf("Security perfected before disbursement"),
     ): UUID {
         val id = UUID.randomUUID()
         val now = Instant.now().truncatedTo(ChronoUnit.MICROS)
@@ -51,7 +55,7 @@ class DecisionPlanting(
                 outcomeLabel = "Approved",
                 resolution = true,
                 text = text,
-                conditions = listOf("Security perfected before disbursement"),
+                conditions = conditions,
                 validUntil = null,
                 deferTo = null,
                 referToForumId = null,

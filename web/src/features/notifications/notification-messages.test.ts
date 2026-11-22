@@ -67,3 +67,18 @@ describe('meeting reminders (design E05 §9)', () => {
     expect(notificationText(arabic, 'MEETING_QUORUM_AT_RISK', meeting)).toContain('قد لا يكتمل نصاب')
   })
 })
+
+describe('action items (design E07 §2.3)', () => {
+  const action = { committee: 'Board Risk Committee', reference: 'BRC A14/2026', date: '2027-03-12' }
+
+  it('name the committee, the reference and the date, never the action', () => {
+    expect(notificationText(english, 'ACTION_ASSIGNED', action)).toBe(
+      'Board Risk Committee has given you an action, due 2027-03-12 (BRC A14/2026)',
+    )
+    expect(notificationText(english, 'ACTION_SOURCE_CORRECTED', action)).toBe(
+      'The decision that action BRC A14/2026 of Board Risk Committee came from was corrected',
+    )
+    expect(templateLabel(english, 'ACTION_ASSIGNED')).toBe('Committee action assigned')
+    expect(notificationText(arabic, 'ACTION_ASSIGNED', action)).toContain('BRC A14/2026')
+  })
+})

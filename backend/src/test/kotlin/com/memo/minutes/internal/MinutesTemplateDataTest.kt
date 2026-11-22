@@ -173,6 +173,8 @@ class MinutesTemplateDataTest {
         lifted = false,
         published = true,
         tabled = false,
+        classificationId = UUID.randomUUID(),
+        membersOnly = false,
     )
 
     private fun person(

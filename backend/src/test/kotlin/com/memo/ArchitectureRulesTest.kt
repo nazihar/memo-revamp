@@ -104,6 +104,7 @@ class ArchitectureRulesTest {
                 "Forum" to "forum",
                 "Meeting" to "meeting",
                 "Minutes" to "minutes",
+                "Actions" to "actions",
             )
         tableModules.forEach { (prefix, module) ->
             noClasses()

@@ -1,0 +1,42 @@
+# Phase 4 E07 T3: action items raised, issued and seen (design E07 §3, §4; ADR-0067, ADR-0062). Rules: rules.yaml.
+# Meeting, committee and action ids are random here, so every subject allowed through is answered 404 (or 400/422 for a
+# body it cannot read) before any role check; "My actions" answers every signed-in user. Who may do what on a real
+# meeting (the secretary, forums.manage, the chair, a member, forum.read, the owner outside the committee, a recused
+# secretary and a recused member) is ActionsRaiseIT and ActionSubjectIT; another tenant ActionsCrossTenantIT.
+#
+# Recusal columns (E04 T5's leak suite, RecusalLeakIT): the status on the planted (scheduled) meeting for a member recused
+# from the item, one awaiting the chair's ruling, a recused secretary and a recused chair. Raising from the item is refused
+# before the meeting's state is looked at: 403 for anyone who does not raise actions, 403 `RECUSED` for the recused
+# secretary. A draft of the item ({actionId}) is invisible to all four: 404 to read, edit, discard or issue it.
+epic: P4-E07
+endpoints:
+  - endpoint: "POST /api/v1/meetings/{meetingId}/actions"
+    rule: signedIn
+    body: { source: "ITEM", itemId: "{item}", title: "Report the revised collateral valuation" }
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/actions", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/actions/issue"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/forums/{forumId}/actions"
+    rule: signedIn
+    body: { title: "Circulate the revised policy", sourceNote: "Chair's instruction" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "GET /api/v1/actions/{actionId}"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "PATCH /api/v1/actions/{actionId}"
+    rule: signedIn
+    body: { title: "Report the revised collateral valuation" }
+    headers: { If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/discard"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/issue"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - { endpoint: "GET /api/v1/me/actions", rule: signedIn }

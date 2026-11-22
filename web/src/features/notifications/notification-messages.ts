@@ -144,6 +144,8 @@ const kindsWithValues = defineMessages<{
   meetingReplyReminder: { committee: string; date: string }
   meetingReminder: { committee: string; date: string; unanswered: string; toReview: number }
   meetingQuorumAtRisk: { committee: string; date: string }
+  actionAssigned: { committee: string; reference: string; date: string }
+  actionSourceCorrected: { committee: string; reference: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -319,6 +321,14 @@ const kindsWithValues = defineMessages<{
     defaultMessage:
       'From the replies so far, the meeting of {committee} on {date} or some of its items may not be quorate',
   },
+  actionAssigned: {
+    id: 'notificationKinds.actionAssigned',
+    defaultMessage: '{committee} has given you an action, due {date} ({reference})',
+  },
+  actionSourceCorrected: {
+    id: 'notificationKinds.actionSourceCorrected',
+    defaultMessage: 'The decision that action {reference} of {committee} came from was corrected',
+  },
 })
 
 const kinds = defineMessages({
@@ -482,6 +492,17 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'MEETING_QUORUM_AT_RISK':
       return intl.formatMessage(kindsWithValues.meetingQuorumAtRisk, meetingValues(params))
+    case 'ACTION_ASSIGNED':
+      return intl.formatMessage(kindsWithValues.actionAssigned, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+        date: params.date ?? '',
+      })
+    case 'ACTION_SOURCE_CORRECTED':
+      return intl.formatMessage(kindsWithValues.actionSourceCorrected, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -580,6 +601,7 @@ const mailTemplates = defineMessages({
   MEETING_REPLY_REMINDER: { id: 'mail.template.meetingReplyReminder', defaultMessage: 'Meeting reply reminder' },
   MEETING_REMINDER: { id: 'mail.template.meetingReminder', defaultMessage: 'Meeting reminder' },
   MEETING_QUORUM_AT_RISK: { id: 'mail.template.meetingQuorumAtRisk', defaultMessage: 'Meeting quorum at risk' },
+  ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

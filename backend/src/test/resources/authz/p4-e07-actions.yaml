@@ -106,6 +106,17 @@ endpoints:
     body: { dueDate: "2099-01-20", reason: "Not done after all" }
     headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
     recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  # Phase 4 E07 T8: the committee's tracker and its export. On a random committee both answer 404 before any role check.
+  # Who has a tracker and who may export on a real committee (the secretary, the chair, forum.read, a member, an owner
+  # outside the committee, a stranger) is ActionTrackerIT and TrackerExportIT. On the planted meeting's committee every
+  # recused viewer has a tracker (without the item's rows or counts: RecusalLeakIT's TRACKER probe); a recused member may
+  # not export (403), a recused secretary or chair exports the other items' rows.
+  - endpoint: "GET /api/v1/forums/{forumId}/actions"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "GET /api/v1/forums/{forumId}/actions/export"
+    rule: signedIn
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }
   # Phase 4 E07 T5: closure. Who may mark done, verify and close at a meeting on a real action is ActionClosureIT and
   # ActionWorkflowIT; the draft of the item ({actionId} in the recusal columns) is invisible to every recused viewer (404).
   - endpoint: "POST /api/v1/actions/{actionId}/done"

@@ -270,3 +270,42 @@
   - Both sides kept in `ActionAccessArchTest` (the digest store, closure and timers beside the memo links and readers), `ar.json` (in key order) and this log; everything generated was regenerated.
   - 2,627 tests in 30 classes green: `com.memo.actions.*` with `FollowUpMemoIT`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
   - ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass, and the notification, memo, memo-type and action tests pass. Two of them timed out while Gradle ran beside them, and passed when run again on their own.
+
+## 2026-11-22 — T8: the tracker and its export
+- **Built:**
+  - **`GET /forums/{fid}/actions`, the committee's tracker** (flow AN): its issued actions and its direct drafts (secretaries and `forums.manage`), by the one rule (`ActionAccess.seen`).
+    - Filters: status (any of several), colour, overdue, owner (a person, a position or the task's holder), due from and to, meeting, item, source and text. The text matches the title and the description by `websearch_to_tsquery` (English stems and `simple`) or the reference.
+    - Sorts by due date, latest update or reference, with keyset pages of 50. A cursor that is not one, or of another sort, is 422 `cursor INVALID`.
+    - **Totals per colour** (red, amber, green, to verify, closed, drafts) come from `RagRule.shows` in one aggregate on the same predicate. They take every filter but the colour ones, and `matching` counts the rows under all of them. So a list and its counts cannot disagree, and nothing the viewer may not see is counted.
+    - The answer carries the key's numbers from the committee type and what the viewer may do (raise, export).
+    - Who has a tracker: officers, members in office, `forum.read`, and anyone involved in one of its issued actions (their own rows). Everyone else gets 404.
+  - **`GET /forums/{fid}/actions/export`** for the secretaries, the chair, `forums.manage` and `forum.read`, as E04 T4's declarations export: one SXSSF sheet with its temporary data encrypted, string cells through `SheetCells`, at most 5,000 rows.
+    - The right and the filter are checked before `ACTION_EXPORT_PER_USER` (10 an hour) is counted.
+    - It is audited as `actions.tracker.exported` with the filter (the text as its hash), the sort, the count and whether the rows were cut.
+  - **E08's ask:** the published `ActionStats`, with `overdue` (by committee and owner, ageing bands 1–30, 31–90 and over 90 days, and the revised count) and `closedOnTime` (by the original and by the agreed date). Each is on the same rule in one query.
+  - `ActionSummary` gained the owner's confidence and the latest update.
+  - Matrix rows for both endpoints, with recusal columns: the tracker answers 200 to every recused viewer; the export is 403 to a recused member and 200 to a recused officer.
+  - **The leak suites:** the E07 placeholder is gone, replaced by the TRACKER surface.
+    - `RecusalActionsFixture.trackerProbe`: no row, count, filter result or workbook line of a recused item; d1 has their own action only.
+    - `PaperLeakIT`: rows and totals by the item rule; only `forum.read` exports, and its workbook holds no canary.
+- **Choices made while building** (design §1.14 "As built in T8"):
+  - **The tracker lists direct drafts, not a meeting's**: those stay on the meeting's page and its "Send the drafts".
+  - **`dueFrom`/`dueTo`, both included**, instead of the sketch's `dueAfter`/`dueBefore`. The text filter also finds a reference.
+  - **The totals ignore the colour filters**, so the acceptance criterion holds: filtered "Overdue", the rows are the 3 overdue actions, and the totals still read "Red 3, Amber 2, Green 7, To verify 2". `overdue` is the design's derived state (§1.4), so an action overridden to amber is not red but is still overdue.
+  - **`ActionStats` takes no viewer parameter**: it counts for the signed-in person, because `ActionAccess`'s viewer is built from the security context. E08 asked for `overdue(viewer, …)`; a caller can then never count for someone else.
+  - The reads are a new `ActionTrackerReads`, which `ActionAccessArchTest` now allows beside `ActionAccess`. Every query in it is on `ActionAccess.seen`.
+  - **No index and no migration:** `EXPLAIN` of the page and the totals, with and without text, over 3,000 other actions of the tenant, uses `actions_item_forum_idx` (`ActionTrackerIT`).
+- **Tests:**
+  - `ActionTrackerIT`: the acceptance criterion; each colour's rows equal to its total; an override; the recused director's rows and totals; keyset pages in every sort; bad cursors; every filter and its checks; drafts; who has a tracker; `ActionStats`; and the plan check.
+  - `TrackerExportIT`: the workbook in the screen's order; the `=` title written `'=…`; the audit with the count and the text's hash; 403 and 404; ten an hour, with a refused request spending nothing.
+  - The leak suites' TRACKER probes and the matrix rows.
+- **Results (local):**
+  - Before merging `master`: 2,584 tests over `com.memo.actions.*`, `PaperLeakIT`, `RecusalLeakIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest` and the rate-limit tests: all green.
+  - After merging `master` (#222 and #227 merged; a fast-forward) and formatting: `ActionTrackerIT`, `TrackerExportIT`, `ActionAccessArchTest`, both leak suites, the matrix (2,496 cases), `EndpointCoverageTest`, `OpenApiContractTest`, `ArchitectureRulesTest`, `ModularityTest` and `AuditActionCoverageTest` were run again: all green.
+  - After merging `master` again (T5, #231): both sides kept in `ActionAccessArchTest` (the digest's store and the tracker's reads), `p4-e07-actions.yaml` and the docs; the contract, the web client and the module metadata regenerated, not merged by hand. Run again: all of `com.memo.actions.*` (T5's suites included), both leak suites, the matrix, `EndpointCoverageTest`, `OpenApiContractTest`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, ktlint, detekt and SpotBugs; web typecheck and lint. All green (2,609 tests).
+  - ktlint, detekt and SpotBugs are clean.
+  - Web: typecheck, lint and Prettier on the generated client pass.
+- **Left for later tasks:** T9 measures the tracker (with and without text) and the export at the design's volumes. T10 builds the screen on `ForumActionsResponse`. E08 T4 reads `ActionStats`.
+- **After merging T8 (#232) from `master`:**
+  - Both sides kept in `ActionAccessArchTest` (`ActionTrackerReads` beside `ActionMemoStore`), `PaperSurfaceRegistry` and this log.
+  - The same suites as after T5 are green (`BUILD SUCCESSFUL`); ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass. The `memo-types` and `memo-documents` tests timed out while Gradle ran beside them, and passed when run on their own.

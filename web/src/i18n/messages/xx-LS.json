@@ -10239,6 +10239,1806 @@
       "value": "Approvals dashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "decisions.abstainedLine": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 1,
+              "value": "names"
+            },
+            {
+              "type": 0,
+              "value": " abstained."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "names"
+            },
+            {
+              "type": 0,
+              "value": " abstained."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.addCondition": [
+    {
+      "type": 0,
+      "value": "Add a conditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.agenda": [
+    {
+      "type": 0,
+      "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.checkForm": [
+    {
+      "type": 0,
+      "value": "Some answers need your attention.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.chooseCommittee": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.conditionLabel": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.conditionRemove": [
+    {
+      "type": 0,
+      "value": "Remove condition "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.conditions": [
+    {
+      "type": 0,
+      "value": "ConditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.decide": [
+    {
+      "type": 0,
+      "value": "Decide the consent items togetherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.decided": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Item "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " already has a decision."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Items "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " already have a decision."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.done": [
+    {
+      "type": 0,
+      "value": "The consent items are decided.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.lifted": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Item "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " was lifted for discussion and is decided on its own."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Items "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " were lifted for discussion and are decided on their own."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.nothing": [
+    {
+      "type": 0,
+      "value": "Every consent item already has a decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.submit": [
+    {
+      "type": 0,
+      "value": "Decide togetherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.title": [
+    {
+      "type": 0,
+      "value": "Decide the consent items togetherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consent.will": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Item "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " will be "
+            },
+            {
+              "type": 1,
+              "value": "outcome"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Items "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " will be "
+            },
+            {
+              "type": 1,
+              "value": "outcome"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.consentItems": [
+    {
+      "type": 0,
+      "value": "Consent itemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.correct": [
+    {
+      "type": 0,
+      "value": "CorrectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.correctReason": [
+    {
+      "type": 0,
+      "value": "Why are you correcting it?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.correctSubmit": [
+    {
+      "type": 0,
+      "value": "Correct the decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.correctTitle": [
+    {
+      "type": 0,
+      "value": "Correct the decision on "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.corrected": [
+    {
+      "type": 0,
+      "value": "The decision is corrected.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.decision": [
+    {
+      "type": 0,
+      "value": "DecisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.decisionText": [
+    {
+      "type": 0,
+      "value": "What was decidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.date": [
+    {
+      "type": 0,
+      "value": "A dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.dateLabel": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.meeting": [
+    {
+      "type": 0,
+      "value": "A meeting already plannedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.meetingLabel": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.next": [
+    {
+      "type": 0,
+      "value": "The next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.defer.noLater": [
+    {
+      "type": 0,
+      "value": "No later meeting is planned yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.deferTo": [
+    {
+      "type": 0,
+      "value": "Deferred toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.deferredNext": [
+    {
+      "type": 0,
+      "value": "Deferred to the next meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.deferredTo": [
+    {
+      "type": 0,
+      "value": "Deferred to "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.dissentLine": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " asked that their dissent be recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.dissentReason": [
+    {
+      "type": 0,
+      "value": "Reason they asked to be recorded (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.dissentReasonLine": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " asked that their dissent be recorded: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.drifted": [
+    {
+      "type": 0,
+      "value": "The attendance was corrected after this decision was recorded. Check the quorum again when you correct it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.forNotMore": [
+    {
+      "type": 0,
+      "value": "For is not more than Against. Check the counts if this is an approval (a casting vote is allowed).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.frozenLine": [
+    {
+      "type": 0,
+      "value": "The minutes are approved: this decision can no longer be changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.heading": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.afterApproval": [
+    {
+      "type": 0,
+      "value": "After this, decisions you record are numbered at once; memos move on when the minutes are approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.afterNow": [
+    {
+      "type": 0,
+      "value": "After this, decisions you record will reach their memos at once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.decisions": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision is recorded."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions are recorded."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.loading": [
+    {
+      "type": 0,
+      "value": "Reading the decisions…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.memosLater": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo will move on when the minutes are approved: "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos will move on when the minutes are approved: "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.memosNow": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo will move on now: "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos will move on now: "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.none": [
+    {
+      "type": 0,
+      "value": "No decision is recorded yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.resolutions": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "None is a resolution."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " is a resolution and will be numbered ("
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": ")."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " are resolutions and will be numbered in agenda order ("
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": ")."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.title": [
+    {
+      "type": 0,
+      "value": "What happens nextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.held.undecided": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " has no decision. Its memo will keep waiting until you record one."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " have no decision. Their memos will keep waiting until you record them."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.hideHistory": [
+    {
+      "type": 0,
+      "value": "Hide the historySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.history": [
+    {
+      "type": 0,
+      "value": "HistorySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.history.corrected": [
+    {
+      "type": 0,
+      "value": "Corrected "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.history.entry": [
+    {
+      "type": 0,
+      "value": "Decision: "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.history.recorded": [
+    {
+      "type": 0,
+      "value": "Recorded "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.itemLine": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.itemOnly": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.itemWithOutcome": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.itemWords": [
+    {
+      "type": 0,
+      "value": "item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.lifted": [
+    {
+      "type": 0,
+      "value": "(lifted for discussion)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.minutesInReview": [
+    {
+      "type": 0,
+      "value": "The minutes are with the chair or the members. Correcting this decision sends them back to the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.noCommittees": [
+    {
+      "type": 0,
+      "value": "No other "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " can take it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.noItems": [
+    {
+      "type": 0,
+      "value": "The agenda has no items to decide.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.noVoters": [
+    {
+      "type": 0,
+      "value": "Nobody present may vote on this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notYet": [
+    {
+      "type": 0,
+      "value": "Not decided yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes": [
+    {
+      "type": 0,
+      "value": "Notes for the minutes (only secretaries see these)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.closed": [
+    {
+      "type": 0,
+      "value": "Notes can no longer be changed: the minutes have left the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.conflict": [
+    {
+      "type": 0,
+      "value": "Another secretary changed these notes. Their version is shown; your text was not saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.failed": [
+    {
+      "type": 0,
+      "value": "Not saved. It will be tried again as you type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.saved": [
+    {
+      "type": 0,
+      "value": "SavedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.savedAt": [
+    {
+      "type": 0,
+      "value": "Saved at "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.saving": [
+    {
+      "type": 0,
+      "value": "Saving…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notes.unsaved": [
+    {
+      "type": 0,
+      "value": "Not saved yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.notesHint": [
+    {
+      "type": 0,
+      "value": "Saved as you type. They fill “key points discussed” when the draft minutes are made.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.now": [
+    {
+      "type": 0,
+      "value": "Now: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.numberedAtEnd": [
+    {
+      "type": 0,
+      "value": "numbered when the meeting endsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.openResolution": [
+    {
+      "type": 0,
+      "value": "Open the resolutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.outcomeCaps": [
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.outcomeNumber": [
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": " — Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.outcomeRequired": [
+    {
+      "type": 0,
+      "value": "Choose the decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.people": [
+    {
+      "type": 0,
+      "value": "Dissent and abstentionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.peopleHint": [
+    {
+      "type": 0,
+      "value": "Only the people present who may vote on this item can be named.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.person.abstained": [
+    {
+      "type": 0,
+      "value": "AbstainedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.person.agreed": [
+    {
+      "type": 0,
+      "value": "AgreedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.person.dissented": [
+    {
+      "type": 0,
+      "value": "DissentedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.both": [
+    {
+      "type": 0,
+      "value": "Nobody can both dissent and abstain.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.conditionsRequired": [
+    {
+      "type": 0,
+      "value": "Add at least one condition.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.duplicate": [
+    {
+      "type": 0,
+      "value": "Each person can be named once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.invalid": [
+    {
+      "type": 0,
+      "value": "Check this answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.length": [
+    {
+      "type": 0,
+      "value": "This is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.notPresent": [
+    {
+      "type": 0,
+      "value": "This person was not present for the item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.notVoting": [
+    {
+      "type": 0,
+      "value": "This person may not vote on this committee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.outcome": [
+    {
+      "type": 0,
+      "value": "A ratification approves or notes the decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.outcomeNotOffered": [
+    {
+      "type": 0,
+      "value": "Choose one of the outcomes offered.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.range": [
+    {
+      "type": 0,
+      "value": "This value is out of range.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.ratifyNotQuorate": [
+    {
+      "type": 0,
+      "value": "Only a decision taken with a quorum ratifies another.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.recusedNamed": [
+    {
+      "type": 0,
+      "value": "This person declared an interest in the item and took no part, so they cannot be named.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.sameForum": [
+    {
+      "type": 0,
+      "value": "Choose another committee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.targetRequired": [
+    {
+      "type": 0,
+      "value": "Say where it goes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.textRequired": [
+    {
+      "type": 0,
+      "value": "Write the resolution as it will be minuted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.timeOutOfRange": [
+    {
+      "type": 0,
+      "value": "Give a time during the meeting, not in the future.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.timeRequired": [
+    {
+      "type": 0,
+      "value": "Say when this item was taken.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.tooManyNamed": [
+    {
+      "type": 0,
+      "value": "More people are named than the vote counts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.unknown": [
+    {
+      "type": 0,
+      "value": "This is no longer available. Choose again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.problem.voteMode": [
+    {
+      "type": 0,
+      "value": "Give the counts only with a vote.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.purpose.decision": [
+    {
+      "type": 0,
+      "value": "For decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "For discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.purpose.information": [
+    {
+      "type": 0,
+      "value": "For informationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.quorate": [
+    {
+      "type": 0,
+      "value": "Quorate for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " voting members present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.quorateDeclared": [
+    {
+      "type": 0,
+      "value": "Quorate for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " voting members present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed ("
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": " declared an interest).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.quorumAtTime": [
+    {
+      "type": 0,
+      "value": "The quorum for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " is checked at the time it was taken.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.ratifies": [
+    {
+      "type": 0,
+      "value": "This decision ratifies (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.ratifies.none": [
+    {
+      "type": 0,
+      "value": "NothingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.ratifiesHint": [
+    {
+      "type": 0,
+      "value": "A decision taken without a quorum is ratified by a later quorate decision that approves or notes it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.ratifiesItem": [
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": ", item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recheck": [
+    {
+      "type": 0,
+      "value": "Check the quorum again at the time the item was takenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.record": [
+    {
+      "type": 0,
+      "value": "Record the decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recordVote": [
+    {
+      "type": 0,
+      "value": "Record a voteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recordWithoutQuorum": [
+    {
+      "type": 0,
+      "value": "Record without a quorum…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recorded": [
+    {
+      "type": 0,
+      "value": "The decision is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recusedLine": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item and took no part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.recusedOfficer": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so you cannot record its decision or read its notes. Another secretary records it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.referReason": [
+    {
+      "type": 0,
+      "value": "Why it is referredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.referTo": [
+    {
+      "type": 0,
+      "value": "Referred to which "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the secretaries record decisions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.frozen": [
+    {
+      "type": 0,
+      "value": "The minutes of this meeting are approved: its decisions can no longer be changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.notQuorate": [
+    {
+      "type": 0,
+      "value": "The item is not quorate: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed. You cannot record a decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.nothingToDecide": [
+    {
+      "type": 0,
+      "value": "Every item in this section already has a decision or was lifted for discussion.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.numberTaken": [
+    {
+      "type": 0,
+      "value": "The resolution number is already taken. Ask an administrator to check the numbering format.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so you cannot record its decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.released": [
+    {
+      "type": 0,
+      "value": "The memo has already moved on with this outcome. You can correct the wording, the conditions and the vote, not the outcome.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.stale": [
+    {
+      "type": 0,
+      "value": "Someone else changed this decision meanwhile. It is shown again as it is now; check it and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.refusal.wrongState": [
+    {
+      "type": 0,
+      "value": "Decisions can be recorded only once the meeting has started.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.releasedOutcome": [
+    {
+      "type": 0,
+      "value": "To change the outcome, record it in the minutes and ask the author to resubmit the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.resolutionSought": [
+    {
+      "type": 0,
+      "value": "Resolution sought: “"
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.resolutionText": [
+    {
+      "type": 0,
+      "value": "Resolution (as it will be minuted)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.stateLine": [
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "extra"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.tab": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.toBeRatified": [
+    {
+      "type": 0,
+      "value": "To be ratifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.toBeRatifiedLine": [
+    {
+      "type": 0,
+      "value": "Decided without a quorum, to be ratified at a later quorate meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.tooManyVotes": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No voting member present may vote on this item."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "There is only "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " voting member present who may vote on this item."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "There are only "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " voting members present who may vote on this item."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.tookNoPartLine": [
+    {
+      "type": 0,
+      "value": "Took no part: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.tookNoPartWhy": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.validUntil": [
+    {
+      "type": 0,
+      "value": "Valid untilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.validUntilLine": [
+    {
+      "type": 0,
+      "value": "Valid until "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.vote": [
+    {
+      "type": 0,
+      "value": "Vote: for "
+    },
+    {
+      "type": 2,
+      "value": "for",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ", against "
+    },
+    {
+      "type": 2,
+      "value": "against",
+      "style": null
+    },
+    {
+      "type": 6,
+      "value": "abstain",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", abstaining "
+            },
+            {
+              "type": 7
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.votersLine": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No voting member present may vote on this item."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " voting member present and able to vote."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " voting members present and able to vote."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.votesAbstain": [
+    {
+      "type": 0,
+      "value": "AbstainingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.votesAgainst": [
+    {
+      "type": 0,
+      "value": "AgainstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.votesFor": [
+    {
+      "type": 0,
+      "value": "ForSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.whenTaken": [
+    {
+      "type": 0,
+      "value": "When was this item taken?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.whenTakenHint": [
+    {
+      "type": 0,
+      "value": "On the meeting’s clock. Leave it empty if the item was shown as “Now” during the meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.why.declared": [
+    {
+      "type": 0,
+      "value": "declared an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisions.why.steppedOut": [
+    {
+      "type": 0,
+      "value": "stepped outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "declarations.builder.previewHidden": [
     {
       "type": 0,
@@ -12947,6 +14747,599 @@
     {
       "type": 0,
       "value": "You have unsaved changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.add": [
+    {
+      "type": 0,
+      "value": "Add "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.approval": [
+    {
+      "type": 0,
+      "value": "How minutes are approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.approval.atNextMeeting": [
+    {
+      "type": 0,
+      "value": "At the next meeting (as “Minutes of the previous meeting”)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.approval.byCirculation": [
+    {
+      "type": 0,
+      "value": "By circulation, then noted at the next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.approvalLead": [
+    {
+      "type": 0,
+      "value": "Every "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " of this type follows the same path: the chair reviews the draft, members comment, then the chair approves.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.circulationDays": [
+    {
+      "type": 0,
+      "value": "Working days members have to commentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.circulationDaysHint": [
+    {
+      "type": 0,
+      "value": "1 to 20. No answer counts as “no comments”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.digits": [
+    {
+      "type": 0,
+      "value": "DigitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.draftDays": [
+    {
+      "type": 0,
+      "value": "Remind the secretary after this many working daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.draftDaysHint": [
+    {
+      "type": 0,
+      "value": "1 to 30: when the minutes are not circulated this long after the meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.example": [
+    {
+      "type": 0,
+      "value": "ExampleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.exampleLine": [
+    {
+      "type": 1,
+      "value": "now"
+    },
+    {
+      "type": 0,
+      "value": " — the first of the next period: "
+    },
+    {
+      "type": 1,
+      "value": "next"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.exampleLoading": [
+    {
+      "type": 0,
+      "value": "Working out an example…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.exampleOne": [
+    {
+      "type": 1,
+      "value": "now"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.fyStart": [
+    {
+      "type": 0,
+      "value": "The financial year starts inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.memoResumes": [
+    {
+      "type": 0,
+      "value": "When a memo moves on after the committee decidesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.memoResumes.atEnd": [
+    {
+      "type": 0,
+      "value": "When the meeting is marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.memoResumes.onApproval": [
+    {
+      "type": 0,
+      "value": "When the minutes are approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.memoResumesLead": [
+    {
+      "type": 0,
+      "value": "Choose “When the minutes are approved” only when the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s charter requires it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.moveDown": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " laterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.moveUp": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " earlierSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.numbers": [
+    {
+      "type": 0,
+      "value": "Resolution numbersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.numbersLead": [
+    {
+      "type": 0,
+      "value": "The parts of the number in order. Numbers are given when the meeting is marked as held, in agenda order, and at once for a decision recorded later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.committeeCode": [
+    {
+      "type": 0,
+      "value": "Committee codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.financialYear": [
+    {
+      "type": 0,
+      "value": "Financial yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.meetingNumber": [
+    {
+      "type": 0,
+      "value": "Meeting numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.sequence": [
+    {
+      "type": 0,
+      "value": "SequenceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.text": [
+    {
+      "type": 0,
+      "value": "TextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.part.year": [
+    {
+      "type": 0,
+      "value": "YearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.reset": [
+    {
+      "type": 0,
+      "value": "Start againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.reset.financial": [
+    {
+      "type": 0,
+      "value": "Every financial yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.reset.never": [
+    {
+      "type": 0,
+      "value": "NeverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.reset.yearly": [
+    {
+      "type": 0,
+      "value": "Every calendar yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.style.long": [
+    {
+      "type": 0,
+      "value": "2026-27SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.style.short": [
+    {
+      "type": 0,
+      "value": "FY27SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.tab": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template": [
+    {
+      "type": 0,
+      "value": "Minutes templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.builtIn": [
+    {
+      "type": 0,
+      "value": "Built-in templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.copied": [
+    {
+      "type": 0,
+      "value": "Tag copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.copy": [
+    {
+      "type": 0,
+      "value": "Copy "
+    },
+    {
+      "type": 1,
+      "value": "tag"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.file": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.preview": [
+    {
+      "type": 0,
+      "value": "Preview with a sample meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.previewTitle": [
+    {
+      "type": 0,
+      "value": "The minutes template with a sample meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.problem": [
+    {
+      "type": 5,
+      "value": "code",
+      "options": {
+        "MALFORMED_TAG": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A tag is not written correctly"
+            }
+          ]
+        },
+        "UNSUPPORTED_TAG": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This kind of tag is not supported: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "UNKNOWN_TAG": {
+          "value": [
+            {
+              "type": 1,
+              "value": "tag"
+            },
+            {
+              "type": 0,
+              "value": " is not a known tag"
+            }
+          ]
+        },
+        "UNBALANCED_SECTION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A section is opened and not closed, or closed and not opened"
+            }
+          ]
+        },
+        "LOOP_WITHOUT_ROW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This list must be inside a table row: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "UNKNOWN_ROW_FIELD": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unknown field of a table row: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "TAG_IN_LOOP_ROW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Only the list’s own fields can go in its row: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "BLOCK_PLACEMENT": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The items block must start and end in paragraphs of their own, in the body, not in a table, and only once: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "DEPRECATED_TAG": {
+          "value": [
+            {
+              "type": 1,
+              "value": "tag"
+            },
+            {
+              "type": 0,
+              "value": " still works but has a newer name"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Too many tags"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.problems": [
+    {
+      "type": 0,
+      "value": "Problems to fix in Word before the version is submittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.refusal": [
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "where"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.refusals": [
+    {
+      "type": 0,
+      "value": "The file was refusedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.replace": [
+    {
+      "type": 0,
+      "value": "Replace the template…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.saveFirst": [
+    {
+      "type": 0,
+      "value": "Save your other changes before uploading.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.suggestion": [
+    {
+      "type": 0,
+      "value": "Did you mean "
+    },
+    {
+      "type": 1,
+      "value": "suggestion"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.tags": [
+    {
+      "type": 0,
+      "value": "List of tagsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.upload": [
+    {
+      "type": 0,
+      "value": "Upload a Word template…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.uploadHint": [
+    {
+      "type": 0,
+      "value": "A .docx file, at most 10 MB. Macros, embedded objects, links to other files and field codes are refused.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.used": [
+    {
+      "type": 0,
+      "value": "Tags it usesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.warnings": [
+    {
+      "type": 0,
+      "value": "Worth changingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.template.where": [
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": ", paragraph "
+    },
+    {
+      "type": 2,
+      "value": "paragraph",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "excerpt"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumMinutes.templateProblems": [
+    {
+      "type": 0,
+      "value": "Fix the template’s problems first: the preview needs a template memo can fill.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.active": [
@@ -40083,6 +42476,206 @@
       "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "papers.decision.corrected": [
+    {
+      "type": 0,
+      "value": "The committee’s decision was correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.decision.decidedAt": [
+    {
+      "type": 0,
+      "value": "Decided at "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved"
+            }
+          ]
+        },
+        "APPROVED_WITH_CONDITIONS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved with conditions"
+            }
+          ]
+        },
+        "NOTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Noted"
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Rejected"
+            }
+          ]
+        },
+        "RETURNED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Returned"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Decided"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.decision.decidedAtNoNumber": [
+    {
+      "type": 0,
+      "value": "Decided at "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved"
+            }
+          ]
+        },
+        "APPROVED_WITH_CONDITIONS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved with conditions"
+            }
+          ]
+        },
+        "NOTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Noted"
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Rejected"
+            }
+          ]
+        },
+        "RETURNED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Returned"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Decided"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.decision.openResolution": [
+    {
+      "type": 0,
+      "value": "Open the resolutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.decision.resolution": [
+    {
+      "type": 0,
+      "value": "Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.decision.resolutionOnly": [
+    {
+      "type": 0,
+      "value": "Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "papers.event.accepted": [
     {
       "type": 0,
@@ -41495,6 +44088,816 @@
     {
       "type": 0,
       "value": "Too many requests. Wait a while and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check": [
+    {
+      "type": 0,
+      "value": "Check the registerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check.complete": [
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": " are all accounted for ("
+    },
+    {
+      "type": 6,
+      "value": "inForce",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " in force"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " in force"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "void",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " void"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " void"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check.duplicates": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Number "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " is given twice."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Numbers "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " are given twice."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check.empty": [
+    {
+      "type": 0,
+      "value": "No number has been given in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check.missing": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Number "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " is missing."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Numbers "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " are missing."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.check.stray": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Number "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " is outside the counter."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Numbers "
+            },
+            {
+              "type": 1,
+              "value": "numbers"
+            },
+            {
+              "type": 0,
+              "value": " are outside the counter."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.col.item": [
+    {
+      "type": 0,
+      "value": "ItemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.col.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.col.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.col.number": [
+    {
+      "type": 0,
+      "value": "NumberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.col.outcome": [
+    {
+      "type": 0,
+      "value": "OutcomeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.crumb": [
+    {
+      "type": 0,
+      "value": "ResolutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts": [
+    {
+      "type": 0,
+      "value": "Certified extractsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.certifyAs": [
+    {
+      "type": 0,
+      "value": "You will certify this extract as a secretary of the "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.changed": [
+    {
+      "type": 0,
+      "value": "The resolution was corrected while the extract was made. Issue a new one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.failed": [
+    {
+      "type": 0,
+      "value": "It could not be made. Issue a new one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.fingerprint": [
+    {
+      "type": 0,
+      "value": "Fingerprint (SHA-256): "
+    },
+    {
+      "type": 1,
+      "value": "hash"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issue": [
+    {
+      "type": 0,
+      "value": "Issue a certified extractSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issueApproved": [
+    {
+      "type": 0,
+      "value": "It will say that the minutes of the meeting are approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issueNotApproved": [
+    {
+      "type": 0,
+      "value": "It will say that the minutes have not yet been approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issueSubmit": [
+    {
+      "type": 0,
+      "value": "Confirm with your authenticatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issueTitle": [
+    {
+      "type": 0,
+      "value": "Issue a certified extractSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issueWhat": [
+    {
+      "type": 0,
+      "value": "One page with the number, the outcome, the text and the conditions; never the vote, names or discussion.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.issued": [
+    {
+      "type": 0,
+      "value": "The extract is being made. It opens from here when ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.line": [
+    {
+      "type": 0,
+      "value": "Issued "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.minutes": [
+    {
+      "type": 5,
+      "value": "approved",
+      "options": {
+        "yes": {
+          "value": [
+            {
+              "type": 0,
+              "value": "says the minutes are approved"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "says the minutes are not yet approved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.none": [
+    {
+      "type": 0,
+      "value": "Extracts issued: none.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.open": [
+    {
+      "type": 0,
+      "value": "Open the extract (PDF)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.extracts.pending": [
+    {
+      "type": 0,
+      "value": "Being made…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.inForce": [
+    {
+      "type": 0,
+      "value": "In forceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.itemNumber": [
+    {
+      "type": 0,
+      "value": "item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.itemTitle": [
+    {
+      "type": 0,
+      "value": "item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.lead": [
+    {
+      "type": 0,
+      "value": "Every resolution of this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " in number order, the latest first. A void number is never given again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.meetingLine": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.memoMoved": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " (moved on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.minutesApproved": [
+    {
+      "type": 0,
+      "value": "approved on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.more": [
+    {
+      "type": 0,
+      "value": "Show moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.noMemo": [
+    {
+      "type": 0,
+      "value": "—SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.none": [
+    {
+      "type": 0,
+      "value": "No resolution has been numbered yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.numberTitle": [
+    {
+      "type": 0,
+      "value": "Resolution "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.backToMeeting": [
+    {
+      "type": 0,
+      "value": "Back to the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.conditions": [
+    {
+      "type": 0,
+      "value": "ConditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.minutes": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.minutesNotApproved": [
+    {
+      "type": 0,
+      "value": "not yet approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.page.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item and took no part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.alreadyStarted": [
+    {
+      "type": 0,
+      "value": "Numbers have already been given in this period, so its starting number cannot be set.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.format": [
+    {
+      "type": 0,
+      "value": "This is not a period of the committee type’s numbering. Check how its numbers start again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.notReleased": [
+    {
+      "type": 0,
+      "value": "An extract can be issued once the memo has moved on with this decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.notSecretary": [
+    {
+      "type": 0,
+      "value": "Only a secretary of the committee in office issues certified extracts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.range": [
+    {
+      "type": 0,
+      "value": "Give a whole number from 1.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so another secretary issues its extract.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.stepUp": [
+    {
+      "type": 0,
+      "value": "Nothing was done: the authenticator code was not confirmed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.refusal.void": [
+    {
+      "type": 0,
+      "value": "This resolution is void: no extract can be issued.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.registerTitle": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " — ResolutionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.restricted": [
+    {
+      "type": 0,
+      "value": "RestrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start": [
+    {
+      "type": 0,
+      "value": "Set the starting resolution number…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.done": [
+    {
+      "type": 0,
+      "value": "The starting number is set.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.lead": [
+    {
+      "type": 0,
+      "value": "For going live: the first number memo gives in a year, when earlier numbers were given on paper. Once only, before the first number; you confirm with your authenticator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.next": [
+    {
+      "type": 0,
+      "value": "The next number to giveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.period": [
+    {
+      "type": 0,
+      "value": "Numbering periodSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.periodHint": [
+    {
+      "type": 0,
+      "value": "The year (2026), the financial year (FY2026-27) or ALL, as the committee type numbers them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.submit": [
+    {
+      "type": 0,
+      "value": "Confirm with your authenticatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.start.title": [
+    {
+      "type": 0,
+      "value": "Set the starting resolution numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.tab": [
+    {
+      "type": 0,
+      "value": "ResolutionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.validUntil": [
+    {
+      "type": 0,
+      "value": "Valid until "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.void": [
+    {
+      "type": 0,
+      "value": "VoidSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.voidReason": [
+    {
+      "type": 0,
+      "value": "Void: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.voidedOn": [
+    {
+      "type": 0,
+      "value": "Void since "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "resolutions.year": [
+    {
+      "type": 0,
+      "value": "YearSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "search.activeFilters": [

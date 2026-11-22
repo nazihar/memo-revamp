@@ -15,7 +15,11 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { holds, useMyAccess } from '@/features/access/access'
 import { MeetingsTab } from '@/features/meetings/MeetingsTab'
+import { rsm } from '@/features/resolutions/messages'
+import { readsRegister } from '@/features/resolutions/register'
+import { ResolutionsTab } from '@/features/resolutions/ResolutionsTab'
 import { mm } from '@/features/meetings/messages'
 import { useTerms } from '@/features/terms/terms'
 import { CloneForumDialog, DissolveForumDialog, EditForumDialog } from './ForumDialogs'
@@ -60,6 +64,7 @@ export function ForumPage({
   const [open, setOpen] = useState<Open>()
   const officer = forum.data ? seesPapers(forum.data) : false
   const papers = useQuery({ ...openPapersOptions(forumId), enabled: officer })
+  const access = useMyAccess()
   // Stable, so the member tables keep their columns (and an open row menu) across renders.
   const act = useCallback((kind: MemberAction, member: MemberResponse) => {
     setOpen({ kind, member })
@@ -71,6 +76,8 @@ export function ForumPage({
   const close = () => {
     setOpen(undefined)
   }
+  // The resolution register (E06 T10, flow AC1): the officers, forums.manage and forum.read.
+  const register = readsRegister(f, holds(access.data, 'forum.read'))
 
   return (
     <section aria-labelledby="forum-title" className="flex flex-col gap-4">
@@ -134,7 +141,11 @@ export function ForumPage({
         {intl.formatMessage(fmt.back, terms)}
       </Link>
       <Tabs
-        value={tab && FORUM_TABS.includes(tab) && (tab !== 'submissions' || officer) ? tab : 'members'}
+        value={
+          tab && FORUM_TABS.includes(tab) && (tab !== 'submissions' || officer) && (tab !== 'resolutions' || register)
+            ? tab
+            : 'members'
+        }
         onValueChange={(value) => {
           const next = FORUM_TABS.find((t) => t === value)
           if (next) onTab(next)
@@ -150,6 +161,7 @@ export function ForumPage({
                 : intl.formatMessage(sm.tab)}
             </TabsTrigger>
           ) : null}
+          {register ? <TabsTrigger value="resolutions">{intl.formatMessage(rsm.tab)}</TabsTrigger> : null}
           <TabsTrigger value="history">{intl.formatMessage(fm.tabHistory)}</TabsTrigger>
           <TabsTrigger value="policy">{intl.formatMessage(fm.tabPolicy)}</TabsTrigger>
         </TabsList>
@@ -169,6 +181,11 @@ export function ForumPage({
         {officer ? (
           <TabsContent value="submissions" className="pt-4">
             <SubmissionsTab forum={f} policy={policy.data} />
+          </TabsContent>
+        ) : null}
+        {register ? (
+          <TabsContent value="resolutions" className="pt-4">
+            <ResolutionsTab forum={f} />
           </TabsContent>
         ) : null}
         <TabsContent value="history" className="pt-4">

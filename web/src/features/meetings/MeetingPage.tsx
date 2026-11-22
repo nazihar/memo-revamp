@@ -9,6 +9,8 @@ import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { DecisionsPanel } from '@/features/decisions/DecisionsPanel'
+import { dm } from '@/features/decisions/messages'
 import { AgendaLink } from './agenda/AgendaLink'
 import { AtTheMeeting } from './attendance/AtTheMeeting'
 import { AttendancePanel } from './attendance/AttendancePanel'
@@ -69,6 +71,8 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
   // The register (E05 T8, flow X) from the start of the meeting, for the officers; the tab they land on while it runs.
   const attendance = officer && ATTENDANCE_STATUSES.includes(m.status)
   const live = m.status === 'IN_PROGRESS'
+  // Decisions (E06 T10, flow AA): the officers record them from the start of the meeting; read-only once approved.
+  const decisionsTab = attendance
   // The audience during the meeting sees how they are recorded and, as members, whether it is quorate (flow Y1).
   const atTheMeeting = live && !officer && m.relation !== 'READER'
   return (
@@ -124,6 +128,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
           tabs={[
             'agenda',
             ...(attendance ? (['attendance'] as const) : []),
+            ...(decisionsTab ? (['decisions'] as const) : []),
             ...(replies ? (['replies'] as const) : []),
             ...(declarations ? (['declarations'] as const) : []),
           ]}
@@ -135,6 +140,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
             {attendance ? (
               <TabsTrigger value="attendance" className="min-h-11">
                 {intl.formatMessage(am.tab)}
+              </TabsTrigger>
+            ) : null}
+            {decisionsTab ? (
+              <TabsTrigger value="decisions" className="min-h-11">
+                {intl.formatMessage(dm.tab)}
               </TabsTrigger>
             ) : null}
             {replies ? (
@@ -154,6 +164,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
           {attendance ? (
             <TabsContent value="attendance" className="pt-4 print:hidden">
               <AttendancePanel meeting={m} />
+            </TabsContent>
+          ) : null}
+          {decisionsTab ? (
+            <TabsContent value="decisions" className="pt-4 print:hidden">
+              <DecisionsPanel meeting={m} />
             </TabsContent>
           ) : null}
           {replies ? (

@@ -53,14 +53,14 @@ const paper = (s: Partial<SubmissionResponse> & Pick<SubmissionResponse, 'id'>):
   ...s,
 })
 
-function memoPage(papers: SubmissionResponse[], view: MemoView = memo) {
+function memoPage(papers: SubmissionResponse[], view: MemoView = memo, notes: NoteEntryView[] = []) {
   server.use(
     sessionHandler(signedInSession()),
     accessHandler([]),
     memoPapersHandler(papers),
     http.get(`${API}/memos/m1`, () => HttpResponse.json<MemoView>(view)),
     http.get(`${API}/memos/m1/history`, () => HttpResponse.json([])),
-    http.get(`${API}/memos/m1/notes`, () => HttpResponse.json({ entries: [], canWrite: false })),
+    http.get(`${API}/memos/m1/notes`, () => HttpResponse.json({ entries: notes, canWrite: false })),
     http.get(`${API}/memos/m1/approvals`, () => HttpResponse.json([])),
     http.get(`${API}/memos/m1/copies`, () =>
       HttpResponse.json({ copies: [], canEdit: false, canAdd: false, memoVersion: view.version }),
@@ -193,4 +193,72 @@ describe('the memo and its committee (Phase 4 E02 T4, flow M2–M3)', () => {
     expect(screen.getByText('Demo Company Secretary')).toBeInTheDocument()
     expect(screen.getByText('Add the valuation')).toBeInTheDocument()
   })
+
+  it('the committee’s decision carries its resolution number: on the note sheet with a link, and in the panel (E06 T10, flow AH)', async () => {
+    const decided: NoteEntryView = {
+      id: 'action-9',
+      kind: 'REMARK',
+      round: 1,
+      author: { id: 'u9', name: 'Demo Company Secretary' },
+      actionKind: 'FORUM_DECIDED',
+      body: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              { type: 'text', text: 'Approved with conditions. Resolution MCC/2026/001: It was RESOLVED that …' },
+            ],
+          },
+        ],
+      } as never,
+      text: 'Approved with conditions. Resolution MCC/2026/001: It was RESOLVED that …',
+      createdAt: '2026-12-12T09:02:00Z',
+      correctedBy: [],
+      attachments: [],
+      readableMemos: [],
+      canCorrect: false,
+      committee: 'Management Credit Committee',
+      committeeOutcome: 'APPROVED_WITH_CONDITIONS',
+      resolution: 'MCC/2026/001',
+      resolutionId: 'r1',
+      meetingLabel: 'MCC 4/2026',
+    }
+    const corrected: NoteEntryView = {
+      ...decided,
+      id: 'note-10',
+      kind: 'COMMENT',
+      actionKind: 'FORUM_DECISION_CORRECTED',
+      committee: null,
+      committeeOutcome: null,
+      resolution: null,
+      resolutionId: null,
+      meetingLabel: null,
+      text: 'The committee’s decision was corrected on 14 Dec 2026: …',
+      body: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [{ type: 'text', text: 'The committee’s decision was corrected on 14 Dec 2026: …' }],
+          },
+        ],
+      } as never,
+      createdAt: '2026-12-14T09:00:00Z',
+    }
+    memoPage(
+      [paper({ id: 's2', status: 'DECIDED', outcome: 'APPROVED_WITH_CONDITIONS', decidedAt: '2026-12-12T09:02:00Z' })],
+      { ...memo, withForum: null },
+      [decided, corrected],
+    )
+    const { container } = renderRoute('/memos/m1')
+    const panel = await screen.findByRole('region', { name: 'Committees' }, { timeout: 5000 })
+    expect(
+      await within(panel).findByText('Decided at MCC 4/2026 — Approved with conditions — MCC/2026/001'),
+    ).toBeInTheDocument()
+    expect(await screen.findByText('Resolution MCC/2026/001 · MCC 4/2026')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Open the resolution' })).toHaveAttribute('href', '/resolutions/r1')
+    expect(screen.getByText('The committee’s decision was corrected')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
+  }, 20_000)
 })

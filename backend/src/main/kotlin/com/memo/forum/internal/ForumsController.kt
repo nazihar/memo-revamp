@@ -9,7 +9,9 @@ import com.memo.forum.ForumPolicies
 import com.memo.forum.ForumRole
 import com.memo.forum.ForumStatus
 import com.memo.forum.MemberAttribute
+import com.memo.forum.MemoResumes
 import com.memo.forum.Outcome
+import com.memo.forum.QuorumOverride
 import com.memo.forum.QuorumRule
 import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
@@ -180,6 +182,10 @@ data class ForumPolicyResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumBasis: Int,
     /** On the date asked: how many of them must attend. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumNeeded: Int,
+    /** Whether a decision may be recorded without a quorum, with a reason (E05): the decision screen offers it (E06 T10). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumOverride: QuorumOverride,
+    /** When a memo moves on after the committee decides (ADR-0065): said before the meeting is marked as held (E06 T10). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val memoResumes: MemoResumes,
 )
 
 data class MyForumResponse(

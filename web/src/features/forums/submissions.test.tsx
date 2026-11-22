@@ -48,6 +48,8 @@ const policy: ForumPolicyResponse = {
   submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
   quorumBasis: 5,
   quorumNeeded: 3,
+  quorumOverride: 'NEVER',
+  memoResumes: 'AT_MEETING_END',
 }
 
 const DAY = 86_400_000

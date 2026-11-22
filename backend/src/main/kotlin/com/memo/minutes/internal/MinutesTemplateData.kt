@@ -71,6 +71,8 @@ object MinutesTemplateData {
         val items = ItemValues(source, words)
         val minuted = minuted(source.items)
         val meeting = source.meeting
+        // Each resolution's row belongs to its item: a reader's copy that redacts the item drops it (E06 T7).
+        val resolutions = items.resolutions(minuted)
         val values =
             mapOf(
                 "meeting.committee" to source.committee,
@@ -84,11 +86,12 @@ object MinutesTemplateData {
                 "meeting.mode" to words.mode(meeting.mode),
                 "meeting.chair" to attendance.chair(),
                 "meeting.closedAt" to words.at(source.heldAt),
-                "minutes.status" to "DRAFT",
+                // Deprecated (E06 T7): the copies are stamped DRAFT and the record approved; the document itself says neither.
+                "minutes.status" to "",
                 "minutes.approvedOn" to "",
                 "minutes.approvedBy" to "",
                 "quorum.opening" to attendance.opening(),
-                "actions.count" to count(source.actions.size),
+                "actions.count" to count(meetingActions(source).size),
             )
         val rows =
             mapOf(
@@ -98,13 +101,15 @@ object MinutesTemplateData {
                 "apologies" to attendance.apologies(),
                 "absent" to attendance.absent(),
                 "quorumChanges" to attendance.quorumChanges(),
-                "resolutions" to items.resolutions(minuted),
-                "actions" to source.actions.map { action(it) + ("item" to words.number(it.itemId)) },
+                "resolutions" to resolutions.map { it.second },
+                // The meeting's own actions only: an item's are in its block (its `item.actions`), never outside it.
+                "actions" to meetingActions(source).map { action(it) + ("item" to "") },
             )
         return TemplateData(
             values.mapValues { clean(it.value) },
             rows.mapValues { (_, list) -> list.map { row -> row.mapValues { clean(it.value) } } },
             blocks = mapOf(MinutesTemplateTags.ITEMS to minuted.map(items::of)),
+            rowTags = mapOf("resolutions" to resolutions.map { MinutesStructure.rowTag(it.first) }),
         )
     }
 
@@ -125,6 +130,13 @@ object MinutesTemplateData {
                 i += Character.charCount(cp)
             }
         }.replace("\r\n", "\n").replace('\r', '\n')
+
+    /**
+     * The meeting's own actions, those agreed on no item (E06 T7): an item's actions are printed only inside its block, so a
+     * reader's copy that redacts the item drops them with it (ADR-0066's leak check refuses a copy that names them anywhere
+     * else). Pure.
+     */
+    fun meetingActions(source: DraftSource): List<MinutesActionLine> = source.actions.filter { it.itemId == null }
 
     /** A count as the template prints it: blank for none, so its section disappears. */
     fun count(n: Int): String = if (n > 0) n.toString() else ""
@@ -357,19 +369,20 @@ internal class ItemValues(
     }
 
     /** The resolutions table: each minuted item's resolution in force, in agenda order. */
-    fun resolutions(items: List<AgendaItemRef>): List<Map<String, String>> =
+    fun resolutions(items: List<AgendaItemRef>): List<Pair<UUID, Map<String, String>>> =
         items.mapNotNull { item ->
             val decision = s.decisions[item.id]
             val number = decision?.let { s.resolutions[it.decision.id] }
             if (decision == null || number == null) {
                 null
             } else {
-                mapOf(
-                    "number" to number,
-                    "item" to item.number.orEmpty(),
-                    "outcome" to decision.entry.outcomeLabel.uppercase(Locale.ENGLISH),
-                    "text" to decision.entry.text.orEmpty(),
-                )
+                item.id to
+                    mapOf(
+                        "number" to number,
+                        "item" to item.number.orEmpty(),
+                        "outcome" to decision.entry.outcomeLabel.uppercase(Locale.ENGLISH),
+                        "text" to decision.entry.text.orEmpty(),
+                    )
             }
         }
 

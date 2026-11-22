@@ -184,7 +184,7 @@ abstract class RecusalLeakFixture : RecusalFixture() {
             }
 
     /** [result] answered [person] below [statusBelow], with no canary of theirs in its body or headers. */
-    protected fun clean(
+    internal fun clean(
         person: Person,
         result: MvcTestResult,
         statusBelow: Int = HttpStatus.BAD_REQUEST.value(),

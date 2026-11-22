@@ -42,9 +42,16 @@ data class StructureProblem(
  */
 object MinutesStructure {
     const val TAG_PREFIX = "memo-item:"
+    const val ROW_PREFIX = "memo-row:"
     const val LOCK = "sdtLocked"
 
     fun tag(itemId: UUID): String = "$TAG_PREFIX$itemId"
+
+    /**
+     * The row-level control of a meeting-level loop's row that belongs to [itemId] (E06 T7: the resolutions table): a
+     * reader's copy drops it with the item. Not an item control: the structure check does not count it.
+     */
+    fun rowTag(itemId: UUID): String = "$ROW_PREFIX$itemId"
 
     /** The problems of [controls] (a document's, in order) against [items] (agenda order): items first, then unknown tags. */
     fun problems(

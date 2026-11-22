@@ -116,6 +116,13 @@ class Recusals(
             .filterValues { it.isNotEmpty() }
     }
 
+    /**
+     * Every item, at any meeting, that [userId] may not see in full because of a declaration (E08's register, ADR-0069):
+     * their effective declarations (a pending ruling included, fail closed), those of the member they stand in for as an
+     * alternate, and the sub-items of both. Read in the caller's transaction, so a declaration committed a moment ago counts.
+     */
+    fun itemsOf(userId: UUID): Set<UUID> = recusals.itemsOf(userId)
+
     /** Every declaration of [meetingId], withdrawn ones included, the oldest first (E06's minutes). */
     fun declarationsFor(meetingId: UUID): List<DeclarationRef> =
         store.ofMeeting(meetingId).map { row ->

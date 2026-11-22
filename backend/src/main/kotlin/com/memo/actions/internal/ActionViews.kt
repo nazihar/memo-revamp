@@ -75,6 +75,10 @@ data class ActionAbilities(
     /** Cancel with the risk accepted without saying how (the chair). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val acceptRisk: Boolean = false,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reopen: Boolean = false,
+    /** Mark it as done (whoever holds the owner's task). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val markDone: Boolean = false,
+    /** Close it or send it back (a verifier of the pool, never the owner or a contributor). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val verify: Boolean = false,
 )
 
 /**
@@ -221,12 +225,17 @@ data class MeetingActionsResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val drafts: Int,
 )
 
-/** The tabs of "My actions" (design E07 §3): T3 has MINE; TO_VERIFY and CONTRIBUTING come with closure (T5). */
-enum class MyActionsTab { MINE, }
+/**
+ * The tabs of "My actions" (design E07 §3, flow AK): MINE (those the person owns or holds, done ones awaiting verification
+ * included), TO_VERIFY (done, waiting for a verification they hold or may claim) and CONTRIBUTING (open ones they help with).
+ */
+enum class MyActionsTab { MINE, TO_VERIFY, CONTRIBUTING }
 
-/** The counts of "My actions" for the inbox badge, from the same predicate as the rows. */
+/** The counts of "My actions" per tab for the inbox badge, each from the same predicate as its rows. */
 data class MyActionCounts(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mine: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val toVerify: Int = 0,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val contributing: Int = 0,
 )
 
 /** A page of "My actions", by due date. */

@@ -120,9 +120,13 @@ class ActionAccess(
     }
 
     /**
-     * "My actions", MINE (design E07 §3): the issued actions the actor owns (as the person, or as the position's holder) or
-     * whose owner's task they hold (a substitute), open or done awaiting verification, by due date; [forumId] narrows them
-     * to a committee. The count comes from the same predicate.
+     * "My actions" (design E07 §3, flow AK), by due date; [forumId] narrows them to a committee:
+     * - MINE: the issued actions the actor owns (as the person, or as the position's holder) or whose owner's task they
+     *   hold (a substitute), open or done awaiting verification;
+     * - TO_VERIFY: the actions done whose verification the actor holds or may claim (a pool);
+     * - CONTRIBUTING: the open actions the actor is a contributor of.
+     * Each tab's count comes from the same predicate as its rows. Every tab is involvement, so a person recused from an
+     * item never finds another's action of it here.
      */
     fun mine(
         tab: MyActionsTab,
@@ -132,19 +136,9 @@ class ActionAccess(
     ): MyActionsResponse {
         val viewer = viewers.actor()
         val a = ACTIONS_ITEM
-        val mine =
-            DSL.or(
-                listOfNotNull(
-                    a.HOLDER_USER_ID.eq(viewer.userId),
-                    a.OWNER_USER_ID.eq(viewer.userId),
-                    viewer.positions.takeIf { it.isNotEmpty() }?.let { a.OWNER_POSITION_ID.`in`(it) },
-                ),
-            )
-        val condition =
-            a.STATUS
-                .`in`(OPEN.map { it.name })
-                .and(mine)
-                .and(forumId?.let { a.FORUM_ID.eq(it) } ?: DSL.noCondition())
+        val forum = forumId?.let { a.FORUM_ID.eq(it) } ?: DSL.noCondition()
+        val conditions = MyActionsTab.entries.associateWith { tabCondition(viewer, it).and(forum) }
+        val condition = conditions.getValue(tab)
         val size = limit.coerceIn(1, MAX_LIMIT)
         val after =
             cursor?.let(Cursors::decode)?.let { (at, id) ->
@@ -161,8 +155,17 @@ class ActionAccess(
                 .fetch { it.into(a).actionRow() to RagWord.valueOf(it.get(RAG, String::class.java)) }
         val page = rows.take(size)
         val next = if (rows.size > size) page.last().first.let { Cursors.encode(day(checkNotNull(it.dueDate)), it.id) } else null
-        val count = tenantDsl.current().fetchCount(a, condition)
-        return MyActionsResponse(tab, summaries(page), next, MyActionCounts(count))
+        val counts = conditions.mapValues { (_, it) -> tenantDsl.current().fetchCount(a, it) }
+        return MyActionsResponse(
+            tab,
+            summaries(page),
+            next,
+            MyActionCounts(
+                counts.getValue(MyActionsTab.MINE),
+                counts.getValue(MyActionsTab.TO_VERIFY),
+                counts.getValue(MyActionsTab.CONTRIBUTING),
+            ),
+        )
     }
 
     /** Whether [viewer] sees the action [actionId] of [forumId] (the writing services' 404). */
@@ -425,6 +428,45 @@ class ActionAccess(
         private const val RAG = "rag"
         private const val OVERRIDE = "OVERRIDE_"
         private val OPEN = listOf(ActionStatus.OPEN, ActionStatus.IN_PROGRESS, ActionStatus.DONE_PENDING)
+
+        /** The rows of [tab] for [viewer]. */
+        private fun tabCondition(
+            viewer: ActionViewer,
+            tab: MyActionsTab,
+        ): Condition {
+            val a = ACTIONS_ITEM
+            val c = ACTIONS_CONTRIBUTOR
+            val open = a.STATUS.`in`(OPEN.map { it.name })
+            return when (tab) {
+                MyActionsTab.MINE -> {
+                    open.and(
+                        DSL.or(
+                            listOfNotNull(
+                                a.HOLDER_USER_ID.eq(viewer.userId),
+                                a.OWNER_USER_ID.eq(viewer.userId),
+                                viewer.positions.takeIf { it.isNotEmpty() }?.let { a.OWNER_POSITION_ID.`in`(it) },
+                            ),
+                        ),
+                    )
+                }
+
+                MyActionsTab.TO_VERIFY -> {
+                    viewer.tasks().takeIf { it.isNotEmpty() }?.let { a.STATUS.eq(ActionStatus.DONE_PENDING.name).and(a.ID.`in`(it)) }
+                        ?: DSL.falseCondition()
+                }
+
+                MyActionsTab.CONTRIBUTING -> {
+                    open.and(
+                        DSL.exists(
+                            DSL
+                                .selectOne()
+                                .from(c)
+                                .where(c.TENANT_ID.eq(a.TENANT_ID), c.ACTION_ID.eq(a.ID), c.USER_ID.eq(viewer.userId), c.REMOVED_AT.isNull),
+                        ),
+                    )
+                }
+            }
+        }
 
         /** The action's copied item columns, as the paper rule reads an item's (no attendee reads an action). */
         val COLUMNS =

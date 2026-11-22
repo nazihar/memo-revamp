@@ -214,6 +214,12 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/actions/{actionId}/owner" to "a new owner (E07 T4): secretaries not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/cancel" to "cancelling (E07 T4): a secretary or the chair not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/reopen" to "reopening (E07 T4): secretaries not recused (recusal columns)",
+                // E07 T5: closure; marking done and verifying find the action by the one rule first (404 to a recused viewer).
+                "POST /api/v1/actions/{actionId}/done" to "marking as done (E07 T5): whoever holds the owner's task (recusal columns)",
+                "POST /api/v1/actions/{actionId}/verify" to
+                    "verifying (E07 T5): the verifier pool, never the owner, a contributor or the recused (recusal columns)",
+                "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to
+                    "closing the actions agreed at a meeting (E07 T5): the verifiers; an unseen action is NOT_FOUND (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */

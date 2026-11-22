@@ -117,6 +117,14 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         val mine = read("/api/v1/me/actions", person.session)
         clean(person, mine)
         assertThat(mine.response.contentAsString).doesNotContain(CANARY_ACTION)
+        // E07 T5: the other tabs of "My actions" and their counts.
+        listOf("TO_VERIFY", "CONTRIBUTING").forEach { tab ->
+            val other = read("/api/v1/me/actions?tab=$tab", person.session)
+            clean(person, other)
+            assertThat(other.response.contentAsString).doesNotContain(CANARY_ACTION)
+            assertThat(other.json()["items"].list().map { java.util.UUID.fromString(it["id"].asString()) })
+                .doesNotContainAnyElementsOf(planted.hiddenToAll)
+        }
         if (v == Viewer.RECUSED) {
             val own = read("/api/v1/actions/${planted.d1s}", person.session)
             clean(person, own)
@@ -210,6 +218,12 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
             "POST /api/v1/forums/{forumId}/actions" to { _ ->
                 val body = """{"title":"Circulate the revised policy","sourceNote":"Chair's instruction"}"""
                 send(HttpMethod.POST, "/api/v1/forums/$brc/actions", secretary, body, key())
+            },
+            // E07 T5: closing the item's actions at the meeting, which the recused secretary does not see: refused naming nothing.
+            "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to { p ->
+                val planted = actionsOf(p)
+                val body = """{"actionIds":["${planted.issued}","${planted.ofHidden}"]}"""
+                send(HttpMethod.POST, "/api/v1/meetings/${p.meeting.id}/actions/close-agreed", secretary, body, key())
             },
         )
     }

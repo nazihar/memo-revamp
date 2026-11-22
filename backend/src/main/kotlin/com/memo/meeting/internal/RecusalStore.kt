@@ -3,6 +3,7 @@ package com.memo.meeting.internal
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.MEETING_AUDIENCE
 import com.memo.jooq.tables.references.MEETING_DECLARATION
+import com.memo.jooq.tables.references.MEETING_ITEM
 import com.memo.meeting.DeclarationState
 import org.jooq.Condition
 import org.jooq.Field
@@ -91,6 +92,33 @@ class RecusalStore(
         val declared = effective(meetingId, userId).map { it.first }.toSet()
         if (declared.isEmpty()) return emptySet()
         return declared + items.filter { it.parentId in declared }.map { it.id }
+    }
+
+    /**
+     * Every item, at any meeting, that [userId] is recused from (E08's register, ADR-0069): their effective declarations,
+     * those of the member they stand in for as an alternate there, and the sub-items of both. Two indexed queries.
+     */
+    fun itemsOf(userId: UUID): Set<UUID> {
+        val d = MEETING_DECLARATION
+        val own =
+            tenantDsl
+                .current()
+                .selectDistinct(d.ITEM_ID)
+                .from(d)
+                .where(d.USER_ID.eq(userId), d.STATE.`in`(EFFECTIVE))
+                .fetch(d.ITEM_ID)
+                .filterNotNull()
+        val declared = (own + standingIn(MEETING_AUDIENCE.USER_ID.eq(userId)).map { it.first }).toSet()
+        if (declared.isEmpty()) return emptySet()
+        val subItems =
+            tenantDsl
+                .current()
+                .select(MEETING_ITEM.ID)
+                .from(MEETING_ITEM)
+                .where(MEETING_ITEM.PARENT_ID.`in`(declared))
+                .fetch(MEETING_ITEM.ID)
+                .filterNotNull()
+        return declared + subItems
     }
 
     /**

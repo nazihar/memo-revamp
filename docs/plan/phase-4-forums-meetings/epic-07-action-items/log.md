@@ -466,3 +466,41 @@
   - `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes) and `build` pass.
   - `pnpm test`: 541 of 541 green in one run of 78 files.
   - The backend was not changed. The contract and the client were regenerated after the merges.
+
+## 2026-11-23 — Follow-up: the API gaps T7, T10 and T11 worked around
+- **Why:** T7 left follow-up memos out of the report, and T10 and T11 worked around fields the API did not give (their "Deviations from the drawings"). This closes them, backend and web together, on top of T10 (#250), which carries T11 (#245), T7 (#238) and E06 T10 (#244).
+- **Built** (design §1.12 and §1.13 "As built in the E07 follow-up"):
+  1. **The report link's counts.** `ItemLink.counts` (meeting module, additive and separate from E06 T11's `meetingLabel`/`meetingStartsAt` in #243, so that merge stays trivial): the reader's own counts per section. The web words them in the reader's language. `reportCounts`, which read the counts back from the English `ReportWords.summary`, is gone.
+  2. **`evidenceRequired`** on `ActionResponse` (the type's policy today). "Mark as done" says "Evidence is required by this committee: attach at least one file." and asks for a file at the field before sending.
+  3. **`amberWorkingDays`** (and `staleWorkingDays`): `MyActionsResponse.keys`, one per committee of the page's rows, and `ActionReportResponse.key`. The key states the number on the report, and on My actions when every committee listed agrees; otherwise it is said in words.
+  4. **Overdue by n working days:** `ActionResponse.overdueWorkingDays`, on the tenant's business calendar (`WorkingDays.since` from the due date; the colour rule's past-due test, so an override does not hide it). The page says "Overdue by 3 working days", and only "Overdue" when no working day has passed yet.
+  5. **`defaultDue` applied:** `GET /forums/{fid}/actions/suggested-due` (`ActionSuggestedDue`, secretaries and `forums.manage`): the next meeting's date for NEXT_MEETING, else `defaultDueWorkingDays` on the business calendar. The form offers a WORKING_DAYS date as its first quick pick ("In 10 working days (the committee's usual)") and starts on "On a date" for such a type. It suggests only: issuing still needs a date.
+  6. **`can` flags, by the endpoints' own rules:** `ActionAbilities.holdBack` (a secretary or `forums.manage` not recused, issued, a meeting to come not yet holding it); `TrackerAbilities.askForUpdates` and `askedToday` (once a day per committee); `ActionReportResponse.can.closeAgreed` with each row's `canClose` (the verifier's rule, set-based in `ActionAccess.verifiable`, while the meeting runs, is held or minuted). The web uses them instead of `can.edit`, `can.raise` and `heldBack != null`. After asking, the tracker's button gives way to "Owners were asked for an update today."
+  7. **Follow-up memos on the report, per reader, at read time.** The frozen snapshot is unchanged. `ActionReportReads` joins each row's `actions_memo` links live through `ActionMemoViews.readableOf`, which uses the memo module's `MemoReaders.readable` (the read rule the action page's `memoViews` uses). Each reader gets only the memos they may read, with number, subject and status now; the others are left out entirely. The screen lists them under "Follow-up memos, as they stand now", each opening the memo. The PDF draws the same per-reader lines.
+- **Decisions under the delegated gate:**
+  - **An unreadable follow-up memo is absent from the report**, not shown as "a memo you do not have access to" as on the action page. The report is a meeting paper read by the whole committee, and the action page's status line exists for the verifier, who has the action page.
+  - **The memo lines are live, not as at publication**, and the screen says so. Freezing them would mean freezing a number into a record that readers who may not read the memo also open.
+  - **The key's numbers are today's policy**, as the tracker's (design §1.13: actions follow the committee's current rules).
+  - **The suggested due date is an endpoint of its own** rather than a field on the meeting's or tracker's answers, because the form opens from the decision panel, the meeting page and the tracker.
+- **Tests:**
+  - **`ActionReadingAidsIT`** (8 tests):
+    - `evidenceRequired` before and after a policy change;
+    - `overdueWorkingDays` on the tenant's calendar (Asia/Dhaka, #247), kept under an override, null when due today and when done;
+    - the keys on My actions and the report;
+    - the link's counts for a secretary and a recused member;
+    - each reader's memos on screen and in the PDF: the owner's numbered canary memo shows to the owner only; the secretary, a member and `forum.read` get neither its number nor its subject in the JSON or the PDF; the snapshot holds no memo;
+    - closing at the meeting: not while scheduled, then the secretary only, never the owner or a member, and nothing once closed;
+    - holding back: no meeting to come, then offered, not to members or the owner, not on a draft, not once held;
+    - asking: once a day, and `askedToday`;
+    - the suggested date: NEXT_MEETING without and with a meeting, WORKING_DAYS 10, 403 to a member, 404 for an unknown committee.
+  - **`PaperLeakIT`**: a numbered follow-up memo that only its initiator (the other secretary) reads, linked to the actions d1 and d3 see on the next meeting's report. Its subject and number are canaries for every probed person on every surface. The ACTION_REPORT probe checks that the row is there without the memo. A positive check confirms the initiator reads both in the JSON and the PDF. The probe's PDF text now has its whitespace normalised, so a wrapped phrase cannot slip past.
+  - **The registries:** `PaperSurfaceRegistry` (ACTION_REPORT's note, and the suggested date as an officers' endpoint), `RecusalActionsFixture`'s officer probe for it, and the matrix row in `p4-e07-actions.yaml`.
+  - **Web:**
+    - `actions.test.tsx`: evidence asked for before sending, "Overdue by 3 working days", nothing with 0, the key's number with one committee;
+    - `report.test.tsx`: the memos on a row, the key's number, the link's words from `counts` with a label that disagrees, and `countsLine` in en and ar;
+    - `officer.test.tsx`: `holdBack` false, the suggested quick pick first and sent, "asked today", only the rows `canClose` allows.
+- **Results (local):**
+  - Backend: 2,860 tests in 32 classes green: all of `com.memo.actions.*` with `ActionReadingAidsIT`, `PaperLeakIT`, `RecusalLeakIT`, the previous-minutes link tests, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `OpenApiContractTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest` and `AuditActionCoverageTest`. ktlint, detekt and SpotBugs are clean.
+  - The contract (`contracts/openapi.json`) and the web client were regenerated.
+  - Web: `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes: Arabic `actions` 5.5 KiB, `actionsOfficer` 5.6 KiB gzip, core unchanged) and `build` pass; `pnpm test` 548 of 548 green in 78 files.
+- **Merge order:** after #245, #238, #244 and #250 (this branch is on #250). With E06 T11 (#243), `ItemLink` and the contract gain fields side by side (`counts` here, `meetingLabel`, `meetingStartsAt` and `meetingTimeZone` there).

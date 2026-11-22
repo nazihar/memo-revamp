@@ -77,6 +77,7 @@ export function Tracker({ forum }: { forum: ForumResponse }) {
   const [creating, setCreating] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [asking, setAsking] = useState(false)
+  const [askedNow, setAskedNow] = useState(false)
   const [askKey, setAskKey] = useState(() => newIdempotencyKey())
   const [said, setSaid] = useState({ text: '', times: 0 })
   const saidRef = useRef<HTMLParagraphElement>(null)
@@ -168,13 +169,18 @@ export function Tracker({ forum }: { forum: ForumResponse }) {
         throwOnError: true,
       })
       setAskKey(newIdempotencyKey())
+      setAskedNow(true)
       say(intl.formatMessage(ao.asked, { count: data.asked }))
     } catch (problem) {
+      // Once a day per committee: asked already (by someone else, a moment ago) is as good as asked now.
+      if (isProblem(problem) && problem.reason === 'ALREADY_ASKED') setAskedNow(true)
       say(officerRefusal(intl, terms, problem))
     } finally {
       setAsking(false)
     }
   }
+  // The server's rule (can.askForUpdates, once a day); after asking here the button gives way to the words.
+  const askable = can.askForUpdates && !askedNow
   const filtered = status !== 'OPEN' || colour !== 'ALL' || Boolean(owner) || Boolean(meetingId) || Boolean(term)
 
   return (
@@ -353,10 +359,12 @@ export function Tracker({ forum }: { forum: ForumResponse }) {
             )
           })}
         </div>
-        {can.raise ? (
+        {askable ? (
           <Button variant="outline" className="min-h-11" disabled={asking} onClick={() => void ask()}>
             {intl.formatMessage(ao.askUpdates)}
           </Button>
+        ) : can.askedToday || askedNow ? (
+          <p className="text-sm text-muted-foreground">{intl.formatMessage(ao.askedToday)}</p>
         ) : null}
       </div>
       <p className="text-sm text-muted-foreground">

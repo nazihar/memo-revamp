@@ -148,3 +148,6 @@ endpoints:
   - endpoint: "POST /api/v1/forums/{forumId}/actions/ask-for-updates"
     rule: signedIn
     headers: { Idempotency-Key: "{random}" }
+  # E07 follow-up: the committee type's suggested due date for a new action. A random committee is 404 to everyone signed
+  # in; who gets it on a real committee (secretaries and forums.manage; 403 to a member) is ActionReadingAidsIT.
+  - { endpoint: "GET /api/v1/forums/{forumId}/actions/suggested-due", rule: signedIn }

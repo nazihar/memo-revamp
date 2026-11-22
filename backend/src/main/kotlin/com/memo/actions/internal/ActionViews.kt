@@ -1,5 +1,6 @@
 package com.memo.actions.internal
 
+import com.memo.forum.DefaultDue
 import com.memo.forum.DueChange
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
@@ -83,6 +84,11 @@ data class ActionAbilities(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val markDone: Boolean = false,
     /** Close it or send it back (a verifier of the pool, never the owner or a contributor). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val verify: Boolean = false,
+    /**
+     * "Keep out of the next report": a secretary or `forums.manage` not recused, on an issued action, while the committee has
+     * a meeting to come whose reports do not leave it out yet (`POST …/report-hold`).
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val holdBack: Boolean = false,
 )
 
 /**
@@ -144,6 +150,14 @@ data class ActionResponse(
     /** When it was closed or cancelled. */
     val closedAt: Instant? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reopenCount: Int = 0,
+    /** The committee type's rule today: marking it as done needs evidence ("Evidence is required by this committee"). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val evidenceRequired: Boolean = false,
+    /**
+     * Overdue (open or in progress, past its date in the tenant's zone): the working days since the due date on the
+     * tenant's business calendar, the one the colours use ("Overdue by 3 working days"); 0 when none has passed yet (a
+     * weekend or holiday). Null when the action is not overdue.
+     */
+    val overdueWorkingDays: Int? = null,
 )
 
 /** An action in a list: the meeting's actions and "My actions". */
@@ -207,6 +221,40 @@ data class TrackerAbilities(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raise: Boolean,
     /** "Export" (secretaries, the chair, `forums.manage` and `forum.read`). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val export: Boolean,
+    /**
+     * "Ask owners for an update" (`POST …/ask-for-updates`): a secretary or `forums.manage`, once a day per committee, so
+     * false once someone asked today ([askedToday]).
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val askForUpdates: Boolean = false,
+    /** The owners of this committee's actions were asked for an update today (for the secretaries' words). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val askedToday: Boolean = false,
+)
+
+/** The key's numbers of one committee among a list's rows ("My actions" spans committees). */
+data class CommitteeRagKey(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val amberWorkingDays: Int,
+    /** Null: the committee type has no "no recent update" rule. */
+    val staleWorkingDays: Int? = null,
+)
+
+/**
+ * A suggested due date for a new action of a committee (design E07 §1.13 `defaultDue`), on the tenant's business
+ * calendar: the next meeting's date (NEXT_MEETING, when one is drafted or scheduled), else the committee type's working
+ * days from today (WORKING_DAYS, also NEXT_MEETING's fallback). The form offers it first; the secretary still chooses.
+ */
+data class SuggestedDueResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    /** The committee type's rule. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val defaultDue: DefaultDue,
+    /** How this date was found: by the next meeting, or by working days. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val basis: DefaultDue,
+    /** The suggested day; null when the calendar has no working day that far ahead. */
+    val date: LocalDate? = null,
+    /** WORKING_DAYS: how many working days after today. */
+    val workingDays: Int? = null,
+    /** NEXT_MEETING: the meeting whose date it is. */
+    val meetingId: UUID? = null,
 )
 
 /** A page of the committee's action tracker (design E07 §3, flow AN). */
@@ -250,6 +298,8 @@ data class MyActionsResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val items: List<ActionSummary>,
     val nextCursor: String? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val counts: MyActionCounts,
+    /** The key's numbers of each committee of [items] (the committee type's actions policy today). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val keys: List<CommitteeRagKey> = emptyList(),
 )
 
 /** How issuing one draft of a bulk request went. */

@@ -17,6 +17,7 @@ export type ActionAbilities = {
     decideDue: boolean;
     discard: boolean;
     edit: boolean;
+    holdBack: boolean;
     issue: boolean;
     linkMemo: boolean;
     markDone: boolean;
@@ -119,6 +120,10 @@ export type ActionRagResponse = {
     word: 'DRAFT' | 'CLOSED' | 'CANCELLED' | 'TO_VERIFY' | 'OVERRIDE_RED' | 'OVERRIDE_AMBER' | 'OVERRIDE_GREEN' | 'OVERDUE' | 'OFF_TRACK' | 'DUE_SOON' | 'AT_RISK' | 'NO_RECENT_UPDATE' | 'ON_TRACK';
 };
 
+export type ActionReportAbilities = {
+    closeAgreed: boolean;
+};
+
 export type ActionReportCorrectionResponse = {
     approvedAt?: string | null;
     label: string;
@@ -126,10 +131,12 @@ export type ActionReportCorrectionResponse = {
 
 export type ActionReportResponse = {
     builtAt: string;
+    can: ActionReportAbilities;
     committee: string;
     forumId: string;
     heldBack?: number | null;
     itemId: string;
+    key: ActionRagKey;
     meetingId: string;
     meetingLabel?: string | null;
     more: number;
@@ -144,6 +151,7 @@ export type ActionReportResponse = {
 
 export type ActionReportRowResponse = {
     actionId: string;
+    canClose: boolean;
     cancelKind?: 'NO_LONGER_NEEDED' | 'SUPERSEDED' | 'RISK_ACCEPTED' | 'DISCARDED' | 'DUPLICATE';
     cancelReason?: string | null;
     closedAt?: string | null;
@@ -154,6 +162,7 @@ export type ActionReportRowResponse = {
     holder?: string | null;
     latestUpdate?: string | null;
     latestUpdateAt?: string | null;
+    memos: Array<ReportMemoResponse>;
     originalDueDate?: string | null;
     owner: string;
     rag: ActionRagResponse;
@@ -185,12 +194,14 @@ export type ActionResponse = {
     dueChange: 'SECRETARY_AGREES' | 'CHAIR_AGREES' | 'OWNER_WITH_REASON';
     dueDate?: string | null;
     dueRevisions: number;
+    evidenceRequired: boolean;
     forumId: string;
     id: string;
     issuedAt?: string | null;
     lastUpdateAt?: string | null;
     memos: Array<ActionMemoResponse>;
     originalDueDate?: string | null;
+    overdueWorkingDays?: number | null;
     owner?: ActionOwnerResponse | null;
     pendingRequest?: DueRequestResponse | null;
     priority: 'NORMAL' | 'HIGH';
@@ -1006,6 +1017,12 @@ export type CommitteeDetailResponse = {
     shortName: string;
     timeToDecision: TimingDetail;
     to: string;
+};
+
+export type CommitteeRagKey = {
+    amberWorkingDays: number;
+    forumId: string;
+    staleWorkingDays?: number | null;
 };
 
 export type CommitteeSummaryResponse = {
@@ -2265,6 +2282,9 @@ export type ItemForecastResponse = {
 
 export type ItemLink = {
     at?: string | null;
+    counts?: {
+        [key: string]: number;
+    } | null;
     kind?: string;
     label?: string;
     meetingId?: string;
@@ -3376,6 +3396,7 @@ export type MyActionCounts = {
 export type MyActionsResponse = {
     counts: MyActionCounts;
     items: Array<ActionSummary>;
+    keys: Array<CommitteeRagKey>;
     nextCursor?: string | null;
     tab: 'MINE' | 'TO_VERIFY' | 'CONTRIBUTING';
 };
@@ -4437,6 +4458,14 @@ export type ReportHoldResponse = {
     meetingStartsAt: string;
 };
 
+export type ReportMemoResponse = {
+    kind: 'RAISED' | 'LINKED';
+    memoId: string;
+    reference?: string | null;
+    status: string;
+    subject: string;
+};
+
 export type ReportTotals = {
     files: FileRowTotals;
     fixity: FixityTotals;
@@ -5072,6 +5101,15 @@ export type SuggestRequest = {
     q: string;
 };
 
+export type SuggestedDueResponse = {
+    basis: 'NEXT_MEETING' | 'WORKING_DAYS';
+    date?: string | null;
+    defaultDue: 'NEXT_MEETING' | 'WORKING_DAYS';
+    forumId: string;
+    meetingId?: string | null;
+    workingDays?: number | null;
+};
+
 export type SuggestionView = {
     memoId: string;
     number?: string | null;
@@ -5227,6 +5265,8 @@ export type ToBeRatifiedResponse = {
 };
 
 export type TrackerAbilities = {
+    askForUpdates: boolean;
+    askedToday: boolean;
     export: boolean;
     raise: boolean;
 };
@@ -9345,6 +9385,24 @@ export type ExportForumActionsResponses = {
 };
 
 export type ExportForumActionsResponse = ExportForumActionsResponses[keyof ExportForumActionsResponses];
+
+export type GetSuggestedActionDueData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/actions/suggested-due';
+};
+
+export type GetSuggestedActionDueResponses = {
+    /**
+     * OK
+     */
+    200: SuggestedDueResponse;
+};
+
+export type GetSuggestedActionDueResponse = GetSuggestedActionDueResponses[keyof GetSuggestedActionDueResponses];
 
 export type CloneForumData = {
     body: CloneRequest;

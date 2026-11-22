@@ -38,7 +38,6 @@ const REASON_MAX = 500
 const TEXT_MAX = 4000
 const HOWS: readonly How[] = ['PHONE', 'EMAIL', 'IN_PERSON', 'MEETING']
 const CONFIDENCES: readonly Confidence[] = ['ON_TRACK', 'AT_RISK', 'OFF_TRACK']
-const OPEN: ActionResponse['status'][] = ['OPEN', 'IN_PROGRESS', 'DONE_PENDING']
 
 /**
  * The officers' buttons on the action page (flow AN, design §1.3–§1.10, §1.12), each shown only when the server's
@@ -64,9 +63,7 @@ export function OfficerActions({
   const [clearing, setClearing] = useState(false)
   const headingId = useId()
   const can = a.can
-  const issued = a.status !== 'DRAFT'
   const offer = (when: boolean, key: Kind | 'clear', label: string) => (when ? [{ key, label }] : [])
-  // Holding back is a secretary's or forums.manage's (the same people who edit a sent action), on an open action.
   const buttons = [
     ...offer(can.issue, 'issue', intl.formatMessage(ao.issue)),
     ...offer(can.edit, 'edit', intl.formatMessage(ao.edit)),
@@ -76,7 +73,8 @@ export function OfficerActions({
     ...offer(can.changeOwner, 'owner', intl.formatMessage(ao.changeOwner)),
     ...offer(can.overrideRag, 'colour', intl.formatMessage(ao.setColour)),
     ...offer(can.overrideRag && a.rag.override != null, 'clear', intl.formatMessage(ao.clearColour)),
-    ...offer(can.edit && issued && OPEN.includes(a.status), 'hold', intl.formatMessage(ao.holdBack)),
+    // The server's rule: a secretary or forums.manage not recused, an issued action, and a meeting to come not yet holding it.
+    ...offer(can.holdBack, 'hold', intl.formatMessage(ao.holdBack)),
     ...offer(can.cancel, 'cancel', intl.formatMessage(ao.cancelAction)),
     ...offer(can.reopen, 'reopen', intl.formatMessage(ao.reopen)),
   ]

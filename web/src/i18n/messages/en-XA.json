@@ -3460,6 +3460,28 @@
       "value": "]"
     }
   ],
+  "actions.files.evidenceRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽīḓḗḗƞƈḗḗ īş řḗḗɋŭŭīřḗḗḓ ƀẏ ŧħīş "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ": ȧȧŧŧȧȧƈħ ȧȧŧ ŀḗḗȧȧşŧ ǿǿƞḗḗ ƒīŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "actions.files.hint": [
     {
       "type": 0,
@@ -4274,6 +4296,50 @@
     {
       "type": 0,
       "value": "ẇīŧħḓřȧȧẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "actions.overdueBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿṽḗḗřḓŭŭḗḗ ƀẏ "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇǿǿřķīƞɠ ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇǿǿřķīƞɠ ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
@@ -5835,6 +5901,88 @@
     {
       "type": 0,
       "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "actions.report.row.memo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "actions.report.row.memoUnnumbered": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ƞǿǿŧ ẏḗḗŧ ƞŭŭḿƀḗḗřḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "actions.report.row.memos": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿş, ȧȧş ŧħḗḗẏ şŧȧȧƞḓ ƞǿǿẇ"
     },
     {
       "type": 0,
@@ -8268,6 +8416,62 @@
       "value": "]"
     }
   ],
+  "actionsOfficer.form.dueSuggested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇǿǿřķīƞɠ ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇǿǿřķīƞɠ ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ŭŭşŭŭȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "actionsOfficer.form.editDraft": [
     {
       "type": 0,
@@ -10022,6 +10226,20 @@
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "actionsOfficer.tracker.askedToday": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿẇƞḗḗřş ẇḗḗřḗḗ ȧȧşķḗḗḓ ƒǿǿř ȧȧƞ ŭŭƥḓȧȧŧḗḗ ŧǿǿḓȧȧẏ. Ẏǿǿŭŭ ƈȧȧƞ ȧȧşķ ȧȧɠȧȧīƞ ŧǿǿḿǿǿřřǿǿẇ."
     },
     {
       "type": 0,

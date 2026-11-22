@@ -288,6 +288,11 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
                 actionsOf(p)
                 send(HttpMethod.POST, "/api/v1/forums/$brc/actions/ask-for-updates", secretary, "{}", key())
             },
+            // E07 follow-up: the suggested due date is a date and the next meeting's id, whatever the secretary is recused from.
+            "GET /api/v1/forums/{forumId}/actions/suggested-due" to { p ->
+                actionsOf(p)
+                read("/api/v1/forums/$brc/actions/suggested-due", secretary.session)
+            },
             // E07 T5: closing the item's actions at the meeting, which the recused secretary does not see: refused naming nothing.
             "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to { p ->
                 val planted = actionsOf(p)

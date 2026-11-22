@@ -1,5 +1,5 @@
 import { CircleCheck, CircleX } from 'lucide-react'
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { ToastContext } from './toast-context'
 
@@ -17,12 +17,24 @@ const DISPLAY_MS = 6_000
  */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ToastItem[]>([])
+  // Each toast's dismissal timer, cleared when the provider unmounts: a timer that fired after the page (or a test's
+  // document) was gone updated state on a torn-down tree ("window is not defined" in vitest).
+  const timers = useRef(new Set<number>())
+  useEffect(() => {
+    const pending = timers.current
+    return () => {
+      for (const timer of pending) window.clearTimeout(timer)
+      pending.clear()
+    }
+  }, [])
   const show = useCallback((message: string, tone: ToastItem['tone'] = 'success') => {
     const id = Date.now() + Math.random()
     setItems((current) => [...current, { id, message, tone }])
-    window.setTimeout(() => {
+    const timer = window.setTimeout(() => {
+      timers.current.delete(timer)
       setItems((current) => current.filter((t) => t.id !== id))
     }, DISPLAY_MS)
+    timers.current.add(timer)
   }, [])
   const api = useMemo(() => ({ show }), [show])
   return (

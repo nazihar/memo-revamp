@@ -135,6 +135,31 @@
   outline-offset: 2px;
 }
 
+/*
+ * Committee analytics bars (Phase 4 E08 T7): one series in --chart-1 on a light track, a 4 px rounded data end on the
+ * inline end (logical, so it mirrors in right-to-left languages). In forced colours the fill becomes the text colour,
+ * so the bar still shows; its number is always written beside it.
+ */
+.memo-bar-track {
+  display: block;
+  border-radius: 4px;
+  background: var(--muted);
+}
+.memo-bar {
+  border-start-end-radius: 4px;
+  border-end-end-radius: 4px;
+  background: var(--chart-1);
+}
+@media (forced-colors: active) {
+  .memo-bar-track {
+    border: 1px solid CanvasText;
+  }
+  .memo-bar {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+
 .react-flow__node.selected > div {
   box-shadow: 0 0 0 3px var(--primary);
 }

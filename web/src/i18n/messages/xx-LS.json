@@ -24388,6 +24388,12 @@
       "value": "Minutes to approveSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.minutesCorrectionProposed": [
+    {
+      "type": 0,
+      "value": "Correction to minutes to approveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.minutesReturned": [
     {
       "type": 0,
@@ -38639,6 +38645,28 @@
     {
       "type": 0,
       "value": " are ready for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesCorrectionProposed": [
+    {
+      "type": 0,
+      "value": "A correction to the approved minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " awaits your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.minutesDraftOverdue": [

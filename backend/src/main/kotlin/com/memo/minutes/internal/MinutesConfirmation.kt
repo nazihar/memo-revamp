@@ -6,13 +6,11 @@ import com.memo.common.authz.Permission
 import com.memo.common.authz.Policy
 import com.memo.common.authz.StepUpCheck
 import com.memo.common.concurrency.ConcurrentModificationException
-import com.memo.common.context.ActorContext
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantContext
 import com.memo.common.web.RefusedException
 import com.memo.common.web.refuseIf
 import com.memo.files.Files
-import com.memo.identity.AuthenticationContext
 import com.memo.identity.UserSummaries
 import com.memo.meeting.MeetingMinutes
 import com.memo.meeting.MeetingViewers
@@ -21,14 +19,9 @@ import com.memo.notification.NotificationKind
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import tools.jackson.databind.SerializationFeature
-import tools.jackson.databind.json.JsonMapper
-import java.security.MessageDigest
 import java.time.Clock
-import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.HexFormat
 import java.util.UUID
 
 /** One authenticated approval as the minutes page shows it (ADR-0051's stamp); [client] for auditors only. */
@@ -82,7 +75,7 @@ class MinutesConfirmation(
     private val release: MinutesReleaseScheduler,
     private val records: MinutesRecords,
     private val files: Files,
-    private val authentication: AuthenticationContext,
+    private val evidence: ApprovalEvidence,
     private val stepUp: StepUpCheck,
     private val notifier: MinutesNotifier,
     private val users: UserSummaries,
@@ -90,11 +83,8 @@ class MinutesConfirmation(
     private val events: ApplicationEventPublisher,
     private val ids: IdGenerator,
     private val audit: AuditLog,
-    private val json: JsonMapper,
     private val clock: Clock,
 ) {
-    private val canonical: JsonMapper = json.rebuild().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS).build()
-
     /**
      * The actor confirms [meetingId]'s minutes, or not (the order of the refusals, before any step-up is asked for): 404 for
      * a meeting they do not see, 403 `NOT_CONFIRMER` for anyone but the confirmer. Read in a transaction of its own.
@@ -127,7 +117,7 @@ class MinutesConfirmation(
         val confirmer = confirmerOf(row, view.userId)
         val docx = checkedDocx(row)
         approvals.lockChain(row.forumId)
-        val approval = approval(row, confirmer, docx.id, docx.sha256, approvals.head(row.forumId), now)
+        val approval = approval(row, confirmer, docx.id to docx.sha256, approvals.head(row.forumId), now)
         approvals.insert(approval)
         val after = row.copy(state = next, approvedAt = now, confirmedApprovalId = approval.id)
         check(store.update(row, after)) { "the locked minutes moved on" }
@@ -186,43 +176,37 @@ class MinutesConfirmation(
     /** The step-up the confirmation needs (the tenant's window); throws the step-up problem when it is stale. */
     fun requireStepUp() = stepUp.require()
 
-    private fun approval(
+    /**
+     * A new authenticated approval by [approver] of [row]'s minutes at [at] (ADR-0051: the actor's evidence now), over the
+     * .docx version [docx] (its id and SHA-256), chained to [previous]: the confirmation, or (with [correction], the
+     * correction's id and the SHA-256 of what it says) the approval of a correction. Its record hash is computed here.
+     */
+    fun approval(
         row: MinutesRow,
-        confirmer: MinutesOfficer,
-        docxVersionId: UUID,
-        docxSha256: String,
+        approver: MinutesOfficer,
+        docx: Pair<UUID, String>,
         previous: String?,
         at: Instant,
+        correction: Pair<UUID, String>? = null,
     ): ApprovalRow {
-        val evidence = authentication.current()
-        val proven = stepUp.provenAt()
-        val auth =
-            linkedMapOf(
-                "factors" to evidence?.factors.orEmpty(),
-                "authenticatedAt" to evidence?.authenticatedAt?.toString(),
-                "passwordAt" to evidence?.passwordAt?.toString(),
-                "secondFactorAt" to evidence?.secondFactorAt?.toString(),
-                "stepUpRequired" to true,
-                "stepUpAt" to proven?.toString(),
-                "stepUpAgeSeconds" to proven?.let { Duration.between(it, at).seconds.coerceAtLeast(0) },
-                "sessionHash" to evidence?.sessionHash,
-            )
-        val client = ActorContext.current().client.let { linkedMapOf("ip" to it?.ip, "userAgent" to it?.userAgent) }
+        val proof = evidence.of(at)
         val draft =
             ApprovalRow(
                 id = ids.next(),
                 meetingId = row.meetingId,
                 forumId = row.forumId,
-                kind = KIND_CONFIRMATION,
-                actorId = confirmer.userId,
-                role = confirmer.role,
-                authentication = json.valueToTree(auth),
-                client = json.valueToTree(client),
-                docxVersionId = docxVersionId,
-                docxSha256 = docxSha256,
+                kind = if (correction == null) KIND_CONFIRMATION else KIND_CORRECTION,
+                actorId = approver.userId,
+                role = approver.role,
+                authentication = proof.authentication,
+                client = proof.client,
+                docxVersionId = docx.first,
+                docxSha256 = docx.second,
                 previousHash = previous,
                 recordHash = "",
                 at = at,
+                correctionId = correction?.first,
+                correctionSha256 = correction?.second,
             )
         return draft.copy(recordHash = hash(draft))
     }
@@ -296,14 +280,17 @@ class MinutesConfirmation(
     }
 
     /** The approved minutes' readers (design E06 §1.9): officers, members in office, `forums.manage` and `forum.read`; 404 otherwise. */
-    private fun requireApprovedReader(meetingId: UUID) {
+    fun requireApprovedReader(meetingId: UUID) {
         val view = viewers.of(meetingId)
         val row = store.find(meetingId)?.takeIf { it.state == MinutesStage.APPROVED } ?: throw MinutesNotFoundException("minutes")
         val reads = view.manages || view.officer || view.reader || people.readers(row).containsKey(view.userId)
         if (!reads) throw MinutesNotFoundException("minutes")
     }
 
-    /** SHA-256 of the canonical JSON of [a] without its own hash, followed by the previous approval's hash. */
+    /**
+     * SHA-256 of the canonical JSON of [a] without its own hash, followed by the previous approval's hash; a correction's
+     * approval (E06 T8) also covers the correction and what it says (a confirmation's fields are as T6 hashed them).
+     */
     fun hash(a: ApprovalRow): String {
         val fields =
             mapOf(
@@ -313,19 +300,20 @@ class MinutesConfirmation(
                 "kind" to a.kind,
                 "actorId" to a.actorId.toString(),
                 "role" to a.role.name,
-                "authentication" to canonical.treeToValue(a.authentication, Map::class.java),
-                "client" to canonical.treeToValue(a.client, Map::class.java),
+                "authentication" to evidence.mapOf(a.authentication),
+                "client" to evidence.mapOf(a.client),
                 "docxVersionId" to a.docxVersionId.toString(),
                 "docxSha256" to a.docxSha256,
                 "at" to a.at.truncatedTo(ChronoUnit.MICROS).toString(),
-            )
-        val text = canonical.writeValueAsString(fields) + (a.previousHash ?: "")
-        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(text.toByteArray(Charsets.UTF_8)))
+            ) +
+                a.correctionId?.let { id -> mapOf("correctionId" to id.toString(), "correctionSha256" to a.correctionSha256) }.orEmpty()
+        return evidence.hash(fields, a.previousHash ?: "")
     }
 
     private fun MinutesRole.words() = if (this == MinutesRole.CHAIR) "the chair" else "the vice-chair"
 
     companion object {
         const val KIND_CONFIRMATION = "CONFIRMATION"
+        const val KIND_CORRECTION = "CORRECTION"
     }
 }

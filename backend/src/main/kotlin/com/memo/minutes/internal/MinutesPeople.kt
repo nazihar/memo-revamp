@@ -77,6 +77,14 @@ class MinutesPeople(
         return chairOrVice(row, seats.map { it.userId to it.role })
     }
 
+    /**
+     * Who approves a correction to [row]'s approved minutes (design E06 §1.6.5, as built in T8): the confirmer's rule with
+     * the committee's seats today (the chair in office, else a vice-chair when the chair is recused from any minuted item or
+     * there is none), since a correction may come long after the approving meeting; null when nobody is able.
+     */
+    fun correctionApprover(row: MinutesRow): MinutesOfficer? =
+        chairOrVice(row, directory.membersOn(row.forumId).map { it.userId to it.role })
+
     private fun chairOrVice(
         row: MinutesRow,
         seats: List<Pair<UUID, ForumRole>>,

@@ -21,7 +21,10 @@ package com.memo.meeting
  * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E08
  * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
  * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
- * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits.
+ * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits. E06 T8 added the
+ * corrections after approval (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with
+ * recusal columns) and the certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an
+ * officer's, with an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -70,7 +73,13 @@ object PaperSurfaceRegistry {
             "A reader's copy of the draft minutes and the comments (E06 T6): the copy of their redaction set (ADR-0066: the recused " +
                 "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
                 "comments, the officers everyone's but on items they are recused from; once approved (E06 T7), the record or the " +
-                "reader's approved copy (a PDF/A record of the same set), its versions and its check",
+                "reader's approved copy (a PDF/A record of the same set), its versions and its check; the corrections to the " +
+                "approved minutes (E06 T8), one on an item the reader may not read in full without its text",
+        ),
+        EXTRACTS(
+            "Certified resolution extracts (E06 T8): a resolution's extracts and one extract's PDF/A, for the committee's officers, " +
+                "forums.manage, forum.read and the memo's readers who see the resolution (members 403); the resolution only, " +
+                "never the vote, names or discussion",
         ),
         ANALYTICS(
             "Meeting analytics, the committee's detail and its attendance export (E08 T4): counts only, never an item; a recused or " +
@@ -143,6 +152,12 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/minutes/record" to Surface.MINUTES_COPIES,
             "GET /api/v1/meetings/{meetingId}/minutes/records" to Surface.MINUTES_COPIES,
             "POST /api/v1/meetings/{meetingId}/minutes/records/{version}/check" to Surface.MINUTES_COPIES,
+            // E06 T8: the corrections to the approved minutes (their readers; a correction on an item they may not read in
+            // full without its text), the approver's answer, and the certified extracts of a resolution.
+            "GET /api/v1/meetings/{meetingId}/minutes/corrections" to Surface.MINUTES_COPIES,
+            "POST /api/v1/meetings/{meetingId}/minutes/corrections/{correctionId}/decide" to Surface.MINUTES,
+            "GET /api/v1/resolutions/{resolutionId}/extracts" to Surface.EXTRACTS,
+            "GET /api/v1/resolutions/{resolutionId}/extracts/{extractId}/content" to Surface.EXTRACTS,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
@@ -278,6 +293,10 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response",
             ).associateWith { "the minutes' circulation (E06 T6): secretaries and forums.manage, answered with the page (officer probe)" } +
             mapOf(
+                "POST /api/v1/meetings/{meetingId}/minutes/corrections" to
+                    "proposing a correction to approved minutes (E06 T8): secretaries not recused from the item (recusal columns)",
+                "POST /api/v1/resolutions/{resolutionId}/extracts" to
+                    "issuing a certified extract (E06 T8): secretaries not recused, with a step-up; no item content (officer probe)",
                 "GET /api/v1/meetings/{meetingId}/minutes/preview" to
                     "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
             )

@@ -152,6 +152,7 @@ const kindsWithValues = defineMessages<{
   minutesCommentsClosing: { committee: string; date: string; until: string }
   minutesConfirmationRequested: { committee: string; date: string }
   minutesApproved: { committee: string; date: string }
+  minutesCorrectionProposed: { committee: string; date: string }
   minutesCommentAdded: { committee: string; date: string; kind: string }
   minutesDraftOverdue: { committee: string; date: string }
   minutesDraftReady: { committee: string; date: string }
@@ -380,6 +381,10 @@ const kindsWithValues = defineMessages<{
   minutesApproved: {
     id: 'notificationKinds.minutesApproved',
     defaultMessage: 'The minutes of {committee} on {date} have been approved',
+  },
+  minutesCorrectionProposed: {
+    id: 'notificationKinds.minutesCorrectionProposed',
+    defaultMessage: 'A correction to the approved minutes of {committee} on {date} awaits your approval',
   },
   minutesCommentAdded: {
     id: 'notificationKinds.minutesCommentAdded',
@@ -663,6 +668,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.minutesConfirmationRequested, meetingValues(params))
     case 'MINUTES_APPROVED':
       return intl.formatMessage(kindsWithValues.minutesApproved, meetingValues(params))
+    case 'MINUTES_CORRECTION_PROPOSED':
+      return intl.formatMessage(kindsWithValues.minutesCorrectionProposed, meetingValues(params))
     case 'MINUTES_COMMENT_ADDED':
       return intl.formatMessage(kindsWithValues.minutesCommentAdded, {
         ...meetingValues(params),
@@ -851,6 +858,10 @@ const mailTemplates = defineMessages({
     defaultMessage: 'Minutes to approve',
   },
   MINUTES_APPROVED: { id: 'mail.template.minutesApproved', defaultMessage: 'Minutes approved' },
+  MINUTES_CORRECTION_PROPOSED: {
+    id: 'mail.template.minutesCorrectionProposed',
+    defaultMessage: 'Correction to minutes to approve',
+  },
   ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
   ACTION_OWNER_CHANGED: { id: 'mail.template.actionOwnerChanged', defaultMessage: 'Committee action owner changed' },
   ACTION_RISK_ACCEPTED: { id: 'mail.template.actionRiskAccepted', defaultMessage: 'Committee action risk accepted' },

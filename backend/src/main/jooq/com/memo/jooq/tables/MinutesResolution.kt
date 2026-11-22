@@ -8,12 +8,14 @@ import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MINUTES_RESOLUTION_DECISION_IDX
 import com.memo.jooq.indexes.MINUTES_RESOLUTION_IN_FORCE_UK
 import com.memo.jooq.indexes.MINUTES_RESOLUTION_MEETING_IDX
+import com.memo.jooq.keys.MINUTES_EXTRACT__MINUTES_EXTRACT_TENANT_ID_RESOLUTION_ID_FKEY
 import com.memo.jooq.keys.MINUTES_RESOLUTION_NUMBER_UK
 import com.memo.jooq.keys.MINUTES_RESOLUTION_PKEY
 import com.memo.jooq.keys.MINUTES_RESOLUTION_SEQUENCE_UK
 import com.memo.jooq.keys.MINUTES_RESOLUTION__MINUTES_RESOLUTION_TENANT_ID_DECISION_ID_FKEY
 import com.memo.jooq.keys.MINUTES_RESOLUTION__MINUTES_RESOLUTION_TENANT_ID_FORUM_ID_PERIOD_FKEY
 import com.memo.jooq.tables.MinutesDecision.MinutesDecisionPath
+import com.memo.jooq.tables.MinutesExtract.MinutesExtractPath
 import com.memo.jooq.tables.MinutesResolutionCounter.MinutesResolutionCounterPath
 import com.memo.jooq.tables.records.MinutesResolutionRecord
 
@@ -200,6 +202,22 @@ open class MinutesResolution(
      */
     fun minutesResolutionCounter(): MinutesResolutionCounterPath = minutesResolutionCounter
     val minutesResolutionCounter: MinutesResolutionCounterPath by lazy { MinutesResolutionCounterPath(this, MINUTES_RESOLUTION__MINUTES_RESOLUTION_TENANT_ID_FORUM_ID_PERIOD_FKEY, null) }
+
+    private lateinit var _minutesExtract: MinutesExtractPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_extract</code> table
+     */
+    fun minutesExtract(): MinutesExtractPath {
+        if (!this::_minutesExtract.isInitialized)
+            _minutesExtract = MinutesExtractPath(this, null, MINUTES_EXTRACT__MINUTES_EXTRACT_TENANT_ID_RESOLUTION_ID_FKEY.inverseKey)
+
+        return _minutesExtract;
+    }
+
+    val minutesExtract: MinutesExtractPath
+        get(): MinutesExtractPath = minutesExtract()
     override fun getChecks(): List<Check<MinutesResolutionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_resolution_check"), "(((state = 'VOID'::text) = (voided_at IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_resolution_check1"), "(((state = 'VOID'::text) = (void_reason IS NOT NULL)))", true),

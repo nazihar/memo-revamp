@@ -176,6 +176,10 @@ enum class NotificationKind(
     MINUTES_COMMENTS_CLOSING(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_COMMENTS_CLOSING),
     MINUTES_CONFIRMATION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CONFIRMATION_REQUESTED),
     MINUTES_APPROVED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_APPROVED),
+
+    // A correction to approved minutes proposed by a secretary (E06 T8), to the approver (the chair, else the vice-chair):
+    // the same parameters; never the correction's text, reason or item.
+    MINUTES_CORRECTION_PROPOSED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CORRECTION_PROPOSED),
     MINUTES_COMMENT_ADDED(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_OVERDUE(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_READY(NotificationCategory.WORKFLOW, null),

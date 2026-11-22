@@ -29,7 +29,7 @@ data class MinutesRecordResponse(
     val file: MinutesRecordFile?,
     /** The items redacted in the viewer's copy, by number; empty when they read the record itself. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val redacted: List<MinutesRedactedItem>,
-    /** Whether this is the record of reference (the newest version). */
+    /** Whether this is the record of reference (the newest made version; E06 T8: the earlier ones stay readable). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val current: Boolean,
 )
 
@@ -140,7 +140,8 @@ class MinutesRecordReading(
             reader.view.agenda.items
                 .associate { it.id to it.number.orEmpty() }
         val redacted = reader.set.redacted.map { MinutesRedactedItem(numbers[it.itemId].orEmpty(), it.kind) }
-        return versions.mapIndexed { i, r ->
+        val current = (versions.firstOrNull { it.state == RecordState.READY } ?: versions.firstOrNull())?.recordVersion
+        return versions.map { r ->
             val ready = (copies.lookup(reader.row, reader.set, r.recordVersion) as? RecordLookup.Ready)
             MinutesRecordResponse(
                 version = r.recordVersion,
@@ -150,7 +151,7 @@ class MinutesRecordReading(
                 builtAt = r.builtAt,
                 file = ready?.let { MinutesRecordFile(it.sha256, (it.copy?.compliant ?: r.compliant) == true, it.copy == null) },
                 redacted = redacted,
-                current = i == 0,
+                current = r.recordVersion == current,
             )
         }
     }

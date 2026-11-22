@@ -70,6 +70,7 @@ const item = (id: string, number: string, title: string): MemberItemResponse => 
   papers: [],
   presenters: [],
   subItems: [],
+  links: [],
 })
 
 const agenda: MemberAgendaResponse = {

@@ -268,5 +268,10 @@ internal object CopySanitizer {
 internal class PoiDocxCopies : DocxCopies {
     override fun forCopy(docx: ByteArray): ByteArray = CopySanitizer.sanitize(docx)
 
+    override fun dropRows(
+        docx: ByteArray,
+        tags: Set<String>,
+    ): ByteArray = RowControls.drop(docx, tags)
+
     override fun text(docx: InputStream): String = CopySanitizer.text(docx)
 }

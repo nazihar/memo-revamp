@@ -10,7 +10,9 @@ import com.memo.jooq.indexes.MINUTES_APPROVAL_FORUM_IDX
 import com.memo.jooq.indexes.MINUTES_APPROVAL_MEETING_IDX
 import com.memo.jooq.keys.MINUTES_APPROVAL_PKEY
 import com.memo.jooq.keys.MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_APPROVAL_ID_FKEY
 import com.memo.jooq.tables.Minutes.MinutesPath
+import com.memo.jooq.tables.MinutesRecord.MinutesRecordPath
 import com.memo.jooq.tables.records.MinutesApprovalRecord
 
 import java.time.OffsetDateTime
@@ -193,6 +195,22 @@ open class MinutesApproval(
      */
     fun minutes(): MinutesPath = minutes
     val minutes: MinutesPath by lazy { MinutesPath(this, MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY, null) }
+
+    private lateinit var _minutesRecord: MinutesRecordPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_record</code> table
+     */
+    fun minutesRecord(): MinutesRecordPath {
+        if (!this::_minutesRecord.isInitialized)
+            _minutesRecord = MinutesRecordPath(this, null, MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_APPROVAL_ID_FKEY.inverseKey)
+
+        return _minutesRecord;
+    }
+
+    val minutesRecord: MinutesRecordPath
+        get(): MinutesRecordPath = minutesRecord()
     override fun getChecks(): List<Check<MinutesApprovalRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_approval_authentication_check"), "(((jsonb_typeof(authentication) = 'object'::text) AND (octet_length((authentication)::text) <= 4096)))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_client_check"), "(((jsonb_typeof(client) = 'object'::text) AND (octet_length((client)::text) <= 4096)))", true),

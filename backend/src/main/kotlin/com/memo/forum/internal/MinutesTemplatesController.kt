@@ -47,6 +47,8 @@ data class MinutesTemplateProblemView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val excerpt: String,
     val tag: String? = null,
     val suggestion: String? = null,
+    /** Why, for a warning (`DEPRECATED_TAG`). */
+    val note: String? = null,
 )
 
 /** Content the template may never carry (ADR-0048), already refused at upload: listed for a file stored before a rule. */
@@ -74,6 +76,8 @@ data class MinutesTemplateView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val tags: List<String>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val refusals: List<MinutesTemplateRefusalView>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val problems: List<MinutesTemplateProblemView>,
+    /** Deprecated tags it uses (`DEPRECATED_TAG`, with a `note`): it can still be used. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val warnings: List<MinutesTemplateProblemView>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val available: List<MinutesTemplateTagHelp>,
 )
 
@@ -125,6 +129,10 @@ class MinutesTemplatesController(
                 problems =
                     info.problems.map { p ->
                         MinutesTemplateProblemView(p.code, p.location.part, p.location.paragraph, p.excerpt, p.tag, p.suggestion)
+                    },
+                warnings =
+                    info.warnings.map { w ->
+                        MinutesTemplateProblemView(w.code, w.location.part, w.location.paragraph, w.excerpt, w.tag, note = w.note)
                     },
                 available = HELP,
             )

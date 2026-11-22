@@ -29,6 +29,13 @@ data class CopiesTask(
     val seq: Int,
 ) : TenantScopedPayload
 
+/** The `minutes-record` job's data: the version of the approved minutes' record to make (E06 T7). */
+data class RecordTask(
+    override val tenantId: UUID,
+    val meetingId: UUID,
+    val recordVersion: Int,
+) : TenantScopedPayload
+
 /** The `minutes-structure` job's data: the draft's version to check. */
 data class StructureTask(
     override val tenantId: UUID,
@@ -46,6 +53,7 @@ class MinutesJobs(
     @param:Lazy @param:Qualifier("minutesDraftTask") private val draftTask: OneTimeTask<DraftTask>,
     @param:Lazy @param:Qualifier("minutesStructureTask") private val structureTask: OneTimeTask<StructureTask>,
     @param:Lazy @param:Qualifier("minutesCopiesTask") private val copiesTask: OneTimeTask<CopiesTask>,
+    @param:Lazy @param:Qualifier("minutesRecordTask") private val recordTask: OneTimeTask<RecordTask>,
     private val clock: Clock,
 ) {
     /** False only while a test runs the jobs itself (test contexts share the scheduler table). */
@@ -67,6 +75,16 @@ class MinutesJobs(
         if (!jobs) return
         val data = StructureTask(TenantContext.current().value, meetingId, versionId)
         scheduler.ifAvailable?.scheduleIfNotExists(structureTask.schedulableInstance("$meetingId:$versionId", data))
+    }
+
+    /** Version [recordVersion] of the approved minutes' record, made now (E06 T7). */
+    fun record(
+        meetingId: UUID,
+        recordVersion: Int,
+    ) {
+        if (!jobs) return
+        val data = RecordTask(TenantContext.current().value, meetingId, recordVersion)
+        scheduler.ifAvailable?.scheduleIfNotExists(recordTask.schedulableInstance("$meetingId:$recordVersion", data))
     }
 
     /**
@@ -115,6 +133,15 @@ class MinutesJobTasks {
         }
 
     @Bean
+    fun minutesRecordTask(
+        jobs: Jobs,
+        records: MinutesRecords,
+    ): OneTimeTask<RecordTask> =
+        jobs.tenantTaskCounting(RECORD, RecordTask::class.java, MinutesRecords.MAX_RETRIES) { data, failures ->
+            records.build(data.meetingId, data.recordVersion, last = failures + 1 >= MinutesRecords.MAX_RETRIES)
+        }
+
+    @Bean
     fun minutesStructureTask(
         jobs: Jobs,
         checks: MinutesStructureChecks,
@@ -124,6 +151,7 @@ class MinutesJobTasks {
         const val DRAFT = "minutes-draft"
         const val STRUCTURE = "minutes-structure"
         const val COPIES = "minutes-copies"
+        const val RECORD = "minutes-record"
         const val MAX_RETRIES = 3
     }
 }

@@ -1,0 +1,21 @@
+# Phase 4 E08 the decision register and analytics (design E08 §1.3, §3, §4; ADR-0069, ADR-0070). T2: the register's scope and
+# search. Both are for committee people and oversight: a committee's officers and members in office (their committees),
+# forums.manage and forum.read (every committee); a signed-in user with none of these is 403 (a tenant administrator holds
+# forums.manage). Who sees which row, in full or as a restricted line, and the filters' rules are DecisionRegisterIT and the
+# equivalence property; a former member, a guest, a memo's reader and an action owner outside the committee
+# DecisionRegisterIT; another tenant DecisionSearchExplainIT.
+#
+# Recusal columns: the status on the leak suite's published meeting for a member recused from the item, one awaiting the
+# chair's ruling, a recused secretary and a recused chair. Each is still in office, so the register is theirs: 200, with
+# the item a restricted line (RecusalLeakIT's REGISTER surface checks the rows and every canary of the item's decision).
+epic: P4-E08
+endpoints:
+  - endpoint: "GET /api/v1/decision-register/scope"
+    rule: signedIn
+    expect: { user: 403 }
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "POST /api/v1/decision-register/search"
+    rule: signedIn
+    body: { text: "term loan" }
+    expect: { user: 403 }
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }

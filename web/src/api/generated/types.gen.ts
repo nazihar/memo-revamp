@@ -260,6 +260,11 @@ export type ActionWarning = {
     userId: string;
 };
 
+export type ActionsDetail = {
+    owners: Array<OwnerOverdueResponse>;
+    summary: ActionsSummary;
+};
+
 export type ActionsPolicy = {
     amberWorkingDays: number;
     defaultDue: 'NEXT_MEETING' | 'WORKING_DAYS';
@@ -270,6 +275,19 @@ export type ActionsPolicy = {
     staleWorkingDays: number;
     updateRequestWorkingDays: number;
     verifiedBy: 'SECRETARY' | 'CHAIR';
+};
+
+export type ActionsSummary = {
+    closed: number;
+    closedByAgreedDate: number;
+    closedByAgreedPercent?: number | null;
+    closedByOriginalDate: number;
+    closedByOriginalPercent?: number | null;
+    overdue: number;
+    overdue1To30: number;
+    overdue31To90: number;
+    overdueOver90: number;
+    overdueRevised: number;
 };
 
 export type ActiveRequest = {
@@ -483,6 +501,12 @@ export type AllowedApprovers = {
     roles?: Array<string>;
 };
 
+export type AnalyticsSummaryResponse = {
+    committees: Array<CommitteeSummaryResponse>;
+    from: string;
+    to: string;
+};
+
 export type AppliedResponse = {
     moved: number;
 };
@@ -552,6 +576,13 @@ export type AttendanceCountsResponse = {
     total: number;
 };
 
+export type AttendanceDetail = {
+    members: Array<MemberAttendanceResponse>;
+    membersOmitted: boolean;
+    ownRowOnly: boolean;
+    summary: AttendanceSummary;
+};
+
 export type AttendanceEventRequest = {
     at?: string | null;
     itemId?: string | null;
@@ -614,6 +645,13 @@ export type AttendanceResponse = {
     people?: Array<AttendancePersonResponse> | null;
     quorum?: LiveQuorumResponse | null;
     status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+};
+
+export type AttendanceSummary = {
+    attended: number;
+    expected: number;
+    heldMeetings: number;
+    ratePercent?: number | null;
 };
 
 /**
@@ -942,6 +980,34 @@ export type CodeRequest = {
     code: string;
 };
 
+export type CommitteeDetailResponse = {
+    access: 'FULL' | 'MEMBER';
+    actions: ActionsDetail;
+    attendance: AttendanceDetail;
+    code: string;
+    deferrals: DeferralDetail;
+    forumId: string;
+    from: string;
+    name: string;
+    papers: PapersDetail;
+    shortName: string;
+    timeToDecision: TimingDetail;
+    to: string;
+};
+
+export type CommitteeSummaryResponse = {
+    access: 'FULL' | 'MEMBER';
+    actions: ActionsSummary;
+    attendance: AttendanceSummary;
+    code: string;
+    deferrals: DeferralSummary;
+    forumId: string;
+    name: string;
+    papers: PapersSummary;
+    shortName: string;
+    timeToDecision: TimingSummary;
+};
+
 export type ComponentHealth = {
     name: string;
     status: 'UP' | 'DOWN' | 'DISABLED';
@@ -1065,6 +1131,12 @@ export type DecisionEntryResponse = {
     vote: DecisionVoteResponse;
 };
 
+export type DecisionFacetsView = {
+    forums: Array<ForumCountView>;
+    outcomes: Array<OutcomeCountView>;
+    years: Array<YearCountView>;
+};
+
 export type DecisionHistoryResponse = {
     decisionId: string;
     entries: Array<DecisionEntryResponse>;
@@ -1134,6 +1206,66 @@ export type DecisionResponse = {
     version: number;
     viewerRecused: boolean;
     vote?: DecisionVoteResponse | null;
+};
+
+export type DecisionRowView = {
+    conditions?: Array<string> | null;
+    corrected?: boolean | null;
+    decidedAt?: string | null;
+    decisionId: string;
+    finalAt?: string | null;
+    forumId: string;
+    forumName: string;
+    hasDissent?: boolean | null;
+    itemId: string;
+    itemNumber?: string | null;
+    level: 'FULL' | 'LINE';
+    meetingDate: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    memoId?: string | null;
+    memoNumber?: string | null;
+    memoTypeId?: string | null;
+    memoTypeName?: string | null;
+    outcomeKind?: string | null;
+    outcomeLabel?: string | null;
+    ratificationRequired?: boolean | null;
+    ratifiedByDecisionId?: string | null;
+    reason?: 'RECUSED' | 'RESTRICTED';
+    resolution?: boolean | null;
+    resolutionId?: string | null;
+    resolutionNumber?: string | null;
+    resolutionState?: string | null;
+    state: string;
+    submissionId?: string | null;
+    text?: string | null;
+    title?: string | null;
+    validUntil?: string | null;
+    voteMode?: string | null;
+};
+
+export type DecisionSearchRequest = {
+    cursor?: string | null;
+    flags?: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'> | null;
+    forumIds?: Array<string> | null;
+    forumTypeIds?: Array<string> | null;
+    from?: string | null;
+    limit?: number | null;
+    memoTypeIds?: Array<string> | null;
+    outcomes?: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'> | null;
+    resolutionsOnly?: boolean | null;
+    sort?: 'RELEVANCE' | 'NEWEST' | 'OLDEST' | 'NUMBER';
+    states?: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'> | null;
+    text?: string | null;
+    to?: string | null;
+};
+
+export type DecisionSearchView = {
+    capped: boolean;
+    facets: DecisionFacetsView;
+    nextCursor?: string | null;
+    rows: Array<DecisionRowView>;
+    total: number;
 };
 
 export type DecisionVoteResponse = {
@@ -1224,6 +1356,18 @@ export type DeferTarget = {
     date?: string | null;
     meetingId?: string | null;
     next?: boolean;
+};
+
+export type DeferralDetail = {
+    byQuarter: Array<QuarterDeferralResponse>;
+    overall: DeferralSummary;
+};
+
+export type DeferralSummary = {
+    decisions: number;
+    deferred: number;
+    deferredPercent?: number | null;
+    deferredTwice: number;
 };
 
 export type DefinitionChoice = {
@@ -1540,6 +1684,12 @@ export type ForumActionsResponse = {
     matching: number;
     nextCursor?: string | null;
     totals: ActionTotals;
+};
+
+export type ForumCountView = {
+    count: number;
+    forumId: string;
+    name: string;
 };
 
 export type ForumPolicyResponse = {
@@ -2403,6 +2553,17 @@ export type MeetingPageResponse = {
     nextCursor?: string | null;
 };
 
+export type MeetingPapersResponse = {
+    attended: number;
+    date: string;
+    expected: number;
+    label?: string | null;
+    lateItems?: number | null;
+    latePapers?: number | null;
+    meetingId: string;
+    onTime?: boolean | null;
+};
+
 export type MeetingPolicy = {
     invitationTitle?: 'NAME' | 'NEUTRAL';
     meetingReminder?: boolean;
@@ -2504,6 +2665,25 @@ export type MemberAgendaResponse = {
     whatChanged?: WhatChangedResponse | null;
 };
 
+export type MemberAttendanceResponse = {
+    absent: number;
+    apologies: number;
+    attended: number;
+    byAlternate: number;
+    expected: number;
+    inPerson: number;
+    joinedLate: number;
+    leftEarly: number;
+    meetings: Array<MemberMeetingResponse>;
+    name?: string | null;
+    ratePercent?: number | null;
+    remote: number;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    seatFrom: string;
+    seatTo: string;
+    userId: string;
+};
+
 export type MemberAttribute = {
     key?: string;
     label?: string;
@@ -2546,6 +2726,15 @@ export type MemberItemResponse = {
     startsAt?: string | null;
     subItems: Array<MemberItemResponse>;
     title?: string | null;
+};
+
+export type MemberMeetingResponse = {
+    attendance: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES' | 'ABSENT';
+    byAlternate: boolean;
+    date: string;
+    joinedLate: boolean;
+    leftEarly: boolean;
+    meetingId: string;
 };
 
 export type MemberPaperResponse = {
@@ -2697,6 +2886,12 @@ export type MemoTypeTemplateView = {
     available: Array<TemplateTagHelp>;
     owner: string;
     template?: TemplateFileView | null;
+};
+
+export type MemoTypeTimingResponse = {
+    memoTypeId?: string | null;
+    memoTypeName?: string | null;
+    timing: TimingSummary;
 };
 
 export type MemoTypeVersionResponse = {
@@ -3190,6 +3385,11 @@ export type Named = {
     name: string;
 };
 
+export type NamedView = {
+    id: string;
+    name: string;
+};
+
 export type NewMemoTypeRequest = {
     code: string;
     name: string;
@@ -3476,6 +3676,11 @@ export type Outcome = {
     resolution?: boolean;
 };
 
+export type OutcomeCountView = {
+    count: number;
+    outcome: string;
+};
+
 export type OwnerChangeRequest = {
     owner?: OwnerInput | null;
     reason?: string | null;
@@ -3487,11 +3692,38 @@ export type OwnerInput = {
     userId?: string | null;
 };
 
+export type OwnerOverdueResponse = {
+    days1To30: number;
+    days31To90: number;
+    holderName?: string | null;
+    holderUserId?: string | null;
+    over90: number;
+    overdue: number;
+    ownerName?: string | null;
+    ownerPositionId?: string | null;
+    ownerUserId?: string | null;
+    revised: number;
+};
+
 export type PackFileResponse = {
     classificationId: string;
     fileId: string;
     source: 'MEMO_DOCUMENT' | 'MEMO_ATTACHMENT' | 'MEMO_RECORD' | 'UPLOAD';
     title: string;
+};
+
+export type PapersDetail = {
+    meetings: Array<MeetingPapersResponse>;
+    summary: PapersSummary;
+};
+
+export type PapersSummary = {
+    lateItems?: number | null;
+    latePapers?: number | null;
+    meetings: number;
+    onTime: number;
+    onTimePercent?: number | null;
+    withDeadline: number;
 };
 
 export type PasswordResetCompletion = {
@@ -3724,6 +3956,16 @@ export type PublishedRevisionResponse = {
     number: number;
     publishedAt: string;
     publishedBy?: PersonResponse | null;
+};
+
+export type QuarterDeferralResponse = {
+    deferrals: DeferralSummary;
+    quarter: string;
+};
+
+export type QuarterTimingResponse = {
+    quarter: string;
+    timing: TimingSummary;
 };
 
 export type QueueMemberRequest = {
@@ -3981,6 +4223,16 @@ export type RegenerateRequest = {
     reason: string;
 };
 
+export type RegisterCommitteeView = {
+    dissolved: boolean;
+    id: string;
+    member: boolean;
+    name: string;
+    officer: boolean;
+    shortName: string;
+    typeId: string;
+};
+
 export type RegisterEntry = {
     memoId: string;
     number: string;
@@ -3998,6 +4250,17 @@ export type RegisterItemResponse = {
     quorumWarning?: QuorumWarningResponse | null;
     recused: boolean;
     title?: string | null;
+};
+
+export type RegisterScopeView = {
+    canCheckNumbers: boolean;
+    canExport: boolean;
+    committeeTypes: Array<NamedView>;
+    committees: Array<RegisterCommitteeView>;
+    flags: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'>;
+    memoTypes: Array<NamedView>;
+    outcomes: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'>;
+    states: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'>;
 };
 
 export type RemarkRequest = {
@@ -4828,6 +5091,21 @@ export type TermsUpdate = {
     terms: Array<Term>;
 };
 
+export type TimingDetail = {
+    byMemoType: Array<MemoTypeTimingResponse>;
+    byQuarter: Array<QuarterTimingResponse>;
+    overall: TimingSummary;
+};
+
+export type TimingSummary = {
+    decisions: number;
+    enough: boolean;
+    medianDays?: number | null;
+    medianWorkingDays?: number | null;
+    p90Days?: number | null;
+    p90WorkingDays?: number | null;
+};
+
 export type ToBeRatifiedResponse = {
     decidedAt: string;
     decisionId: string;
@@ -4991,6 +5269,11 @@ export type WorkflowView = {
     subjectId: string;
     subjectType: string;
     version: number;
+};
+
+export type YearCountView = {
+    count: number;
+    year: number;
 };
 
 export type GetActionData = {
@@ -7649,6 +7932,75 @@ export type ReleaseClaimedTaskResponses = {
 
 export type ReleaseClaimedTaskResponse = ReleaseClaimedTaskResponses[keyof ReleaseClaimedTaskResponses];
 
+export type GetCommitteeAnalyticsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+        forumIds?: Array<string>;
+    };
+    url: '/api/v1/analytics/committees';
+};
+
+export type GetCommitteeAnalyticsResponses = {
+    /**
+     * OK
+     */
+    200: AnalyticsSummaryResponse;
+};
+
+export type GetCommitteeAnalyticsResponse = GetCommitteeAnalyticsResponses[keyof GetCommitteeAnalyticsResponses];
+
+export type GetCommitteeAnalyticsDetailData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/api/v1/analytics/committees/{forumId}';
+};
+
+export type GetCommitteeAnalyticsDetailResponses = {
+    /**
+     * OK
+     */
+    200: CommitteeDetailResponse;
+};
+
+export type GetCommitteeAnalyticsDetailResponse = GetCommitteeAnalyticsDetailResponses[keyof GetCommitteeAnalyticsDetailResponses];
+
+export type ExportCommitteeAttendanceData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/api/v1/analytics/committees/{forumId}/attendance/export';
+};
+
+export type ExportCommitteeAttendanceErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportCommitteeAttendanceResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportCommitteeAttendanceResponse = ExportCommitteeAttendanceResponses[keyof ExportCommitteeAttendanceResponses];
+
 export type GetCsrfTokenData = {
     body?: never;
     path?: never;
@@ -8222,6 +8574,38 @@ export type ApprovalsDashboardResponses = {
 };
 
 export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
+
+export type GetDecisionRegisterScopeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/scope';
+};
+
+export type GetDecisionRegisterScopeResponses = {
+    /**
+     * OK
+     */
+    200: RegisterScopeView;
+};
+
+export type GetDecisionRegisterScopeResponse = GetDecisionRegisterScopeResponses[keyof GetDecisionRegisterScopeResponses];
+
+export type SearchDecisionRegisterData = {
+    body: DecisionSearchRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/search';
+};
+
+export type SearchDecisionRegisterResponses = {
+    /**
+     * OK
+     */
+    200: DecisionSearchView;
+};
+
+export type SearchDecisionRegisterResponse = SearchDecisionRegisterResponses[keyof SearchDecisionRegisterResponses];
 
 export type ListDeclarationsData = {
     body?: never;

@@ -189,6 +189,8 @@ pitest {
             "com.memo.minutes.internal.ResolutionChecks*",
             "com.memo.minutes.internal.ReleaseMapping*",
             "com.memo.minutes.internal.ReleaseCommand*",
+            // The analytics measures' definitions (ADR-0070, Phase 4 E08 T4): one definition for screen, export and tests.
+            "com.memo.analytics.measures.*",
         ),
     )
     targetTests.set(
@@ -202,6 +204,7 @@ pitest {
             "com.memo.minutes.internal.ReleaseMappingTest",
             "com.memo.minutes.internal.ResolutionChecksTest",
             "com.memo.minutes.internal.AgendaOrderProperties",
+            "com.memo.analytics.measures.*",
         ),
     )
     threads.set(4)

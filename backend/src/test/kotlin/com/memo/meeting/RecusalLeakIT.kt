@@ -207,6 +207,22 @@ class RecusalLeakIT : RecusalActionsFixture() {
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
             // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
             Surface.TRACKER to { p, v -> trackerProbe(p, v) },
+            // E08 T4: analytics, counts only: every recused viewer keeps their committee's (in office), with no canary in the
+            // answers or the attendance workbook; members get their own row and no late counts, and do not export. What a
+            // recused viewer counts against the same data without the item is AnalyticsLeakIT's differential.
+            Surface.ANALYTICS to { _, v ->
+                val base = "/api/v1/analytics/committees"
+                listOf(base, "$base/$brc").forEach { uri -> clean(v.person(), read(uri, v.person().session)) }
+                val export = read("$base/$brc/attendance/export", v.person().session)
+                if (v.officer) {
+                    assertThat(export).hasStatusOk()
+                    val cells = workbookRows(export).joinToString("\n")
+                    canaries(v.person()).forEach { assertThat(cells).doesNotContain(it) }
+                } else {
+                    assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+                    clean(v.person(), export, statusBelow = 500)
+                }
+            },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v ->

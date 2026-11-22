@@ -99,7 +99,7 @@ describe('approvals dashboard', () => {
 
     // The file's first render loads the route tree and Recharts: on a loaded runner that alone can take over 5 s.
     expect(
-      await screen.findByText('Showing: Me, Aug 24, 2026 – Nov 15, 2026', {}, { timeout: 15_000 }),
+      await screen.findByText('Showing: Me, Aug 24, 2026 – Nov 15, 2026', {}, { timeout: 10_000 }),
     ).toBeInTheDocument()
     expect([queries[0]?.get('scope'), queries[0]?.get('from')]).toEqual(['me', periodStart(12)])
     expect(screen.getByRole('combobox', { name: 'Scope' })).toHaveValue('me')

@@ -79,7 +79,9 @@
 - **Tests:**
   - `analytics.test.tsx`, 16 tests: the sentence before the table; the table visible; bars `aria-hidden`; every value's link; the basis line; a member's block without late counts; narrowing and the period in the address; 403 and 422 in words; AW's figures with the working-days toggle, the memo type line and the papers' words; AV's rows, the alternate note, sorting and the export button; the member's own row; above five years; a member's meetings; Arabic; the menu entry's audience;
   - axe in English and Arabic; the dashboard's tests unchanged and passing;
-  - the journey `meeting-analytics.spec` (secretary and member, axe in English and Arabic) for the PR stage.
+  - the journey `meeting-analytics.spec` (secretary and member, axe in English and Arabic) for the PR stage;
+  - backend: `AnalyticsIT`, `AnalyticsLeakIT`, the measures' unit tests, `ModularityTest`, `ModuleMetadataIT`, `OpenApiContractTest`, detekt and ktlint green, again after merging T4 and master;
+  - the whole web suite (458 tests) ran on a machine busy with Gradle: the files that timed out there (first renders over 5 s) pass when re-run on their own with two workers. `DataTable.test.tsx`'s check that every table sits in a scroll box found the overview's table, now in `TableScroll`. The dashboard's first wait is 10 s, because its first render loads the route tree and Recharts.
 - **The agent's keyboard and structure pass** over AU–AW is in `ux-review.md`. Two defects were found and fixed: link targets below 40 px, and figure links not reaching their section in AW. The screen-reader pass by a person is carried with its checklist.
 - **Deviations:**
   - the actions and decisions figures link into AW until the tracker and register screens exist (above);

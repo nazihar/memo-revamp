@@ -186,3 +186,86 @@
   - ktlint, detekt and SpotBugs are clean.
   - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged; the texts are in `notificationKinds`) and the notification texts' tests pass.
 - **Left for later tasks:** T5 reacts to the timers, marks actions done (it withdraws a pending request with the cause `DONE`) and verifies them, and sends the digest that `actions_digest` keys. T8 builds the tracker on `RagRule.shows`. T10 and T11 build the screens on the abilities in `ActionResponse.can`.
+
+## 2026-11-22 — T5: reminders, escalation, closure and the daily digest
+- **Built:**
+  - **No migration:** the digest keys on T4's `actions_digest`. The notification module gains code only.
+  - **The timers' reactions** (`ActionTimerListener`, in the timer's transaction, for the action's current run):
+    - 5 working days before the date the holder gets `ACTION_DUE_SOON`;
+    - at its end the holder and the committee's secretaries not recused get `ACTION_OVERDUE`;
+    - each reminder after tells the holder again;
+    - at the escalation the secretaries hear it was escalated. The engine's `WorkflowEscalated` gives the holder's supervisor by the reporting line (or the definition's target, the chair on verification) `ACTION_ESCALATED` by email at once, with the holder and the days overdue;
+    - the verification step's timers remind the verifiers (`ACTION_TO_VERIFY`).
+    - Reminders and overdue notices are in the app at once, and their emails wait for the digest. Nothing fires once an action is closed or cancelled (its timers are the closed tasks').
+  - **Closure** (`ActionClosure`):
+    - "Mark as done" (`POST /actions/{id}/done`) by whoever holds the owner's task, with what was done and evidence (`EVIDENCE_REQUIRED` when the committee type says so). It withdraws a pending date request and runs RECOMMEND. The engine's verify task makes the action DONE_PENDING and tells the pool.
+    - "Verify" (`POST /actions/{id}/verify`): CLOSE, or SEND_BACK with a remark, by a member of the pool. Never the owner or a contributor (403 `NOT_VERIFIER`), never the recused; the shared step is claimed first (409 `CLAIMED`). The owner and contributors hear it was closed; the holder hears at once by email that it was sent back, without the remark.
+    - "Close the actions the committee agreed" (`POST /meetings/{id}/actions/close-agreed`): one transaction per action, the remark "Agreed at {meeting}, item {n}", per-action results replayed by the key.
+  - **"My actions"** has TO_VERIFY and CONTRIBUTING tabs beside MINE, each with its count from its own predicate. `can.markDone` and `can.verify` are on the action.
+  - **The `actions-daily` task:** an hourly fan-out per tenant, acting from 09:00 in the tenant's zone on its working days.
+    - (a) **The digest:** one `ACTIONS_DIGEST` email per person and day with their references by kind since their last digest (the day's in-app action notices, read through the new published `NotificationLog`), in their language, at most 5,000 people a run.
+    - (c) **The safety net**, on the day's first run:
+      - an issued action without a workflow is reported to the secretaries once (`ACTION_NOT_RUNNING`);
+      - an action whose workflow ended or moved to a newer run without it takes the engine's state;
+      - an owner's step due at another time than the action's date is planned again (`Workflows.redue`).
+    - (b), the update requests, is T7's.
+  - **Audit:** `actions.done`, `actions.sent_back`, `actions.closed` (with `closeAgreedAt`), `actions.digest.sent`, `actions.action.not_running`, `actions.action.reconciled`, `actions.timers.replanned`.
+  - **Notification kinds** (en/ar):
+    - in the app only: `ACTION_DUE_SOON`, `ACTION_OVERDUE` (with `stage`), `ACTION_TO_VERIFY`, `ACTION_CLOSED`, `ACTION_NOT_RUNNING`;
+    - in the app and by email: `ACTION_ESCALATED` and `ACTION_SENT_BACK`;
+    - email only: `ACTIONS_DIGEST` (`NotificationKind.inApp`).
+    - Three email templates; the web texts are in `notificationKinds` and the template labels in `admin`, so the Arabic core is unchanged.
+  - Matrix rows in `p4-e07-actions.yaml`. Leak suite: `done` and `verify` in the recusal columns, close-agreed as an officer probe, and the TO_VERIFY and CONTRIBUTING tabs in `RecusalActionsFixture`'s probe.
+- **Choices made while building** (design §1.14 "As built in T5"):
+  - **The digest reads the in-app items** of the kinds whose emails wait (no queue table of its own). So a person who switched off in-app workflow items gets no digest. A person's window runs from their last digest day's 09:00 (at most 14 days back) to today's 09:00. The tenant's day is keyed by two nil-person rows of `actions_digest`: `STARTED` (the safety net runs once) and `COMPLETE` (the later hourly runs read nothing).
+  - **The supervisor is told, not given access.** The escalation's link opens the action for someone with a seat on the committee and the inbox for others.
+  - **The verifier slot's CHAIR mode now falls back to the vice-chair** when the chair is excluded (for example the chair owns the action), as §1.9 says. T3 stopped at the chair.
+  - **Evidence is asked for on the "done" call itself** when the committee requires it. Files posted with earlier updates do not count.
+  - New stable codes: 403 `NOT_VERIFIER` and `NOT_HOLDER`; 409 `CLAIMED` and `COMMITTEE` (close-agreed for another committee's action); 422 `EVIDENCE_REQUIRED`.
+  - **Not built here:** `ACTIONS_NOT_SENT` (drafts at the meeting's end, design §2.1), `ACTION_MEMO_DECIDED` (T6) and `ACTION_UPDATE_REQUESTED` (T7).
+- **Tests:**
+  - **`ActionWorkflowIT`** on a hand-moved clock with the built-in definition: the reminder before, the overdue notice to the holder and the secretaries, the reminder after, the escalation to the supervisor by the reporting line by email at once (no title), none without a supervisor (the secretaries still told), the verifier's reminders and the chair's escalation, nothing after closing or cancelling, a substitute reminded and marking it done, and the colour red past the date.
+  - **`ActionClosureIT`:** T5's acceptance criteria (the owner who is a secretary is left out of the pool, the other secretary closes it, the owner is told; sending back without a remark is 422), evidence required, the pending request withdrawn, a recused secretary left out, CHAIR mode with the vice-chair, the "My actions" tabs and counts, close-agreed with per-action results and its replay.
+  - **`ActionsDigestIT`:** one digest per person the next working morning with the references only, none on a holiday or before 09:00, none twice; the safety net's three cases, once.
+  - `ActionAccessArchTest`, the leak suites (`RecusalLeakIT` with the new probes, `PaperLeakIT`), the matrix and `MailTemplatesTest`; the web notification texts' tests.
+- **Results (local):**
+  - 2,862 tests over `com.memo.actions.*`, `com.memo.workflow.*` (the engine's property tests included), `com.memo.notification.*`, `PaperLeakIT`, `RecusalLeakIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `RlsMetaTest`, `MigrationDmlRlsTest` and `MemoReminderIT`: all green.
+  - After detekt's fixes, 2,609 tests over `com.memo.actions.*`, `com.memo.notification.*`, the leak suites, the matrix, endpoint, audit, architecture, modularity and contract tests: all green.
+  - ktlint, detekt and SpotBugs are clean.
+  - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged at 13.5 KiB; the texts are in `notificationKinds` and `admin`) and the notification texts' tests pass.
+
+## 2026-11-22 — T8: the tracker and its export
+- **Built:**
+  - **`GET /forums/{fid}/actions`, the committee's tracker** (flow AN): its issued actions and its direct drafts (secretaries and `forums.manage`), by the one rule (`ActionAccess.seen`).
+    - Filters: status (any of several), colour, overdue, owner (a person, a position or the task's holder), due from and to, meeting, item, source and text. The text matches the title and the description by `websearch_to_tsquery` (English stems and `simple`) or the reference.
+    - Sorts by due date, latest update or reference, with keyset pages of 50. A cursor that is not one, or of another sort, is 422 `cursor INVALID`.
+    - **Totals per colour** (red, amber, green, to verify, closed, drafts) come from `RagRule.shows` in one aggregate on the same predicate. They take every filter but the colour ones, and `matching` counts the rows under all of them. So a list and its counts cannot disagree, and nothing the viewer may not see is counted.
+    - The answer carries the key's numbers from the committee type and what the viewer may do (raise, export).
+    - Who has a tracker: officers, members in office, `forum.read`, and anyone involved in one of its issued actions (their own rows). Everyone else gets 404.
+  - **`GET /forums/{fid}/actions/export`** for the secretaries, the chair, `forums.manage` and `forum.read`, as E04 T4's declarations export: one SXSSF sheet with its temporary data encrypted, string cells through `SheetCells`, at most 5,000 rows.
+    - The right and the filter are checked before `ACTION_EXPORT_PER_USER` (10 an hour) is counted.
+    - It is audited as `actions.tracker.exported` with the filter (the text as its hash), the sort, the count and whether the rows were cut.
+  - **E08's ask:** the published `ActionStats`, with `overdue` (by committee and owner, ageing bands 1–30, 31–90 and over 90 days, and the revised count) and `closedOnTime` (by the original and by the agreed date). Each is on the same rule in one query.
+  - `ActionSummary` gained the owner's confidence and the latest update.
+  - Matrix rows for both endpoints, with recusal columns: the tracker answers 200 to every recused viewer; the export is 403 to a recused member and 200 to a recused officer.
+  - **The leak suites:** the E07 placeholder is gone, replaced by the TRACKER surface.
+    - `RecusalActionsFixture.trackerProbe`: no row, count, filter result or workbook line of a recused item; d1 has their own action only.
+    - `PaperLeakIT`: rows and totals by the item rule; only `forum.read` exports, and its workbook holds no canary.
+- **Choices made while building** (design §1.14 "As built in T8"):
+  - **The tracker lists direct drafts, not a meeting's**: those stay on the meeting's page and its "Send the drafts".
+  - **`dueFrom`/`dueTo`, both included**, instead of the sketch's `dueAfter`/`dueBefore`. The text filter also finds a reference.
+  - **The totals ignore the colour filters**, so the acceptance criterion holds: filtered "Overdue", the rows are the 3 overdue actions, and the totals still read "Red 3, Amber 2, Green 7, To verify 2". `overdue` is the design's derived state (§1.4), so an action overridden to amber is not red but is still overdue.
+  - **`ActionStats` takes no viewer parameter**: it counts for the signed-in person, because `ActionAccess`'s viewer is built from the security context. E08 asked for `overdue(viewer, …)`; a caller can then never count for someone else.
+  - The reads are a new `ActionTrackerReads`, which `ActionAccessArchTest` now allows beside `ActionAccess`. Every query in it is on `ActionAccess.seen`.
+  - **No index and no migration:** `EXPLAIN` of the page and the totals, with and without text, over 3,000 other actions of the tenant, uses `actions_item_forum_idx` (`ActionTrackerIT`).
+- **Tests:**
+  - `ActionTrackerIT`: the acceptance criterion; each colour's rows equal to its total; an override; the recused director's rows and totals; keyset pages in every sort; bad cursors; every filter and its checks; drafts; who has a tracker; `ActionStats`; and the plan check.
+  - `TrackerExportIT`: the workbook in the screen's order; the `=` title written `'=…`; the audit with the count and the text's hash; 403 and 404; ten an hour, with a refused request spending nothing.
+  - The leak suites' TRACKER probes and the matrix rows.
+- **Results (local):**
+  - Before merging `master`: 2,584 tests over `com.memo.actions.*`, `PaperLeakIT`, `RecusalLeakIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest` and the rate-limit tests: all green.
+  - After merging `master` (#222 and #227 merged; a fast-forward) and formatting: `ActionTrackerIT`, `TrackerExportIT`, `ActionAccessArchTest`, both leak suites, the matrix (2,496 cases), `EndpointCoverageTest`, `OpenApiContractTest`, `ArchitectureRulesTest`, `ModularityTest` and `AuditActionCoverageTest` were run again: all green.
+  - After merging `master` again (T5, #231): both sides kept in `ActionAccessArchTest` (the digest's store and the tracker's reads), `p4-e07-actions.yaml` and the docs; the contract, the web client and the module metadata regenerated, not merged by hand. Run again: all of `com.memo.actions.*` (T5's suites included), both leak suites, the matrix, `EndpointCoverageTest`, `OpenApiContractTest`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, ktlint, detekt and SpotBugs; web typecheck and lint. All green (2,609 tests).
+  - ktlint, detekt and SpotBugs are clean.
+  - Web: typecheck, lint and Prettier on the generated client pass.
+- **Left for later tasks:** T9 measures the tracker (with and without text) and the export at the design's volumes. T10 builds the screen on `ForumActionsResponse`. E08 T4 reads `ActionStats`.

@@ -21822,6 +21822,12 @@
       "value": "Committee action assignedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.actionEscalated": [
+    {
+      "type": 0,
+      "value": "Committee action escalatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.actionOwnerChanged": [
     {
       "type": 0,
@@ -21832,6 +21838,18 @@
     {
       "type": 0,
       "value": "Committee action risk acceptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.actionSentBack": [
+    {
+      "type": 0,
+      "value": "Committee action sent backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.actionsDigest": [
+    {
+      "type": 0,
+      "value": "Daily digest of committee actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.forumMembershipChanged": [
@@ -34179,6 +34197,28 @@
       "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notificationKinds.actionClosed": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " was verified and closedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notificationKinds.actionDueChanged": [
     {
       "type": 0,
@@ -34295,6 +34335,160 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notificationKinds.actionDueSoon": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " is due soon, on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionEscalated": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", held by "
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ", is overdue since "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionNotRunning": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " has no running workflow: check itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionOverdue": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 5,
+      "value": "stage",
+      "options": {
+        "ESCALATED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "is overdue and was escalated"
+            }
+          ]
+        },
+        "REMINDER": {
+          "value": [
+            {
+              "type": 0,
+              "value": "is still overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "is overdue"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notificationKinds.actionOwnerChanged": [
     {
       "type": 0,
@@ -34369,6 +34563,36 @@
       "value": " was cancelled with the risk accepted on your behalfSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notificationKinds.actionSentBack": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", was sent back to youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notificationKinds.actionSourceCorrected": [
     {
       "type": 0,
@@ -34389,6 +34613,28 @@
     {
       "type": 0,
       "value": " came from was correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionToVerify": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " was marked as done: please verify itSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.editNotSaved": [

@@ -18,12 +18,19 @@ export type ActionAbilities = {
     discard: boolean;
     edit: boolean;
     issue: boolean;
+    markDone: boolean;
     overrideRag: boolean;
     reopen: boolean;
     requestDue: boolean;
     start: boolean;
     update: boolean;
     updateOnBehalf: boolean;
+    verify: boolean;
+};
+
+export type ActionDoneRequest = {
+    fileIds?: Array<string>;
+    note?: string | null;
 };
 
 export type ActionDueRequest = {
@@ -80,6 +87,11 @@ export type ActionPerson = {
 export type ActionPosition = {
     id: string;
     title: string;
+};
+
+export type ActionRagKey = {
+    amberWorkingDays: number;
+    staleWorkingDays?: number | null;
 };
 
 export type ActionRagOverride = {
@@ -151,12 +163,14 @@ export type ActionStartedRequest = {
 export type ActionSummary = {
     committee: string;
     conditionIndex?: number | null;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
     decisionId?: string | null;
     dueDate?: string | null;
     dueRevisions: number;
     forumId: string;
     id: string;
     itemId?: string | null;
+    lastUpdateAt?: string | null;
     meetingId?: string | null;
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
@@ -169,6 +183,16 @@ export type ActionSummary = {
     stepName?: string | null;
     title: string;
     version: number;
+};
+
+export type ActionTotals = {
+    all: number;
+    amber: number;
+    closed: number;
+    drafts: number;
+    green: number;
+    red: number;
+    toVerify: number;
 };
 
 export type ActionUpdateRequest = {
@@ -829,11 +853,27 @@ export type CloneRequest = {
     withMembers?: boolean;
 };
 
+export type CloseAgreedRequest = {
+    actionIds?: Array<string>;
+    remark?: string | null;
+};
+
 export type CloseRequest = {
     /**
      * First day it no longer exists
      */
     validTo: string;
+};
+
+export type CloseResult = {
+    actionId: string;
+    closed: boolean;
+    reason?: string | null;
+    reference?: string | null;
+};
+
+export type CloseResultsResponse = {
+    results: Array<CloseResult>;
 };
 
 export type CoauthorsRequest = {
@@ -1434,6 +1474,17 @@ export type FixityTotals = {
     promotionMismatches: number;
     verified: number;
     verifyProblems: number;
+};
+
+export type ForumActionsResponse = {
+    can: TrackerAbilities;
+    committee: string;
+    forumId: string;
+    items: Array<ActionSummary>;
+    key: ActionRagKey;
+    matching: number;
+    nextCursor?: string | null;
+    totals: ActionTotals;
 };
 
 export type ForumPolicyResponse = {
@@ -2814,14 +2865,16 @@ export type MyAccess = {
 };
 
 export type MyActionCounts = {
+    contributing: number;
     mine: number;
+    toVerify: number;
 };
 
 export type MyActionsResponse = {
     counts: MyActionCounts;
     items: Array<ActionSummary>;
     nextCursor?: string | null;
-    tab: 'MINE';
+    tab: 'MINE' | 'TO_VERIFY' | 'CONTRIBUTING';
 };
 
 export type MyClearance = {
@@ -4545,6 +4598,11 @@ export type ToBeRatifiedResponse = {
     outcomeLabel: string;
 };
 
+export type TrackerAbilities = {
+    export: boolean;
+    raise: boolean;
+};
+
 export type TriageRequest = {
     reason?: string | null;
     targetDate?: string | null;
@@ -4582,6 +4640,11 @@ export type ValidateRequest = {
 export type ValidationResponse = {
     problems: Array<FieldProblem>;
     valid: boolean;
+};
+
+export type VerifyActionRequest = {
+    decision?: 'CLOSE' | 'SEND_BACK';
+    remark?: string | null;
 };
 
 export type VersionComparison = {
@@ -4772,6 +4835,28 @@ export type DiscardActionResponses = {
 };
 
 export type DiscardActionResponse = DiscardActionResponses[keyof DiscardActionResponses];
+
+export type MarkActionDoneData = {
+    body: ActionDoneRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/done';
+};
+
+export type MarkActionDoneResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type MarkActionDoneResponse = MarkActionDoneResponses[keyof MarkActionDoneResponses];
 
 export type ChangeActionDueData = {
     body: ActionDueRequest;
@@ -5010,6 +5095,28 @@ export type PostActionUpdateResponses = {
 };
 
 export type PostActionUpdateResponse = PostActionUpdateResponses[keyof PostActionUpdateResponses];
+
+export type VerifyActionData = {
+    body: VerifyActionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/verify';
+};
+
+export type VerifyActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type VerifyActionResponse = VerifyActionResponses[keyof VerifyActionResponses];
 
 export type QueryAuditData = {
     body?: never;
@@ -8304,6 +8411,38 @@ export type UpdateForumResponses = {
 
 export type UpdateForumResponse = UpdateForumResponses[keyof UpdateForumResponses];
 
+export type GetForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/forums/{forumId}/actions';
+};
+
+export type GetForumActionsResponses = {
+    /**
+     * OK
+     */
+    200: ForumActionsResponse;
+};
+
+export type GetForumActionsResponse = GetForumActionsResponses[keyof GetForumActionsResponses];
+
 export type RaiseDirectActionData = {
     body: ActionFieldsRequest;
     headers: {
@@ -8324,6 +8463,43 @@ export type RaiseDirectActionResponses = {
 };
 
 export type RaiseDirectActionResponse = RaiseDirectActionResponses[keyof RaiseDirectActionResponses];
+
+export type ExportForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+    };
+    url: '/api/v1/forums/{forumId}/actions/export';
+};
+
+export type ExportForumActionsErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportForumActionsResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportForumActionsResponse = ExportForumActionsResponses[keyof ExportForumActionsResponses];
 
 export type CloneForumData = {
     body: CloneRequest;
@@ -8984,7 +9160,7 @@ export type GetMyActionsData = {
     body?: never;
     path?: never;
     query?: {
-        tab?: 'MINE';
+        tab?: 'MINE' | 'TO_VERIFY' | 'CONTRIBUTING';
         forumId?: string;
         cursor?: string;
         limit?: number;
@@ -9330,6 +9506,27 @@ export type RaiseMeetingActionResponses = {
 };
 
 export type RaiseMeetingActionResponse = RaiseMeetingActionResponses[keyof RaiseMeetingActionResponses];
+
+export type CloseAgreedActionsData = {
+    body: CloseAgreedRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/actions/close-agreed';
+};
+
+export type CloseAgreedActionsResponses = {
+    /**
+     * OK
+     */
+    200: CloseResultsResponse;
+};
+
+export type CloseAgreedActionsResponse = CloseAgreedActionsResponses[keyof CloseAgreedActionsResponses];
 
 export type IssueMeetingActionsData = {
     body?: never;

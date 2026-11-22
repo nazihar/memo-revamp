@@ -404,6 +404,57 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
     - in the app and by email: `ACTION_OWNER_CHANGED` and `ACTION_RISK_ACCEPTED`;
     - in the app only, with their emails waiting for T5's digest: `ACTION_CANCELLED`, `ACTION_REOPENED`, `ACTION_DUE_REQUESTED`, `ACTION_DUE_DECIDED` (with `decision`) and `ACTION_DUE_CHANGED`.
 
+- **As built in T5, reminders, escalation, closure and the digest** (§1.8, §1.9, §9, 2026-11-22):
+  - **No migration.** The digest uses T4's `actions_digest`; the notification module gains code only.
+  - **The timers' reactions** (`ActionTimerListener`), for the action's current run only:
+    - on the owner's step: `REMIND_BEFORE` → the holder, `ACTION_DUE_SOON`; `DUE` → the holder and the secretaries not recused, `ACTION_OVERDUE` (`stage` DUE); `REMIND_AFTER` → the holder, `ACTION_OVERDUE` (REMINDER); `ESCALATE` → the secretaries, `ACTION_OVERDUE` (ESCALATED);
+    - on a later step (DONE_PENDING): each reminder and the due time → the task's holder, `ACTION_TO_VERIFY`;
+    - `WorkflowEscalated` → the recipient (the holder's supervisor by the reporting line, or the definition's target such as the chair), `ACTION_ESCALATED` in the app and by email at once, with the holder's name and the position's title and the working days overdue. **The supervisor is told, not given access:** the link opens the action only for someone with a seat on the committee, and the inbox for the others (who would get 404).
+    - When there is no supervisor the engine escalates to nobody; the secretaries are still told.
+  - **Marking done** (`POST /actions/{id}/done`, `ActionClosure`): whoever holds the owner's task (403 `NOT_HOLDER` for an owner who does not, such as a position's holder with a substitute acting), from OPEN or IN_PROGRESS. Evidence files are checked as an update's; `EVIDENCE_REQUIRED` asks for files on this call. The DONE entry is written, a pending request withdrawn (cause `DONE`), and RECOMMEND runs with the note. The engine's next task makes the action DONE_PENDING and tells each candidate of the pool (`ACTION_TO_VERIFY`).
+  - **Verifying** (`POST /actions/{id}/verify`): the actor's open task on the action, never the owner or a contributor (403 `NOT_VERIFIER`), not recused (403 `RECUSED`). The shared step is claimed first; 409 `CLAIMED` when another verifier has it. CLOSE approves, so the instance ends APPROVED and the listener writes CLOSED with `closedBy`; the owner and contributors get `ACTION_CLOSED`. SEND_BACK goes to the owner's step (the holder's), and the holder gets `ACTION_SENT_BACK` by email at once, without the remark. Remarks are 1–2,000 characters, required to send back.
+  - **The verifier slot's CHAIR fallback** now goes to the vice-chair when the chair is excluded (for example the chair owns the action), as §1.9 says. T3 had stopped at the chair.
+  - **Close the actions the committee agreed** (`POST /meetings/{id}/actions/close-agreed`, `{actionIds ≤ 100, remark?}`): the meeting must be seen by the actor and running, held or with its minutes approved (409 `WRONG_STATE`). The remark defaults to "Agreed at {meeting}, item {n}" (the published MATTERS_ARISING item, when there is one). Each action is verified in its own transaction as above, with results per action (`COMMITTEE` for another committee's) replayed by the key. `actions.closed` carries `closeAgreedAt`.
+  - **"My actions"** has MINE, TO_VERIFY (DONE_PENDING actions whose open task the person holds or may claim) and CONTRIBUTING (open actions with a current contributor row), each counted from its own predicate. `ActionResponse.can` gained `markDone` and `verify`.
+  - **The digest** (`ActionsDaily`, the `actions-daily` task):
+    - An hourly platform task fans out one `actions-daily` per tenant and hour. Each run acts from 09:00 in the tenant's zone on its working days, until the day's digest is done.
+    - The emails that wait are those of the in-app items of 11 kinds (`DIGEST_KINDS`), read through the notification module's new published `NotificationLog`.
+    - A person's digest covers the items from their last digest day's 09:00 (at most 14 days back) to today's 09:00. Items written after 09:00 wait for the next working day.
+    - One `ACTIONS_DIGEST` email per person and day (`actions_digest (user, day)`), the lines in the recipient's language (`actions/digest*.properties`), references only. At most 5,000 people a run; the rest go on the next hourly run.
+    - The nil person keys mark the tenant's day: `COMPLETE` (nothing more to do that day) and `STARTED` (the first run, which runs the safety net). `ACTIONS_DIGEST` is email only: `NotificationKind.inApp` false.
+    - **A person who has switched off in-app workflow items gets no digest**, since the digest is built from those items.
+  - **The safety net** (`ActionSafetyNet`, the day's first run), on every issued action not finished:
+    - no instance → its secretaries not recused get `ACTION_NOT_RUNNING`, once per run of the action (an entry `NOT_RUNNING` keyed by the instance), audited `actions.action.not_running`;
+    - the engine's newest run ended, or is not the action's → the action follows it (CLOSED or CANCELLED as the listener would, or the newer run's id), with an entry `RECONCILED`, audited `actions.action.reconciled`;
+    - the owner's open step is due at another time than the action's date → `Workflows.redue`, audited `actions.timers.replanned`. A step without a due time is left alone, so a past due time is not fired again daily.
+  - **Audit:** `actions.done`, `actions.sent_back`, `actions.closed`, `actions.digest.sent` (people, complete), `actions.action.not_running`, `actions.action.reconciled`, `actions.timers.replanned`.
+  - **Notification kinds** (en/ar):
+    - in the app only, their emails in the digest: `ACTION_DUE_SOON`, `ACTION_OVERDUE` (`stage`), `ACTION_TO_VERIFY`, `ACTION_CLOSED`, `ACTION_NOT_RUNNING`;
+    - in the app and by email at once: `ACTION_ESCALATED` and `ACTION_SENT_BACK`;
+    - email only: `ACTIONS_DIGEST`.
+    - `ACTIONS_NOT_SENT` (drafts at the meeting's end), `ACTION_MEMO_DECIDED` (T6) and `ACTION_UPDATE_REQUESTED` (T7) are not built here.
+
+- **As built in T8, the tracker and its export** (§3, §8, flow AN, 2026-11-22):
+  - **Rows:** the committee's issued actions and its **direct drafts**. A meeting's drafts stay on the meeting's page, and a discarded draft is listed nowhere. Drafts are seen by the committee's secretaries and `forums.manage` (the one rule's draft clause).
+  - **Filters**, each optional:
+    - `status` (repeatable, any of them);
+    - `rag` (a colour, by `RagRule.shows`);
+    - `overdue` (OPEN or IN_PROGRESS past the date, §1.4; an overridden colour does not hide it);
+    - `owner` (a person, a position, or whoever holds the owner's task);
+    - `dueFrom` and `dueTo`, both included (instead of the sketch's `dueAfter`/`dueBefore`); 422 `RANGE` at `dueTo` when it is before `dueFrom`;
+    - `meetingId`, `itemId`, `source`;
+    - `text`, 1–200 characters (422 `LENGTH`). It matches the title and the description through `websearch_to_tsquery`, read twice (English stems, and `simple` for every other language), or the reference containing it. Blank is no filter.
+  - **Sorts:** `DUE` (soonest first; undated drafts last), `UPDATED` (the latest update, else the creation, newest first), `REFERENCE` (by year and number; drafts last). Keyset on the sort key and the id, 50 a page (at most 100). The cursor names its sort: a cursor that is not one, or of another sort, is 422 `cursor INVALID`.
+  - **Totals** per colour come from the same predicate and `RagRule.shows`, in one aggregate over the committee's rows: red, amber, green, `toVerify` (blue), `closed` (grey) and `drafts`. They take every filter but the colour ones (`rag`, `overdue`), so the key's counts stay put while the viewer moves between colours. `matching` is the count under every filter. The answer also carries the key's numbers (`amberWorkingDays`, `staleWorkingDays`) and `can` (raise, export).
+  - **Who has a tracker:** the committee's officers, its members in office, `forum.read`, and anyone involved in one of its issued actions (an owner outside the committee sees their own rows). Everyone else, and an unknown committee, get 404.
+  - **The export** (`GET …/actions/export`, the same filters and sort) is for the secretaries, the chair, `forums.manage` and `forum.read`; 403 to the others who have a tracker.
+    - The right and the filter are checked before the limit is counted (`ACTION_EXPORT_PER_USER`, 10 an hour).
+    - It writes one sheet through SXSSF with its temporary data encrypted, every value a string cell through `SheetCells` (a title beginning with `=` is written `'=…`), at most 5,000 rows, with a closing line when cut.
+    - It is audited as `actions.tracker.exported` on the committee, with the filter (the text as `textSha256`), the sort, the count and whether it was cut.
+  - **The reads** are `ActionTrackerReads`, the one other reader of `actions_item` that `ActionAccessArchTest` allows. Every query it runs is on `ActionAccess.seen`.
+  - **E08's ask:** the published `ActionStats` (`overdue(forumIds, today)` by committee and owner with the ageing bands and the revised count; `closedOnTime(forumIds, from, to)` with the original and the agreed date) is built here on the same rule, one query each. **The viewer is the signed-in person**, not a parameter: `ActionAccess`'s viewer is built from the security context (permissions, clearance), so nobody can count for someone else. Nobody signed in counts nothing. The viewer-less `ActionCounts.overdue(forumId)` of §2.1 was never built and is not.
+  - **No index or migration:** `EXPLAIN` of the page and the totals, with and without text, on 3,000 other actions of the tenant, uses `actions_item_forum_idx` (`ActionTrackerIT`). T9 measures the budgets at the design's volumes.
+
 ### 1.15 ERD
 ```mermaid
 erDiagram
@@ -539,7 +590,7 @@ Packages `raise`, `progress`, `closure`, `followup`, `report`, `access`, `subjec
   - `files`, `identity` (users, `RecipientLookup`), `org` (positions, holders), `notification`, `audit`, `common`.
 - **Published API** in `com.memo.actions`:
   - `ActionItems.ofDecision(decisionId)` and `ofItem(itemId)`, for E06's minutes loop through its port (§11) and for E08;
-  - `ActionCounts.overdue(forumId)`, for E08's analytics;
+  - `ActionStats.overdue` and `.closedOnTime` for the signed-in viewer (T8, on `ActionAccess`; the planned viewer-less `ActionCounts.overdue(forumId)` is not built), for E08's analytics;
   - the event `ActionChanged(tenantId, actionId, forumId, kind)` (kinds ISSUED, UPDATED, DUE_CHANGED, DONE, CLOSED, CANCELLED, REOPENED) for E08's indexing. Ids only.
 - **Listens to:**
   - `WorkflowActionTaken`, `WorkflowTaskCreated`, `WorkflowTaskClosed`, `WorkflowInstanceEnded`, `WorkflowTimerFired`, `WorkflowEscalated` for subject `action-item`: status, holder, step name, notifications. These are synchronous, in the engine's transaction.

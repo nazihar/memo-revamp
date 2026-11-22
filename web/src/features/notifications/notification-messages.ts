@@ -153,6 +153,13 @@ const kindsWithValues = defineMessages<{
   actionDueRequested: { committee: string; reference: string; date: string }
   actionDueDecided: { committee: string; reference: string; date: string; decision: string }
   actionDueChanged: { committee: string; reference: string; date: string }
+  actionDueSoon: { committee: string; reference: string; date: string }
+  actionOverdue: { committee: string; reference: string; date: string; stage: string }
+  actionToVerify: { committee: string; reference: string }
+  actionClosed: { committee: string; reference: string }
+  actionNotRunning: { committee: string; reference: string }
+  actionEscalated: { committee: string; reference: string; date: string; holder: string }
+  actionSentBack: { committee: string; reference: string; date: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -365,6 +372,35 @@ const kindsWithValues = defineMessages<{
     id: 'notificationKinds.actionDueChanged',
     defaultMessage: 'Action {reference} of {committee} is now due {date}',
   },
+  actionDueSoon: {
+    id: 'notificationKinds.actionDueSoon',
+    defaultMessage: 'Action {reference} of {committee} is due soon, on {date}',
+  },
+  actionOverdue: {
+    id: 'notificationKinds.actionOverdue',
+    defaultMessage:
+      'Action {reference} of {committee}, due {date}, {stage, select, ESCALATED {is overdue and was escalated} REMINDER {is still overdue} other {is overdue}}',
+  },
+  actionToVerify: {
+    id: 'notificationKinds.actionToVerify',
+    defaultMessage: 'Action {reference} of {committee} was marked as done: please verify it',
+  },
+  actionClosed: {
+    id: 'notificationKinds.actionClosed',
+    defaultMessage: 'Action {reference} of {committee} was verified and closed',
+  },
+  actionNotRunning: {
+    id: 'notificationKinds.actionNotRunning',
+    defaultMessage: 'Action {reference} of {committee} has no running workflow: check it',
+  },
+  actionEscalated: {
+    id: 'notificationKinds.actionEscalated',
+    defaultMessage: 'Action {reference} of {committee}, held by {holder}, is overdue since {date}',
+  },
+  actionSentBack: {
+    id: 'notificationKinds.actionSentBack',
+    defaultMessage: 'Action {reference} of {committee}, due {date}, was sent back to you',
+  },
 })
 
 const kinds = defineMessages({
@@ -565,6 +601,28 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'ACTION_DUE_CHANGED':
       return intl.formatMessage(kindsWithValues.actionDueChanged, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_DUE_SOON':
+      return intl.formatMessage(kindsWithValues.actionDueSoon, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_OVERDUE':
+      return intl.formatMessage(kindsWithValues.actionOverdue, {
+        ...actionValues(params),
+        date: params.date ?? '',
+        stage: params.stage ?? '',
+      })
+    case 'ACTION_TO_VERIFY':
+      return intl.formatMessage(kindsWithValues.actionToVerify, actionValues(params))
+    case 'ACTION_CLOSED':
+      return intl.formatMessage(kindsWithValues.actionClosed, actionValues(params))
+    case 'ACTION_NOT_RUNNING':
+      return intl.formatMessage(kindsWithValues.actionNotRunning, actionValues(params))
+    case 'ACTION_ESCALATED':
+      return intl.formatMessage(kindsWithValues.actionEscalated, {
+        ...actionValues(params),
+        date: params.date ?? '',
+        holder: params.holder ?? '',
+      })
+    case 'ACTION_SENT_BACK':
+      return intl.formatMessage(kindsWithValues.actionSentBack, { ...actionValues(params), date: params.date ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -666,6 +724,9 @@ const mailTemplates = defineMessages({
   ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
   ACTION_OWNER_CHANGED: { id: 'mail.template.actionOwnerChanged', defaultMessage: 'Committee action owner changed' },
   ACTION_RISK_ACCEPTED: { id: 'mail.template.actionRiskAccepted', defaultMessage: 'Committee action risk accepted' },
+  ACTION_ESCALATED: { id: 'mail.template.actionEscalated', defaultMessage: 'Committee action escalated' },
+  ACTION_SENT_BACK: { id: 'mail.template.actionSentBack', defaultMessage: 'Committee action sent back' },
+  ACTIONS_DIGEST: { id: 'mail.template.actionsDigest', defaultMessage: 'Daily digest of committee actions' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

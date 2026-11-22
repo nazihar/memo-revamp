@@ -117,6 +117,14 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         val mine = read("/api/v1/me/actions", person.session)
         clean(person, mine)
         assertThat(mine.response.contentAsString).doesNotContain(CANARY_ACTION)
+        // E07 T5: the other tabs of "My actions" and their counts.
+        listOf("TO_VERIFY", "CONTRIBUTING").forEach { tab ->
+            val other = read("/api/v1/me/actions?tab=$tab", person.session)
+            clean(person, other)
+            assertThat(other.response.contentAsString).doesNotContain(CANARY_ACTION)
+            assertThat(other.json()["items"].list().map { java.util.UUID.fromString(it["id"].asString()) })
+                .doesNotContainAnyElementsOf(planted.hiddenToAll)
+        }
         if (v == Viewer.RECUSED) {
             val own = read("/api/v1/actions/${planted.d1s}", person.session)
             clean(person, own)
@@ -129,6 +137,52 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
             assertThat(listed).doesNotContain(planted.d1s)
         }
     }
+
+    /**
+     * E07 T8's surface: the committee's tracker answers none of the item's actions, nor counts them, for a viewer recused
+     * from it and not involved (d1 has their own action of the hidden item only); filtered to the item or searched for the
+     * canary, nothing and a count of 0; the export is 403 to a recused member, and a recused secretary's or chair's workbook
+     * holds the rows of their tracker only, no canary. The control (the owner) reads the canaries in theirs.
+     */
+    protected fun trackerProbe(
+        p: Planted,
+        v: Viewer,
+    ) {
+        val planted = actionsOf(p)
+        val person = v.person()
+        val base = "/api/v1/forums/$brc/actions"
+        assertThat(read(base, control.session).response.contentAsString).contains(CANARY_ACTION)
+        val page = read(base, person.session)
+        clean(person, page)
+        assertThat(page.response.contentAsString).doesNotContain(CANARY_ACTION)
+        val listed = page.json()["items"].list().map { UUID.fromString(it["id"].asString()) }
+        assertThat(listed).doesNotContainAnyElementsOf(planted.hiddenToAll)
+        assertThat(page.json()["totals"]["all"].asInt()).describedAs("totals of what is listed").isEqualTo(listed.size)
+        if (v == Viewer.RECUSED) assertThat(listed).containsExactly(planted.d1s) else assertThat(listed).doesNotContain(planted.d1s)
+        listOf("?itemId=${p.item}", "?text=CANARY-ACT", "?rag=GREEN&itemId=${p.hidden}").forEach { query ->
+            val narrowed = read(base + query, person.session)
+            clean(person, narrowed)
+            val ids = narrowed.json()["items"].list().map { UUID.fromString(it["id"].asString()) }
+            assertThat(ids).describedAs(query).doesNotContainAnyElementsOf(planted.hiddenToAll)
+            assertThat(narrowed.json()["totals"]["all"].asInt()).describedAs(query).isEqualTo(ids.size)
+        }
+        val export = read("$base/export", person.session)
+        if (v.officer) {
+            assertThat(export).hasStatusOk()
+            val rows = workbookRows(export)
+            assertThat(rows.joinToString("\n")).doesNotContain(CANARY_ACTION)
+            assertThat(rows.drop(1)).describedAs("the rows of their tracker").hasSize(listed.size)
+        } else {
+            assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+            clean(person, export, statusBelow = 500)
+        }
+    }
+
+    /** Each row of an exported workbook, its cells joined. */
+    protected fun workbookRows(result: MvcTestResult): List<String> =
+        org.apache.poi.xssf.usermodel
+            .XSSFWorkbook(java.io.ByteArrayInputStream(result.response.contentAsByteArray))
+            .use { workbook -> workbook.getSheetAt(0).map { row -> row.joinToString(" | ") { it.stringCellValue } } }
 
     /**
      * E07 T4: the evidence through the generic files endpoints: the owner reads it, a recused viewer gets 403 or 404 for
@@ -164,6 +218,12 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
             "POST /api/v1/forums/{forumId}/actions" to { _ ->
                 val body = """{"title":"Circulate the revised policy","sourceNote":"Chair's instruction"}"""
                 send(HttpMethod.POST, "/api/v1/forums/$brc/actions", secretary, body, key())
+            },
+            // E07 T5: closing the item's actions at the meeting, which the recused secretary does not see: refused naming nothing.
+            "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to { p ->
+                val planted = actionsOf(p)
+                val body = """{"actionIds":["${planted.issued}","${planted.ofHidden}"]}"""
+                send(HttpMethod.POST, "/api/v1/meetings/${p.meeting.id}/actions/close-agreed", secretary, body, key())
             },
         )
     }

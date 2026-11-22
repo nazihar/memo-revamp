@@ -656,6 +656,8 @@ class PaperLeakIT : RecusalFixture() {
                     send(HttpMethod.POST, "$base/confirm", person, "{}", versioned),
                     send(HttpMethod.POST, "$base/approvals/${UUID.randomUUID()}/check", person),
                     read("$base/approvals", person.session),
+                    // E06 T8: the approver's answer to a correction.
+                    send(HttpMethod.POST, "$base/corrections/${UUID.randomUUID()}/decide", person, """{"decision":"APPROVE"}"""),
                 ).forEach { answer ->
                     assertThat(answer.response.status).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
@@ -672,6 +674,8 @@ class PaperLeakIT : RecusalFixture() {
                     read("$base/record", person.session),
                     read("$base/records", person.session),
                     send(HttpMethod.POST, "$base/records/1/check", person),
+                    // E06 T8: the corrections to the approved minutes.
+                    read("$base/corrections", person.session),
                 ).forEach { answer ->
                     assertThat(answer.response.status).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
@@ -728,6 +732,25 @@ class PaperLeakIT : RecusalFixture() {
                         assertThat(answers[1].json()["attendance"]["ownRowOnly"].asBoolean()).isTrue()
                         assertThat(answers[1].json()["papers"]["summary"].absent("lateItems")).isTrue()
                         assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+                    }
+                }
+            },
+            // E06 T8: the certified extracts of each planted resolution: forum.read reads the list of a resolution it sees (none
+            // issued), members, the guest and the alternate are refused (403 for one they see, 404 otherwise); nobody reads an
+            // extract that is not there, and no answer names a canary.
+            Surface.EXTRACTS to { p, person ->
+                p.resolutions.forEach { (item, resolution) ->
+                    val list = read("/api/v1/resolutions/$resolution/extracts", person.session)
+                    val content = read("/api/v1/resolutions/$resolution/extracts/${UUID.randomUUID()}/content", person.session)
+                    if (person == auditor) {
+                        assertThat(list.response.status).describedAs("extracts of $item").isIn(200, 403, 404)
+                        if (list.response.status == 200) assertThat(list.json().size()).isZero()
+                    } else {
+                        assertThat(list.response.status).describedAs("extracts of $item").isIn(403, 404)
+                    }
+                    assertThat(content.response.status).isIn(403, 404)
+                    listOf(list, content).forEach { answer ->
+                        p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
                     }
                 }
             },

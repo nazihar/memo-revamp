@@ -235,6 +235,66 @@ class MinutesCrossTenantIT : DecisionFixture() {
         }
     }
 
+    @Autowired lateinit var minutesCorrections: com.memo.minutes.internal.MinutesCorrectionsService
+
+    @Autowired lateinit var resolutionExtracts: com.memo.minutes.internal.ResolutionExtracts
+
+    @Test
+    fun `another tenant neither proposes, decides nor reads corrections or extracts, nor sees or writes their rows`() {
+        val d = deciding()
+        arrive(d.meeting, listOf(chair, director, director2, others[0], others[1]))
+        val resolved = record(d, d.credit, DecisionInput(OutcomeKind.APPROVED, text = "It was resolved."))
+        val number = checkNotNull(asUser(secretary) { resolutionNumbers.assign(resolved) })
+        val held = meeting(d.meeting.id).let { asUser(secretary) { lifecycle.end(it.id, it.version) } }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        // E06 T8: A's correction and extract (as the app role in A).
+        val rows = t8Rows(held.id, number.id, now)
+        rows.values.forEach { (sql, params) -> committed(sql, params) }
+
+        val b = registry.aTestTenant(transactions, settings, "minutese", mfaRequired = false)
+        val bAdmin = accounts.anActiveUser(transactions, b, aPassword(), tenantAdmin = true)
+        listOf<() -> Any>(
+            { minutesCorrections.list(held.id) },
+            {
+                minutesCorrections.propose(
+                    held.id,
+                    com.memo.minutes.internal
+                        .MinutesCorrectionInput(null, "Written by B", "B"),
+                )
+            },
+            { minutesCorrections.requireApprover(held.id, UUID.randomUUID()) },
+            { resolutionExtracts.list(number.id) },
+            { resolutionExtracts.requireIssuer(number.id) },
+            { resolutionExtracts.serve(number.id, UUID.randomUUID()) ?: "building" },
+        ).forEach { call ->
+            val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
+            assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "MinutesNotFoundException")
+        }
+        // The published read finds nothing of A in B.
+        assertThat(inTenant(b, bAdmin) { minutesCorrections.since(brc, java.time.Instant.EPOCH) }).isEmpty()
+        AppRoleJdbc.inTransaction(b.id) { c ->
+            rows.keys.forEach {
+                assertThat(c.long("select count(*) from $it where tenant_id = ?", tenant.id.value)).describedAs(it).isZero()
+            }
+            assertThat(
+                c.update(
+                    "update minutes_correction set state = 'DECLINED', decided_by = ?, decided_at = now(), version = version + 1",
+                    bAdmin.id.value,
+                ),
+            ).isZero()
+            assertThat(c.update("update minutes_extract set state = 'FAILED', error = 'X', version = version + 1")).isZero()
+        }
+        // B's rows pointing at A's minutes or resolution are refused by the composite foreign keys.
+        rows.values.forEach { (sql, params) ->
+            val forB = params.map { if (it == tenant.id.value) b.id.value else it }
+            val written = runCatching { AppRoleJdbc.inTransaction(b.id) { c -> c.update(sql, *forB.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        AppRoleJdbc.inTransaction(tenant.id) { c ->
+            rows.keys.forEach { assertThat(c.long("select count(*) from $it where meeting_id = ?", held.id)).describedAs(it).isOne() }
+        }
+    }
+
     /** Writes [sql] with [params] as the app role in A, committed (AppRoleJdbc's transactions roll back). */
     private fun committed(
         sql: String,
@@ -308,6 +368,37 @@ class MinutesCrossTenantIT : DecisionFixture() {
                     "insert into minutes_reminder (tenant_id, meeting_id, kind, user_id, key, sent_at) " +
                         "values (?, ?, 'DRAFT_OVERDUE', ?, 'once', ?)" to
                         listOf<Any>(tenant.id.value, held, secretary.id.value, now)
+                ),
+        )
+
+    /** A row of each T8 table for [held]'s minutes and [resolution] as the app role in A writes it, by table. */
+    private fun t8Rows(
+        held: UUID,
+        resolution: UUID,
+        now: OffsetDateTime,
+    ): Map<String, Pair<String, List<Any>>> =
+        mapOf(
+            "minutes_correction" to
+                (
+                    "insert into minutes_correction (id, tenant_id, meeting_id, forum_id, text, reason, proposed_by, proposed_at) " +
+                        "values (?, ?, ?, ?, 'Kept by A', 'A reason', ?, ?)" to
+                        listOf<Any>(UUID.randomUUID(), tenant.id.value, held, brc, secretary.id.value, now)
+                ),
+            "minutes_extract" to
+                (
+                    "insert into minutes_extract (id, tenant_id, resolution_id, meeting_id, forum_id, issued_by, issued_at, " +
+                        "minutes_state, certification, certification_hash) values (?, ?, ?, ?, ?, ?, ?, 'NOT_APPROVED', " +
+                        "'{}'::jsonb, ?)" to
+                        listOf<Any>(
+                            UUID.randomUUID(),
+                            tenant.id.value,
+                            resolution,
+                            held,
+                            brc,
+                            secretary.id.value,
+                            now,
+                            "a".repeat(64),
+                        )
                 ),
         )
 

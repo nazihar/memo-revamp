@@ -1,0 +1,34 @@
+# Phase 4 E06 T8 corrections after approval and certified resolution extracts (design E06 §1.6.5, §1.6.6, §3, §4;
+# ADR-0066, ADR-0051). Meeting, correction, resolution and extract ids are random here, so every subject allowed through
+# is answered 404 before any role check, and before the approver's or the issuer's step-up. Who may do what on real
+# minutes and resolutions (the secretary, a recused secretary, the chair and vice-chair with and without a fresh step-up,
+# a member, forum.read, the memo's reader, someone outside) is MinutesCorrectionsIT and ResolutionExtractsIT; another
+# tenant MinutesCrossTenantIT; the leak suites probe the readers' surfaces (MINUTES_COPIES, EXTRACTS) and the officers'
+# (officer probes, recusal columns).
+#
+# Recusal columns (E04 T5's leak suite), on the planted (scheduled) meeting: proposing a correction on the planted item is
+# the secretaries' only, refused before the minutes' stage is looked at: 403 to anyone who is not a secretary or
+# forums.manage, 403 `RECUSED` to a secretary recused from the item. RecusalLeakIT runs them.
+epic: P4-E06
+endpoints:
+  # The corrections to approved minutes: the approved minutes' readers (the officers all of them; others the approved ones).
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/corrections", rule: signedIn }
+  # A secretary not recused from the item proposes one.
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/corrections"
+    rule: signedIn
+    body: { itemId: "{random}", text: "The amount was BDT 60 million.", reason: "Misstated" }
+    headers: { Idempotency-Key: "{random}" }
+    recusalBody: { itemId: "{item}", text: "The amount was BDT 60 million.", reason: "Misstated" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  # The approver (the chair, else the vice-chair) approves or declines it with a fresh step-up.
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/corrections/{correctionId}/decide"
+    rule: signedIn
+    body: { decision: "APPROVE" }
+    headers: { Idempotency-Key: "{random}" }
+  # A secretary of the committee not recused from the item issues a certified extract with a fresh step-up.
+  - endpoint: "POST /api/v1/resolutions/{resolutionId}/extracts"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+  # The extracts and one extract's PDF/A: the committee's officers, forums.manage, forum.read and the memo's readers.
+  - { endpoint: "GET /api/v1/resolutions/{resolutionId}/extracts", rule: signedIn }
+  - { endpoint: "GET /api/v1/resolutions/{resolutionId}/extracts/{extractId}/content", rule: signedIn }

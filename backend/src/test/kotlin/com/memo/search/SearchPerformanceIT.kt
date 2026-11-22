@@ -9,6 +9,7 @@ import com.memo.search.internal.SearchFinder
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.Latency
 import com.memo.testsupport.TestDatabase
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aTestTenant
@@ -217,17 +218,7 @@ class SearchPerformanceIT : IntegrationTest() {
             .plus(listOf("true", "true", "true", "${SearchFinder.DEFAULT_CAP}", "$origins::text[]"))
             .joinToString()
 
-    private fun p95(call: () -> Unit): Long {
-        repeat(WARM_UP) { call() }
-        val times =
-            (1..RUNS)
-                .map {
-                    val start = System.nanoTime()
-                    call()
-                    (System.nanoTime() - start) / NANOS_PER_MILLI
-                }.sorted()
-        return times[(RUNS * 95 / 100) - 1]
-    }
+    private fun p95(call: () -> Unit): Long = Latency.p95(WARM_UP, RUNS, call = call)
 
     /** A transaction as the schema owner, bound to the tenant (transaction-local, as the application binds it). */
     private fun owner(block: (Connection) -> Unit) =

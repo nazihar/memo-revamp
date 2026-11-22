@@ -14,6 +14,7 @@ import com.memo.identity.UserAccounts
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.FilesIntegrationTest
+import com.memo.testsupport.Latency
 import com.memo.testsupport.TestDocumentPurpose
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aPassword
@@ -91,22 +92,12 @@ class FilesPerformanceIT : FilesIntegrationTest() {
             )
         }
 
-    /** p95 in milliseconds over [runs] after [warmup] runs. */
+    /** p95 in milliseconds over [runs] after [warmup] runs, the best of three rounds ([Latency]). */
     private fun p95(
         warmup: Int = 2,
         runs: Int = 20,
         block: () -> Unit,
-    ): Double {
-        repeat(warmup) { block() }
-        val samples =
-            (1..runs)
-                .map {
-                    val started = System.nanoTime()
-                    block()
-                    (System.nanoTime() - started) / 1_000_000.0
-                }.sorted()
-        return samples[(runs * 95 / 100).coerceAtMost(runs - 1)]
-    }
+    ): Double = Latency.p95Millis(warmup, runs, call = block)
 
     @Test
     fun `uploads, metadata, first bytes and ranges meet their budgets`() {

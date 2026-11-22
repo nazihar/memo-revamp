@@ -56,6 +56,10 @@ data class ActionAbilities(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val edit: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val issue: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val discard: Boolean,
+    /** Raise a follow-up memo (the owner or a contributor with `memo.create`, while the action is open). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raiseMemo: Boolean = false,
+    /** Link a memo they may read (the owner, a contributor or a secretary, until the action is verified). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val linkMemo: Boolean = false,
     /** Post an update: the owner, a contributor, or a secretary for the owner ([updateOnBehalf]). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val update: Boolean = false,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updateOnBehalf: Boolean = false,
@@ -122,6 +126,8 @@ data class ActionResponse(
     /** For the secretaries only. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val warnings: List<ActionWarning>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val can: ActionAbilities,
+    /** The follow-up memos (design E07 §1.11), each by the memo's own rule. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val memos: List<ActionMemoResponse> = emptyList(),
     /** Red, amber or green, in words (design E07 §1.5). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rag: ActionRagResponse,
     /** The owner's word with their latest update. */

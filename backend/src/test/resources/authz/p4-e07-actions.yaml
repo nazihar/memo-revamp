@@ -40,6 +40,18 @@ endpoints:
     headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
     recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
   - { endpoint: "GET /api/v1/me/actions", rule: signedIn }
+  # T6: follow-up memos (design E07 §1.11). The owner or a contributor raises a draft memo from the action; the owner, a
+  # contributor or a secretary links one they may read. FollowUpMemoIT covers who may on a real action.
+  - endpoint: "POST /api/v1/actions/{actionId}/memos"
+    rule: signedIn
+    body: { typeId: "{random}" }
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/actions/{actionId}/memos/link"
+    rule: signedIn
+    body: { memoId: "{random}" }
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
   # Phase 4 E07 T4: progress, dates, the colour, owners, cancelling and reopening, and the timeline. Who may do what on a
   # real action is ActionProgressIT, DueChangeIT, OwnerChangeIT, CancelReopenIT and ActionStateMachineTest; the draft of
   # the item ({actionId} in the recusal columns) is invisible to every recused viewer, so each answers 404.

@@ -205,6 +205,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
+            // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
+            Surface.TRACKER to { p, v -> trackerProbe(p, v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
@@ -407,7 +409,7 @@ class RecusalLeakIT : RecusalActionsFixture() {
             // Delivered through SMTP and read back from Mailpit: RecusalMailIT.
             Channel.MAIL to { _, _ -> },
             Channel.EXPORTS to { p, v ->
-                // The register's workbook is in the REGISTERS probe; the meeting's calendar file:
+                // The register's workbook is in the REGISTERS probe, the tracker's in TRACKER; the meeting's calendar file:
                 clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/calendar.ics", v.person().session), statusBelow = 500)
             },
             Channel.SEARCH to { _, v ->

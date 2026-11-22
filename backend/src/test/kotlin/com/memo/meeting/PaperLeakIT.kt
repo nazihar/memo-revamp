@@ -27,6 +27,8 @@ import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
 import com.memo.testsupport.Person
 import com.memo.testsupport.query
+import org.apache.pdfbox.Loader
+import org.apache.pdfbox.text.PDFTextStripper
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -128,6 +130,9 @@ class PaperLeakIT : RecusalFixture() {
 
         /** E07 T3: an issued action on each planted item, its title the item's canary (owned by the other secretary). */
         val actions = mutableMapOf<UUID, String>()
+
+        /** E07 T7: the committee's next meeting, its agenda published after the actions: its report lists them. */
+        val next: MeetingRow by lazy { meeting(days = DAYS_AHEAD + 7).also { publish(it) } }
 
         /** E06 T4: each planted decision's resolution number, by item. */
         val resolutions = linkedMapOf<UUID, UUID>()
@@ -674,6 +679,29 @@ class PaperLeakIT : RecusalFixture() {
                 ).forEach { answer ->
                     assertThat(answer.response.status).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+            },
+            // E07 T7: the next meeting's action taken report, on screen and as a PDF: rows by the one rule, so none of an item
+            // the person does not see in full (or is recused from), and no canary in the PDF's text; 404 to the guest.
+            Surface.ACTION_REPORT to { p, person ->
+                val uri = "/api/v1/meetings/${p.next.id}/action-report"
+                listOf(uri, "$uri/pdf").forEach { path ->
+                    val answer = read(path, person.session)
+                    when (person) {
+                        guest -> assertThat(answer).describedAs(path).hasStatus(HttpStatus.NOT_FOUND)
+
+                        d3, d1 -> assertThat(answer).describedAs(path).hasStatusOk()
+
+                        // forum.read reads it by the rule; the alternate is no member of the committee today.
+                        else -> assertThat(answer.response.status).describedAs(path).isIn(200, 404)
+                    }
+                    val text =
+                        if (path.endsWith("/pdf") && answer.response.status == HttpStatus.OK.value()) {
+                            Loader.loadPDF(answer.response.contentAsByteArray).use { PDFTextStripper().getText(it) }
+                        } else {
+                            answer.response.contentAsString
+                        }
+                    p.canaries(person).forEach { assertThat(text).describedAs("a canary in $path").doesNotContain(it) }
                 }
             },
             // E08 T4: analytics are counts, never an item: members (d1, d3) have their committee's, forum.read every

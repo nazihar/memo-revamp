@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.ACTIONS_DIGEST_DAY_IDX
 import com.memo.jooq.keys.ACTIONS_DIGEST_PKEY
 import com.memo.jooq.tables.records.ActionsDigestRecord
 
@@ -13,10 +14,12 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 import kotlin.collections.Collection
+import kotlin.collections.List
 
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
+import org.jooq.Index
 import org.jooq.InverseForeignKey
 import org.jooq.Name
 import org.jooq.PlainSQL
@@ -112,6 +115,7 @@ open class ActionsDigest(
      */
     constructor(): this(DSL.name("actions_digest"), null)
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
+    override fun getIndexes(): List<Index> = listOf(ACTIONS_DIGEST_DAY_IDX)
     override fun getPrimaryKey(): UniqueKey<ActionsDigestRecord> = ACTIONS_DIGEST_PKEY
     override fun `as`(alias: String): ActionsDigest = ActionsDigest(DSL.name(alias), this)
     override fun `as`(alias: Name): ActionsDigest = ActionsDigest(alias, this)

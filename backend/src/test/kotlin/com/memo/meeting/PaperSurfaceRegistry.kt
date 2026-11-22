@@ -25,7 +25,8 @@ package com.memo.meeting
  * files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel. E06 T8 added the corrections after approval
  * (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with recusal columns) and the
  * certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an officer's, with an
- * officer probe).
+ * officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action back
+ * from it (recusal columns) and "Ask owners for an update" (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -64,6 +65,10 @@ object PaperSurfaceRegistry {
         RESOLUTIONS(
             "The committee's resolution register and its check, and one resolution (E06 T4): a row in full only when its item's " +
                 "decision is seen in full, else its number, meeting and item number (\"restricted\"); one resolution as the decision",
+        ),
+        ACTION_REPORT(
+            "The action taken report under Matters arising (E07 T7), on screen and as a PDF: the rows (snapshots) by the one rule on " +
+                "each row's copied item columns; a person recused from an item gets no row and no count of its actions unless involved",
         ),
         MINUTES(
             "The minutes page (E06 T5, T6): the committee's secretaries and forums.manage once held, the reviewer while it is with " +
@@ -163,6 +168,9 @@ object PaperSurfaceRegistry {
             "GET /api/v1/resolutions/{resolutionId}/extracts/{extractId}/content" to Surface.EXTRACTS,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
+            // E07 T7: the action taken report of a meeting's agenda revision, and its PDF: each reader's rows by the rule.
+            "GET /api/v1/meetings/{meetingId}/action-report" to Surface.ACTION_REPORT,
+            "GET /api/v1/meetings/{meetingId}/action-report/pdf" to Surface.ACTION_REPORT,
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
             "GET /api/v1/forums/{forumId}/actions" to Surface.TRACKER,
             "GET /api/v1/forums/{forumId}/actions/export" to Surface.TRACKER,
@@ -287,6 +295,10 @@ object PaperSurfaceRegistry {
                     "verifying (E07 T5): the verifier pool, never the owner, a contributor or the recused (recusal columns)",
                 "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to
                     "closing the actions agreed at a meeting (E07 T5): the verifiers; an unseen action is NOT_FOUND (officer probe)",
+                "POST /api/v1/actions/{actionId}/report-hold" to
+                    "holding an action back from the next report (E07 T7): secretaries not recused (recusal columns)",
+                "POST /api/v1/forums/{forumId}/actions/ask-for-updates" to
+                    "asking owners for an update (E07 T7): secretaries; only the actions they see by the rule (officer probe)",
             ) +
             listOf(
                 "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",

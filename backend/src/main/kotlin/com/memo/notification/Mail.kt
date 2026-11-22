@@ -56,6 +56,8 @@ import java.util.UUID
  *   position's title), days (working days overdue), link (to the holder's supervisor or the definition's target)
  * - ACTION_SENT_BACK: name, organisation, committee, reference, date, link (to the holder; never the verifier's remark)
  * - ACTIONS_DIGEST: name, organisation, lines (the references by kind, in the recipient's language), link (My actions)
+ * - ACTION_UPDATE_REQUESTED: name, organisation, committee, reference, date (the due date), link (to the holder, before the
+ *   committee's next papers; never the action's title or text)
  */
 enum class MailTemplate {
     INVITATION,
@@ -120,6 +122,7 @@ enum class MailTemplate {
     ACTION_ESCALATED,
     ACTION_SENT_BACK,
     ACTIONS_DIGEST,
+    ACTION_UPDATE_REQUESTED,
 }
 
 /**

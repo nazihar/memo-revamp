@@ -42620,6 +42620,20 @@
       "value": "]"
     }
   ],
+  "mail.template.actionUpdateRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƈŧīǿǿƞ ŭŭƥḓȧȧŧḗḗ ȧȧşķḗḗḓ ƒǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.actionsDigest": [
     {
       "type": 0,
@@ -66229,6 +66243,66 @@
     {
       "type": 0,
       "value": " ẇȧȧş ḿȧȧřķḗḗḓ ȧȧş ḓǿǿƞḗḗ: ƥŀḗḗȧȧşḗḗ ṽḗḗřīƒẏ īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.actionUpdateRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ ƥǿǿşŧ ȧȧƞ ŭŭƥḓȧȧŧḗḗ ǿǿƞ ȧȧƈŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 5,
+      "value": "when",
+      "options": {
+        "DEADLINE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƀḗḗƒǿǿřḗḗ "
+            },
+            {
+              "type": 1,
+              "value": "deadline"
+            },
+            {
+              "type": 0,
+              "value": ", ẇħḗḗƞ ŧħḗḗ ƈǿǿḿḿīŧŧḗḗḗḗ'ş ƥȧȧƥḗḗřş ȧȧřḗḗ ƥŭŭƀŀīşħḗḗḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƀḗḗƒǿǿřḗḗ ŧħḗḗ ƈǿǿḿḿīŧŧḗḗḗḗ'ş ƞḗḗẋŧ ƥȧȧƥḗḗřş"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,

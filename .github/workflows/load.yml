@@ -4,7 +4,8 @@ name: load
 # their SLA timers, everyone seated in one division under a head) on the on-prem stack, then the Gatling simulations
 # against it: the inbox (NFR P1: p95 < 300 ms), and search, the inbox by due time, the team view and the dashboards
 # (Phase 3 E05 T8); search at volume V1 (E05 T8), the legacy import at 10,000 memos (Phase 3 E06 T10) and meetings at
-# 3,600 meetings, 180,000 items and 600,000 papers (Phase 4 E03 T5), with their decisions, resolutions and minutes (E06 T9).
+# 3,600 meetings, 180,000 items and 600,000 papers (Phase 4 E03 T5), with their decisions, resolutions and minutes (E06 T9),
+# and action items at 29,000 actions over those meetings (Phase 4 E07 T9).
 on:
   schedule:
     - cron: '0 3 * * 0'
@@ -234,4 +235,36 @@ jobs:
           path: |
             build/minutes-volume/TEST-com.memo.minutes.MinutesVolumeIT.xml
             backend/build/test-results/test/TEST-com.memo.minutes.MinutesJobsVolumeIT.xml
+          retention-days: 30
+
+  actions-volume:
+    # Action items at the design's volume (Phase 4 E07 T9, design E07 §8): MeetingVolume's 3,600 meetings (with "Matters
+    # arising" on every agenda) and about 29,000 actions over them in a tenant of their own, 3,400 open, 157,000 timeline
+    # entries, 3,200 action taken reports with 220,000 rows, and 5,000 people with notices for the daily digest. The p95 of
+    # "My actions" (each tab with its counts), the tracker (with and without text, with its totals) and its export, an action
+    # with its timeline, the report (built and read, and its PDF), the writes (raise, issue one and a meeting's 30, update,
+    # done, verify) and the daily task, against the budgets with 2x headroom for shared runners; and the plan of every
+    # statement the reads and the daily task run, which may not scan an action table sequentially. The values and the
+    # plans are in the uploaded test report.
+    name: Actions at volume (ActionsVolumeIT)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: ActionsVolumeIT at 3,600 meetings
+        env:
+          ACTIONS_VOLUME: '3600'
+        run: ./gradlew :backend:test --tests com.memo.actions.ActionsVolumeIT --rerun --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: actions-volume-report
+          path: backend/build/test-results/test/TEST-com.memo.actions.ActionsVolumeIT.xml
           retention-days: 30

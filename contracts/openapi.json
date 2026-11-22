@@ -364,6 +364,182 @@
         "required" : [ "colour", "word" ],
         "type" : "object"
       },
+      "ActionReportCorrectionResponse" : {
+        "properties" : {
+          "approvedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "label" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "label" ],
+        "type" : "object"
+      },
+      "ActionReportResponse" : {
+        "properties" : {
+          "builtAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "committee" : {
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "heldBack" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "more" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "previousMeetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "reportId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "revisions" : {
+            "items" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "sections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionReportSectionResponse"
+            },
+            "type" : "array"
+          },
+          "since" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "summary" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "builtAt", "committee", "forumId", "itemId", "meetingId", "more", "reportId", "revision", "revisions", "sections", "summary" ],
+        "type" : "object"
+      },
+      "ActionReportRowResponse" : {
+        "properties" : {
+          "actionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "cancelKind" : {
+            "enum" : [ "NO_LONGER_NEEDED", "SUPERSEDED", "RISK_ACCEPTED", "DISCARDED", "DUPLICATE" ],
+            "type" : [ "string", "null" ]
+          },
+          "cancelReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "closedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "confidence" : {
+            "enum" : [ "ON_TRACK", "AT_RISK", "OFF_TRACK" ],
+            "type" : [ "string", "null" ]
+          },
+          "doneAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "dueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "dueRevisions" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "holder" : {
+            "type" : [ "string", "null" ]
+          },
+          "latestUpdate" : {
+            "type" : [ "string", "null" ]
+          },
+          "latestUpdateAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "originalDueDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "owner" : {
+            "type" : "string"
+          },
+          "rag" : {
+            "$ref" : "#/components/schemas/ActionRagResponse"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "sourceLabel" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "OPEN", "IN_PROGRESS", "DONE_PENDING", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "actionId", "dueRevisions", "owner", "rag", "reference", "sourceLabel", "status", "title" ],
+        "type" : "object"
+      },
+      "ActionReportSectionResponse" : {
+        "properties" : {
+          "corrections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionReportCorrectionResponse"
+            },
+            "type" : "array"
+          },
+          "count" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "rows" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionReportRowResponse"
+            },
+            "type" : "array"
+          },
+          "section" : {
+            "enum" : [ "TO_CLOSE", "OVERDUE", "OPEN", "CLOSED", "CANCELLED", "CORRECTIONS", "HELD_BACK", "MORE" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "corrections", "count", "rows", "section" ],
+        "type" : "object"
+      },
       "ActionResponse" : {
         "properties" : {
           "can" : {
@@ -1646,6 +1822,16 @@
             "type" : "array"
           }
         },
+        "type" : "object"
+      },
+      "AskForUpdatesResponse" : {
+        "properties" : {
+          "asked" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "asked" ],
         "type" : "object"
       },
       "AssignRequest" : {
@@ -13434,6 +13620,39 @@
         "required" : [ "alternateAttends", "capacity", "name", "stale", "userId" ],
         "type" : "object"
       },
+      "ReportHoldRequest" : {
+        "properties" : {
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "ReportHoldResponse" : {
+        "properties" : {
+          "actionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingStartsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "actionId", "meetingId", "meetingStartsAt" ],
+        "type" : "object"
+      },
       "ReportTotals" : {
         "properties" : {
           "files" : {
@@ -16946,6 +17165,51 @@
           }
         },
         "summary" : "Reopen a closed or cancelled action within 90 days (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/report-hold" : {
+      "post" : {
+        "operationId" : "holdActionFromReport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReportHoldRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReportHoldResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Hold an action back from the next meeting's action taken report, with a reason (secretaries)",
         "tags" : [ "actions" ]
       }
     },
@@ -23383,6 +23647,41 @@
         "tags" : [ "actions" ]
       }
     },
+    "/api/v1/forums/{forumId}/actions/ask-for-updates" : {
+      "post" : {
+        "operationId" : "askForActionUpdates",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AskForUpdatesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ask the owners of open actions with no update since the last meeting for one (secretaries, once a day)",
+        "tags" : [ "actions" ]
+      }
+    },
     "/api/v1/forums/{forumId}/actions/export" : {
       "get" : {
         "operationId" : "exportForumActions",
@@ -25366,6 +25665,79 @@
         },
         "summary" : "Change a meeting's title, kind, place, link or classification",
         "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/action-report" : {
+      "get" : {
+        "operationId" : "getActionReport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "revision",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionReportResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The action taken report of the meeting's agenda (the latest, or a revision), as the reader may see it",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/action-report/pdf" : {
+      "get" : {
+        "operationId" : "getActionReportPdf",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "revision",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/pdf" : {
+                "schema" : {
+                  "format" : "byte",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The action taken report as a PDF of the reader's rows, to print",
+        "tags" : [ "actions" ]
       }
     },
     "/api/v1/meetings/{meetingId}/actions" : {

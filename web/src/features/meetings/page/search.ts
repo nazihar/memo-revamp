@@ -1,5 +1,5 @@
 /** The meeting page's tabs, for the officers and the committee's chair or vice-chair. */
-export const MEETING_TABS = ['agenda', 'attendance', 'replies', 'declarations'] as const
+export const MEETING_TABS = ['agenda', 'attendance', 'decisions', 'replies', 'declarations'] as const
 export type MeetingTab = (typeof MEETING_TABS)[number]
 
 /**

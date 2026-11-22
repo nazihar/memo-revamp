@@ -70,8 +70,9 @@ internal class Canvas(
 }
 
 /**
- * Generated pages on PDFBox with Noto Sans (ADR-0052): A4 portrait, 20 mm margins, a running header with the memo's
- * number and subject, and a footer with the record's name and "page n of N". Deterministic: nothing depends on the clock
+ * Generated pages on PDFBox with Noto Sans (ADR-0052): A4 portrait (or landscape for a report's wide tables), 20 mm
+ * margins, a running header with the memo's number and subject, and a footer with the record's name and "n / N" (or
+ * "Page n of N"). Deterministic: nothing depends on the clock
  * or the platform. Large documents are built in temp files, not in memory.
  */
 @Component
@@ -84,18 +85,20 @@ class PdfBoxPageRenderer : PageRenderer {
     ): RenderResult {
         PDDocument(IOUtils.createTempFileOnlyStreamCache()).use { pdf ->
             val fonts = PageFonts(pdf)
-            val layout = PageLayout(fonts, CONTENT_WIDTH, CONTENT_TOP, CONTENT_BOTTOM)
+            val size = if (document.landscape) LANDSCAPE else PAGE
+            val layout = PageLayout(fonts, size.width - 2 * MARGIN, size.height - MARGIN - HEADER_SPACE, CONTENT_BOTTOM)
             document.blocks.forEach(layout::place)
             val pages = layout.pages()
             // The header and footer are one line each: a line break in a memo's subject would reach the font as U+000A.
             val header = fonts.clean(document.header).replace('\n', ' ')
             val footer = fonts.clean(document.footer).replace('\n', ' ')
             pages.forEachIndexed { index, draws ->
-                val page = PDPage(PDRectangle.A4)
+                val page = PDPage(size)
                 pdf.addPage(page)
                 PDPageContentStream(pdf, page).use { stream ->
                     val canvas = Canvas(stream)
-                    frameOf(canvas, fonts, header, footer, index + 1, pages.size)
+                    val count = if (document.pagesInWords) "Page ${index + 1} of ${pages.size}" else "${index + 1} / ${pages.size}"
+                    frameOf(canvas, fonts, size, header, footer, count)
                     draws.forEach { it(canvas) }
                 }
             }
@@ -108,19 +111,20 @@ class PdfBoxPageRenderer : PageRenderer {
     private fun frameOf(
         canvas: Canvas,
         fonts: PageFonts,
+        size: PDRectangle,
         header: String,
         footer: String,
-        page: Int,
-        pages: Int,
+        count: String,
     ) {
-        val top = PAGE.height - MARGIN
-        canvas.text(MARGIN, top - SMALL, fonts.regular, SMALL, fit(fonts.regular, header, CONTENT_WIDTH), grey = true)
-        canvas.line(MARGIN, top - SMALL - RULE_GAP, PAGE.width - MARGIN, top - SMALL - RULE_GAP)
-        canvas.line(MARGIN, MARGIN + SMALL + RULE_GAP, PAGE.width - MARGIN, MARGIN + SMALL + RULE_GAP)
-        canvas.text(MARGIN, MARGIN, fonts.regular, SMALL, footer, grey = true)
-        val count = "$page / $pages"
+        val top = size.height - MARGIN
+        val content = size.width - 2 * MARGIN
+        canvas.text(MARGIN, top - SMALL, fonts.regular, SMALL, fit(fonts.regular, header, content), grey = true)
+        canvas.line(MARGIN, top - SMALL - RULE_GAP, size.width - MARGIN, top - SMALL - RULE_GAP)
+        canvas.line(MARGIN, MARGIN + SMALL + RULE_GAP, size.width - MARGIN, MARGIN + SMALL + RULE_GAP)
         val width = fonts.regular.getStringWidth(count) / EM * SMALL
-        canvas.text(PAGE.width - MARGIN - width, MARGIN, fonts.regular, SMALL, count, grey = true)
+        // A long footer (a report's filters) is cut short of the page count rather than drawn over it.
+        canvas.text(MARGIN, MARGIN, fonts.regular, SMALL, fit(fonts.regular, footer, content - width - FOOTER_GAP), grey = true)
+        canvas.text(size.width - MARGIN - width, MARGIN, fonts.regular, SMALL, count, grey = true)
     }
 
     /** [text] cut with an ellipsis to fit [width] at the small size. */
@@ -137,6 +141,7 @@ class PdfBoxPageRenderer : PageRenderer {
 
     internal companion object {
         val PAGE: PDRectangle = PDRectangle.A4
+        val LANDSCAPE: PDRectangle = PDRectangle(PDRectangle.A4.height, PDRectangle.A4.width)
 
         /** 20 mm in points. */
         const val MARGIN = 56.69f
@@ -144,8 +149,7 @@ class PdfBoxPageRenderer : PageRenderer {
         const val EM = 1000f
         const val RULE_GAP = 4f
         private const val HEADER_SPACE = 26f
-        val CONTENT_WIDTH: Float = PAGE.width - 2 * MARGIN
-        val CONTENT_TOP: Float = PAGE.height - MARGIN - HEADER_SPACE
+        private const val FOOTER_GAP = 12f
         const val CONTENT_BOTTOM: Float = MARGIN + HEADER_SPACE
     }
 }

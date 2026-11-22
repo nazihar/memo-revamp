@@ -1144,6 +1144,21 @@ export type DecisionEntryResponse = {
     vote: DecisionVoteResponse;
 };
 
+export type DecisionExportRequest = {
+    flags?: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'> | null;
+    format: 'XLSX' | 'PDF';
+    forumIds?: Array<string> | null;
+    forumTypeIds?: Array<string> | null;
+    from?: string | null;
+    memoTypeIds?: Array<string> | null;
+    outcomes?: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'> | null;
+    resolutionsOnly?: boolean | null;
+    sort?: 'RELEVANCE' | 'NEWEST' | 'OLDEST' | 'NUMBER';
+    states?: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'> | null;
+    text?: string | null;
+    to?: string | null;
+};
+
 export type DecisionFacetsView = {
     forums: Array<ForumCountView>;
     outcomes: Array<OutcomeCountView>;
@@ -1709,10 +1724,12 @@ export type ForumPolicyResponse = {
     defaultClassificationId?: string | null;
     description?: string | null;
     memberAttributes: Array<MemberAttribute>;
+    memoResumes: 'AT_MEETING_END' | 'ON_MINUTES_APPROVAL';
     outcomes: Array<Outcome>;
     quorum: QuorumRule;
     quorumBasis: number;
     quorumNeeded: number;
+    quorumOverride: 'NEVER' | 'WITH_REASON';
     submissionPolicy: SubmissionPolicy;
     termPolicy: TermPolicy;
     typeId: string;
@@ -8709,6 +8726,33 @@ export type ApprovalsDashboardResponses = {
 };
 
 export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
+
+export type ExportDecisionRegisterData = {
+    body: DecisionExportRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/export';
+};
+
+export type ExportDecisionRegisterErrors = {
+    /**
+     * The filters, or more rows than the format holds (TOO_MANY_ROWS)
+     */
+    422: unknown;
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportDecisionRegisterResponses = {
+    /**
+     * The spreadsheet or the PDF
+     */
+    200: Blob | File;
+};
+
+export type ExportDecisionRegisterResponse = ExportDecisionRegisterResponses[keyof ExportDecisionRegisterResponses];
 
 export type GetDecisionRegisterScopeData = {
     body?: never;

@@ -64,6 +64,9 @@ enum class RateLimit(
 
     // Attendance exports of a committee for the annual report by one person (design E08 §2.4, threat model).
     ANALYTICS_EXPORT_PER_USER(5, Duration.ofHours(1)),
+
+    // Exports of the decision register by one person (design E08 §1.5, threat model D2): each holds up to 20,000 rows.
+    REGISTER_EXPORT_PER_USER(5, Duration.ofHours(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

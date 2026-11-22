@@ -30,6 +30,9 @@ export type CataloguePart =
   | 'legacy'
   | 'actions'
   | 'actionLinks'
+  | 'decisions'
+  | 'resolutions'
+  | 'forumMinutes'
 
 const routes = Object.entries(definition)
   .filter(([name]) => !name.startsWith('$'))

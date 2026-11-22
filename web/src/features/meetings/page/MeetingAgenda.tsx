@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { FormDialog } from '@/features/forums/FormDialog'
+import { DecisionsProvider } from '@/features/decisions/MemberDecisions'
 import { DeclarationsProvider } from '@/features/meetings/declarations/DeclarationsContext'
 import { DeclarationsPanel } from '@/features/meetings/declarations/DeclarationsPanel'
 import { newIdempotencyKey } from '@/lib/idempotency'
@@ -213,142 +214,144 @@ export function MeetingAgenda({ meetingId, relation }: { meetingId: string; rela
     : undefined
   return (
     <DeclarationsProvider agenda={data} enabled={relation !== 'READER' && revision != null && !data.preview}>
-      <DeclarationsPanel />
-      <section aria-labelledby={titleId} className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id={titleId} className="text-2xl font-semibold">
-            {intl.formatMessage(pm.agenda)}
-          </h2>
-          {revision != null ? (
-            <Button
-              variant="outline"
-              className="min-h-11 print:hidden"
-              onClick={() => {
-                window.print()
-              }}
-            >
-              <Printer aria-hidden="true" />
-              {intl.formatMessage(pm.print)}
-            </Button>
-          ) : null}
-        </div>
-        {revision == null ? (
-          <p className="text-lg">{intl.formatMessage(pm.notPublished)}</p>
-        ) : (
-          <>
-            {published ? (
-              <p className="hidden print:block">
-                {intl.formatMessage(pmv.printedRevision, { number: revision, date: published })}
-              </p>
+      <DecisionsProvider agenda={latest ? data : undefined}>
+        <DeclarationsPanel />
+        <section aria-labelledby={titleId} className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 id={titleId} className="text-2xl font-semibold">
+              {intl.formatMessage(pm.agenda)}
+            </h2>
+            {revision != null ? (
+              <Button
+                variant="outline"
+                className="min-h-11 print:hidden"
+                onClick={() => {
+                  window.print()
+                }}
+              >
+                <Printer aria-hidden="true" />
+                {intl.formatMessage(pm.print)}
+              </Button>
             ) : null}
-            {data.latestRevision > 1 ? (
-              <RevisionPicker
-                published={revisions.data ?? []}
-                value={revision}
-                latest={data.latestRevision}
-                onChange={(next) => {
-                  void navigate({
-                    search: { ...keepTab(search), ...(next === data.latestRevision ? {} : { revision: next }) },
-                    replace: true,
-                  })
+          </div>
+          {revision == null ? (
+            <p className="text-lg">{intl.formatMessage(pm.notPublished)}</p>
+          ) : (
+            <>
+              {published ? (
+                <p className="hidden print:block">
+                  {intl.formatMessage(pmv.printedRevision, { number: revision, date: published })}
+                </p>
+              ) : null}
+              {data.latestRevision > 1 ? (
+                <RevisionPicker
+                  published={revisions.data ?? []}
+                  value={revision}
+                  latest={data.latestRevision}
+                  onChange={(next) => {
+                    void navigate({
+                      search: { ...keepTab(search), ...(next === data.latestRevision ? {} : { revision: next }) },
+                      replace: true,
+                    })
+                  }}
+                />
+              ) : null}
+              {search.paper && !paper ? (
+                <p
+                  role="status"
+                  className="rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-4 text-lg text-status-warn-fg"
+                >
+                  {intl.formatMessage(pm.paperMissing)}
+                </p>
+              ) : null}
+              {latest ? (
+                <div className="flex flex-col gap-2 rounded-md border bg-accent/40 p-4 text-lg print:hidden">
+                  <p className="flex gap-2">
+                    <Info aria-hidden="true" className="mt-1 size-5 shrink-0" />
+                    <span>
+                      {intl.formatMessage(revision > 1 ? pmv.changedOn : pmv.publishedOn, {
+                        number: revision,
+                        date: published ?? '',
+                      })}
+                      {data.note ? <> {intl.formatMessage(pmv.note, { note: data.note })}</> : null}
+                    </span>
+                  </p>
+                  {changes?.count ? (
+                    <p className="flex flex-wrap items-center gap-x-3 gap-y-2 ps-7">
+                      <span className="font-medium">
+                        {intl.formatMessage(pmv.changesSince, { count: changes.count })}
+                      </span>
+                      <Button
+                        variant="outline"
+                        className="min-h-11"
+                        onClick={() => {
+                          setShowChanges(true)
+                        }}
+                      >
+                        {intl.formatMessage(pm.showChanges)}
+                      </Button>
+                    </p>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="flex flex-wrap items-center gap-3 rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-4 text-lg text-status-warn-fg print:hidden">
+                  <p>{intl.formatMessage(pmv.readingEarlier, { number: revision, date: published ?? '' })}</p>
+                  <Button
+                    variant="outline"
+                    className="min-h-11"
+                    onClick={() => {
+                      void navigate({ search: keepTab(search), replace: true })
+                    }}
+                  >
+                    {intl.formatMessage(pm.readLatest)}
+                  </Button>
+                </div>
+              )}
+              <AgendaView
+                agenda={data}
+                latest={latest}
+                actions={{
+                  onOpenPaper: openPaper,
+                  onAsk: (item) => {
+                    setAsking(item)
+                  },
+                  onWithdraw: (item) => void withdraw(item),
+                  ...(busyItem ? { busyItem } : {}),
                 }}
               />
-            ) : null}
-            {search.paper && !paper ? (
-              <p
-                role="status"
-                className="rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-4 text-lg text-status-warn-fg"
-              >
-                {intl.formatMessage(pm.paperMissing)}
-              </p>
-            ) : null}
-            {latest ? (
-              <div className="flex flex-col gap-2 rounded-md border bg-accent/40 p-4 text-lg print:hidden">
-                <p className="flex gap-2">
-                  <Info aria-hidden="true" className="mt-1 size-5 shrink-0" />
-                  <span>
-                    {intl.formatMessage(revision > 1 ? pmv.changedOn : pmv.publishedOn, {
-                      number: revision,
-                      date: published ?? '',
-                    })}
-                    {data.note ? <> {intl.formatMessage(pmv.note, { note: data.note })}</> : null}
-                  </span>
-                </p>
-                {changes?.count ? (
-                  <p className="flex flex-wrap items-center gap-x-3 gap-y-2 ps-7">
-                    <span className="font-medium">
-                      {intl.formatMessage(pmv.changesSince, { count: changes.count })}
-                    </span>
-                    <Button
-                      variant="outline"
-                      className="min-h-11"
-                      onClick={() => {
-                        setShowChanges(true)
-                      }}
-                    >
-                      {intl.formatMessage(pm.showChanges)}
-                    </Button>
-                  </p>
-                ) : null}
-              </div>
-            ) : (
-              <div className="flex flex-wrap items-center gap-3 rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-4 text-lg text-status-warn-fg print:hidden">
-                <p>{intl.formatMessage(pmv.readingEarlier, { number: revision, date: published ?? '' })}</p>
-                <Button
-                  variant="outline"
-                  className="min-h-11"
-                  onClick={() => {
-                    void navigate({ search: keepTab(search), replace: true })
-                  }}
-                >
-                  {intl.formatMessage(pm.readLatest)}
-                </Button>
-              </div>
-            )}
-            <AgendaView
-              agenda={data}
-              latest={latest}
-              actions={{
-                onOpenPaper: openPaper,
-                onAsk: (item) => {
-                  setAsking(item)
-                },
-                onWithdraw: (item) => void withdraw(item),
-                ...(busyItem ? { busyItem } : {}),
+            </>
+          )}
+          {paper && revision != null ? (
+            <PaperViewer
+              key={paper.id}
+              meetingId={meetingId}
+              revision={revision}
+              paper={paper}
+              onOpened={() => {
+                markOpened(paper.id)
+              }}
+              onClose={closePaper}
+            />
+          ) : null}
+          {showChanges && changes ? (
+            <WhatChangedDialog
+              changes={changes}
+              onClose={() => {
+                setShowChanges(false)
               }}
             />
-          </>
-        )}
-        {paper && revision != null ? (
-          <PaperViewer
-            key={paper.id}
-            meetingId={meetingId}
-            revision={revision}
-            paper={paper}
-            onOpened={() => {
-              markOpened(paper.id)
-            }}
-            onClose={closePaper}
-          />
-        ) : null}
-        {showChanges && changes ? (
-          <WhatChangedDialog
-            changes={changes}
-            onClose={() => {
-              setShowChanges(false)
-            }}
-          />
-        ) : null}
-        {asking ? (
-          <AskDialog
-            meetingId={meetingId}
-            item={asking}
-            onClose={() => {
-              setAsking(undefined)
-            }}
-          />
-        ) : null}
-      </section>
+          ) : null}
+          {asking ? (
+            <AskDialog
+              meetingId={meetingId}
+              item={asking}
+              onClose={() => {
+                setAsking(undefined)
+              }}
+            />
+          ) : null}
+        </section>
+      </DecisionsProvider>
     </DeclarationsProvider>
   )
 }

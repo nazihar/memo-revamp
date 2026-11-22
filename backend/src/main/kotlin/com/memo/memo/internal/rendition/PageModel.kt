@@ -42,13 +42,38 @@ sealed interface Block {
     data object Rule : Block
 
     data object PageBreak : Block
+
+    /**
+     * A table of text cells at the small size (a report's rows, E08 T3): the columns share the width by their weights, the
+     * header row is bold and repeated at the top of every page the table runs onto, a row is kept on one page when it fits
+     * on one and otherwise continues on the next, and a short row is padded with empty cells.
+     */
+    data class Table(
+        val columns: List<Column>,
+        val rows: List<List<String>>,
+    ) : Block {
+        init {
+            require(columns.isNotEmpty() && columns.all { it.weight > 0f }) { "a table has columns of positive weight" }
+        }
+    }
+
+    /** A table's column: its heading and its share of the width relative to the others. */
+    data class Column(
+        val name: String,
+        val weight: Float = 1f,
+    )
 }
 
-/** Generated pages: their blocks, the running header (the memo's number and subject) and the footer text. */
+/**
+ * Generated pages: their blocks, the running header (the memo's number and subject) and the footer text. [landscape] turns
+ * the A4 page on its side (wide tables); [pagesInWords] numbers the pages "Page n of N" instead of "n / N".
+ */
 data class PageDocument(
     val header: String,
     val footer: String,
     val blocks: List<Block>,
+    val landscape: Boolean = false,
+    val pagesInWords: Boolean = false,
 )
 
 /** How rendering went: the pages written, and the characters drawn as U+FFFD because the font lacks them. */

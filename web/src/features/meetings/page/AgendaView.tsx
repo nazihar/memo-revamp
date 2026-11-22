@@ -10,6 +10,7 @@ import type {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ActionReportLinks } from '@/features/actions/ActionLinks'
+import { ItemDecisionLine } from '@/features/decisions/MemberDecisions'
 import { ItemDeclaration, StandingDeclarations } from '@/features/meetings/declarations/ItemDeclaration'
 import { cn } from '@/lib/utils'
 import { pm, pmv } from './messages'
@@ -141,6 +142,7 @@ function Item({
       {full ? <Details item={item} name={name} latest={latest} agenda={agenda} actions={actions} /> : null}
       {full && item.standingKind === 'DECLARATIONS' ? <StandingDeclarations agenda={agenda} /> : null}
       <ItemDeclaration item={item} name={name} latest={latest} />
+      {item.access !== 'HIDDEN' ? <ItemDecisionLine itemId={item.id} /> : null}
       {changes ? (
         <p className="w-fit rounded-md bg-status-warn-bg px-2 py-0.5 text-status-warn-fg print:hidden">
           {intl.formatMessage(pmv.changed, { changes })}

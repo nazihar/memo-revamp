@@ -16,6 +16,7 @@ import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
 import com.memo.minutes.internal.ResolutionNumbers
+import com.memo.search.RegisterFiles
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.Person
 import com.memo.testsupport.RecusalRow
@@ -223,6 +224,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             },
             // E06 T6: the reader's copy and the comments: the copy of a recused reader is MinutesRedactionIT's; here nothing.
             Surface.MINUTES_COPIES to { p, v -> minutesCopyCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
+            // E06 T8: the certified extracts of a resolution (none of the planted ones is issued), and one extract.
+            Surface.EXTRACTS to { _, v -> extractReads(v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -380,7 +383,13 @@ class RecusalLeakIT : RecusalActionsFixture() {
             // Delivered through SMTP and read back from Mailpit: RecusalMailIT.
             Channel.MAIL to { _, _ -> },
             Channel.EXPORTS to { p, v ->
-                // The register's workbook is in the REGISTERS probe, the tracker's in TRACKER; the meeting's calendar file:
+                // The registers' workbooks are in the REGISTERS probe, the tracker's in TRACKER. The decision register's files
+                // (E08 T3; with the items decided: RegisterLeakIT) for officers, members 403; the meeting's calendar file:
+                RegisterFiles.formats.forEach { format ->
+                    val file = post("/api/v1/decision-register/export", v.person().session, """{"format":"$format"}""")
+                    assertThat(file.response.status).isEqualTo(if (v.officer) 200 else 403)
+                    if (v.officer) canaries(v.person()).forEach { assertThat(RegisterFiles.text(file)).doesNotContain(it) }
+                }
                 clean(v.person(), read("/api/v1/meetings/${p.meeting.id}/calendar.ics", v.person().session), statusBelow = 500)
             },
             Channel.SEARCH to { _, v ->

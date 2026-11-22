@@ -1,5 +1,6 @@
 package com.memo.memo.internal.rendition
 
+import com.memo.testsupport.Latency
 import org.apache.pdfbox.Loader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
@@ -114,16 +115,7 @@ class RenditionPerformanceIT {
         return PageDocument("M-2026-00042 · Performance", "Final record v1", blocks)
     }
 
-    private fun p95(call: () -> Unit): Long {
-        val times =
-            (1..RUNS)
-                .map {
-                    val start = System.nanoTime()
-                    call()
-                    (System.nanoTime() - start) / NANOS_PER_MILLI
-                }.sorted()
-        return times[(RUNS * 95 / 100) - 1]
-    }
+    private fun p95(call: () -> Unit): Long = Latency.p95(warmUp = 0, runs = RUNS, call = call)
 
     private companion object {
         const val TEXT = "The borrower asks to renew a working capital line for twelve months, secured by a mortgage. "

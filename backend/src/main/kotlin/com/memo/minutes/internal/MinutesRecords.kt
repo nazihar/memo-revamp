@@ -45,11 +45,17 @@ class MinutesRecordMaker(
         val request =
             RecordPdfRequest(
                 parts =
-                    listOf(
-                        RecordPdfPart.Pages("Cover", "C-", MinutesRecordPages.cover(c, set)),
-                        RecordPdfPart.Document("The minutes", "M-", DOCUMENT_NAME, FileType.DOCX, docx),
-                        RecordPdfPart.Pages("Resolutions", "R-", MinutesRecordPages.annex(c, set)),
-                    ),
+                    buildList {
+                        add(RecordPdfPart.Pages("Cover", "C-", MinutesRecordPages.cover(c, set)))
+                        add(RecordPdfPart.Document("The minutes", "M-", DOCUMENT_NAME, FileType.DOCX, docx))
+                        add(RecordPdfPart.Pages("Resolutions", "R-", MinutesRecordPages.annex(c, set)))
+                        // E06 T8: from version 2, the approved corrections after the approved document, never inside it.
+                        if (c.corrections.isNotEmpty()) {
+                            add(
+                                RecordPdfPart.Pages("Corrections", "K-", MinutesCorrectionPages.corrections(c, set)),
+                            )
+                        }
+                    },
                 metadata = MinutesRecordPages.metadata(c),
                 textItems = MinutesRecordPages.textItems(c),
                 stamp = MinutesRecordPages.stamp(c, set),
@@ -90,6 +96,7 @@ class MinutesRecords(
     private val store: MinutesStore,
     private val records: MinutesRecordStore,
     private val approvals: MinutesApprovalStore,
+    private val corrections: MinutesCorrectionStore,
     private val source: MinutesDraftSource,
     private val meetings: Meetings,
     private val users: UserSummaries,
@@ -145,15 +152,32 @@ class MinutesRecords(
         return record
     }
 
-    /** What [record] is made of, inside a transaction; null when it cannot be made (the minutes or the approval gone). */
+    /**
+     * What [record] is made of, inside a transaction; null when it cannot be made (the minutes or an approval gone): the
+     * approval it records, the chair's confirmation, and (E06 T8) the corrections approved up to its version.
+     */
     fun context(record: RecordRow): RecordContext? {
         val row = store.find(record.meetingId)?.takeIf { it.state == MinutesStage.APPROVED }
-        val approval = row?.let { approvals.ofMeeting(record.meetingId).firstOrNull { it.id == record.approvalId } }
-        val from = approval?.let { source.read(record.meetingId) }
-        if (row == null || approval == null || from == null) return null
+        val all = row?.let { approvals.ofMeeting(record.meetingId) }.orEmpty().associateBy { it.id }
+        val approval = all[record.approvalId]
+        val confirmation = row?.confirmedApprovalId?.let(all::get)
+        // Both approvals there, then what the minutes are made of.
+        val from = approval?.let { confirmation?.let { source.read(record.meetingId) } }
+        if (row == null || from == null) return null
+        checkNotNull(approval)
+        checkNotNull(confirmation)
         val approving = row.approvingMeetingId?.let(meetings::find)?.label
-        val approver = users.names(setOf(approval.actorId))[approval.actorId] ?: "The chair"
-        return RecordContext(from, row, record, approval, approver, approving)
+        val applied =
+            corrections.of(record.meetingId).filter {
+                it.state == CorrectionState.APPROVED && (it.recordVersion ?: Int.MAX_VALUE) <= record.recordVersion
+            }
+        val names = users.names(setOf(confirmation.actorId) + applied.mapNotNull { it.decidedBy })
+        val carried =
+            applied.mapNotNull { c ->
+                c.approvalId?.let(all::get)?.let { a -> RecordCorrection(c, a, names[a.actorId] ?: "The chair") }
+            }
+        val approver = names[confirmation.actorId] ?: "The chair"
+        return RecordContext(from, row, record, approval, approver, approving, confirmation, carried)
     }
 
     /**
@@ -256,6 +280,19 @@ class MinutesRecords(
                     "retainUntil" to stored.retainUntil?.toString(),
                 ),
         )
+        // E06 T8: a corrected version becomes the record of reference; the one before stays locked and readable.
+        records
+            .of(record.meetingId)
+            .filter { it.recordVersion < record.recordVersion && it.state == RecordState.READY }
+            .maxByOrNull { it.recordVersion }
+            ?.let { earlier ->
+                audit.record(
+                    "minutes.record.superseded",
+                    MinutesDrafts.OBJECT_TYPE,
+                    record.meetingId.toString(),
+                    after = mapOf("recordVersion" to earlier.recordVersion, "by" to record.recordVersion, "sha256" to earlier.sha256),
+                )
+            }
         // The readers' approved copies follow the record.
         store.find(record.meetingId)?.let(copies::request)
     }

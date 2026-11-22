@@ -10,6 +10,7 @@ import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
+import com.memo.jooq.tables.ActionsMemo
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -115,9 +116,11 @@ import com.memo.jooq.tables.MinutesApproval
 import com.memo.jooq.tables.MinutesComment
 import com.memo.jooq.tables.MinutesCommentRequest
 import com.memo.jooq.tables.MinutesCopy
+import com.memo.jooq.tables.MinutesCorrection
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
+import com.memo.jooq.tables.MinutesExtract
 import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.MinutesRecord
 import com.memo.jooq.tables.MinutesReminder
@@ -226,6 +229,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.actions_item</code>.
      */
     val ACTIONS_ITEM: ActionsItem get() = ActionsItem.ACTIONS_ITEM
+
+    /**
+     * The table <code>memo.actions_memo</code>.
+     */
+    val ACTIONS_MEMO: ActionsMemo get() = ActionsMemo.ACTIONS_MEMO
 
     /**
      * The table <code>memo.audit_anchor</code>.
@@ -758,6 +766,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MINUTES_COPY: MinutesCopy get() = MinutesCopy.MINUTES_COPY
 
     /**
+     * The table <code>memo.minutes_correction</code>.
+     */
+    val MINUTES_CORRECTION: MinutesCorrection get() = MinutesCorrection.MINUTES_CORRECTION
+
+    /**
      * The table <code>memo.minutes_decision</code>.
      */
     val MINUTES_DECISION: MinutesDecision get() = MinutesDecision.MINUTES_DECISION
@@ -771,6 +784,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.minutes_event</code>.
      */
     val MINUTES_EVENT: MinutesEvent get() = MinutesEvent.MINUTES_EVENT
+
+    /**
+     * The table <code>memo.minutes_extract</code>.
+     */
+    val MINUTES_EXTRACT: MinutesExtract get() = MinutesExtract.MINUTES_EXTRACT
 
     /**
      * The table <code>memo.minutes_item_note</code>.
@@ -1585,6 +1603,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ActionsDueRequest.ACTIONS_DUE_REQUEST,
         ActionsEntry.ACTIONS_ENTRY,
         ActionsItem.ACTIONS_ITEM,
+        ActionsMemo.ACTIONS_MEMO,
         AuditAnchor.AUDIT_ANCHOR,
         AuditChainHead.AUDIT_CHAIN_HEAD,
         AuditEvent.AUDIT_EVENT,
@@ -1691,9 +1710,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MinutesComment.MINUTES_COMMENT,
         MinutesCommentRequest.MINUTES_COMMENT_REQUEST,
         MinutesCopy.MINUTES_COPY,
+        MinutesCorrection.MINUTES_CORRECTION,
         MinutesDecision.MINUTES_DECISION,
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
         MinutesEvent.MINUTES_EVENT,
+        MinutesExtract.MINUTES_EXTRACT,
         MinutesItemNote.MINUTES_ITEM_NOTE,
         MinutesRecord.MINUTES_RECORD,
         MinutesReminder.MINUTES_REMINDER,

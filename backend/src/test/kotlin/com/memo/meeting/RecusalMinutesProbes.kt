@@ -31,6 +31,9 @@ internal fun RecusalLeakIT.minutesOfficerProbes(): Map<String, (RecusalLeakFixtu
         "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response" to
             { p -> send(HttpMethod.POST, "${base(p)}/comments/${UUID.randomUUID()}/response", secretary, """{"response":"ADOPTED"}""") },
         "GET /api/v1/meetings/{meetingId}/minutes/preview" to { p -> read("${base(p)}/preview?as=${d1.id}", secretary.session) },
+        // E06 T8: issuing a certified extract, of a resolution that is not there: 404, naming nothing.
+        "POST /api/v1/resolutions/{resolutionId}/extracts" to
+            { _ -> send(HttpMethod.POST, "/api/v1/resolutions/${UUID.randomUUID()}/extracts", secretary, "{}") },
     )
 }
 
@@ -48,6 +51,7 @@ internal fun RecusalLeakIT.minutesCalls(
         send(HttpMethod.POST, "$base/confirm", person, "{}", versioned(0)),
         send(HttpMethod.POST, "$base/approvals/${UUID.randomUUID()}/check", person),
         read("$base/approvals", person.session),
+        send(HttpMethod.POST, "$base/corrections/${UUID.randomUUID()}/decide", person, """{"decision":"APPROVE"}"""),
     )
 }
 
@@ -68,6 +72,7 @@ internal fun RecusalLeakIT.minutesCopyCalls(
         read("$base/record?version=1", person.session),
         read("$base/records", person.session),
         send(HttpMethod.POST, "$base/records/1/check", person),
+        read("$base/corrections", person.session),
     )
 }
 
@@ -116,3 +121,12 @@ internal fun RecusalLeakIT.resolutionReads(
 ): List<MvcTestResult> =
     listOf("/api/v1/forums/$forum/resolutions", "/api/v1/forums/$forum/resolutions/check", "/api/v1/resolutions/${UUID.randomUUID()}")
         .map { read(it, person.session) }
+
+/** A resolution's certified extracts and one extract (E06 T8), as [person] reads them: nothing there, naming nothing. */
+internal fun RecusalLeakIT.extractReads(person: com.memo.testsupport.Person): List<MvcTestResult> {
+    val resolution = UUID.randomUUID()
+    return listOf(
+        read("/api/v1/resolutions/$resolution/extracts", person.session),
+        read("/api/v1/resolutions/$resolution/extracts/${UUID.randomUUID()}/content", person.session),
+    )
+}

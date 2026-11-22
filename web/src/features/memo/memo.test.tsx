@@ -17,6 +17,7 @@ import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const memo: MemoView = {
   origin: 'NATIVE',
+  followsUp: [],
   id: 'm1',
   reference: 'M-2026-00042',
   subject: 'Budget transfer to the treasury',

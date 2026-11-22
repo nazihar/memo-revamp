@@ -61,6 +61,19 @@ class MinutesFileStreams(
         stream(served.fileVersionId, served.meetingId, served.details, request, response)
     }
 
+    /** A certified extract (E06 T8), each open audited `minutes.extract.opened`; null [row]: being made. */
+    fun extract(
+        row: ExtractRow?,
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+    ) {
+        if (row == null) return building(response)
+        val details = mapOf("extractId" to row.id.toString(), "resolutionId" to row.resolutionId.toString())
+        val audit = OpenAudit("minutes.extract.opened", DecisionEffects.OBJECT_TYPE, row.meetingId.toString(), details)
+        val outcome = serving.serve(checkNotNull(row.fileVersionId), ServedContent.ORIGINAL, request, response, audit)
+        if (outcome != ServeOutcome.SERVED) throw MinutesNotFoundException("extract")
+    }
+
     private fun stream(
         versionId: UUID,
         meetingId: UUID,

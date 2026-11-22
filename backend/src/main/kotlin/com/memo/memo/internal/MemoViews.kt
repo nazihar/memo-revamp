@@ -7,6 +7,9 @@ import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
 import com.memo.memo.MemoOrigin
+import com.memo.memo.MemoOriginLabel
+import com.memo.memo.MemoOrigins
+import com.memo.memo.NoMemoOrigins
 import com.memo.memo.internal.legacy.LegacyMemoView
 import com.memo.memo.internal.legacy.LegacyMemoViews
 import com.memo.memo.internal.rendition.MemoRenditionQueries
@@ -22,6 +25,7 @@ import com.memo.workflow.TaskRole
 import com.memo.workflow.WorkflowForums
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.UUID
@@ -224,6 +228,11 @@ data class MemoView(
     val legacy: LegacyMemoView? = null,
     /** The committee the memo waits on (ADR-0058), by name: "With the Credit Committee"; null otherwise. */
     val withForum: String? = null,
+    /**
+     * The records of other modules this memo follows up (design E07 §1.11): "Raised from action BRC A14/2026 of the Board
+     * Risk Committee", with the record's id only for readers who may open it.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val followsUp: List<MemoOriginLabel> = emptyList(),
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -247,7 +256,10 @@ class MemoViews(
     private val policy: com.memo.common.authz.Policy,
     private val renditions: MemoRenditionQueries,
     private val legacyViews: LegacyMemoViews,
+    private val origins: ObjectProvider<MemoOrigins>,
 ) {
+    // The memo as its reader sees it, field by field (it is long because the view is).
+    @Suppress("LongMethod")
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
         val coauthors = coauthorStore.coauthors(memo.id)
@@ -307,6 +319,7 @@ class MemoViews(
             origin = memo.origin,
             legacy = legacyViews.of(memo),
             withForum = workflow?.let { forumWaits.waitingOn(MemoWorkflowSubject.TYPE, listOf(memo.id))[memo.id]?.name },
+            followsUp = origins.getIfAvailable { NoMemoOrigins }.labels(memo.id),
         )
     }
 

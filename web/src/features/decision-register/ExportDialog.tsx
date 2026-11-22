@@ -184,7 +184,7 @@ function outcomeWords(intl: IntlShape, outcome: ExportOutcome, format: ExportFor
         })
       }
       return intl.formatMessage(drm.exportTooManyMore, {
-        count: intl.formatNumber(outcome.moreThan ?? MAX_ROWS[format]),
+        count: intl.formatNumber(outcome.moreThan ?? outcome.maximum ?? MAX_ROWS[format]),
         format,
       })
     case 'rateLimited':

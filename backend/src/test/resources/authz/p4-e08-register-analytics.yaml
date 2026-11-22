@@ -8,6 +8,11 @@
 # Recusal columns: the status on the leak suite's published meeting for a member recused from the item, one awaiting the
 # chair's ruling, a recused secretary and a recused chair. Each is still in office, so the register is theirs: 200, with
 # the item a restricted line (RecusalLeakIT's REGISTER surface checks the rows and every canary of the item's decision).
+#
+# T3: the export. For a committee's officers (their committees), forums.manage and forum.read; a member in office reads the
+# register but does not export it (403), nor does a user without a register. Who exports what, the formats, the limits and
+# the audit are DecisionExportIT; the recused secretary and chair export the item as a restricted line (RegisterLeakIT and
+# the leak suite's EXPORTS channel read every cell of both files); the recused and awaiting members are members: 403.
 epic: P4-E08
 endpoints:
   - endpoint: "GET /api/v1/decision-register/scope"
@@ -19,3 +24,8 @@ endpoints:
     body: { text: "term loan" }
     expect: { user: 403 }
     recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "POST /api/v1/decision-register/export"
+    rule: signedIn
+    body: { format: "XLSX", text: "term loan" }
+    expect: { user: 403 }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }

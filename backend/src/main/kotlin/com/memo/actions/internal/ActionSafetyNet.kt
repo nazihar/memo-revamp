@@ -11,6 +11,7 @@ import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Component
 import java.time.Clock
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 /** What one pass of the safety net found and did. */
@@ -54,26 +55,38 @@ class ActionSafetyNet(
         var reported = 0
         var replanned = 0
         var reconciled = 0
-        val open = store.where(OPEN_ACTIONS, LIMIT)
-        open.forEach { candidate ->
-            val view = queries.viewOf(ActionsPolicy.SUBJECT, candidate.id)
-            when {
-                view == null -> {
-                    if (report(candidate)) reported++
-                }
+        var checked = 0
+        var after: ActionRow? = null
+        // The open actions oldest first, a batch at a time by keyset (`actions_item_open_idx`), each batch's workflows in one
+        // query (design E07 §8: 3,000 open actions within the task's 30 s); only the actions found out of step are read and
+        // locked one by one.
+        while (checked < LIMIT) {
+            val batch = store.openAfter(after, minOf(BATCH, LIMIT - checked))
+            if (batch.isEmpty()) break
+            checked += batch.size
+            after = batch.last()
+            val runs = queries.runs(ActionsPolicy.SUBJECT, batch.map { it.id })
+            batch.forEach { candidate ->
+                val run = runs[candidate.id]
+                when {
+                    run == null -> {
+                        if (report(candidate)) reported++
+                    }
 
-                view.status != InstanceStatus.RUNNING || view.instanceId != candidate.workflowInstanceId -> {
-                    if (reconcile(candidate, view.instanceId, view.status)) reconciled++
-                }
+                    run.status != InstanceStatus.RUNNING || run.instanceId != candidate.workflowInstanceId -> {
+                        if (reconcile(candidate, run.instanceId, run.status)) reconciled++
+                    }
 
-                candidate.status in ActionChecks.UNDERWAY && drifted(candidate) -> {
-                    if (replan(candidate)) replanned++
-                }
+                    candidate.status in ActionChecks.UNDERWAY && drifted(candidate, run.dueAt) -> {
+                        if (replan(candidate)) replanned++
+                    }
 
-                else -> {}
+                    else -> {}
+                }
             }
+            if (batch.size < BATCH) break
         }
-        return SafetyRun(open.size, reported, replanned, reconciled)
+        return SafetyRun(checked, reported, replanned, reconciled)
     }
 
     /** [candidate] has no workflow: its secretaries hear it once per run. */
@@ -125,11 +138,16 @@ class ActionSafetyNet(
         return true
     }
 
-    /** The owner's open step is due at another time than [candidate]'s date (a step without a due time is left alone). */
-    private fun drifted(candidate: ActionRow): Boolean {
+    /**
+     * The owner's open step is due at [planned], another time than [candidate]'s date (a step without a due time is left
+     * alone).
+     */
+    private fun drifted(
+        candidate: ActionRow,
+        planned: Instant?,
+    ): Boolean {
         val due = candidate.dueDate?.let { ActionReferences.dueAt(it, org.zone()) }
-        val planned = due?.let { queries.dueOf(ActionsPolicy.SUBJECT, candidate.id) }
-        return planned != null && planned != due
+        return due != null && planned != null && planned != due
     }
 
     /** [candidate]'s owner's step is planned again from its due date. */
@@ -155,5 +173,8 @@ class ActionSafetyNet(
 
         /** At most this many actions checked a day (design E07 §8: 3,000 open per tenant). */
         const val LIMIT = 10_000
+
+        /** The actions whose workflows are read in one query. */
+        const val BATCH = 500
     }
 }

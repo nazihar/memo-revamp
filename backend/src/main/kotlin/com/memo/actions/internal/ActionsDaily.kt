@@ -19,6 +19,7 @@ import com.memo.notification.RecipientLookup
 import com.memo.notification.SentNotification
 import com.memo.org.OrgDirectory
 import com.memo.tenancy.TenancyProperties
+import com.memo.tenancy.Tenant
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.workflow.WorkingDays
@@ -70,9 +71,13 @@ class ActionDigestStore(
     fun complete(day: LocalDate): Boolean =
         tenantDsl.current().fetchExists(ACTIONS_DIGEST, ACTIONS_DIGEST.USER_ID.eq(COMPLETE), ACTIONS_DIGEST.DAY.eq(day))
 
-    /** Each of [users]' latest digest day before [day]. */
+    /**
+     * Each of [users]' latest digest day before [day], from [from] on (the digest's lookback: an earlier one changes nothing),
+     * read by day (`actions_digest_day_idx`).
+     */
     fun lastDays(
         users: Collection<UUID>,
+        from: LocalDate,
         day: LocalDate,
     ): Map<UUID, LocalDate> {
         if (users.isEmpty()) return emptyMap()
@@ -81,7 +86,7 @@ class ActionDigestStore(
             .current()
             .select(d.USER_ID, DSL.max(d.DAY))
             .from(d)
-            .where(d.USER_ID.`in`(users), d.DAY.lt(day))
+            .where(d.USER_ID.`in`(users), d.DAY.ge(from), d.DAY.lt(day))
             .groupBy(d.USER_ID)
             .fetch { (user, last) -> checkNotNull(user) to checkNotNull(last) }
             .toMap()
@@ -187,7 +192,10 @@ class ActionsDaily(
         val floor = cutoff.minus(LOOKBACK)
         val written = log.written(DIGEST_KINDS, floor, cutoff, ITEMS_MAX).groupBy { it.userId }.toSortedMap()
         val had = digests.had(written.keys, today)
-        val last = digests.lastDays(written.keys, today)
+        // A digest before the lookback's first day leaves the window at [floor], as no digest does.
+        val last = digests.lastDays(written.keys, floor.atZone(zone).toLocalDate(), today)
+        // The organisation's name and address, read once for every digest of the run.
+        val tenant = registry.current()
         var sent = 0
         var complete = true
         for ((user, notes) in written.filterKeys { it !in had }) {
@@ -197,18 +205,21 @@ class ActionsDaily(
             }
             val since = last[user]?.atTime(DIGEST_TIME)?.atZone(zone)?.toInstant() ?: floor
             val news = notes.filter { !it.createdAt.isBefore(since) }
-            if (news.isNotEmpty() && digests.record(user, today, now) && send(user, news)) sent++
+            if (news.isNotEmpty() && digests.record(user, today, now) && send(user, news, tenant)) sent++
         }
         return sent to complete
     }
 
-    /** One digest to [user] with [news]: their references by kind in their language; false for nobody to send to. */
+    /**
+     * One digest to [user] with [news] from [tenant]: their references by kind in their language; false for nobody to send
+     * to.
+     */
     private fun send(
         user: UUID,
         news: List<SentNotification>,
+        tenant: Tenant?,
     ): Boolean {
         val recipient = recipients.recipient(user) ?: return false
-        val tenant = registry.current()
         val locale = localeOf(recipient.locale)
         val params =
             mapOf(

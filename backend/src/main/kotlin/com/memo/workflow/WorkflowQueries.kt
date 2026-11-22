@@ -42,6 +42,13 @@ data class TaskPage(
     val nextCursor: String?,
 )
 
+/** A subject's newest run: its instance, its status, and when its current step is due (null without a due time). */
+data class SubjectRun(
+    val instanceId: UUID,
+    val status: InstanceStatus,
+    val dueAt: Instant?,
+)
+
 /** One action of an instance's history (ADR-0035): who did what in which round, bound to the subject snapshot. */
 data class ActionEntry(
     val seq: Long,
@@ -119,6 +126,15 @@ class WorkflowQueries(
         subjectType: String,
         subjectIds: Collection<UUID>,
     ): Map<UUID, List<UUID>> = tasks.holders(subjectType, subjectIds)
+
+    /**
+     * Each subject's newest run with its status and when its current step is due ([viewOf]'s instance and status and
+     * [dueOf], design E07 §9 (c)), for many subjects in one query; subjects never started are absent.
+     */
+    fun runs(
+        subjectType: String,
+        subjectIds: Collection<UUID>,
+    ): Map<UUID, SubjectRun> = tasks.runs(subjectType, subjectIds)
 
     /** Every action of the instance, in order. */
     fun history(instanceId: UUID): List<ActionEntry> = tasks.history(instanceId)

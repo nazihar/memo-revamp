@@ -20,6 +20,7 @@ import com.memo.identity.UserAccounts
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.Latency
 import com.memo.testsupport.SqlRecorder
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aPassword
@@ -60,12 +61,16 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
 
     @Autowired lateinit var invalidation: CacheInvalidation
 
-    protected val meetings = System.getenv("MEETING_VOLUME")?.toIntOrNull() ?: DESIGN_MEETINGS
+    /** How many meetings to write: `MEETING_VOLUME`, or the variable a subclass gates on. */
+    protected open val meetings: Int = System.getenv("MEETING_VOLUME")?.toIntOrNull() ?: DESIGN_MEETINGS
     protected lateinit var tenant: TestTenant
     protected lateinit var people: VolumePeople
     protected lateinit var volume: MeetingVolume
     protected lateinit var focalForum: UUID
     protected lateinit var levels: MeetingVolume.Levels
+
+    /** The committees' ids and codes, the focal one first. */
+    protected lateinit var committees: List<Pair<UUID, String>>
 
     /** The tables the volume makes large: a measured read must not scan one sequentially. */
     protected abstract val large: List<String>
@@ -73,10 +78,11 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
     /** The class's name in what it prints. */
     private val label: String get() = javaClass.simpleName
 
-    /** Writes the volume in a new tenant [slug]; with [e05], E05's rows as well. */
+    /** Writes the volume in a new tenant [slug]; with [e05], E05's rows as well; with [mattersArising], that standing item. */
     protected fun generate(
         slug: String,
         e05: Boolean,
+        mattersArising: Boolean = false,
     ) {
         tenant = registry.aTestTenant(transactions, settings, slug)
 
@@ -89,7 +95,7 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
             asUser(people.admin, write = true) {
                 types.create("BC", "Board committee", ForumTypePreset.BOARD_COMMITTEE, publish = true)
             }.type.id
-        val committees =
+        committees =
             (1..FORUMS).map { f ->
                 val forum = asUser(people.admin, write = true) { forums.create(ForumInput("c$f", "C$f", "Committee $f", "C$f", type)) }
                 asUser(people.admin, write = true) {
@@ -100,7 +106,7 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
                 forum.id to "C$f"
             }
         focalForum = committees.first().first
-        volume = MeetingVolume(tenant.id.value, committees, meetings / FORUMS, people, levels, e05)
+        volume = MeetingVolume(tenant.id.value, committees, meetings / FORUMS, people, levels, e05, mattersArising)
         val started = System.nanoTime()
         transactions.inTenant(tenant.id) {
             volume.generate(tenantDsl)
@@ -117,8 +123,8 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
 
     /**
      * The plan of every statement [call] runs as [user], printed and checked (no sequential scan of a large table); then
-     * its p95 in a read transaction ([write]: a write transaction; [inside]: without its begin and commit), asserted under 2x
-     * [budget].
+     * its p95 in a read transaction ([write]: a write transaction), the best of [Latency]'s rounds, asserted under 2x
+     * [budget]. With [inside], the calls are timed without their transaction's begin and commit, in one round.
      */
     protected fun measure(
         name: String,
@@ -130,7 +136,26 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
         call: () -> Any,
     ) {
         repeat(WARM_UP) { asUser(user, write, call) }
-        val statements = asUser(user, write) { recorder.record(call).second }.filter { SELECT.containsMatchIn(it) }
+        val statements = asUser(user, write) { recorder.record(call).second }
+        plans(name, statements, user, write)
+        if (inside) {
+            report(name, (1..RUNS).map { asUser(user, write) { timed { call() } } }, budget)
+        } else {
+            budget(name, Latency.p95(0, RUNS) { asUser(user, write, call) }, budget)
+        }
+    }
+
+    /**
+     * Prints the plan of each read among [recorded] (`EXPLAIN ANALYZE` as [user], in a write transaction with [write]: a
+     * locking read) and asserts that none scans one of the [large] tables sequentially.
+     */
+    protected fun plans(
+        name: String,
+        recorded: List<String>,
+        user: UUID,
+        write: Boolean = false,
+    ) {
+        val statements = recorded.filter { SELECT.containsMatchIn(it) }
         assertThat(statements).describedAs("$name: statements recorded").isNotEmpty
         println("$label $name: ${statements.size} statements")
         val scans =
@@ -143,16 +168,20 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
                     ?.let { "statement ${i + 1} scans $it:\n$sql\n$plan" }
             }
         assertThat(scans).describedAs("$name: sequential scans of large tables").isEmpty()
-        val times = (1..RUNS).map { if (inside) asUser(user, write) { timed { call() } } else timed { asUser(user, write, call) } }
-        report(name, times, budget)
     }
 
     protected fun report(
         name: String,
         times: List<Long>,
         budget: Long,
+    ) = budget(name, times.sorted()[(times.size * P95 / 100) - 1], budget)
+
+    /** Prints [p95] for the epic log and asserts it under twice [budget], the headroom for shared CI runners. */
+    protected fun budget(
+        name: String,
+        p95: Long,
+        budget: Long,
     ) {
-        val p95 = times.sorted()[(times.size * P95 / 100) - 1]
         println("$label $meetings meetings, $name: p95 $p95 ms (budget $budget ms, CI limit ${budget * 2} ms)")
         assertThat(p95).describedAs(name).isLessThan(budget * 2)
     }

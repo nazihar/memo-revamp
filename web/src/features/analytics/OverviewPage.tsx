@@ -6,6 +6,7 @@ import { getCommitteeAnalyticsOptions } from '@/api/generated/@tanstack/react-qu
 import type { CommitteeSummaryResponse } from '@/api/generated/types.gen'
 import { PageHeader } from '@/components/page/PageHeader'
 import { EmptyState } from '@/components/page/States'
+import { TableScroll } from '@/components/page/TableScroll'
 import { Field } from '@/components/ui/field'
 import { Select } from '@/components/ui/form-controls'
 import { Figure } from '@/features/dashboard/Figure'
@@ -239,33 +240,35 @@ function CommitteeBlock({
       summary={summarySentence(intl, c)}
       basis={intl.formatMessage(amv.basis, { count: d.decisions })}
       table={
-        <table className="w-full text-sm">
-          <caption className="sr-only">{c.name}</caption>
-          <thead>
-            <tr className="border-b">
-              <th scope="col" className="px-2 py-1.5 text-start font-medium">
-                {intl.formatMessage(am.colMeasure)}
-              </th>
-              <th scope="col" className="px-2 py-1.5 text-end font-medium">
-                {intl.formatMessage(am.colValue)}
-              </th>
-              <th scope="col" className="px-2 py-1.5 text-start font-medium">
-                {intl.formatMessage(am.colDetail)}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.key} className="border-b last:border-b-0">
-                <th scope="row" className="px-2 py-2 text-start font-normal">
-                  {r.measure}
+        <TableScroll>
+          <table className="w-full text-sm">
+            <caption className="sr-only">{c.name}</caption>
+            <thead>
+              <tr className="border-b">
+                <th scope="col" className="px-2 py-1.5 text-start font-medium">
+                  {intl.formatMessage(am.colMeasure)}
                 </th>
-                <td className="whitespace-nowrap px-2 py-2 text-end font-medium tabular-nums">{r.value}</td>
-                <td className="min-w-64 px-2 py-2 text-muted-foreground">{r.detail}</td>
+                <th scope="col" className="px-2 py-1.5 text-end font-medium">
+                  {intl.formatMessage(am.colValue)}
+                </th>
+                <th scope="col" className="px-2 py-1.5 text-start font-medium">
+                  {intl.formatMessage(am.colDetail)}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.key} className="border-b last:border-b-0">
+                  <th scope="row" className="px-2 py-2 text-start font-normal">
+                    {r.measure}
+                  </th>
+                  <td className="whitespace-nowrap px-2 py-2 text-end font-medium tabular-nums">{r.value}</td>
+                  <td className="min-w-64 px-2 py-2 text-muted-foreground">{r.detail}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableScroll>
       }
       link={
         <>

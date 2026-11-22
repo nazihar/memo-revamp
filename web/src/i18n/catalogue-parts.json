@@ -56,6 +56,16 @@
     "routes": ["/meetings", "/declarations"],
     "prefixes": ["declarations"]
   },
+  "minutes": {
+    "$comment": "Minutes (Phase 4 E06 T11, flows AD–AG): the minutes page per stage, the editor, the copy viewer, the meeting page’s Minutes card and the previous minutes’ link on the next agenda.",
+    "routes": ["/meetings"],
+    "prefixes": ["minutes"]
+  },
+  "minutesToRead": {
+    "$comment": "Minutes to read in My meetings (Phase 4 E06 T11, flow AF1).",
+    "routes": ["/me/meetings"],
+    "prefixes": ["minutesToRead"]
+  },
   "mySecurity": {
     "$comment": "The user's own security page (sign-in methods, sessions), and only there: split from core when the meeting invitation texts (Phase 4 E05 T2) took the Arabic core past its limit.",
     "routes": ["/me/security"],

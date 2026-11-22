@@ -10,6 +10,7 @@ import type {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ItemDeclaration, StandingDeclarations } from '@/features/meetings/declarations/ItemDeclaration'
+import { PreviousMinutesLinks } from '@/features/minutes/MinutesCard'
 import { cn } from '@/lib/utils'
 import { pm, pmv } from './messages'
 import { itemChanges, lineName, paperChanges, paperLabel } from './words'
@@ -205,6 +206,7 @@ function Details({
           ))}
         </ul>
       ) : null}
+      <PreviousMinutesLinks links={item.links} />
       {latest && discussion && agenda.status === 'SCHEDULED' && (actions.onAsk || actions.onWithdraw) ? (
         <div className="flex flex-wrap gap-2 print:hidden">
           {discussion.canAsk && actions.onAsk ? (

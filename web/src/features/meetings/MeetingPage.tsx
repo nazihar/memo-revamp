@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { MinutesCard } from '@/features/minutes/MinutesCard'
 import { AgendaLink } from './agenda/AgendaLink'
 import { AtTheMeeting } from './attendance/AtTheMeeting'
 import { AttendancePanel } from './attendance/AttendancePanel'
@@ -118,6 +119,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       )}
       {officer && live ? <QuorumBanner meeting={m} /> : null}
       {decides ? <LateRequests meeting={m} /> : null}
+      <MinutesCard meeting={m} />
       {replies || declarations ? (
         <MeetingTabs
           live={live && attendance}

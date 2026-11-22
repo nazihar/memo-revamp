@@ -59,7 +59,7 @@ import java.util.zip.ZipInputStream
  * surface or channel without its probe here, an item or paper endpoint without recusal columns, an officer endpoint without
  * columns or an officer probe, and a placeholder of a later epic ([PaperSurfaceRegistry.pending]) whose endpoints exist.
  */
-class RecusalLeakIT : RecusalLeakFixture() {
+class RecusalLeakIT : RecusalActionsFixture() {
     @Autowired
     @Qualifier("requestMappingHandlerMapping")
     lateinit var mapping: RequestMappingHandlerMapping
@@ -204,6 +204,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 assertThat(result.json()["requests"].list().map { it["itemId"].asString() }).doesNotContain(p.item.toString())
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
+            Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v ->
@@ -559,6 +560,8 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 .replace("{sectionId}", p.section.toString())
                 .replace("{declarationId}", p.observed.id.toString())
                 .replace("{forumId}", brc.toString())
+                .let { if ("{actionId}" in it) it.replace("{actionId}", actionsOf(p).draft.toString()) else it }
+                .replace("{requestId}", UUID.randomUUID().toString())
         val query = row.query?.let { "?" + substituted(p, it) }.orEmpty()
         if (row.method == "GET") return read(path + query, viewer.person().session)
         val body = row.body?.let { substituted(p, json.writeValueAsString(it)) } ?: "{}"
@@ -681,6 +684,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // The committee's decisions to be ratified (E06 T3): ids, numbers and outcomes only.
             "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                 { _ -> read("/api/v1/forums/$brc/decisions/to-be-ratified", secretary.session) },
+            *actionOfficerProbes(),
             // The starting resolution number (E06 T4): forums.manage only, so the recused secretary is refused, naming nothing.
             "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
                 { _ -> send(HttpMethod.PUT, "/api/v1/forums/$brc/resolution-counters/2026", secretary, """{"next":14}""") },

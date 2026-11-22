@@ -20,7 +20,7 @@ import java.util.UUID
  */
 @Component
 class DecisionIndex(
-    private val source: DecisionSource,
+    private val source: RegisterSource,
     private val tenantDsl: TenantDsl,
     private val json: JsonMapper,
     private val clock: Clock,

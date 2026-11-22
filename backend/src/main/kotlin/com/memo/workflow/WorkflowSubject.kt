@@ -107,6 +107,14 @@ interface WorkflowSubject {
      * then the tenant's to change. The default: none.
      */
     val seededDefinitions: List<SeededDefinition> get() = emptyList()
+
+    /**
+     * When true, an item of this type may run again after its instance ended (ADR-0068 amendment, E07 T4: a reopened
+     * action): [Workflows.start] then starts its next run, a new instance, and every read by subject follows the newest
+     * run. Only one run is open at a time. The default, false, keeps one instance per item for its whole life (design E01
+     * §2, invariant 1).
+     */
+    val runsAgain: Boolean get() = false
 }
 
 /** Where an instance is now, returned by every [Workflows] call. */

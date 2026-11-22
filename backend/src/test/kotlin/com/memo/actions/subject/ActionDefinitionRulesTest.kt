@@ -4,6 +4,7 @@ import com.memo.workflow.SubjectDefinition
 import com.memo.workflow.SubjectDefinitionStep
 import com.memo.workflow.definition.BoundSubject
 import com.memo.workflow.definition.DefinitionValidator
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import tools.jackson.databind.json.JsonMapper
@@ -14,7 +15,7 @@ import tools.jackson.databind.json.JsonMapper
  * definition passes the engine's validator with the subject's slots and rules, and each rule refuses what it should.
  */
 class ActionDefinitionRulesTest {
-    private val subject = ActionItemSubject()
+    private val subject = ActionItemSubject(mockk(), mockk(), mockk(), mockk(), mockk(), mockk(), mockk())
     private val json = JsonMapper.builder().build()
     private val validator =
         DefinitionValidator(

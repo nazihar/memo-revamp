@@ -34,4 +34,20 @@ class WorkingDays(
                 .associate { it.day to it.periods.isNotEmpty() }
         return WorkingDayRules.before(date, n) { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
     }
+
+    /**
+     * The [n]-th working day after [date] on the tenant's calendar, [date] not counted (design E07 §1.5); [date] itself when
+     * [n] is 0, and null when the calendar has no working day in the next two years.
+     */
+    fun after(
+        date: LocalDate,
+        n: Int,
+    ): LocalDate? {
+        val week = calendars.week().week
+        val exceptions =
+            calendars
+                .days(date.plusDays(1), date.plusDays(WorkingDayRules.MAX_DAYS.toLong()))
+                .associate { it.day to it.periods.isNotEmpty() }
+        return WorkingDayRules.after(date, n) { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
+    }
 }

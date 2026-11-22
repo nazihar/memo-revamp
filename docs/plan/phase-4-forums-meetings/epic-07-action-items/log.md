@@ -109,3 +109,80 @@
   - T3: the rest of the subject.
   - T10: the Actions tab, with the definition picker from `action-definitions` and "Open in the builder".
   - T12: whether the demo's BAC moves to the audit preset.
+
+## 2026-11-21 — T3: actions raised, issued and seen
+- **Built:**
+  - **`actions/V1__actions.sql`**, the module's first migration (its folder is picked up like every module's, ADR-0007): `actions_counter`, `actions_item`, `actions_contributor`, `actions_entry`. RLS enabled and forced on each, `tenant_id` first in every index, composite foreign keys, no DELETE or TRUNCATE for the app role, the timeline insert-only, column grants on the action, and triggers that refuse changing the committee, source or creation, re-setting the reference, number, issue or original date, a version that does not move by one, a counter that does not move by one, and a contributor's row changing other than being ended once.
+  - **Raising** (`ActionRaising`): drafts from a decision (one of its conditions, counted from 0, filling a missing title and context), an item, the meeting (`POST /meetings/{id}/actions`) and directly on a committee with a source note (`POST /forums/{fid}/actions`); the raise window (IN_PROGRESS, HELD, MINUTES_APPROVED; 409 `WRONG_STATE`); 403 `RECUSED` for a recused secretary, 403 for someone who does not raise actions, 404 for an unseen meeting or item. Editing a draft (`PATCH /actions/{id}`, If-Match) and discarding it (`POST /actions/{id}/discard`: CANCELLED, DISCARDED, never numbered).
+  - **Issuing** one (`POST /actions/{id}/issue`) or all of a meeting's drafts the actor may issue (`POST /meetings/{id}/actions/issue`, one transaction per draft, per-draft results, replayed by the key): owner and due date required, the people checked again, `BRC A{n}/{yyyy}` from the counter per committee and year (gapless, under the counter row's lock), `amberFrom` from the type's `amberWorkingDays`, `Workflows.start` on the definition the committee type names today, and `ACTION_ASSIGNED` to the holder of the owner's task (in app and email: committee, reference, date; never the title).
+  - **People** (`ActionPeople`): a person or position owner, active and cleared (`OWNER_NOT_CLEARED`); up to five contributors, cleared (`NOT_CLEARED`), not recused (`RECUSED_NAMED`), not the owner or the position's holder (`SAME_PERSON`); a recused owner is allowed and the secretary warned (`OWNER_RECUSED`).
+  - **Sources** (`DecisionSource`, over E06's published `Decisions.find/ofItem/entry`): an item with a decision raises from its decision; the entry's `seq` is kept. `DecisionRecorded` for a correction leaves a `SOURCE_CORRECTED` entry on each issued action, audited, and tells the secretaries not recused in the app (`ACTION_SOURCE_CORRECTED`). `AgendaPublished` refreshes the copied item columns and label numbers of the meeting's actions.
+  - **The subject** (`ActionItemSubject`): the slots (`owner`; `verifier` by `verifiedBy`, never the owner, holder, a contributor or anyone recused, falling back on the chair or the secretaries, then `forums.manage`; `chair`; `secretaries`), `dueAt` (the end of the due date in the tenant's zone), the attributes, `interested` (the recused but the owner), `ineligible` (inactive, not cleared), `summaries`, `snapshot`, `lock`, and T2's `checkDefinition`. `ActionWorkflowListener` keeps the holder, step name and status in the engine's transaction (DONE_PENDING on a later step, IN_PROGRESS when sent back to the owner's, CLOSED or CANCELLED when the instance ends).
+  - **`ActionAccess`** (design §1.14) and `ActionAccessArchTest`; `GET /actions/{id}`, `GET /meetings/{id}/actions`, `GET /me/actions` (MINE, with its count from the same predicate).
+  - **The leak suite:** `PaperSurfaceRegistry`'s E07 placeholder replaced by the ACTIONS surface and the officer endpoints (recusal columns or officer probes); probes in `RecusalLeakIT` (canary actions of the recused items; d1's own action without the hidden title) and `PaperLeakIT` (an action per planted item, its title the item's canary). The tracker's placeholder stays for T8.
+  - **Audit:** `actions.action.drafted`, `.edited`, `.discarded`, `.issued`, `.source_corrected` (ids, dates, hashes of the text). Matrix `p4-e07-actions.yaml`. `ActionChanged` (ISSUED, CLOSED, CANCELLED) published for E08.
+  - **Notifications:** `ACTION_ASSIGNED` (email template en/ar) and `ACTION_SOURCE_CORRECTED` (in app); the web texts in the `notificationKinds` part and the template label in `admin`, so the Arabic core is unchanged.
+- **Choices made while building** (design §1.14 "As built in T3"):
+  - **Tables are named `actions_*`**, not `action_*`: `RlsMetaTest` requires the module's identifier as the prefix.
+  - The reader clause also leaves out members-only items and items above the reader's clearance.
+  - `AgendaItemRef` gained `classificationId` and `membersOnly` (meeting, additive).
+  - `action_contributor` has a surrogate id with one current row per person; `actions_item` carries `decision_seq` and `owner_step`.
+  - CEL reads the attributes as `item.*`; `committeeType` is the type's name.
+- **After merging E06 T5 (#223):** the actions module implements its `MinutesItemActions` port (`ActionMinutes`): the issued actions of the meeting that are not cancelled, in reference order, each with its item, reference, title, owner (the position's title or the person's name) and due date ("12 March 2027"); drafts are not listed. The minutes decide who reads each item's lines. `ActionsRaiseIT` checks it.
+- **After merging E06 T4 (#218):** the source label carries the decision's resolution number ("— Resolution BRC/2026/014") from `Resolutions.inForce`, and `ResolutionChanged` relabels the decision's actions when a number is given or voided; `ActionsRaiseIT` checks it on a correction after the meeting is held. The leak-suite registry and probes keep both E06 T4's RESOLUTIONS and E07 T3's ACTIONS.
+- **Tests:** `ActionRulesTest`, `ActionsRaiseIT` (the acceptance criteria: a draft for officers only, `BRC A1/{yyyy}`, the position holder's task due at the end of the date, the email without the title; the recused director's 404 and empty lists, a recused owner allowed with the warning, a recused secretary 403 `RECUSED`; every source and window, discard, edit with a stale version, the bulk issue replayed by its key, concurrent issues numbered without a gap, a correction of the decision, the item columns refreshed), `ActionSubjectIT` (slots, due time, attributes, eligibility, summaries; holder, step and status following the engine to CLOSED; an edit racing an issue, three rounds), `ActionsCrossTenantIT`, `ActionAccessArchTest`, the leak-suite probes, matrix `p4-e07-actions.yaml`.
+- **Results (local, after merging `master`):** 3,084 tests in `com.memo.actions.*`, `com.memo.workflow.*`, `com.memo.meeting.*` (`PaperLeakIT`, `RecusalLeakIT`), `com.memo.minutes.*`, `com.memo.forum.*`, `com.memo.authz.*` (`AuthorizationMatrixTest`, `EndpointCoverageTest`), `com.memo.notification.*`, `MigrationDmlRlsTest`, `RlsMetaTest`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `OpenApiContractTest` and `JooqCodegenTest`: all green but `DefinitionSimulationIT`'s rate-limit test, the timing test T1 already reported (31 simulations within 2 seconds on a loaded machine; unrelated). ktlint, detekt and SpotBugs clean. Web: typecheck, lint, Prettier, `i18n:verify` (Arabic core 13.5 KiB, unchanged) and the notification texts' tests pass.
+
+## 2026-11-22 — T4: progress, dates, RAG, owners, cancelling and reopening
+- **Built:**
+  - **`actions/V2__progress.sql`:** `actions_due_request` (decided once under a trigger; one pending per action) and `actions_digest` (for T5). RLS enabled and forced, `tenant_id` first, no DELETE or TRUNCATE, column grants only for the decision. No data change.
+  - **Red, amber and green, one definition read twice** (`RagRule.CASES`, an ordered list of words and tests). Each test has a Kotlin reading (`holds`, the action's page) and a SQL one (`condition`, `RagRule.field` and `RagRule.shows`, for the meeting's actions, "My actions" and T8's tracker).
+    - The rule, first match winning: draft; closed or cancelled (grey); done, to be verified (blue); an override in force (until its day, or the next update); red when past `dueDate` or OFF_TRACK; amber when on or after `amberFrom` (`amberWorkingDays`), AT_RISK, or on or after `staleFrom` (`staleWorkingDays`); green otherwise.
+    - Overdue is derived and never stored. The colour always comes with its word.
+  - **Progress:**
+    - Updates (`POST /actions/{id}/updates`) come from the owner, a contributor, or a secretary writing for the owner with `how`. They carry the owner's confidence, `action.evidence` files (a new file purpose, up to 10, through the whole pipeline) and corrections as new entries. They move OPEN to IN_PROGRESS, reset `staleFrom`, and clear an override that has no date.
+    - "I have started" (`…/started`).
+    - The timeline (`GET /actions/{id}/entries`).
+  - **Dates:**
+    - Requests and decisions follow the committee type's `dueChange` (`…/due-requests`, `…/due-requests/{rid}/decide`). The decider is a secretary not recused (SECRETARY_AGREES) or the chair, else the vice-chair (CHAIR_AGREES).
+    - Direct changes (`…/due`) are made by a secretary or `forums.manage`, or by the owner under OWNER_WITH_REASON, when the secretaries are told. One pending request at a time, withdrawn by a direct change or a cancellation.
+    - Each change keeps the original date, counts the revision, moves `amberFrom` and calls `Workflows.redue`, so the owner's reminders, due notice and escalation follow the date.
+  - **Overrides** (`POST/DELETE …/rag`) by a secretary or the chair not recused, with a reason and an optional end date.
+  - **Owners and edits:**
+    - A new owner (`…/owner`, a person or a position) gets the open task through the new `WorkflowResolutions.reresolve`, and both people are told (in the app and by email).
+    - Edits after issue are `PATCH /actions/{id}` with a reason: title, description, context, priority, the level only up, and contributors. A contributor added during verification leaves the verifier pool.
+  - **Cancelling** (`…/cancel`) as NO_LONGER_NEEDED, SUPERSEDED (by an action of the same committee), DUPLICATE or RISK_ACCEPTED. "Risk accepted" is the chair's, or a secretary's for the chair with `how`, and the chair is told at once by email. The instance is cancelled and the owner and contributors told.
+  - **Reopening** (`…/reopen`) within 90 days on a new instance, the action's next run. A discarded draft is never reopened.
+  - **The engine (ADR-0068 amendment):**
+    - `WorkflowSubject.runsAgain` with `workflow/V17__subject_runs.sql`: an instance per run, one running at a time, reads following the newest run. Memo types do not run again.
+    - `WorkflowResolutions.reresolve`: the active steps resolve again from the subject (`SUBJECT_CHANGED`).
+    - `WorkingDays.after`.
+  - Audit actions:
+    - `actions.update.posted`, `actions.started`;
+    - `actions.due_request.made`, `.agreed`, `.declined`, `.withdrawn`; `actions.due.changed`;
+    - `actions.rag.overridden`, `.cleared`;
+    - `actions.action.owner_changed`, `.contributor_added`, `.contributor_removed`, `.cancelled`, `.reopened`;
+    - `actions.action.edited` with the reason's hash.
+  - Seven notification kinds (en/ar in `notificationKinds`, two email templates). Matrix rows in `p4-e07-actions.yaml` with recusal columns. The leak suite has the timeline (`PaperLeakIT`, `RecusalActionsFixture`) and the evidence through the generic files endpoints (`RecusalActionsFixture`: 403/404 to recused viewers, the content a canary).
+- **Choices made while building** (design §1.14 "As built in T4"; ADR-0068 amendment):
+  - **A deviation from the brief's "migration: actions/V2": `workflow/V17` too.** The engine kept one instance per item (`UNIQUE (tenant_id, subject_type, subject_id)`, design E01 invariant 1), so "reopen with a new instance" needed instances numbered as runs. It is expand only. Only subjects that declare `runsAgain` (action items) use it.
+  - **Owner changes resolve the slot again rather than calling `Workflows.reassign`**, so a position owner keeps following its holder and a substitute still acts for them.
+  - **`staleFrom` is set at issue.** Otherwise an action never updated would never show "No recent update".
+  - The deciders, the update on behalf, the override and cancelling follow the matrix's roles. They belong to the committee's secretaries or chair, not to `forums.manage` alone. Raising, re-owning, re-dating directly, editing and reopening keep `forums.manage`.
+  - New stable codes:
+    - 409: `OWNER_CHANGES` (a request under OWNER_WITH_REASON), `NO_OVERRIDE`;
+    - 403: `ASK_FOR_IT` (the owner changing the date when the committee agrees dates);
+    - 422: `SAME_DATE`, `SAME_OWNER`, `NOT_EDITABLE`, `CONFIDENCE`, `CORRECTS`, `ON_BEHALF_OF`.
+  - The requester is told of the answer once (`ACTION_DUE_DECIDED`), not again as a date change.
+- **Tests:**
+  - `RagRuleTest`;
+  - **`RagRuleProperties`:** 4,000 random cases over random weekends and holidays, the Kotlin rule against PostgreSQL's reading of the same SQL, words and colour filter alike;
+  - `WorkingDaysAfterProperties`;
+  - `ActionProgressIT`, `DueChangeIT` (T4's acceptance criterion with the timers moved), `OwnerChangeIT`, `CancelReopenIT` (the risk-accepted criterion), and `ActionStateMachineTest` (every allowed and forbidden transition of design §1.4, recused officers 403 `RECUSED`);
+  - the leak suites and the matrix.
+- **Results (local, after merging `master` and the updated T3 branch):**
+  - The final run is green: 2,650 tests over `com.memo.actions.*`, `com.memo.minutes.*`, `PaperLeakIT`, `RecusalLeakIT`, `ModularityTest`, `ModuleMetadataIT`, `ArchitectureRulesTest`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
+  - An earlier run of 2,965 tests also covered all of `com.memo.workflow.*` (the engine's property tests included), `com.memo.files.*`, `com.memo.notification.*` and the memo route suites. It was green but for `DefinitionSimulationIT`'s rate-limit timing test, the flake T1 and T3 reported.
+  - ktlint, detekt and SpotBugs are clean.
+  - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged; the texts are in `notificationKinds`) and the notification texts' tests pass.
+- **Left for later tasks:** T5 reacts to the timers, marks actions done (it withdraws a pending request with the cause `DONE`) and verifies them, and sends the digest that `actions_digest` keys. T8 builds the tracker on `RagRule.shows`. T10 and T11 build the screens on the abilities in `ActionResponse.can`.

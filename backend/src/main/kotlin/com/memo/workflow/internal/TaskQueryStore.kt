@@ -117,6 +117,8 @@ class TaskQueryStore(
             .select(WORKFLOW_INSTANCE.SUBJECT_ID, WORKFLOW_INSTANCE.CURRENT_ASSIGNEES)
             .from(WORKFLOW_INSTANCE)
             .where(WORKFLOW_INSTANCE.SUBJECT_TYPE.eq(subjectType), WORKFLOW_INSTANCE.SUBJECT_ID.`in`(subjectIds))
+            // The newest run last, so an item that ran again shows its current holders.
+            .orderBy(WORKFLOW_INSTANCE.RUN)
             .fetch()
             .associate { it.value1()!! to it.value2().orEmpty().filterNotNull() }
     }

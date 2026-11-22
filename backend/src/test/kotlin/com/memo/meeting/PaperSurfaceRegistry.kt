@@ -12,7 +12,9 @@ package com.memo.meeting
  * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
  * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E06 T5
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
- * again (officers, with recusal columns); the readers' copies stay a placeholder for T6.
+ * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E07 T3 made its actions placeholder
+ * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
+ * with recusal columns or an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -39,6 +41,10 @@ object PaperSurfaceRegistry {
         DECISIONS(
             "The decisions of a meeting and an item's history (E06 T3): an item's decision when it is seen in full; for a recused " +
                 "person who sees its line the outcome, text and conditions only (no vote, names or notes); nothing of other items",
+        ),
+        ACTIONS(
+            "Action items (E07 T3): one action, a meeting's actions and My actions with their counts; a person recused from the " +
+                "item neither sees nor counts its actions unless involved, and then without the item's hidden title or papers",
         ),
         RESOLUTIONS(
             "The committee's resolution register and its check, and one resolution (E06 T4): a row in full only when its item's " +
@@ -88,12 +94,18 @@ object PaperSurfaceRegistry {
             // Decisions (E06 T3): the list as each person may see it, and an item's history (officers and forum.read, seeing it in full).
             "GET /api/v1/meetings/{meetingId}/decisions" to Surface.DECISIONS,
             "GET /api/v1/meetings/{meetingId}/items/{itemId}/decision/entries" to Surface.DECISIONS,
+            // Actions (E07 T3): by the one rule (ActionAccess), on the action's copied item columns with the recusal EXISTS.
+            "GET /api/v1/actions/{actionId}" to Surface.ACTIONS,
+            "GET /api/v1/meetings/{meetingId}/actions" to Surface.ACTIONS,
+            "GET /api/v1/me/actions" to Surface.ACTIONS,
             // E06 T4: the register (officers, forums.manage, forum.read), its check, and one resolution (also its memo's readers).
             "GET /api/v1/forums/{forumId}/resolutions" to Surface.RESOLUTIONS,
             "GET /api/v1/forums/{forumId}/resolutions/check" to Surface.RESOLUTIONS,
             "GET /api/v1/resolutions/{resolutionId}" to Surface.RESOLUTIONS,
             // E06 T5: the minutes page (secretaries and forums.manage while drafting; 404 to everyone else).
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
+            // E07 T4: the timeline, by the same rule.
+            "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
         )
 
     /**
@@ -163,12 +175,37 @@ object PaperSurfaceRegistry {
                     "saving the notes (E06 T3): secretaries not recused (recusal columns)",
                 "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                     "the committee's decisions to be ratified (E06 T3): secretaries; ids, numbers and outcomes only (officer probe)",
+                "POST /api/v1/meetings/{meetingId}/actions" to
+                    "raising an action (E07 T3): secretaries and forums.manage not recused from the item (recusal columns)",
+                "POST /api/v1/meetings/{meetingId}/actions/issue" to
+                    "issuing a meeting's drafts (E07 T3): secretaries; none of an item they are recused from (officer probe)",
+                "POST /api/v1/forums/{forumId}/actions" to "a direct action (E07 T3): secretaries; no item (officer probe)",
+                "PATCH /api/v1/actions/{actionId}" to "editing a draft (E07 T3): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/discard" to "discarding a draft (E07 T3): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/issue" to "issuing a draft (E07 T3): secretaries not recused (recusal columns)",
                 "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
                     "the starting resolution number (E06 T4): forums.manage with a step-up; no item at all (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/draft" to
                     "making the minutes' draft (E06 T5): secretaries not recused from any item; answered with the page (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate" to
                     "filling an item of the draft again (E06 T5): secretaries not recused from any item (recusal columns)",
+                // E07 T4: progress, dates, owners and endings; every one finds the action by the one rule first, so a recused
+                // viewer who is not involved gets 404, and a recused officer who is gets 403 RECUSED (ActionStateMachineTest).
+                "POST /api/v1/actions/{actionId}/updates" to
+                    "a progress update (E07 T4): the owner, contributors and secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/started" to
+                    "I have started (E07 T4): the owner, or a secretary for them (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due-requests" to "asking for a new date (E07 T4): the owner (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due-requests/{requestId}/decide" to
+                    "answering a date request (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/due" to
+                    "changing the date (E07 T4): secretaries not recused, or the owner (recusal columns)",
+                "POST /api/v1/actions/{actionId}/rag" to
+                    "overriding the colour (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "DELETE /api/v1/actions/{actionId}/rag" to "clearing the override (E07 T4): as overriding (recusal columns)",
+                "POST /api/v1/actions/{actionId}/owner" to "a new owner (E07 T4): secretaries not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/cancel" to "cancelling (E07 T4): a secretary or the chair not recused (recusal columns)",
+                "POST /api/v1/actions/{actionId}/reopen" to "reopening (E07 T4): secretaries not recused (recusal columns)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -279,8 +316,8 @@ object PaperSurfaceRegistry {
             ),
             Pending(
                 "E07",
-                "Actions from the item: not shown to a recused person unless they own the action",
-                listOf("/api/v1/actions", "/api/v1/me/actions", "/api/v1/meetings/{meetingId}/actions"),
+                "The committee's action tracker, its totals and export (E07 T8): rows by the one rule, no row or count of a recused item",
+                listOf("/api/v1/forums/{forumId}/actions/"),
             ),
             Pending(
                 "E08",

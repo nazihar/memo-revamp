@@ -1,5 +1,8 @@
 package com.memo.meeting
 
+import com.memo.actions.ActionPlanting
+import com.memo.actions.internal.ActionStore
+import com.memo.actions.internal.ItemCopy
 import com.memo.common.context.ActorContext
 import com.memo.common.crypto.DataKeys
 import com.memo.common.tenant.TenantContext
@@ -51,7 +54,8 @@ import java.util.UUID
  * named on nothing, and are recused with d1; and the E05 surfaces (the invitation files and emails, the replies, the
  * register, the quorum per meeting and per item, the forecast and a snapshot whose override reason is a canary). E06 T3
  * adds the decisions: each planted item carries one whose text is its canary, the recused item's with a dissent reason
- * that is a canary for everyone (d1 included) and notes that nobody probed may read.
+ * that is a canary for everyone (d1 included) and notes that nobody probed may read. E07 T3 adds the actions: each planted
+ * item carries an issued action whose title is the item's canary, which only those who see the item in full read.
  */
 class PaperLeakIT : RecusalFixture() {
     @Autowired
@@ -71,6 +75,10 @@ class PaperLeakIT : RecusalFixture() {
     @Autowired lateinit var decisionStore: DecisionStore
 
     @Autowired lateinit var noteStore: NoteStore
+
+    @Autowired lateinit var actionStore: ActionStore
+
+    @Autowired lateinit var meetingItems: MeetingItems
 
     @Autowired lateinit var decisionReads: DecisionReads
 
@@ -114,6 +122,9 @@ class PaperLeakIT : RecusalFixture() {
 
         /** A decision's snapshot on the recused item, overridden with a canary for a reason. */
         val snapshot: UUID
+
+        /** E07 T3: an issued action on each planted item, its title the item's canary (owned by the other secretary). */
+        val actions = mutableMapOf<UUID, String>()
 
         /** E06 T4: each planted decision's resolution number, by item. */
         val resolutions = linkedMapOf<UUID, UUID>()
@@ -210,6 +221,22 @@ class PaperLeakIT : RecusalFixture() {
             // E06 T4: every planted decision numbered, as the meeting's end numbers them.
             decided.forEach { (item, decision) -> resolutions[item] = planting.number(tenant.id, decision, decisionReads, numbers) }
             planting.note(tenant.id, meeting.id, recused, secretary.id, CANARY_RECUSED_PAPER)
+            val agenda = transactions.readInTenant(tenant.id) { meetingItems.agenda(meeting.id) }
+            val actionPlanting = ActionPlanting(transactions, actionStore, tenantDsl)
+            listOf(
+                restricted to CANARY_DESCRIPTION,
+                hidden to CANARY_HIDDEN,
+                camera to CANARY_CAMERA,
+                confidential to CANARY_CONFIDENTIAL,
+                recused to CANARY_RECUSED_DESCRIPTION,
+                recusedHidden to CANARY_RECUSED_HIDDEN,
+            ).forEach { (id, title) ->
+                val item = checkNotNull(agenda.item(id))
+                val copy = ItemCopy(item.parentId, item.classificationId, item.restrictedTo, item.titleHidden, item.membersOnly)
+                val action =
+                    actionPlanting.action(tenant.id, brc, meeting.id, id, copy, item.classificationId, secretary.id, title, secretary2.id)
+                actions[action] = title
+            }
         }
 
         /**
@@ -460,6 +487,29 @@ class PaperLeakIT : RecusalFixture() {
                     }
                 }
             },
+            // E07 T3: an action is read only by those who see its item in full (or are involved): the meeting's actions, "My
+            // actions" and each action answer no canary; d1 reads the actions of the items they are named on.
+            Surface.ACTIONS to { p, person ->
+                clean(p, person, read("/api/v1/meetings/${p.meeting.id}/actions", person.session))
+                clean(p, person, read("/api/v1/me/actions", person.session))
+                p.actions.forEach { (id, title) ->
+                    val one = read("/api/v1/actions/$id", person.session)
+                    if (title in p.canaries(person)) {
+                        assertThat(one).describedAs("$title for ${person.id}").hasStatus(HttpStatus.NOT_FOUND)
+                    } else {
+                        assertThat(one.response.status).isIn(200, 404)
+                    }
+                    p.canaries(person).forEach { assertThat(one.response.contentAsString).doesNotContain(it) }
+                    // E07 T4: the timeline answers as the action does.
+                    val timeline = read("/api/v1/actions/$id/entries", person.session)
+                    assertThat(timeline.response.status).isEqualTo(one.response.status)
+                    p.canaries(person).forEach { assertThat(timeline.response.contentAsString).doesNotContain(it) }
+                }
+                if (person == d1) {
+                    val listed = read("/api/v1/meetings/${p.meeting.id}/actions", person.session).response.contentAsString
+                    assertThat(listed).contains(CANARY_DESCRIPTION, CANARY_HIDDEN)
+                }
+            },
             // E06 T4: the register and its check are forum.read's (a member 403, a guest and an alternate 404), each row of an
             // item they do not see in full "restricted"; one resolution only for whoever sees its item's decision (d1 the
             // recused view of the item they declared on), 404 to everyone else.
@@ -584,6 +634,6 @@ class PaperLeakIT : RecusalFixture() {
         val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
 
         /** The modules whose endpoints are all in [PaperSurfaceRegistry.endpoints] or [PaperSurfaceRegistry.officersOnly]. */
-        val MODULES = listOf("com.memo.meeting", "com.memo.minutes")
+        val MODULES = listOf("com.memo.meeting", "com.memo.minutes", "com.memo.actions")
     }
 }

@@ -1,37 +1,131 @@
 package com.memo.actions.subject
 
+import com.memo.actions.internal.ActionReferences
+import com.memo.actions.internal.ActionStore
+import com.memo.actions.internal.DecisionSource
+import com.memo.common.authz.Clearances
 import com.memo.forum.ActionsPolicy
+import com.memo.forum.ForumPolicies
+import com.memo.identity.UserStatus
+import com.memo.identity.UserSummaries
+import com.memo.org.OrgDirectory
+import com.memo.workflow.AttributeType
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.DefinitionProblem
 import com.memo.workflow.SeededDefinition
+import com.memo.workflow.SlotHolder
 import com.memo.workflow.SubjectDefinition
+import com.memo.workflow.SubjectSummary
 import com.memo.workflow.WorkflowSubject
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.util.UUID
 
 /**
- * Action items as the workflow engine sees them (ADR-0067, ADR-0068, design E07 §1.8). Phase 4 E07 T2 registers what a
- * definition bound to `action-item` needs to be checked and seeded: the slots it may name, the subject's own rules for
- * such definitions, the initiator's part, and the built-in definition every tenant gets. There are no action items yet:
- * T3 adds them, with who each slot names, the due time, the attributes, eligibility, the snapshot and the lock.
+ * Action items as the workflow engine sees them (ADR-0067, ADR-0068, design E07 §1.8): the slots a definition bound to
+ * `action-item` may name and who each names on an action now, its due time, the attributes its conditions read, who may
+ * not hold its tasks, the people with an interest, how lists show it, the lock, the subject's own rules for its
+ * definitions, the initiator's part and the built-in definition every tenant gets. Every call runs in the engine's tenant
+ * transaction; none needs a signed-in user (timers and staff changes call it too).
+ * Who each slot names is [ActionSlots].
  */
 @Component
-class ActionItemSubject : WorkflowSubject {
+class ActionItemSubject(
+    private val store: ActionStore,
+    private val slotHolders: ActionSlots,
+    private val policies: ForumPolicies,
+    private val users: UserSummaries,
+    private val clearances: Clearances,
+    private val org: OrgDirectory,
+    private val decisions: DecisionSource,
+) : WorkflowSubject {
     override val type = ActionsPolicy.SUBJECT
 
-    override val slots = setOf(OWNER, VERIFIER, CHAIR, SECRETARIES)
+    override val slots = SLOTS
 
     /** The secretary who issues an action may own it, or verify others' (ADR-0068): independence is the verifier slot's. */
     override val initiatorTakesPart = true
 
+    /** A closed or cancelled action reopened within 90 days runs again on a new instance (design E07 §1.10). */
+    override val runsAgain = true
+
     override val seededDefinitions = listOf(SeededDefinition(DEFINITION_KEY, DEFINITION_NAME, DEFINITION_DESCRIPTION, DEFINITION_BODY))
 
+    override fun slot(
+        subjectId: UUID,
+        slot: String,
+    ): List<SlotHolder> {
+        val row = store.find(subjectId) ?: return emptyList()
+        return slotHolders.of(row, slot)
+    }
+
+    /** The owner's step is due at the end of the action's date in the tenant's zone; null for a draft without one. */
+    override fun dueAt(
+        subjectId: UUID,
+        nodeId: String,
+    ): Instant? = store.find(subjectId)?.dueDate?.let { ActionReferences.dueAt(it, org.zone()) }
+
+    /** Active and cleared for the action's level, or not (the engine creates the task blocked). */
     override fun ineligible(
         subjectId: UUID,
         users: Collection<UUID>,
-    ): Map<UUID, BlockedReason> = emptyMap()
+    ): Map<UUID, BlockedReason> {
+        val row = store.find(subjectId) ?: return emptyMap()
+        val rank = clearances.level(row.classificationId)?.rank ?: Int.MAX_VALUE
+        val people = this.users.of(users.toSet())
+        val ranks = clearances.rankOf(users.toSet())
+        return users
+            .mapNotNull { user ->
+                when {
+                    people[user]?.status != UserStatus.ACTIVE -> user to BlockedReason.INACTIVE
+                    (ranks[user] ?: 0) < rank -> user to BlockedReason.NO_CLEARANCE
+                    else -> null
+                }
+            }.toMap()
+    }
 
-    override fun snapshot(subjectId: UUID): Map<String, Any?> = emptyMap()
+    /**
+     * Those recused from the action's item are never candidates for its steps (SOD-4), but the owner: a person recused
+     * from the item may own an action on it (design E07 §1.3).
+     */
+    override fun interested(subjectId: UUID): Set<UUID> {
+        val row = store.find(subjectId) ?: return emptySet()
+        return slotHolders.interested(row)
+    }
+
+    override val attributes: Map<String, AttributeType> = ATTRIBUTES
+
+    override fun attributeValues(subjectId: UUID): Map<String, Any?> {
+        val row = store.find(subjectId) ?: return emptyMap()
+        return mapOf(
+            "priority" to row.priority.name,
+            "fromResolution" to (row.decisionId?.let { decisions.find(it)?.resolution } ?: false),
+            "source" to row.source.name,
+            "committeeType" to policies.current(row.forumId)?.name,
+            "dueRevisions" to row.dueRevisions,
+            "reopened" to (row.reopenCount > 0),
+        )
+    }
+
+    /** The reference (null for a draft), the title and the level's rank, which decides whether a reader sees the title. */
+    override fun summaries(subjectIds: Collection<UUID>): Map<UUID, SubjectSummary> {
+        if (subjectIds.isEmpty()) return emptyMap()
+        val ranks = clearances.levels().associate { it.id to it.rank }
+        return subjectIds
+            .mapNotNull { store.find(it) }
+            .associate { it.id to SubjectSummary(it.reference, it.title, ranks[it.classificationId] ?: Int.MAX_VALUE) }
+    }
+
+    /** The action row, so every change of an action and every engine action on it are serialised in one order. */
+    override fun lock(subjectId: UUID) {
+        store.lock(subjectId)
+    }
+
+    /** What an engine action applies to: the reference, the due date and the action's version (ids and dates only). */
+    override fun snapshot(subjectId: UUID): Map<String, Any?> {
+        val row = store.find(subjectId) ?: return emptyMap()
+        return mapOf("reference" to row.reference, "dueDate" to row.dueDate?.toString(), "version" to row.version)
+    }
 
     override fun checkDefinition(definition: SubjectDefinition): List<DefinitionProblem> = ActionDefinitionRules.problems(definition)
 
@@ -40,6 +134,18 @@ class ActionItemSubject : WorkflowSubject {
         const val VERIFIER = "verifier"
         const val CHAIR = "chair"
         const val SECRETARIES = "secretaries"
+        val SLOTS = setOf(OWNER, VERIFIER, CHAIR, SECRETARIES)
+
+        /** What a definition's conditions read as `item.<name>` (design E07 §1.8). */
+        val ATTRIBUTES: Map<String, AttributeType> =
+            mapOf(
+                "priority" to AttributeType.STRING,
+                "fromResolution" to AttributeType.BOOL,
+                "source" to AttributeType.STRING,
+                "committeeType" to AttributeType.STRING,
+                "dueRevisions" to AttributeType.INT,
+                "reopened" to AttributeType.BOOL,
+            )
 
         const val DEFINITION_KEY = ActionsPolicy.DEFAULT_DEFINITION
         const val DEFINITION_NAME = "Action items"

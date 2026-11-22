@@ -22,7 +22,7 @@ import java.util.UUID
  * submission's chain (forum), the memo's type and number (memo). No access decision is made here.
  */
 @Component
-class DecisionSource(
+class RegisterSource(
     private val decisions: Decisions,
     private val resolutions: Resolutions,
     private val meetings: Meetings,
@@ -109,7 +109,7 @@ class DecisionSource(
         parentId = item.parentId,
         number = item.number,
         title = item.title,
-        rank = item.classificationId?.let { rank(ranks, it) } ?: 0,
+        rank = rank(ranks, item.classificationId),
         restrictedTo = item.restrictedTo,
         titleHidden = item.titleHidden,
         membersOnly = item.membersOnly,

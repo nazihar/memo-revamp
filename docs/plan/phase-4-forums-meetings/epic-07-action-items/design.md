@@ -346,6 +346,63 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
 - **Item columns** are copied onto the action and refreshed (§1.1). The rule therefore runs on the action's row with one `EXISTS` for the recusal (`PaperExclusions`), and lists stay set-based.
 - **The report rows** carry the same columns, and each reader gets their rows from the same rule.
 - **Evidence files** (`action.evidence`): the purpose's `mayRead` is `seeAction`. The generic files endpoints serve them to nobody else.
+- **As built in T3** (2026-11-21):
+  - `ActionAccess` writes the rule as one jOOQ condition on `action_item` and passes the action's copied columns to `PaperAccess.itemCondition` as an `ItemColumns` (no attendee reads an action). The recusal is the meeting module's published `PaperExclusions.excluded` on `item_id`/`item_parent_id`, one `EXISTS`.
+  - **The reader clause also requires** `¬itemMembersOnly` and clearance for the item's level: a `forum.read` holder does not read an in-camera item's title (ADR-0061's title rule), so they do not read its actions either.
+  - `viewerToday` (`ActionViewer`): roles from `ForumDirectory.rolesOf` today; officer = secretary, chair (vice-chair when there is no chair) or `forums.manage`; member = any seat in office, members-only for chair, vice-chair, member and secretary; never guest or attendee.
+  - `involved` includes the open tasks the viewer holds or may claim (`WorkflowQueries.myTasks`, subject `action-item`).
+  - The meeting's actions answer 404 for a meeting the viewer neither sees nor has an action of; an owner outside the committee gets their own.
+  - The source label carries numbers only: "BRC 3/2026, item 5 — Resolution BRC/2026/014, condition 2", with "— decision" until the decision has its number (E06 T4's `Resolutions.inForce`; `ResolutionChanged` relabels the decision's actions when a number is given or voided). `itemTitle` is answered only when `itemCondition` or `titleCondition` allows it.
+  - `AgendaItemRef` (meeting) gained `classificationId` and `membersOnly`, so the item columns are copied from the published revision (or the live row of a tabled item).
+- **As built in T3, raising and issuing** (§1.1, §1.2):
+  - **The tables are named `actions_item`, `actions_counter`, `actions_contributor` and `actions_entry`** (and T4–T7's `actions_*`): `RlsMetaTest` requires the module's identifier as every table's prefix. §1.15 and §7 keep the shorter names for reading.
+  - An ITEM source whose item has a decision is raised from the decision (DECISION, its current entry), so the chain to the resolution is kept. `conditionIndex` counts from 0; the entry's `seq` is kept as `decision_seq`. A condition fills a missing title and context.
+  - The level may not be lower than the source's (`CLASSIFICATION`), nor above the raising secretary's clearance (`CLASSIFICATION`).
+  - Discarding is `POST /actions/{id}/discard` (`{reason?}`); editing a draft is `PATCH /actions/{id}` with the whole set of fields, as the other PATCH endpoints.
+  - `action_contributor` has a surrogate id and a unique current row per person (a person removed and added again is a new row), instead of the PK `(tenant_id, action_id, user_id)`.
+  - `action_item` has all of §1.15's columns from V1 (T4 adds tables only), plus `decision_seq` and `owner_step` (the owner's definition step, set by the instance's first task: later steps mean DONE_PENDING, the owner's step again after that IN_PROGRESS).
+  - The CEL attributes are read as `item.priority`, `item.fromResolution`, … (the engine's prefix), and `committeeType` is the committee type's name (the type's code is not published).
+  - The bulk issue stores the drafts it chose under the key, and each action's result under the key and its id, so a retry replays both.
+  - **The minutes' port** (`MinutesItemActions`, E06 T5) is `ActionMinutes`: the meeting's issued actions not cancelled, in reference order (drafts are not agreed actions yet); the owner as the position's title or the person's name, the due date in words.
+
+- **As built in T4, progress, dates, owners and endings** (§1.3–§1.7, §1.10, 2026-11-22):
+  - **`actions/V2__progress.sql`:** `actions_due_request` (old and new date, reason, state PENDING → AGREED, DECLINED or WITHDRAWN once, under a trigger; one pending per action by a partial unique index) and `actions_digest` for T5. The action's own columns were all in V1.
+  - **Red, amber and green** (`ActionRag.kt`): `RagRule.CASES` is the one definition, an ordered list of words with a test each. `RagTest.holds` reads it in Kotlin (the action's page) and `RagTest.condition` in SQL (`RagRule.field`, for the meeting's actions and "My actions"; `RagRule.shows(colour)` is T8's filter and totals). `RagRuleProperties` runs 4,000 random cases through PostgreSQL and Kotlin and compares them.
+    - The cases use random Saturday–Sunday or Friday–Saturday weekends and holidays, with `amberFrom` and `staleFrom` counted on them.
+    - The words are `DRAFT`, `CLOSED`, `CANCELLED`, `TO_VERIFY`, `OVERRIDE_RED`/`_AMBER`/`_GREEN`, `OVERDUE`, `OFF_TRACK`, `DUE_SOON`, `AT_RISK`, `NO_RECENT_UPDATE` and `ON_TRACK`, each with its colour.
+    - Nothing about colour is stored. `amberFrom` and `staleFrom` are stored days, and overdue is `today > dueDate`.
+  - **`staleFrom` is set at issue as well** (the issue day plus `staleWorkingDays`, by the new `WorkingDays.after`). Otherwise an action nobody updated would never show "No recent update". An update and a reopening reset it.
+  - **Updates:** the owner is the person, the position's holder, or whoever holds the owner's task.
+    - The owner, a contributor not recused, or a secretary of the committee not recused writing for the owner (`onBehalfOf` the owner, `how` required) may post. `forums.manage` alone may not, as in the matrix.
+    - Only the owner, or the secretary for them, gives `confidence` (422 `CONFIDENCE`).
+    - A correction points at an update the same person posted (422 `CORRECTS`).
+    - Evidence files must be `action.evidence` files of this action uploaded by the person posting, at most 10 (`TOO_MANY`; otherwise `unknown`).
+    - "I have started" is the owner's (or a secretary's for them), from OPEN only.
+  - **Dates:**
+    - The decision is `POST …/due-requests/{rid}/decide` with `AGREE`/`DECLINE`. The deciders are the secretaries in office not recused, or the chair not recused, else the vice-chair (`ActionDeciders`).
+    - 409 `OWNER_CHANGES`: a request under OWNER_WITH_REASON.
+    - 403 `ASK_FOR_IT`: the owner changing the date under the other modes.
+    - 422 `SAME_DATE`.
+    - A direct change by an officer withdraws a pending request. Asking and declining move the action's version, because its answer changed.
+  - **The colour's override** is a secretary's or the chair's, not recused, on OPEN or IN_PROGRESS. `DELETE …/rag` clears it (409 `NO_OVERRIDE` when there is none). An update clears an override without a date, audited as `actions.rag.cleared` with the cause `UPDATE`.
+  - **A new owner:**
+    - It moves the open task through the new `WorkflowResolutions.reresolve` (ADR-0068 amendment), with the step resolving again from the slot, rather than `Workflows.reassign`. So a position owner keeps following its holder.
+    - The holder column is set to the new person (or the position's holder) and then corrected by the engine's task event.
+    - Both the previous and the new owner are told (`ACTION_OWNER_CHANGED`, in the app and by email, with a neutral text).
+  - **Edits after issue** are the same `PATCH /actions/{id}` with a `reason`. The owner, the date and the source note have their own changes (422 `NOT_EDITABLE`), and the level only goes up (`CLASSIFICATION`). A change of contributors while the action waits for verification resolves the verifier pool again.
+  - **Cancelling:**
+    - It is the committee's secretary's or chair's (not `forums.manage` alone), not recused. `DISCARDED` is refused (`REQUIRED` at `kind`). `supersededBy` belongs to SUPERSEDED only (`SOURCE`).
+    - The action is written CANCELLED before the instance is cancelled, so the engine's end leaves it as it is.
+    - A secretary's "risk accepted" records the chair as `onBehalfOf` on the entry, with `how`. The chair is told at once by email (`ACTION_RISK_ACCEPTED`).
+  - **Reopening** starts the item's next run on the definition the committee type names today (`WorkflowSubject.runsAgain`, `workflow/V17`; ADR-0068 amendment).
+    - The new due date counts as a revision when it differs.
+    - The confidence, the override, the cancellation and the closing are cleared. The entry keeps the previous instance's id.
+    - The 90 days are calendar days in the tenant's zone from `closedAt`.
+  - **The timeline** is `GET /actions/{id}/entries`, newest first, by the same rule (404). It carries the text, the person written for, `how`, the confidence and the evidence files' names. The hashes in the details are not shown.
+  - `ActionResponse` gained the colour in words (with the override's reason and who set it), the confidence, the latest update, the committee type's `dueChange`, the pending request, the cancellation, `closedAt`, `reopenCount`, and the abilities of §4. List lines carry the colour and word from SQL.
+  - **Notification kinds** (`notificationKinds`, en/ar):
+    - in the app and by email: `ACTION_OWNER_CHANGED` and `ACTION_RISK_ACCEPTED`;
+    - in the app only, with their emails waiting for T5's digest: `ACTION_CANCELLED`, `ACTION_REOPENED`, `ACTION_DUE_REQUESTED`, `ACTION_DUE_DECIDED` (with `decision`) and `ACTION_DUE_CHANGED`.
 
 ### 1.15 ERD
 ```mermaid

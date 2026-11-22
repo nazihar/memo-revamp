@@ -157,6 +157,26 @@ enum class NotificationKind(
     MEETING_REPLY_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_REPLY_REMINDER),
     MEETING_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_REMINDER),
     MEETING_QUORUM_AT_RISK(NotificationCategory.WORKFLOW, MailTemplate.MEETING_QUORUM_AT_RISK),
+
+    // Action items (Phase 4 E07, design E07 §2.3): a committee gave the person an action (to the holder of the owner's
+    // task, when it is issued); the decision an action came from was corrected (to the committee's secretaries not recused
+    // from the item, in the app only). Parameters `committee`, `reference`, `organisation`, `link`; `date` (the due date,
+    // ISO) for the new action. Never the action's title, text or the item (ADR-0067).
+    ACTION_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ASSIGNED),
+    ACTION_SOURCE_CORRECTED(NotificationCategory.WORKFLOW, null),
+
+    // Progress, dates, owners and endings (E07 T4, design E07 §2.3): the owner of an action changed (to the previous and
+    // the new owner, in the app and by email); a secretary recorded the risk accepted on the chair's behalf (to the chair,
+    // by email at once). In the app only, their emails in the daily digest from T5: the action was cancelled or reopened
+    // (to its owner and contributors), a new date was asked for (to whoever decides), the request was decided (to the
+    // owner; `decision` AGREED or DECLINED), the date changed (to the owner and contributors; `date` the new date, ISO).
+    ACTION_OWNER_CHANGED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_OWNER_CHANGED),
+    ACTION_RISK_ACCEPTED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_RISK_ACCEPTED),
+    ACTION_CANCELLED(NotificationCategory.WORKFLOW, null),
+    ACTION_REOPENED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_REQUESTED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_DECIDED(NotificationCategory.WORKFLOW, null),
+    ACTION_DUE_CHANGED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

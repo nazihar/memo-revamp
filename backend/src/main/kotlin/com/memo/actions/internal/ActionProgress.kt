@@ -196,7 +196,7 @@ class ActionProgress(
     }
 
     /** The evidence files' problems: at most 10, each an `action.evidence` file of this action uploaded by [user]. */
-    private fun evidence(
+    fun evidence(
         actionId: UUID,
         user: UUID,
         fileIds: List<UUID>,

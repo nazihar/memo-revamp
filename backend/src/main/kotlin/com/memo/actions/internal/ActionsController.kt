@@ -309,7 +309,7 @@ internal fun created(action: ActionResponse): ResponseEntity<ActionResponse> =
         .eTag(etagOf(action.version))
         .body(action)
 
-/** Why one draft of a bulk issue was not issued: a problem code. */
+/** Why one action of a bulk request (issue, close-agreed) was not done: a problem code. */
 internal fun reason(failure: Throwable): String =
     when (failure) {
         is ActionRejectedException -> failure.problems.firstOrNull()?.code ?: "REJECTED"
@@ -317,5 +317,6 @@ internal fun reason(failure: Throwable): String =
         is com.memo.common.authz.ForbiddenException -> failure.reason ?: "FORBIDDEN"
         is com.memo.common.concurrency.ConcurrentModificationException -> "CONFLICT"
         is ActionNotFoundException -> "NOT_FOUND"
+        is com.memo.workflow.WorkflowRefusedException -> failure.reason
         else -> throw failure
     }

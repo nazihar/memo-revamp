@@ -7,7 +7,7 @@ import com.memo.meeting.Recusals
 import com.memo.notification.NotificationKind
 import com.memo.org.OrgDirectory
 import com.memo.workflow.InstanceStatus
-import com.memo.workflow.WorkflowQueries
+import com.memo.workflow.WorkflowRuns
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Component
 import java.time.Clock
@@ -42,7 +42,7 @@ class ActionSafetyNet(
     private val store: ActionStore,
     private val lines: ActionLines,
     private val tracking: ActionTracking,
-    private val queries: WorkflowQueries,
+    private val runs: WorkflowRuns,
     private val workflows: Workflows,
     private val viewers: ActionViewers,
     private val recusals: Recusals,
@@ -51,42 +51,53 @@ class ActionSafetyNet(
     private val effects: ActionItemEffects,
     private val clock: Clock,
 ) {
+    /**
+     * The open actions oldest first, a batch at a time by keyset (`actions_item_open_idx`), each batch's workflows in one
+     * query (design E07 §8: 3,000 open actions within the task's 30 s); at most [LIMIT].
+     */
     fun check(): SafetyRun {
+        var total = SafetyRun()
+        var after: ActionRow? = null
+        do {
+            val batch = store.openAfter(after, minOf(BATCH, LIMIT - total.checked))
+            val found = check(batch)
+            total =
+                SafetyRun(
+                    total.checked + found.checked,
+                    total.reported + found.reported,
+                    total.replanned + found.replanned,
+                    total.reconciled + found.reconciled,
+                )
+            after = batch.lastOrNull()
+        } while (batch.size == BATCH && total.checked < LIMIT)
+        return total
+    }
+
+    /** [batch] against its workflows (read in one query); only the actions found out of step are read and locked one by one. */
+    private fun check(batch: List<ActionRow>): SafetyRun {
+        val latest = runs.of(ActionsPolicy.SUBJECT, batch.map { it.id })
         var reported = 0
         var replanned = 0
         var reconciled = 0
-        var checked = 0
-        var after: ActionRow? = null
-        // The open actions oldest first, a batch at a time by keyset (`actions_item_open_idx`), each batch's workflows in one
-        // query (design E07 §8: 3,000 open actions within the task's 30 s); only the actions found out of step are read and
-        // locked one by one.
-        while (checked < LIMIT) {
-            val batch = store.openAfter(after, minOf(BATCH, LIMIT - checked))
-            if (batch.isEmpty()) break
-            checked += batch.size
-            after = batch.last()
-            val runs = queries.runs(ActionsPolicy.SUBJECT, batch.map { it.id })
-            batch.forEach { candidate ->
-                val run = runs[candidate.id]
-                when {
-                    run == null -> {
-                        if (report(candidate)) reported++
-                    }
-
-                    run.status != InstanceStatus.RUNNING || run.instanceId != candidate.workflowInstanceId -> {
-                        if (reconcile(candidate, run.instanceId, run.status)) reconciled++
-                    }
-
-                    candidate.status in ActionChecks.UNDERWAY && drifted(candidate, run.dueAt) -> {
-                        if (replan(candidate)) replanned++
-                    }
-
-                    else -> {}
+        batch.forEach { candidate ->
+            val run = latest[candidate.id]
+            when {
+                run == null -> {
+                    if (report(candidate)) reported++
                 }
+
+                run.status != InstanceStatus.RUNNING || run.instanceId != candidate.workflowInstanceId -> {
+                    if (reconcile(candidate, run.instanceId, run.status)) reconciled++
+                }
+
+                candidate.status in ActionChecks.UNDERWAY && drifted(candidate, run.dueAt) -> {
+                    if (replan(candidate)) replanned++
+                }
+
+                else -> {}
             }
-            if (batch.size < BATCH) break
         }
-        return SafetyRun(checked, reported, replanned, reconciled)
+        return SafetyRun(batch.size, reported, replanned, reconciled)
     }
 
     /** [candidate] has no workflow: its secretaries hear it once per run. */

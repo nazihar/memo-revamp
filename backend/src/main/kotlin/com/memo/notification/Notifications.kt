@@ -280,4 +280,7 @@ fun interface NotificationLog {
 /** Finds a user as a recipient; implemented by `identity`, which depends on this module (no cycle). */
 fun interface RecipientLookup {
     fun recipient(userId: UUID): Recipient?
+
+    /** Each of [userIds] found, as [recipient] finds them; an implementation may read them in one query. */
+    fun recipients(userIds: Collection<UUID>): Map<UUID, Recipient> = userIds.mapNotNull { id -> recipient(id)?.let { id to it } }.toMap()
 }

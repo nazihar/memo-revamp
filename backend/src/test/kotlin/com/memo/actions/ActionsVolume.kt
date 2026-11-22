@@ -89,98 +89,9 @@ class ActionsVolume(
     }
 
     private fun actionStage(c: Connection) {
-        val forumRows = forums.mapIndexed { i, (id, code) -> "(${i + 1}, '$id'::uuid, '$code')" }.joinToString()
-        c.exec("create temp table av_forum (f int, id uuid, code text)")
-        c.exec("insert into av_forum values $forumRows")
-        c.exec(
-            """
-            create temp table av_meeting as
-            select f.f, f.id as forum_id, f.code, k, m.id as meeting_id, m.starts_at, m.label, $past - k as age
-            from av_forum f
-            cross join generate_series(1, $past) k
-            join meeting m on m.tenant_id = '$tenant' and m.id = md5('mvm' || f.f || '-' || k)::uuid
-            where m.status = 'HELD'
-            """,
-        )
-        c.exec("analyze av_meeting")
-        // Open: the committee's latest held meetings, and one in a hundred older ones (long overdue). The director's
-        // rows (D: held, C: contributed to) are spread over the open ones at random.
-        c.exec(
-            """
-            create temp table av_base as
-            with b as (
-                select m.*, a, md5('ava' || m.meeting_id || '-' || a)::uuid as id, abs(hashtext(m.meeting_id::text || '-' || a)) as h,
-                       m.age < case when m.f = 1 then $FOCAL_OPEN_MEETINGS else $OPEN_MEETINGS end
-                           or abs(hashtext(m.meeting_id::text || '-' || a)) % 100 = 0 as open
-                from av_meeting m, generate_series(0, ${PER_MEETING - 1}) a
-            )
-            select b.*, case when open then row_number() over (partition by open order by md5(id::text)) end as rn from b
-            """,
-        )
-        c.exec(
-            """
-            create temp table av_action as
-            select b.*,
-                   case when open and rn <= $DIRECTOR_MINE then 'D'
-                        when open and rn <= ${DIRECTOR_MINE + DIRECTOR_CONTRIBUTES} then 'C' end as director_role,
-                   h % 4 as u,
-                   case when open then case when h % 9 = 4 then 'DONE_PENDING' when h % 4 = 0 then 'OPEN' else 'IN_PROGRESS' end
-                        else case when h % 20 = 7 then 'CANCELLED' else 'CLOSED' end end as status,
-                   (starts_at at time zone '$zone')::date + 30 + 15 * (a % 6) as due_date,
-                   a % 7 = 5 as revised, a % 7 = 5 and k % 2 = 0 as agreed,
-                   case when a <= 6 then 1 + a % 3 end as j, case when a <= 6 then a % 8 end as i,
-                   starts_at + interval '2 hours' as created_at, starts_at + interval '1 day' as issued_at
-            from av_base b
-            """,
-        )
-        // The director's timeline action: one of theirs on the first committee, under way, with every update kept.
-        c.exec(
-            """
-            update av_action set u = ${TIMELINE - 2}
-            where id = (select id from av_action where director_role = 'D' and f = 1 and status = 'IN_PROGRESS' and not agreed
-                        order by id limit 1)
-            """,
-        )
-        c.exec(
-            """
-            alter table av_action add column holder uuid, add column closed_at timestamptz, add column done_at timestamptz,
-                                  add column span_end timestamptz, add column reference text, add column number_year int,
-                                  add column sequence int
-            """,
-        )
-        c.exec(
-            """
-            update av_action set
-                holder = case when director_role = 'D' then '${people.director}'::uuid else md5('avp' || (1 + h % $persons))::uuid end,
-                closed_at = case when status in ('CLOSED', 'CANCELLED') then
-                    least(now() - interval '1 day', greatest(issued_at + interval '2 days',
-                          ((due_date + (h % 25 - 15)) + time '12:00') at time zone '$zone')) end
-            """,
-        )
-        c.exec(
-            """
-            update av_action set
-                done_at = case when status = 'CLOSED' then closed_at - interval '2 days'
-                               when status = 'DONE_PENDING' then greatest(issued_at + interval '1 hour', now() - (1 + h % 20) * interval '1 day')
-                          end
-            """,
-        )
-        c.exec(
-            """
-            update av_action set span_end = coalesce(case when status = 'CANCELLED' then closed_at end, done_at, now() - interval '1 hour'),
-                                 number_year = extract(year from issued_at at time zone '$zone')::int
-            """,
-        )
-        c.exec(
-            """
-            update av_action a set sequence = s.n, reference = a.code || ' A' || s.n || '/' || a.number_year
-            from (select id, row_number() over (partition by forum_id, number_year order by issued_at, a) as n from av_action) s
-            where s.id = a.id
-            """,
-        )
-        c.exec("create index on av_action (forum_id, k)")
-        c.exec("create index on av_action (id)")
-        c.exec("analyze av_action")
+        heldMeetings(c)
+        actionRows(c)
+        actionDetails(c)
         c.exec(
             """
             insert into actions_item (id, tenant_id, forum_id, number_year, sequence, reference, source, meeting_id, item_id, source_note,
@@ -229,8 +140,146 @@ class ActionsVolume(
         c.commitAndAnalyse("actions_item")
     }
 
+    /** The held meetings of the volume's committees, by committee and number. */
+    private fun heldMeetings(c: Connection) {
+        val forumRows = forums.mapIndexed { i, (id, code) -> "(${i + 1}, '$id'::uuid, '$code')" }.joinToString()
+        c.exec("create temp table av_forum (f int, id uuid, code text)")
+        c.exec("insert into av_forum values $forumRows")
+        c.exec(
+            """
+            create temp table av_meeting as
+            select f.f, f.id as forum_id, f.code, k, m.id as meeting_id, m.starts_at, m.label, $past - k as age
+            from av_forum f
+            cross join generate_series(1, $past) k
+            join meeting m on m.tenant_id = '$tenant' and m.id = md5('mvm' || f.f || '-' || k)::uuid
+            where m.status = 'HELD'
+            """,
+        )
+        c.exec("analyze av_meeting")
+    }
+
+    /** Each action's place, state and dates; the director's share of the open ones. */
+    private fun actionRows(c: Connection) {
+        // Open: the committee's latest held meetings, and one in a hundred older ones (long overdue). The director's
+        // rows (D: held, C: contributed to) are spread over the open ones at random.
+        c.exec(
+            """
+            create temp table av_base as
+            with b as (
+                select m.*, a, md5('ava' || m.meeting_id || '-' || a)::uuid as id, abs(hashtext(m.meeting_id::text || '-' || a)) as h,
+                       m.age < case when m.f = 1 then $FOCAL_OPEN_MEETINGS else $OPEN_MEETINGS end
+                           or abs(hashtext(m.meeting_id::text || '-' || a)) % 100 = 0 as open
+                from av_meeting m, generate_series(0, ${PER_MEETING - 1}) a
+            )
+            select b.*, case when open then row_number() over (partition by open order by md5(id::text)) end as rn from b
+            """,
+        )
+        c.exec(
+            """
+            create temp table av_action as
+            select b.*,
+                   case when open and rn <= $DIRECTOR_MINE then 'D'
+                        when open and rn <= ${DIRECTOR_MINE + DIRECTOR_CONTRIBUTES} then 'C' end as director_role,
+                   h % 4 as u,
+                   case when open then case when h % 9 = 4 then 'DONE_PENDING' when h % 4 = 0 then 'OPEN' else 'IN_PROGRESS' end
+                        else case when h % 20 = 7 then 'CANCELLED' else 'CLOSED' end end as status,
+                   (starts_at at time zone '$zone')::date + 30 + 15 * (a % 6) as due_date,
+                   a % 7 = 5 as revised, a % 7 = 5 and k % 2 = 0 as agreed,
+                   case when a <= 6 then 1 + a % 3 end as j, case when a <= 6 then a % 8 end as i,
+                   starts_at + interval '2 hours' as created_at, starts_at + interval '1 day' as issued_at
+            from av_base b
+            """,
+        )
+    }
+
+    /** The derived columns: the holder, when it ended or was done, the references; and the long timeline. */
+    private fun actionDetails(c: Connection) {
+        // The director's timeline action: one of theirs on the first committee, under way, with every update kept.
+        c.exec(
+            """
+            update av_action set u = ${TIMELINE - 2}
+            where id = (select id from av_action where director_role = 'D' and f = 1 and status = 'IN_PROGRESS' and not agreed
+                        order by id limit 1)
+            """,
+        )
+        c.exec(
+            """
+            alter table av_action add column holder uuid, add column closed_at timestamptz, add column done_at timestamptz,
+                                  add column span_end timestamptz, add column reference text, add column number_year int,
+                                  add column sequence int
+            """,
+        )
+        c.exec(
+            """
+            update av_action set
+                holder = case when director_role = 'D' then '${people.director}'::uuid else md5('avp' || (1 + h % $persons))::uuid end,
+                closed_at = case when status in ('CLOSED', 'CANCELLED') then
+                    least(now() - interval '1 day', greatest(issued_at + interval '2 days',
+                          ((due_date + (h % 25 - 15)) + time '12:00') at time zone '$zone')) end
+            """,
+        )
+        c.exec(
+            """
+            update av_action set
+                done_at = case when status = 'CLOSED' then closed_at - interval '2 days'
+                               when status = 'DONE_PENDING' then greatest(issued_at + interval '1 hour', now() - (1 + h % 20) * interval '1 day')
+                          end
+            """,
+        )
+        c.exec(
+            """
+            update av_action set span_end = coalesce(case when status = 'CANCELLED' then closed_at end, done_at, now() - interval '1 hour'),
+                                 number_year = extract(year from issued_at at time zone '$zone')::int
+            """,
+        )
+        c.exec(
+            """
+            update av_action a set sequence = s.n, reference = a.code || ' A' || s.n || '/' || a.number_year
+            from (select id, row_number() over (partition by forum_id, number_year order by issued_at, a) as n from av_action) s
+            where s.id = a.id
+            """,
+        )
+        c.exec("create index on av_action (forum_id, k)")
+        c.exec("create index on av_action (id)")
+        c.exec("analyze av_action")
+    }
+
     /** The timelines, contributors and date requests. */
     private fun timelineStage(c: Connection) {
+        entries(c)
+        c.exec(
+            """
+            insert into actions_contributor (id, tenant_id, action_id, user_id, added_by, added_at)
+            select md5('avc' || a.id || '-' || n)::uuid, '$tenant'::uuid, a.id, x.user_id, '${people.secretary}', a.issued_at
+            from av_action a
+            cross join generate_series(1, case when a.director_role = 'C' then 1 when a.a % 9 = 2 then 2 when a.a % 3 = 1 then 1 else 0 end) n
+            cross join lateral (
+                select case when a.director_role = 'C' then '${people.director}'::uuid
+                            else md5('avp' || (1 + (a.h / 7 + n * 31) % $persons))::uuid end as user_id
+            ) x
+            where x.user_id <> a.holder
+            """,
+        )
+        c.exec(
+            """
+            insert into actions_due_request (id, tenant_id, action_id, old_date, new_date, reason, state, requested_by, requested_at,
+                                             decided_by, decided_at, decision_note)
+            select md5('avdr' || a.id)::uuid, '$tenant'::uuid, a.id, a.due_date, a.due_date + 30, 'The supplier''s report comes later.',
+                   case when a.agreed then 'AGREED' else 'DECLINED' end, a.holder, a.issued_at + (a.span_end - a.issued_at) * 0.3,
+                   '${people.secretary}'::uuid, a.issued_at + (a.span_end - a.issued_at) * 0.35,
+                   case when not a.agreed then 'Keep the date: the committee needs it.' end
+            from av_action a where a.revised
+            union all
+            select md5('avdp' || a.id)::uuid, '$tenant'::uuid, a.id, a.due_date, a.due_date + 21, 'The data arrives late this quarter.',
+                   'PENDING', a.holder, a.span_end - interval '1 hour', null, null, null
+            from av_action a where a.open and a.status <> 'DONE_PENDING' and not a.revised and (a.k + a.a) % 13 = 0
+            """,
+        )
+        c.commitAndAnalyse("actions_entry", "actions_contributor", "actions_due_request")
+    }
+
+    /** Each action's timeline: drafted, issued, its updates, a date change, done, closed or cancelled. */
+    private fun entries(c: Connection) {
         val update = "a.issued_at + (a.span_end - a.issued_at) * (g::float8 / (a.u + 1))"
         val rv = "case when a.agreed then 1 else 0 end"
         c.exec(
@@ -264,35 +313,6 @@ class ActionsVolume(
             from av_action a where a.status = 'CANCELLED'
             """,
         )
-        c.exec(
-            """
-            insert into actions_contributor (id, tenant_id, action_id, user_id, added_by, added_at)
-            select md5('avc' || a.id || '-' || n)::uuid, '$tenant'::uuid, a.id, x.user_id, '${people.secretary}', a.issued_at
-            from av_action a
-            cross join generate_series(1, case when a.director_role = 'C' then 1 when a.a % 9 = 2 then 2 when a.a % 3 = 1 then 1 else 0 end) n
-            cross join lateral (
-                select case when a.director_role = 'C' then '${people.director}'::uuid
-                            else md5('avp' || (1 + (a.h / 7 + n * 31) % $persons))::uuid end as user_id
-            ) x
-            where x.user_id <> a.holder
-            """,
-        )
-        c.exec(
-            """
-            insert into actions_due_request (id, tenant_id, action_id, old_date, new_date, reason, state, requested_by, requested_at,
-                                             decided_by, decided_at, decision_note)
-            select md5('avdr' || a.id)::uuid, '$tenant'::uuid, a.id, a.due_date, a.due_date + 30, 'The supplier''s report comes later.',
-                   case when a.agreed then 'AGREED' else 'DECLINED' end, a.holder, a.issued_at + (a.span_end - a.issued_at) * 0.3,
-                   '${people.secretary}'::uuid, a.issued_at + (a.span_end - a.issued_at) * 0.35,
-                   case when not a.agreed then 'Keep the date: the committee needs it.' end
-            from av_action a where a.revised
-            union all
-            select md5('avdp' || a.id)::uuid, '$tenant'::uuid, a.id, a.due_date, a.due_date + 21, 'The data arrives late this quarter.',
-                   'PENDING', a.holder, a.span_end - interval '1 hour', null, null, null
-            from av_action a where a.open and a.status <> 'DONE_PENDING' and not a.revised and (a.k + a.a) % 13 = 0
-            """,
-        )
-        c.commitAndAnalyse("actions_entry", "actions_contributor", "actions_due_request")
     }
 
     /** The counters, the digest keys of past days, the in-app notices the next digest reads, and held-back actions. */

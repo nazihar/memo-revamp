@@ -158,23 +158,6 @@ class ActionStore(
             .limit(limit)
             .fetch { it.actionRow() }
 
-    /**
-     * The open actions (issued, not finished) after [after] in the order of [where] (creation, then id), at most [limit]:
-     * a keyset page of `actions_item_open_idx`, so a pass over a tenant's open actions never reads the finished ones.
-     */
-    fun openAfter(
-        after: ActionRow?,
-        limit: Int,
-    ): List<ActionRow> {
-        val position =
-            after?.let {
-                DSL
-                    .row(ACTIONS_ITEM.CREATED_AT, ACTIONS_ITEM.ID)
-                    .gt(DSL.row(DSL.inline(it.createdAt.atOffset(ZoneOffset.UTC)), DSL.inline(it.id)))
-            } ?: DSL.noCondition()
-        return where(OPEN_ACTIONS.and(position), limit)
-    }
-
     /** [meetingId]'s drafts, oldest first. */
     fun draftsOf(meetingId: UUID): List<ActionRow> =
         where(ACTIONS_ITEM.MEETING_ID.eq(meetingId).and(ACTIONS_ITEM.STATUS.eq(ActionStatus.DRAFT.name)))
@@ -435,3 +418,20 @@ internal fun ActionsItemRecord.actionRow() =
 
 /** The issued actions not finished (OPEN, IN_PROGRESS, DONE_PENDING), as the daily check reads them ([ActionStore.where]). */
 internal val OPEN_ACTIONS: Condition get() = ACTIONS_ITEM.STATUS.`in`(ActionChecks.OPEN.map { it.name })
+
+/**
+ * The open actions (issued, not finished) after [after] in the order of [ActionStore.where] (creation, then id), at most
+ * [limit]: a keyset page of `actions_item_open_idx`, so a pass over a tenant's open actions never reads the finished ones.
+ */
+internal fun ActionStore.openAfter(
+    after: ActionRow?,
+    limit: Int,
+): List<ActionRow> {
+    val position =
+        after?.let {
+            DSL
+                .row(ACTIONS_ITEM.CREATED_AT, ACTIONS_ITEM.ID)
+                .gt(DSL.row(DSL.inline(it.createdAt.atOffset(ZoneOffset.UTC)), DSL.inline(it.id)))
+        } ?: DSL.noCondition()
+    return where(OPEN_ACTIONS.and(position), limit)
+}

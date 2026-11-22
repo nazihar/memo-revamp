@@ -228,6 +228,34 @@ class UserAccounts(
 @org.springframework.stereotype.Component
 internal class AccountRecipients(
     private val accounts: UserAccounts,
+    private val tenantDsl: com.memo.common.tenant.TenantDsl,
 ) : com.memo.notification.RecipientLookup {
     override fun recipient(userId: java.util.UUID): com.memo.notification.Recipient? = accounts.find(UserId(userId))?.recipient()
+
+    /** One query per [CHUNK] people (the actions' daily digest reaches up to 5,000 at once). */
+    override fun recipients(userIds: Collection<java.util.UUID>): Map<java.util.UUID, com.memo.notification.Recipient> {
+        val u = IDENTITY_USER
+        return userIds
+            .distinct()
+            .chunked(CHUNK)
+            .flatMap { chunk ->
+                tenantDsl
+                    .current()
+                    .select(u.ID, u.EMAIL, u.DISPLAY_NAME, u.LOCALE)
+                    .from(u)
+                    .where(u.ID.`in`(chunk))
+                    .fetch { r ->
+                        com.memo.notification.Recipient(
+                            checkNotNull(r.value1()),
+                            checkNotNull(r.value2()),
+                            checkNotNull(r.value3()),
+                            r.value4(),
+                        )
+                    }
+            }.associateBy { it.userId }
+    }
+
+    private companion object {
+        const val CHUNK = 1_000
+    }
 }

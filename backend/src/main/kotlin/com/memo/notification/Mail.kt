@@ -46,6 +46,7 @@ import java.util.UUID
  * - MEETING_REPLY_REMINDER, MEETING_QUORUM_AT_RISK: name, organisation, committee, date, link
  * - MEETING_REMINDER: name, organisation, committee, date, reply and declarations (sentences, empty when they do not
  *   apply), link (never an item or a paper)
+ * - ACTION_ASSIGNED: name, organisation, committee, reference, date (the due date), link (never the action's title or text)
  */
 enum class MailTemplate {
     INVITATION,
@@ -96,6 +97,7 @@ enum class MailTemplate {
     MEETING_REPLY_REMINDER,
     MEETING_REMINDER,
     MEETING_QUORUM_AT_RISK,
+    ACTION_ASSIGNED,
 }
 
 /**

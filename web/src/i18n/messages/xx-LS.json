@@ -21816,6 +21816,12 @@
       "value": "Mail server saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.actionAssigned": [
+    {
+      "type": 0,
+      "value": "Committee action assignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.forumMembershipChanged": [
     {
       "type": 0,
@@ -34111,6 +34117,54 @@
     {
       "type": 0,
       "value": "WorkflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionAssigned": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " has given you an action, due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionSourceCorrected": [
+    {
+      "type": 0,
+      "value": "The decision that action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " came from was correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.editNotSaved": [

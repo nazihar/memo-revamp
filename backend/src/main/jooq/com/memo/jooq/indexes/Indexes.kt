@@ -5,6 +5,8 @@
 package com.memo.jooq.indexes
 
 
+import com.memo.jooq.tables.ActionsContributor
+import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuthzClearance
@@ -115,6 +117,17 @@ import org.jooq.impl.Internal
 // INDEX definitions
 // -------------------------------------------------------------------------
 
+val ACTIONS_CONTRIBUTOR_ACTION_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_action_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID), false)
+val ACTIONS_CONTRIBUTOR_CURRENT_UK: Index = Internal.createIndex(DSL.name("actions_contributor_current_uk"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), true)
+val ACTIONS_CONTRIBUTOR_USER_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_user_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), false)
+val ACTIONS_ITEM_DECISION_IDX: Index = Internal.createIndex(DSL.name("actions_item_decision_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.DECISION_ID), false)
+val ACTIONS_ITEM_FORUM_IDX: Index = Internal.createIndex(DSL.name("actions_item_forum_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.FORUM_ID, ActionsItem.ACTIONS_ITEM.STATUS, ActionsItem.ACTIONS_ITEM.DUE_DATE, ActionsItem.ACTIONS_ITEM.ID), false)
+val ACTIONS_ITEM_HOLDER_IDX: Index = Internal.createIndex(DSL.name("actions_item_holder_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.HOLDER_USER_ID, ActionsItem.ACTIONS_ITEM.STATUS, ActionsItem.ACTIONS_ITEM.DUE_DATE), false)
+val ACTIONS_ITEM_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("actions_item_instance_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.WORKFLOW_INSTANCE_ID), false)
+val ACTIONS_ITEM_MEETING_IDX: Index = Internal.createIndex(DSL.name("actions_item_meeting_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.MEETING_ID), false)
+val ACTIONS_ITEM_OWNER_POSITION_IDX: Index = Internal.createIndex(DSL.name("actions_item_owner_position_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.OWNER_POSITION_ID), false)
+val ACTIONS_ITEM_OWNER_USER_IDX: Index = Internal.createIndex(DSL.name("actions_item_owner_user_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.OWNER_USER_ID), false)
+val ACTIONS_ITEM_SUPERSEDED_IDX: Index = Internal.createIndex(DSL.name("actions_item_superseded_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.SUPERSEDED_BY), false)
 val AUDIT_ANCHOR_TENANT_SEQ_UK: Index = Internal.createIndex(DSL.name("audit_anchor_tenant_seq_uk"), AuditAnchor.AUDIT_ANCHOR, arrayOf(AuditAnchor.AUDIT_ANCHOR.TENANT_ID, AuditAnchor.AUDIT_ANCHOR.SEQ), true)
 val AUDIT_EVENT_TENANT_ACTOR_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_actor_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.ACTOR_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
 val AUDIT_EVENT_TENANT_OBJECT_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_object_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OBJECT_TYPE, AuditEvent.AUDIT_EVENT.OBJECT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)

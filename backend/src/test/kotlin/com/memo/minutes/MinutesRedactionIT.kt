@@ -7,6 +7,7 @@ import com.memo.minutes.internal.MinutesCopyStore
 import com.memo.minutes.internal.VoteMode
 import com.memo.testsupport.Audit
 import com.memo.testsupport.Person
+import com.memo.testsupport.PlantedMinutesActions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +22,8 @@ import org.springframework.http.HttpStatus
  */
 class MinutesRedactionIT : MinutesFixture() {
     @Autowired lateinit var copyStore: MinutesCopyStore
+
+    @Autowired lateinit var actions: PlantedMinutesActions
 
     @Test
     fun `each reader's copy holds what they may read, and the recused director's none of the item's discussion`() {
@@ -81,6 +84,85 @@ class MinutesRedactionIT : MinutesFixture() {
                     .item
                     .toString() to "RECUSED",
             )
+    }
+
+    @Test
+    fun `a template's meeting-level resolutions table keeps in each copy only the rows of the items its reader sees in full`() {
+        // E06 T7: each row of the resolutions loop is a row-level control of its item; a copy drops the rows of the items it
+        // redacts. Before, the table repeated a restricted item's resolution outside its block and the copy was refused.
+        minutesTemplate(resolutionsTemplate())
+        val r =
+            drafted(
+                "Term loan, Delta Textiles",
+                "Facility renewal, Acme",
+                before = { declare(director, it.meeting, it.items.first().item) },
+                decisions = { run ->
+                    decide(run, run.items[0].item, APPROVED.copy(text = CANARY_RESOLUTION))
+                    decide(run, run.items[1].item, APPROVED.copy(text = RENEWAL_RESOLUTION))
+                },
+            )
+        val m = r.meeting.id
+        val draft =
+            com.memo.testsupport.Docx
+                .text(current(m))
+        assertThat(draft.split(CANARY_RESOLUTION)).describedAs("in the loan's block and in the table").hasSize(3)
+        circulated(m)
+        // Someone asked about the renewal only: the loan is hidden from them, its resolution's text with it.
+        val ask = """{"userIds":["${outsider.id}"],"itemIds":["${r.items[1].item}"]}"""
+        assertThat(post("/api/v1/meetings/$m/minutes/comment-requests", secretary.session, ask)).hasStatusOk()
+        buildCopies(m)
+        val copies =
+            transactions.readInTenant(
+                tenant.id,
+            ) { copyStore.ofVersion(m, com.memo.minutes.internal.CopyStage.DRAFT, sourceVersion(m)) }
+        assertThat(copies.map { it.state.name to it.error }).containsOnly("DONE" to null)
+        // The full copy: the loan's resolution in its block and in the table.
+        assertThat(pdf(m, colleague).split(CANARY_RESOLUTION)).hasSize(3)
+        // The recused director: their recused line keeps the decision (ADR-0062); the table's row of it is gone.
+        val recused = pdf(m, director)
+        assertThat(recused.split(CANARY_RESOLUTION)).describedAs("only in the recused line").hasSize(2)
+        assertThat(recused).contains(CopyBlocks.RECUSED, RENEWAL_RESOLUTION)
+        // The restricted reader: no word of the loan's resolution anywhere, the renewal's in its block and the table.
+        val asked = pdf(m, outsider)
+        assertThat(asked).doesNotContain(CANARY_RESOLUTION, "Term loan, Delta Textiles")
+        assertThat(asked.split(RENEWAL_RESOLUTION)).hasSize(3)
+    }
+
+    @Test
+    fun `a recused reader's copy is built with the actions of other items and none of their own item's`() {
+        // E06 T7: an item's actions are printed in its block only; the meeting's table holds the actions of no item. Before,
+        // the meeting's table listed every action and the leak check refused the recused director's copy.
+        val r =
+            drafted(
+                "Term loan, Delta Textiles",
+                "Facility renewal, Acme",
+                before = { run ->
+                    declare(director, run.meeting, run.items.first().item)
+                    actions.plant(
+                        run.meeting.id,
+                        listOf(
+                            MinutesActionLine(run.items[0].item, "ACT/2026/101", CANARY_ACTION, "Head of Credit", "31 January 2027"),
+                            MinutesActionLine(run.items[1].item, "ACT/2026/102", RENEWAL_ACTION, "Head of Credit", "28 February 2027"),
+                            MinutesActionLine(null, "ACT/2026/103", MEETING_ACTION, "Company Secretary", "31 March 2027"),
+                        ),
+                    )
+                },
+            )
+        val m = r.meeting.id
+        val draft =
+            com.memo.testsupport.Docx
+                .text(current(m))
+        assertThat(draft.split(CANARY_ACTION)).describedAs("the loan's action, in the loan's block only").hasSize(2)
+        assertThat(draft).contains(RENEWAL_ACTION, MEETING_ACTION)
+        circulated(m)
+        buildCopies(m)
+        val copies =
+            transactions.readInTenant(
+                tenant.id,
+            ) { copyStore.ofVersion(m, com.memo.minutes.internal.CopyStage.DRAFT, sourceVersion(m)) }
+        assertThat(copies.map { it.state.name to it.error }).containsOnly("DONE" to null)
+        assertThat(pdf(m, director)).doesNotContain(CANARY_ACTION, "ACT/2026/101").contains(RENEWAL_ACTION, MEETING_ACTION)
+        assertThat(pdf(m, colleague)).contains(CANARY_ACTION, RENEWAL_ACTION, MEETING_ACTION)
     }
 
     @Test
@@ -173,10 +255,55 @@ class MinutesRedactionIT : MinutesFixture() {
         notesOn(run, renewal.item, RENEWAL_NOTES)
     }
 
+    /** Publishes a version of the committee's type whose minutes template is [docx] (reviewed by a second administrator). */
+    private fun minutesTemplate(docx: ByteArray) {
+        val type = asUser(admin) { forums.get(brc) }.typeId
+        val draft = asUser(admin) { typeVersions.newDraft(type) }
+        asUserNoTx(admin) {
+            uploads.upload(
+                com.memo.forum.internal.MinutesTemplatePurpose.KEY,
+                draft.id.toString(),
+                "minutes.docx",
+                docx,
+                java.util.UUID
+                    .randomUUID()
+                    .toString(),
+            )
+        }
+        val saved = asUser(admin) { typeVersions.get(type, draft.number) }
+        check(saved.settings.minutes.templateFileId != null) { "the template is not the draft's" }
+        asUser(admin) { typeVersions.submit(type, draft.number, saved.revision) }
+        asUser(checker) { typeVersions.approve(type, draft.number, null) }
+    }
+
+    /** A tenant's template with the items block and, after it, the meeting-level resolutions table. */
+    private fun resolutionsTemplate(): ByteArray =
+        com.memo.testsupport.Docx.document { d ->
+            listOf("Minutes of {{meeting.label}}", "{{?items}}", "{{item.number}}. {{item.title}}", "{{item.resolutionText}}", "{{/items}}")
+                .forEach { d.createParagraph().createRun().setText(it) }
+            val table = d.createTable(2, 3)
+            listOf(listOf("Resolution{{resolutions}}", "Item", "Text"), listOf("[number]", "[item]", "[text]")).forEachIndexed { r, cells ->
+                cells.forEachIndexed { c, text ->
+                    table
+                        .getRow(r)
+                        .getCell(c)
+                        .paragraphs
+                        .first()
+                        .createRun()
+                        .setText(text)
+                }
+            }
+        }
+
     private companion object {
+        const val CANARY_RESOLUTION = "CANARY-RS the term loan is approved for a tenor of five years"
+        const val RENEWAL_RESOLUTION = "The renewal of the Acme facility is approved on its present terms"
         const val CANARY_NOTES = "CANARY-NT members challenged the borrower's sector outlook at length"
         const val CANARY_DISSENT = "CANARY-DS the sector outlook is too weak for this exposure"
         const val RENEWAL_NOTES = "The renewal keeps the existing covenants unchanged"
+        const val CANARY_ACTION = "CANARY-AC re-assess the borrower's guarantor before drawdown"
+        const val RENEWAL_ACTION = "Report the renewed covenants to the committee"
+        const val MEETING_ACTION = "Review the committee's terms of reference"
         const val PAST_THE_LIMIT = 51
         val WHITESPACE = Regex("""\s+""")
     }

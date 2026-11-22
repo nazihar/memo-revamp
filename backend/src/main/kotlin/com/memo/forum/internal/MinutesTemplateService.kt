@@ -35,6 +35,8 @@ data class MinutesTemplateInfo(
     val tags: List<String>,
     val refusals: List<TemplateRefusal>,
     val problems: List<TemplateProblem>,
+    /** Deprecated tags it uses (E06 T7): warnings, the template stays usable. */
+    val warnings: List<TemplateProblem> = emptyList(),
 )
 
 /**
@@ -69,7 +71,8 @@ class MinutesTemplateService(
         val bytes = file?.let(::read) ?: builtIn.builtIn()
         val scan = templates.scan { SeekableInMemoryByteChannel(bytes) }
         val problems = templates.check(scan, MinutesTemplateTags.vocabulary)
-        return MinutesTemplateInfo(row.id, file, scan.tags.map { it.name }.distinct(), scan.refusals, problems)
+        val warnings = templates.warnings(scan, MinutesTemplateTags.vocabulary)
+        return MinutesTemplateInfo(row.id, file, scan.tags.map { it.name }.distinct(), scan.refusals, problems, warnings)
     }
 
     /**

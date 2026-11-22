@@ -387,6 +387,7 @@ function setup(options: Options = {}) {
                 papers: [],
                 presenters: [],
                 subItems: [],
+                links: [],
               },
             ],
           },

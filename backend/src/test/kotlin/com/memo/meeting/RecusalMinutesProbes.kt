@@ -1,6 +1,8 @@
 package com.memo.meeting
 
+import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import java.time.LocalDate
 import java.util.UUID
@@ -49,7 +51,10 @@ internal fun RecusalLeakIT.minutesCalls(
     )
 }
 
-/** The reader's copy and the comments (E06 T6): the copy of a recused reader is MinutesRedactionIT's; here nothing. */
+/**
+ * The reader's copy and the comments (E06 T6), and the approved minutes' record, its versions and its check (E06 T7): the
+ * copies of a recused reader are MinutesRedactionIT's and MinutesRecordIT's; here nothing.
+ */
 internal fun RecusalLeakIT.minutesCopyCalls(
     p: RecusalLeakFixture.Planted,
     person: com.memo.testsupport.Person,
@@ -59,8 +64,50 @@ internal fun RecusalLeakIT.minutesCopyCalls(
         read("$base/document", person.session),
         read("$base/comments", person.session),
         send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.item}","text":"x"}"""),
+        read("$base/record", person.session),
+        read("$base/record?version=1", person.session),
+        read("$base/records", person.session),
+        send(HttpMethod.POST, "$base/records/1/check", person),
     )
 }
+
+/**
+ * E06 T3's surface, in the shared scenario: the decisions list answers no canary and names no decision of the hidden
+ * item, and the items' history and notes are 404. The planted decisions have a test of their
+ * own (a decided item freezes its declarations, which the other probes and the last ruling of the scenario change).
+ */
+internal fun RecusalLeakIT.decisionsProbe(
+    p: RecusalLeakFixture.Planted,
+    person: com.memo.testsupport.Person,
+    planted: Boolean = false,
+) {
+    val base = "/api/v1/meetings/${p.meeting.id}"
+    val list = read("$base/decisions", person.session)
+    clean(person, list)
+    assertThat(list.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE)
+    val decisions = list.json()["decisions"].list().associateBy { UUID.fromString(it["itemId"].asString()) }
+    assertThat(decisions.keys).describedAs("the hidden item's decision").doesNotContain(p.hidden)
+    if (planted) {
+        val mine = decisions.getValue(p.item)
+        assertThat(
+            mine["viewerRecused"].asBoolean() to mine["text"].asString(),
+        ).isEqualTo(true to "It was resolved that the term loan be approved.")
+        listOf("vote", "dissent", "abstentions", "tookNoPart", "snapshotId", "recordedBy").forEach {
+            assertThat(mine.absent(it)).describedAs("$it of a recused view").isTrue()
+        }
+    }
+    p.both.forEach { item ->
+        listOf("$base/items/$item/decision/entries", "$base/items/$item/notes").forEach { uri ->
+            val answer = read(uri, person.session)
+            assertThat(answer).hasStatus(HttpStatus.NOT_FOUND)
+            assertThat(answer.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE, RecusalLeakFixture.CANARY_TITLE)
+        }
+    }
+}
+
+/** E06 T3: a dissent's reason and the secretary's notes on the planted item, which no recused viewer may read. */
+internal const val CANARY_DISSENT = "CANARY-DS dissent reason"
+internal const val CANARY_NOTE = "CANARY-NT secretary notes"
 
 /** The register and its check (officers; members 403), and one resolution (E06 T4), as [person] reads them. */
 internal fun RecusalLeakIT.resolutionReads(

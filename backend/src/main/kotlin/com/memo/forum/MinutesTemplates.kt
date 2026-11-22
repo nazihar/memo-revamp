@@ -27,11 +27,11 @@ object MinutesTemplateTags {
             "meeting.mode" to "In person, online or both",
             "meeting.chair" to "Who chaired the meeting",
             "meeting.closedAt" to "When the meeting closed",
-            "minutes.status" to "DRAFT until the minutes are approved, then empty",
-            "minutes.approvedOn" to "Date the minutes were approved",
-            "minutes.approvedBy" to "Who approved the minutes",
+            "minutes.status" to "Deprecated, always empty: the copies and the record are stamped instead",
+            "minutes.approvedOn" to "Deprecated, always empty: the record's cover and stamp say when",
+            "minutes.approvedBy" to "Deprecated, always empty: the record's cover and stamp say who",
             "quorum.opening" to "The quorum when the meeting opened (a sentence)",
-            "actions.count" to "How many actions the meeting agreed (empty when none)",
+            "actions.count" to "How many actions the meeting agreed on no item (empty when none)",
         )
 
     /** Table-row loops with their row fields: `{{present}}` in a table row, `[name]` in the row below. */
@@ -52,7 +52,7 @@ object MinutesTemplateTags {
             "absent" to linkedMapOf("name" to "Name"),
             "quorumChanges" to linkedMapOf("at" to "Time", "item" to "During item", "text" to "What happened"),
             "resolutions" to linkedMapOf("number" to "Resolution number", "item" to "Item", "outcome" to "Outcome", "text" to "Text"),
-            "actions" to ACTION_FIELDS + ("item" to "Item"),
+            "actions" to ACTION_FIELDS + ("item" to "Item (always empty: an item's actions are in its block)"),
         )
 
     /** The actions agreed on an item (E07, design E07 §11): a row loop inside the items block. */
@@ -121,6 +121,18 @@ object MinutesTemplateTags {
             "attendance" to "present",
         )
 
+    /**
+     * Tags kept for templates already uploaded but no longer recommended (E06 T7): the minutes are never filled again once
+     * drafted, so a status or approval line in the document would stay as it was drafted, and the approved, hashed document
+     * would still say DRAFT. They are filled empty; a template that uses one gets a warning, not a problem.
+     */
+    val DEPRECATED: Map<String, String> =
+        listOf("minutes.status", "minutes.approvedOn", "minutes.approvedBy").associateWith {
+            "No longer needed and always empty: every page of a reader's draft copy is stamped DRAFT, and the approved " +
+                "record's cover and the stamp on each of its pages say who approved the minutes and when. Remove it from " +
+                "the template."
+        }
+
     val vocabulary: TagVocabulary =
         TagVocabulary(
             values = MEETING.keys,
@@ -131,6 +143,7 @@ object MinutesTemplateTags {
                     ITEMS to TagVocabulary(values = ITEM.keys, sections = ITEM.keys, loops = mapOf(ITEM_ACTIONS to ACTION_FIELDS.keys)),
                 ),
             aliases = ALIASES,
+            deprecated = DEPRECATED,
         )
 }
 

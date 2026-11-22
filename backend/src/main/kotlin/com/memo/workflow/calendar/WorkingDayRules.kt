@@ -29,8 +29,9 @@ object WorkingDayRules {
     }
 
     /**
-     * The [n]-th working day after [date], [date] not counted (design E07 §1.5: when an action with no recent update turns
-     * amber): [n] working days lie in `(date, result]`. [date] itself when [n] is 0; null when none is found in [MAX_DAYS].
+     * The [n]-th working day after [date], [date] not counted (design E06 §1.6.3: the minutes' comment deadline; design
+     * E07 §1.5: when an action with no recent update turns amber): [n] working days lie in `(date, result]`. [date] itself
+     * when [n] is 0; null when none is found in [MAX_DAYS].
      */
     fun after(
         date: LocalDate,

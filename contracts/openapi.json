@@ -9376,6 +9376,94 @@
         },
         "type" : "object"
       },
+      "MinutesRecordCheckResponse" : {
+        "properties" : {
+          "matches" : {
+            "type" : "boolean"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCheckProblem"
+            },
+            "type" : "array"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "matches", "problems", "version" ],
+        "type" : "object"
+      },
+      "MinutesRecordFile" : {
+        "properties" : {
+          "compliant" : {
+            "type" : "boolean"
+          },
+          "full" : {
+            "type" : "boolean"
+          },
+          "sha256" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "compliant", "full", "sha256" ],
+        "type" : "object"
+      },
+      "MinutesRecordResponse" : {
+        "properties" : {
+          "approvalId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "builtAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "current" : {
+            "type" : "boolean"
+          },
+          "file" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesRecordFile"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "redacted" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesRedactedItem"
+            },
+            "type" : "array"
+          },
+          "state" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "approvalId", "createdAt", "current", "redacted", "state", "version" ],
+        "type" : "object"
+      },
+      "MinutesRedactedItem" : {
+        "properties" : {
+          "itemNumber" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "RECUSED", "RESTRICTED", "HIDDEN" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "itemNumber", "kind" ],
+        "type" : "object"
+      },
       "MinutesRedactionResponse" : {
         "properties" : {
           "itemId" : {
@@ -9644,11 +9732,14 @@
       "MinutesTemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {
             "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
           },
           "paragraph" : {
             "format" : "int32",
@@ -9730,9 +9821,15 @@
             }, {
               "type" : "null"
             } ]
+          },
+          "warnings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateProblemView"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "available", "owner", "problems", "refusals", "tags" ],
+        "required" : [ "available", "owner", "problems", "refusals", "tags", "warnings" ],
         "type" : "object"
       },
       "MinutesWorkResponse" : {
@@ -14667,7 +14764,7 @@
       "TemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {
@@ -26994,7 +27091,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "The viewer's copy of the draft minutes (PDF, supports Range); 202 while it is being made",
+        "summary" : "The viewer's copy of the minutes at their stage (PDF, supports Range): the draft's, or once approved the record or their approved copy (PDF/A); 202 while it is being made, 409 RECORD_PENDING until the record is made",
         "tags" : [ "minutes" ]
       }
     },
@@ -27172,6 +27269,102 @@
           }
         },
         "summary" : "The copy a given reader gets (secretaries), the secretary's own recusals applying; 202 while it is being made",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/record" : {
+      "get" : {
+        "operationId" : "getMinutesRecord",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "version",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "The approved minutes' record as the viewer reads it (PDF/A, supports Range): the record itself, or their approved copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/records" : {
+      "get" : {
+        "operationId" : "listMinutesRecords",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MinutesRecordResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The approved minutes' record versions as the viewer reads them",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/records/{version}/check" : {
+      "post" : {
+        "operationId" : "checkMinutesRecord",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "version",
+          "required" : true,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesRecordCheckResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Recompute a record version's approval hashes and chain, and re-hash the approved document and the viewer's file",
         "tags" : [ "minutes" ]
       }
     },

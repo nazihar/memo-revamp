@@ -15,13 +15,20 @@ class ReportPagesRenderer(
         document: ReportDocument,
         out: OutputStream,
     ): ReportRendered {
-        val blocks = mutableListOf<Block>(Block.Title(document.title))
-        document.sections.forEach { section ->
-            blocks += Block.Heading(section.heading)
-            section.paragraphs.forEach { blocks += Block.Paragraph(it) }
-            if (section.lines.isNotEmpty()) blocks += Block.KeyValues(section.lines)
-        }
-        val result = renderer.render(PageDocument(document.header, document.footer, blocks), out)
+        val result = renderer.render(pagesOf(document), out)
         return ReportRendered(result.pages, result.missingGlyphs)
+    }
+
+    companion object {
+        /** [document] in the page model: a title, then per section a heading, its paragraphs and its lines. */
+        fun pagesOf(document: ReportDocument): PageDocument {
+            val blocks = mutableListOf<Block>(Block.Title(document.title))
+            document.sections.forEach { section ->
+                blocks += Block.Heading(section.heading)
+                section.paragraphs.forEach { blocks += Block.Paragraph(it) }
+                if (section.lines.isNotEmpty()) blocks += Block.KeyValues(section.lines)
+            }
+            return PageDocument(document.header, document.footer, blocks)
+        }
     }
 }

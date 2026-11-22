@@ -159,6 +159,152 @@ class MinutesCrossTenantIT : DecisionFixture() {
         }
     }
 
+    @Autowired lateinit var minutesReview: com.memo.minutes.internal.MinutesReview
+
+    @Autowired lateinit var minutesComments: com.memo.minutes.internal.MinutesComments
+
+    @Autowired lateinit var minutesReading: com.memo.minutes.internal.MinutesReading
+
+    @Autowired lateinit var minutesConfirmation: com.memo.minutes.internal.MinutesConfirmation
+
+    @Test
+    fun `another tenant neither reviews, reads, comments on nor confirms the minutes, nor sees their T6 rows`() {
+        val d = deciding()
+        arrive(d.meeting, listOf(chair, director, director2, others[0], others[1]))
+        val held = meeting(d.meeting.id).let { asUser(secretary) { lifecycle.end(it.id, it.version) } }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val hash = "a".repeat(64)
+        // E06 T6: A's comment, request for comments, copy, approval and reminder (as the app role in A).
+        val rows = t6Rows(held.id, d.credit, now, hash)
+        rows.values.forEach { (sql, params) ->
+            committed(sql, params)
+        }
+
+        val b = registry.aTestTenant(transactions, settings, "minutesd", mfaRequired = false)
+        val bAdmin = accounts.anActiveUser(transactions, b, aPassword(), tenantAdmin = true)
+        listOf<() -> Any>(
+            { minutesReview.sendForReview(held.id, 0) },
+            { minutesReview.circulate(held.id, 0, null, "No chair") },
+            { minutesReview.withdraw(held.id, 0, "x") },
+            { minutesReview.endCirculation(held.id, 0, "x") },
+            { minutesComments.comment(held.id, com.memo.minutes.internal.CommentKind.NO_COMMENTS, null, null) },
+            { minutesComments.commentsFor(held.id) },
+            { minutesReading.document(held.id) },
+            { minutesReading.preview(held.id, director.id.value) },
+            { minutesConfirmation.requireConfirmer(held.id) },
+            { minutesConfirmation.approvalsOf(held.id) },
+        ).forEach { call ->
+            val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
+            assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "MinutesNotFoundException")
+        }
+        AppRoleJdbc.inTransaction(b.id) { c ->
+            rows.keys.forEach {
+                assertThat(
+                    c.long("select count(*) from $it where tenant_id = ?", tenant.id.value),
+                ).describedAs(it).isZero()
+            }
+            assertThat(c.update("update minutes_comment set response = 'ADOPTED' where meeting_id = ?", held.id)).isZero()
+            assertThat(
+                c.update("update minutes_copy set state = 'FAILED', error = 'X', version = version + 1 where meeting_id = ?", held.id),
+            ).isZero()
+        }
+        // B's rows pointing at A's minutes are refused by the composite foreign keys.
+        rows.values.forEach { (sql, params) ->
+            val forB =
+                params
+                    .map {
+                        if (it ==
+                            tenant.id.value
+                        ) {
+                            b.id.value
+                        } else {
+                            it
+                        }
+                    }.map { if (it is UUID && it != held.id && it != b.id.value) UUID.randomUUID() else it }
+            val written = runCatching { AppRoleJdbc.inTransaction(b.id) { c -> c.update(sql, *forB.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        AppRoleJdbc.inTransaction(tenant.id) { c ->
+            rows.keys.forEach { assertThat(c.long("select count(*) from $it where meeting_id = ?", held.id)).describedAs(it).isOne() }
+        }
+    }
+
+    /** Writes [sql] with [params] as the app role in A, committed (AppRoleJdbc's transactions roll back). */
+    private fun committed(
+        sql: String,
+        params: List<Any>,
+    ) {
+        AppRoleJdbc.connect { c ->
+            c.autoCommit = false
+            c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
+                it.setString(1, tenant.id.toString())
+                it.execute()
+            }
+            assertThat(c.update(sql, *params.toTypedArray())).isOne()
+            c.commit()
+        }
+    }
+
+    /** A row of each T6 table for [held]'s minutes as the app role in A writes it: the SQL and its parameters, by table. */
+    private fun t6Rows(
+        held: UUID,
+        credit: UUID,
+        now: OffsetDateTime,
+        hash: String,
+    ): Map<String, Pair<String, List<Any>>> =
+        mapOf(
+            "minutes_comment" to
+                (
+                    "insert into minutes_comment (id, tenant_id, meeting_id, user_id, kind, at) " +
+                        "values (?, ?, ?, ?, 'NO_COMMENTS', ?)" to
+                        listOf<Any>(UUID.randomUUID(), tenant.id.value, held, director.id.value, now)
+                ),
+            "minutes_comment_request" to
+                (
+                    "insert into minutes_comment_request (id, tenant_id, meeting_id, user_id, item_ids, asked_by, asked_at) " +
+                        "values (?, ?, ?, ?, array[?]::uuid[], ?, ?)" to
+                        listOf<Any>(
+                            UUID.randomUUID(),
+                            tenant.id.value,
+                            held,
+                            director.id.value,
+                            credit,
+                            secretary.id.value,
+                            now,
+                        )
+                ),
+            "minutes_copy" to
+                (
+                    "insert into minutes_copy (id, tenant_id, meeting_id, stage, redacted, set_key, source_version_id, created_at) " +
+                        "values (?, ?, ?, 'DRAFT', '[]'::jsonb, ?, ?, ?)" to
+                        listOf<Any>(UUID.randomUUID(), tenant.id.value, held, hash, UUID.randomUUID(), now)
+                ),
+            "minutes_approval" to
+                (
+                    "insert into minutes_approval (id, tenant_id, meeting_id, forum_id, kind, actor_id, role, authentication, " +
+                        "client, " +
+                        "docx_version_id, docx_sha256, record_hash, at) values (?, ?, ?, ?, 'CONFIRMATION', ?, 'CHAIR', '{}'::jsonb, " +
+                        "'{}'::jsonb, ?, ?, ?, ?)" to
+                        listOf<Any>(
+                            UUID.randomUUID(),
+                            tenant.id.value,
+                            held,
+                            brc,
+                            chair.id.value,
+                            UUID.randomUUID(),
+                            hash,
+                            hash,
+                            now,
+                        )
+                ),
+            "minutes_reminder" to
+                (
+                    "insert into minutes_reminder (tenant_id, meeting_id, kind, user_id, key, sent_at) " +
+                        "values (?, ?, 'DRAFT_OVERDUE', ?, 'once', ?)" to
+                        listOf<Any>(tenant.id.value, held, secretary.id.value, now)
+                ),
+        )
+
     /** As the app role in [b], no row is written for A or pointing at A's rows. */
     private fun refusedWrites(
         b: TestTenant,

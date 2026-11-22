@@ -22,6 +22,8 @@ class MeetingStateTest {
             (MeetingAction.GUESTS to MeetingStatus.DRAFT) to MeetingStatus.DRAFT,
             (MeetingAction.GUESTS to MeetingStatus.SCHEDULED) to MeetingStatus.SCHEDULED,
             (MeetingAction.GUESTS to MeetingStatus.IN_PROGRESS) to MeetingStatus.IN_PROGRESS,
+            // E06 T6: the chair confirms the minutes.
+            (MeetingAction.APPROVE_MINUTES to MeetingStatus.HELD) to MeetingStatus.MINUTES_APPROVED,
         )
 
     @Test
@@ -52,8 +54,11 @@ class MeetingStateTest {
     }
 
     @Test
-    fun `nothing moves a meeting out of HELD, CANCELLED or E06's states`() {
+    fun `nothing moves a meeting out of HELD but the minutes' approval, nor out of CANCELLED or E06's states`() {
         val terminal = setOf(MeetingStatus.HELD, MeetingStatus.CANCELLED, MeetingStatus.MINUTES_APPROVED, MeetingStatus.CLOSED)
-        MeetingAction.entries.forEach { action -> terminal.forEach { assertThat(action.allows(it)).isFalse() } }
+        MeetingAction.entries.filter { it != MeetingAction.APPROVE_MINUTES }.forEach { action ->
+            terminal.forEach { assertThat(action.allows(it)).isFalse() }
+        }
+        assertThat(terminal.filter { MeetingAction.APPROVE_MINUTES.allows(it) }).containsExactly(MeetingStatus.HELD)
     }
 }

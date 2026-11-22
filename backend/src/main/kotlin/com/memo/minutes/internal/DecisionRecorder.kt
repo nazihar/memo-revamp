@@ -59,6 +59,7 @@ class DecisionRecorder(
     private val stages: MinutesStages,
     private val effects: DecisionEffects,
     private val release: MinutesRelease,
+    private val previous: PreviousMinutes,
     private val ids: IdGenerator,
     private val clock: Clock,
 ) {
@@ -106,10 +107,15 @@ class DecisionRecorder(
                 decidedAt = decidedAt,
                 reason = reason,
                 at = now,
-            ).copy(ratifiesDecisionId = input.ratifiesDecisionId)
+            ).copy(
+                ratifiesDecisionId = input.ratifiesDecisionId,
+                // A "Minutes of the previous meeting" item approving: the minutes linked to it (T6).
+                approvesMinutesIds = previous.approvedBy(meetingId, scene.item, checked.outcome.kind),
+            )
         write(scene, existing, entry)
         if (sendBack) stages.returnToDraft(meetingId, itemId)
         val recorded = checkNotNull(reads.current(itemId))
+        previous.decided(recorded)
         effects.recorded(recorded, current?.entry, snapshot)
         release.afterChange(recorded, current?.entry, status)
         return checkNotNull(reads.current(itemId))

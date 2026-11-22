@@ -20,6 +20,7 @@ import com.memo.meeting.MeetingItems
 import com.memo.meeting.MeetingRef
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.Meetings
+import com.memo.notification.NotificationKind
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
@@ -65,6 +66,8 @@ class MinutesRelease(
     private val transactions: TenantTransactions,
     private val audit: AuditLog,
     private val minutes: MinutesStore,
+    private val notifier: MinutesNotifier,
+    private val people: MinutesPeople,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -114,7 +117,10 @@ class MinutesRelease(
         return current != null && resolutions.inForce(current.decision.id) == null && numbers.assign(current) != null
     }
 
-    /** After the last retry: each decision still not sent to its memo is audited, for the decision screen and operations. */
+    /**
+     * After the last retry: each decision still not sent to its memo is audited, for the decision screen and operations, and
+     * the committee's secretaries are told in the app (`DECISIONS_RELEASE_FAILED`, with the count; T4's deferred notice).
+     */
     fun gaveUp(
         meetingId: UUID,
         pass: ReleasePass,
@@ -126,6 +132,11 @@ class MinutesRelease(
                 meetingId.toString(),
                 after = mapOf("decisionId" to decisionId.toString(), "error" to why),
             )
+        }
+        val forumId = meetings.find(meetingId)?.forumId
+        if (forumId != null && pass.failed.isNotEmpty()) {
+            val count = mapOf("count" to pass.failed.size.toString())
+            notifier.notify(people.secretaries(forumId), NotificationKind.DECISIONS_RELEASE_FAILED, meetingId, details = count)
         }
     }
 

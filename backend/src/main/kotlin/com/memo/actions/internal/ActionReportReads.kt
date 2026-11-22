@@ -58,6 +58,14 @@ data class ActionReportSectionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val section: ActionReportSection,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val count: Int,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rows: List<ActionReportRowResponse>,
+    /** Section 6 only: the corrections to earlier minutes approved since the last meeting (E06 T8). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val corrections: List<ActionReportCorrectionResponse> = emptyList(),
+)
+
+/** A correction to earlier minutes, as section 6 lists it: in words, with when it was approved. */
+data class ActionReportCorrectionResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val label: String,
+    val approvedAt: Instant? = null,
 )
 
 /**
@@ -214,14 +222,22 @@ class ActionReportReads(
             previousMeetingLabel = previous?.label,
             sections =
                 ActionReportSection.SHOWN.map { section ->
-                    val rows = seen.rows.filter { it.section == section && it.actionId != null }
-                    ActionReportSectionResponse(section, seen.count(section), rows.map { row(checkNotNull(it.actionId), it.snapshot) })
+                    val rows = seen.rows.filter { it.section == section }
+                    ActionReportSectionResponse(
+                        section,
+                        seen.count(section),
+                        rows.mapNotNull { r -> r.actionId?.let { row(it, r.snapshot) } },
+                        rows.filter { it.actionId == null }.map { correction(it.snapshot) },
+                    )
                 },
             more = seen.count(ActionReportSection.MORE),
             heldBack = seen.count(ActionReportSection.HELD_BACK).takeIf { seen.officer },
             summary = ReportWords.summary(ActionReportSection.SHOWN.associateWith(seen::count)),
         )
     }
+
+    private fun correction(snapshot: String): ActionReportCorrectionResponse =
+        json.readValue(snapshot, CorrectionSnapshot::class.java).let { ActionReportCorrectionResponse(it.label, it.approvedAt) }
 
     private fun row(
         actionId: UUID,
@@ -431,7 +447,12 @@ internal object ReportPdf {
                         section.section == ActionReportSection.TO_CLOSE -> listOf("The committee is asked to agree that these are done.")
                         else -> emptyList()
                     }
-                listOf(PdfSection(heading, intro)) + section.rows.map { row(it, zone) }
+                val fixes =
+                    section.corrections.map {
+                        it.label to
+                            (it.approvedAt?.let { at -> "approved " + DATE.format(at.atZone(zone)) } ?: "")
+                    }
+                listOf(PdfSection(heading, intro, fixes)) + section.rows.map { row(it, zone) }
             }
         val tail =
             listOfNotNull(

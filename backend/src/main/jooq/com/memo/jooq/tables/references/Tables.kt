@@ -117,10 +117,15 @@ import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
 import com.memo.jooq.tables.Minutes
+import com.memo.jooq.tables.MinutesApproval
+import com.memo.jooq.tables.MinutesComment
+import com.memo.jooq.tables.MinutesCommentRequest
+import com.memo.jooq.tables.MinutesCopy
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesReminder
 import com.memo.jooq.tables.MinutesResolution
 import com.memo.jooq.tables.MinutesResolutionCounter
 import com.memo.jooq.tables.NotificationItem
@@ -732,6 +737,26 @@ val MEMO_WATCH_SETTING: MemoWatchSetting = MemoWatchSetting.MEMO_WATCH_SETTING
 val MINUTES: Minutes = Minutes.MINUTES
 
 /**
+ * The table <code>memo.minutes_approval</code>.
+ */
+val MINUTES_APPROVAL: MinutesApproval = MinutesApproval.MINUTES_APPROVAL
+
+/**
+ * The table <code>memo.minutes_comment</code>.
+ */
+val MINUTES_COMMENT: MinutesComment = MinutesComment.MINUTES_COMMENT
+
+/**
+ * The table <code>memo.minutes_comment_request</code>.
+ */
+val MINUTES_COMMENT_REQUEST: MinutesCommentRequest = MinutesCommentRequest.MINUTES_COMMENT_REQUEST
+
+/**
+ * The table <code>memo.minutes_copy</code>.
+ */
+val MINUTES_COPY: MinutesCopy = MinutesCopy.MINUTES_COPY
+
+/**
  * The table <code>memo.minutes_decision</code>.
  */
 val MINUTES_DECISION: MinutesDecision = MinutesDecision.MINUTES_DECISION
@@ -750,6 +775,11 @@ val MINUTES_EVENT: MinutesEvent = MinutesEvent.MINUTES_EVENT
  * The table <code>memo.minutes_item_note</code>.
  */
 val MINUTES_ITEM_NOTE: MinutesItemNote = MinutesItemNote.MINUTES_ITEM_NOTE
+
+/**
+ * The table <code>memo.minutes_reminder</code>.
+ */
+val MINUTES_REMINDER: MinutesReminder = MinutesReminder.MINUTES_REMINDER
 
 /**
  * The table <code>memo.minutes_resolution</code>.

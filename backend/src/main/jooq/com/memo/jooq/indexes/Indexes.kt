@@ -84,6 +84,10 @@ import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.Minutes
+import com.memo.jooq.tables.MinutesApproval
+import com.memo.jooq.tables.MinutesComment
+import com.memo.jooq.tables.MinutesCommentRequest
+import com.memo.jooq.tables.MinutesCopy
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
@@ -290,13 +294,24 @@ val MEMO_WATCH_EVENT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_watch
 val MEMO_WATCH_EVENT_UNEMAILED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unemailed_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID), false)
 val MEMO_WATCH_EVENT_UNNOTIFIED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unnotified_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID, MemoWatchEvent.MEMO_WATCH_EVENT.MEMO_ID), false)
 val MEMO_WATCH_USER_IDX: Index = Internal.createIndex(DSL.name("memo_watch_user_idx"), MemoWatch.MEMO_WATCH, arrayOf(MemoWatch.MEMO_WATCH.TENANT_ID, MemoWatch.MEMO_WATCH.USER_ID, MemoWatch.MEMO_WATCH.CREATED_AT.desc(), MemoWatch.MEMO_WATCH.MEMO_ID), false)
+val MINUTES_APPROVAL_CHAIN_UK: Index = Internal.createIndex(DSL.name("minutes_approval_chain_uk"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.FORUM_ID, MinutesApproval.MINUTES_APPROVAL.PREVIOUS_HASH), true)
+val MINUTES_APPROVAL_FORUM_IDX: Index = Internal.createIndex(DSL.name("minutes_approval_forum_idx"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.FORUM_ID, MinutesApproval.MINUTES_APPROVAL.AT), false)
+val MINUTES_APPROVAL_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_approval_meeting_idx"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.MEETING_ID), false)
+val MINUTES_COMMENT_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_comment_meeting_idx"), MinutesComment.MINUTES_COMMENT, arrayOf(MinutesComment.MINUTES_COMMENT.TENANT_ID, MinutesComment.MINUTES_COMMENT.MEETING_ID, MinutesComment.MINUTES_COMMENT.USER_ID), false)
+val MINUTES_COMMENT_NONE_UK: Index = Internal.createIndex(DSL.name("minutes_comment_none_uk"), MinutesComment.MINUTES_COMMENT, arrayOf(MinutesComment.MINUTES_COMMENT.TENANT_ID, MinutesComment.MINUTES_COMMENT.MEETING_ID, MinutesComment.MINUTES_COMMENT.USER_ID), true)
+val MINUTES_COMMENT_REQUEST_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_comment_request_meeting_idx"), MinutesCommentRequest.MINUTES_COMMENT_REQUEST, arrayOf(MinutesCommentRequest.MINUTES_COMMENT_REQUEST.TENANT_ID, MinutesCommentRequest.MINUTES_COMMENT_REQUEST.MEETING_ID, MinutesCommentRequest.MINUTES_COMMENT_REQUEST.USER_ID), false)
+val MINUTES_COPY_SET_IDX: Index = Internal.createIndex(DSL.name("minutes_copy_set_idx"), MinutesCopy.MINUTES_COPY, arrayOf(MinutesCopy.MINUTES_COPY.TENANT_ID, MinutesCopy.MINUTES_COPY.MEETING_ID, MinutesCopy.MINUTES_COPY.SET_KEY, MinutesCopy.MINUTES_COPY.CREATED_AT), false)
+val MINUTES_COPY_UK: Index = Internal.createIndex(DSL.name("minutes_copy_uk"), MinutesCopy.MINUTES_COPY, arrayOf(MinutesCopy.MINUTES_COPY.TENANT_ID, MinutesCopy.MINUTES_COPY.MEETING_ID, MinutesCopy.MINUTES_COPY.STAGE, MinutesCopy.MINUTES_COPY.SOURCE_VERSION_ID, MinutesCopy.MINUTES_COPY.SET_KEY), true)
+val MINUTES_DEADLINE_IDX: Index = Internal.createIndex(DSL.name("minutes_deadline_idx"), Minutes.MINUTES, arrayOf(Minutes.MINUTES.TENANT_ID, Minutes.MINUTES.STATE, Minutes.MINUTES.COMMENTS_UNTIL), false)
 val MINUTES_DECISION_ENTRY_RATIFIES_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_entry_ratifies_idx"), MinutesDecisionEntry.MINUTES_DECISION_ENTRY, arrayOf(MinutesDecisionEntry.MINUTES_DECISION_ENTRY.TENANT_ID, MinutesDecisionEntry.MINUTES_DECISION_ENTRY.RATIFIES_DECISION_ID), false)
 val MINUTES_DECISION_FORUM_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_forum_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.FORUM_ID), false)
 val MINUTES_DECISION_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_meeting_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.MEETING_ID), false)
 val MINUTES_DECISION_SUBMISSION_IDX: Index = Internal.createIndex(DSL.name("minutes_decision_submission_idx"), MinutesDecision.MINUTES_DECISION, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.SUBMISSION_ID), false)
 val MINUTES_EVENT_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_event_meeting_idx"), MinutesEvent.MINUTES_EVENT, arrayOf(MinutesEvent.MINUTES_EVENT.TENANT_ID, MinutesEvent.MINUTES_EVENT.MEETING_ID, MinutesEvent.MINUTES_EVENT.AT), false)
 val MINUTES_FILE_UK: Index = Internal.createIndex(DSL.name("minutes_file_uk"), Minutes.MINUTES, arrayOf(Minutes.MINUTES.TENANT_ID, Minutes.MINUTES.FILE_ID), true)
+val MINUTES_FORUM_IDX: Index = Internal.createIndex(DSL.name("minutes_forum_idx"), Minutes.MINUTES, arrayOf(Minutes.MINUTES.TENANT_ID, Minutes.MINUTES.FORUM_ID, Minutes.MINUTES.STATE), false)
 val MINUTES_ITEM_NOTE_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_item_note_meeting_idx"), MinutesItemNote.MINUTES_ITEM_NOTE, arrayOf(MinutesItemNote.MINUTES_ITEM_NOTE.TENANT_ID, MinutesItemNote.MINUTES_ITEM_NOTE.MEETING_ID, MinutesItemNote.MINUTES_ITEM_NOTE.ITEM_ID), false)
+val MINUTES_LINKED_IDX: Index = Internal.createIndex(DSL.name("minutes_linked_idx"), Minutes.MINUTES, arrayOf(Minutes.MINUTES.TENANT_ID, Minutes.MINUTES.LINKED_MEETING_ID), false)
 val MINUTES_RESOLUTION_DECISION_IDX: Index = Internal.createIndex(DSL.name("minutes_resolution_decision_idx"), MinutesResolution.MINUTES_RESOLUTION, arrayOf(MinutesResolution.MINUTES_RESOLUTION.TENANT_ID, MinutesResolution.MINUTES_RESOLUTION.DECISION_ID), false)
 val MINUTES_RESOLUTION_IN_FORCE_UK: Index = Internal.createIndex(DSL.name("minutes_resolution_in_force_uk"), MinutesResolution.MINUTES_RESOLUTION, arrayOf(MinutesResolution.MINUTES_RESOLUTION.TENANT_ID, MinutesResolution.MINUTES_RESOLUTION.DECISION_ID), true)
 val MINUTES_RESOLUTION_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_resolution_meeting_idx"), MinutesResolution.MINUTES_RESOLUTION, arrayOf(MinutesResolution.MINUTES_RESOLUTION.TENANT_ID, MinutesResolution.MINUTES_RESOLUTION.MEETING_ID), false)

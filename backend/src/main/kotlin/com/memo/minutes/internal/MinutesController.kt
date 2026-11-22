@@ -91,10 +91,40 @@ data class MinutesItemResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val number: String,
 )
 
+/** A meeting the minutes refer to (the one approving them, the one they are linked to). */
+data class MinutesMeetingResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    val label: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val startsAt: Instant,
+)
+
+/** How the readers answered the circulation (flow AF4): for the officers. */
+data class MinutesAnswersResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val readers: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val noComments: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val suggestions: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val notYet: Int,
+)
+
+/** One redacted item of a copy, by its number only. */
+data class MinutesRedactionResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val itemId: UUID,
+    val number: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: RedactionKind,
+)
+
+/** A copy the readers get ("See the copy for…", flow AD4): what it redacts and who reads it. */
+data class MinutesCopySetResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val setKey: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val redacted: List<MinutesRedactionResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val readers: List<MinutesPerson>,
+)
+
 /**
- * A meeting's minutes as the secretaries see them while drafting (flow AD1–AD3): the stage and approval mode, the draft
- * (not to a secretary recused from any item, who cannot open it), the request in progress, the structure banner, the
- * submission items still undecided, and what the viewer may do.
+ * A meeting's minutes as the viewer reads them (flows AD–AG): the stage and approval mode for everyone who reads them;
+ * for the secretaries also the draft (not to one recused from any item, who cannot open it), the request in progress, the
+ * structure banner, the undecided submission items, the readers' answers and copies; the reviewer, the confirmer, the
+ * deadline and the approving or linked meeting; and what the viewer may do.
  */
 data class MinutesResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetingId: UUID,
@@ -111,14 +141,44 @@ data class MinutesResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val viewerRecused: Boolean,
     /** May make the draft or fill an item again now. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayGenerate: Boolean,
-    /** May open the draft in the editor now. */
+    /** May open the draft in the editor now (the reviewer: in review mode, their changes tracked). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayEdit: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+    /** How the viewer reads the minutes. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val viewerAccess: MinutesAccessKind = MinutesAccessKind.MANAGER,
+    /** What the viewer has to do: REVIEW, CONFIRM, COMMENT or READ; null when nothing. */
+    val myAction: String? = null,
+    val reviewer: MinutesPerson? = null,
+    /** Who approves the minutes ("Waiting for Dr F. Karim to approve"), once circulated. */
+    val confirmer: MinutesPerson? = null,
+    val commentsUntil: Instant? = null,
+    val circulatedAt: Instant? = null,
+    val approvedAt: Instant? = null,
+    val approvingMeeting: MinutesMeetingResponse? = null,
+    val linkedMeeting: MinutesMeetingResponse? = null,
+    /** The reviewer agreed: the secretary may circulate once their suggested changes are accepted. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agreed: Boolean = false,
+    /** The viewer has answered the circulation. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val answered: Boolean = false,
+    /** The officers: how the readers answered. */
+    val answers: MinutesAnswersResponse? = null,
+    /** The secretaries: the copies the readers get. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val copies: List<MinutesCopySetResponse> = emptyList(),
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val maySendForReview: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayReview: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayCirculate: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayWithdraw: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayEndCirculation: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayComment: Boolean = false,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayConfirm: Boolean = false,
+    /** May read their own copy now (`GET …/minutes/document`). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayReadCopy: Boolean = false,
 )
 
 /**
- * The minutes page (design E06 §3): read by the committee's secretaries and `forums.manage` while the minutes are a draft
- * (T6 opens them to the reviewer and the readers of later stages); 404 to everyone else and before the meeting is held.
+ * The minutes page (design E06 §3): the committee's secretaries and `forums.manage` once the meeting is held; the reviewer
+ * while the draft is with them; the readers of the circulated and approved minutes ([MinutesReading]). 404 to everyone
+ * else and before the meeting is held.
  */
 @Service
 class MinutesPages(
@@ -130,36 +190,170 @@ class MinutesPages(
     private val files: Files,
     private val editing: DocumentEditing,
     private val users: UserSummaries,
+    private val reading: MinutesReading,
+    private val people: MinutesPeople,
+    private val review: MinutesReview,
+    private val comments: MinutesCommentStore,
+    private val copies: MinutesCopies,
 ) {
     fun view(meetingId: UUID): MinutesResponse {
-        val view = viewers.of(meetingId)
-        val meeting = meetings.find(meetingId)?.takeIf { view.manages } ?: throw MinutesNotFoundException("minutes")
+        val view = reading.actorView(meetingId)
+        val meeting = meetings.find(meetingId)
         // A meeting held before T5 has no row until its first request: it reads as an empty draft.
         val stored = store.find(meetingId)
-        val row = stored ?: drafts.unsaved(meeting) ?: throw MinutesNotFoundException("minutes")
-        val recused = drafts.recusedFromAny(meetingId, view.userId)
-        val current =
-            row.fileId
-                ?.let(files::info)
-                ?.currentVersionId
-                ?.let(files::version)
-        val idle = meeting.status == MeetingStatus.HELD && !recused && row.workState != WorkState.PENDING
+        val row = (stored ?: meeting?.let(drafts::unsaved))?.takeIf { stored != null || view.manages }
+        val readers = row?.let(people::readers).orEmpty()
+        val reader = row?.let { reading.readerOf(view, it, readers) }
+        if (meeting == null || row == null || reader == null) throw MinutesNotFoundException("minutes")
+        val scene = scene(reader, meeting, stored != null, readers)
+        return base(scene)
+            .copy(
+                viewerAccess = reader.access,
+                myAction = reading.action(reader, readers),
+                reviewer = row.reviewerId?.takeIf { row.state != MinutesStage.DRAFT || scene.manager }?.let(scene.person),
+                confirmer = scene.confirmer?.userId?.let(scene.person),
+                commentsUntil = row.commentsUntil.takeIf { row.state in MinutesReading.READ_STAGES || scene.manager },
+                circulatedAt = row.circulatedAt,
+                approvedAt = row.approvedAt,
+                approvingMeeting = row.approvingMeetingId?.let(::meetingOf),
+                linkedMeeting = row.linkedMeetingId?.let(::meetingOf),
+                agreed = scene.agreed,
+                answered = view.userId in scene.answered,
+                answers = answers(scene),
+                copies = if (scene.manager && row.state in MinutesCopies.COPYING) copySets(row, view.agenda.items) else emptyList(),
+            ).let { mays(scene, it) }
+    }
+
+    /** What the page is built from, read once. */
+    private class Scene(
+        val reader: MinutesReader,
+        val meeting: com.memo.meeting.MeetingRef,
+        val stored: Boolean,
+        val readers: Map<UUID, ReaderKind>,
+        val current: FileVersionInfo?,
+        val recused: Boolean,
+        val confirmer: MinutesOfficer?,
+        val answered: Set<UUID>,
+        val secretaries: Set<UUID>,
+        val agreed: Boolean,
+        val person: (UUID) -> MinutesPerson,
+    ) {
+        val row: MinutesRow get() = reader.row
+        val manager: Boolean get() = reader.access == MinutesAccessKind.MANAGER
+        val held: Boolean get() = meeting.status == MeetingStatus.HELD
+        val reviewing: Boolean get() = row.state == MinutesStage.CHAIR_REVIEW && row.reviewerId == reader.userId
+        val idle: Boolean get() = held && !recused && row.workState != WorkState.PENDING
+        val officer: Boolean get() = manager || reviewing || confirmer?.userId == reader.userId
+
+        /** A reader of circulated minutes who answers them (secretaries answer comments instead). */
+        val comments: Boolean
+            get() = row.state == MinutesStage.CIRCULATED && readers.containsKey(reader.userId) && reader.userId !in secretaries
+    }
+
+    private fun scene(
+        reader: MinutesReader,
+        meeting: com.memo.meeting.MeetingRef,
+        stored: Boolean,
+        readers: Map<UUID, ReaderKind>,
+    ): Scene {
+        val row = reader.row
+        val confirmer = if (row.state in MinutesReading.READ_STAGES) people.confirmer(row) else null
+        val names = users.names(listOfNotNull(row.reviewerId, confirmer?.userId).toSet())
+        return Scene(
+            reader = reader,
+            meeting = meeting,
+            stored = stored,
+            readers = readers,
+            current =
+                row.fileId
+                    ?.let(files::info)
+                    ?.currentVersionId
+                    ?.let(files::version),
+            recused = drafts.recusedFromAny(row.meetingId, reader.userId),
+            confirmer = confirmer,
+            answered = people.answeredBy(row.meetingId),
+            secretaries = people.secretaries(row.forumId),
+            agreed = reader.access == MinutesAccessKind.MANAGER && row.state == MinutesStage.DRAFT && review.agreementStands(row.meetingId),
+            person = { id -> MinutesPerson(id, names[id].orEmpty()) },
+        )
+    }
+
+    /** The page as the secretaries drafting it see it (T5), the draft and the structure theirs only. */
+    private fun base(s: Scene): MinutesResponse {
+        val row = s.row
+        val manager = s.manager
         return MinutesResponse(
-            meetingId = meetingId,
-            forumId = meeting.forumId,
+            meetingId = row.meetingId,
+            forumId = row.forumId,
             state = row.state,
             approval = row.policy.approval,
-            heldAt = stored?.heldAt,
-            draft = current?.takeIf { !recused }?.let { draft(checkNotNull(row.fileId), it) },
-            work = work(row),
-            structure = structure(row, current),
-            items = MinutesTemplateData.minuted(view.agenda.items).map { MinutesItemResponse(it.id, checkNotNull(it.number)) },
-            undecided = source.undecided(meetingId).map { MinutesItemResponse(it.id, it.number) },
-            viewerRecused = recused,
-            mayGenerate = idle && row.state == MinutesStage.DRAFT,
-            mayEdit = idle && current != null && row.state in MinutesDraftPurpose.EDITABLE && editing.enabled,
+            heldAt = row.heldAt.takeIf { s.stored },
+            draft = s.current?.takeIf { manager && !s.recused }?.let { draft(checkNotNull(row.fileId), it) },
+            work = work(row).takeIf { manager },
+            structure = if (manager) structure(row, s.current) else EMPTY_STRUCTURE,
+            items = MinutesTemplateData.minuted(s.reader.view.agenda.items).map { MinutesItemResponse(it.id, checkNotNull(it.number)) },
+            undecided = if (manager) source.undecided(row.meetingId).map { MinutesItemResponse(it.id, it.number) } else emptyList(),
+            viewerRecused = s.recused,
+            mayGenerate = manager && s.idle && row.state == MinutesStage.DRAFT,
+            mayEdit =
+                editing.enabled && s.current != null && s.held &&
+                    ((manager && s.idle && row.state in MinutesDraftPurpose.EDITABLE) || s.reviewing),
             version = row.version,
         )
+    }
+
+    /** What the viewer may do now (the page's buttons). */
+    private fun mays(
+        s: Scene,
+        page: MinutesResponse,
+    ): MinutesResponse {
+        val row = s.row
+        val allows = { step: MinutesTransition -> MinutesStateMachine.allows(row.state, step, row.policy.approval) }
+        val secretary = s.manager && !s.recused && s.held && s.current != null
+        return page.copy(
+            maySendForReview = secretary && allows(MinutesTransition.SEND_FOR_REVIEW),
+            mayReview = s.reviewing || (s.manager && row.state == MinutesStage.CHAIR_REVIEW),
+            mayCirculate = secretary && row.state == MinutesStage.DRAFT && (s.agreed || people.reviewer(row) == null),
+            mayWithdraw = s.manager && allows(MinutesTransition.WITHDRAW),
+            mayEndCirculation = s.manager && allows(MinutesTransition.END_CIRCULATION),
+            mayComment = s.comments,
+            mayConfirm = row.state == MinutesStage.AWAITING_CHAIR && s.confirmer?.userId == s.reader.userId,
+            mayReadCopy = row.state in MinutesCopies.COPYING,
+        )
+    }
+
+    private fun meetingOf(id: UUID): MinutesMeetingResponse? =
+        meetings.find(id)?.let { MinutesMeetingResponse(it.id, it.label, it.startsAt) }
+
+    /** How the readers answered, for the officers once the minutes are circulated. */
+    private fun answers(s: Scene): MinutesAnswersResponse? {
+        if (!s.officer || s.row.state !in MinutesReading.READ_STAGES) return null
+        val all = comments.of(s.row.meetingId)
+        val required = s.readers.filter { it.value != ReaderKind.ASKED && it.key !in s.secretaries }.keys
+        return MinutesAnswersResponse(
+            readers = required.size,
+            noComments = all.count { it.kind == CommentKind.NO_COMMENTS },
+            suggestions = all.count { it.kind == CommentKind.SUGGESTION },
+            notYet = required.count { it !in s.answered },
+        )
+    }
+
+    private fun copySets(
+        row: MinutesRow,
+        agenda: List<com.memo.meeting.AgendaItemRef>,
+    ): List<MinutesCopySetResponse> {
+        val numbers = agenda.associate { it.id to it.number }
+        val sets = copies.sets(row)
+        val names = users.names(sets.values.flatten().toSet())
+        return sets.entries
+            .sortedBy { it.key.redacted.size }
+            .map { (set, readers) ->
+                MinutesCopySetResponse(
+                    setKey = set.key,
+                    redacted = set.redacted.map { MinutesRedactionResponse(it.itemId, numbers[it.itemId], it.kind) },
+                    readers = readers.sorted().map { MinutesPerson(it, names[it].orEmpty()) },
+                )
+            }
     }
 
     private fun draft(
@@ -200,6 +394,11 @@ class MinutesPages(
         comments = row.comments,
         checkedAt = row.checkedAt,
     )
+
+    private companion object {
+        /** The structure banner as anyone but the secretaries gets it: nothing. */
+        val EMPTY_STRUCTURE = MinutesStructureResponse(null, false, null, emptyList(), 0, 0, null)
+    }
 }
 
 /** Drafting the minutes (design E06 §3, flow AD; ADR-0066). The draft is edited through docedit's edit sessions. */

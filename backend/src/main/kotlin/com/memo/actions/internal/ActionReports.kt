@@ -9,6 +9,7 @@ import com.memo.meeting.MeetingRef
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.Meetings
 import com.memo.org.OrgDirectory
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.stereotype.Service
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
@@ -81,6 +82,37 @@ data class ReportSnapshot(
     val cancelReason: String? = null,
 )
 
+/** What a correction row shows (section 6): the correction in words, numbers only, and when it was approved. */
+data class CorrectionSnapshot(
+    val label: String = "",
+    val approvedAt: Instant? = null,
+)
+
+/**
+ * A correction to earlier minutes for section 6 (design E07 §1.12, §11): one per approved correction of the committee's
+ * minutes since the previous meeting, with the corrected item's columns and level, so the rule gives each reader theirs.
+ */
+data class ReportCorrection(
+    /** The correction in words, without the item's title or the minutes' text ("Minutes of BRC 3/2026, item 5 corrected"). */
+    val label: String,
+    val approvedAt: Instant,
+    val itemId: UUID?,
+    val item: ItemCopy?,
+    val classificationId: UUID,
+)
+
+/**
+ * Section 6's source (design E07 §11): E06 T8 publishes `MinutesCorrections.since(forumId, since)` in the minutes module,
+ * and an adapter here provides this port from it. Until then no bean provides it and the section is empty.
+ */
+fun interface ReportCorrections {
+    /** [forumId]'s approved corrections to earlier minutes after [since] (every one when null), oldest first. */
+    fun since(
+        forumId: UUID,
+        since: Instant?,
+    ): List<ReportCorrection>
+}
+
 /** A row a reader may see: its place, its section, its action and its snapshot (JSON). */
 data class ReportRowSeen(
     val position: Int,
@@ -95,7 +127,7 @@ data class ReportRowSeen(
  * meeting's agenda with a MATTERS_ARISING item, and freezes it: a later revision gets its own report, earlier ones stay.
  * For the meeting's committee, every issued action:
  * 1. done, to be verified; 2. overdue; 3. open, due date first; 4. closed and 5. cancelled since the previous meeting's
- * start (every one when there was none); 6. corrections to earlier minutes (none until E06 T8).
+ * start (every one when there was none); 6. corrections to earlier minutes ([ReportCorrections]; none until E06 T8).
  * An action a secretary held back from this meeting is left out and counted for officers. At most [ROWS_MAX] rows are
  * shown: beyond that, the latest-due open actions (then the last rows) are counted as "more". Audited
  * `actions.report.built` with the rows per section and the content's SHA-256.
@@ -110,6 +142,7 @@ class ActionReports(
     private val org: OrgDirectory,
     private val audit: AuditLog,
     private val json: JsonMapper,
+    private val corrections: ObjectProvider<ReportCorrections>,
     private val clock: Clock,
 ) {
     /** The report of [meetingId]'s revision [revision], built once; null when the revision has no MATTERS_ARISING item. */
@@ -131,8 +164,9 @@ class ActionReports(
                 .filter { it.id in held }
                 .distinctBy { it.id }
         val snapshots = snapshots(shown.map { it.second }, today)
+        val fixes = corrections(meeting.forumId, since, ActionReports.ROWS_MAX - shown.size)
         val rows =
-            shown.map { (section, row) -> input(section, row, json.writeValueAsString(snapshots.getValue(row.id))) } +
+            shown.map { (section, row) -> input(section, row, json.writeValueAsString(snapshots.getValue(row.id))) } + fixes +
                 heldRows.map { input(ActionReportSection.HELD_BACK, it, EMPTY) } +
                 more.map { input(ActionReportSection.MORE, it, EMPTY) }
         val sha = ActionRules.sha256(rows.joinToString("\n") { "${it.section}|${it.actionId}|${it.snapshot}" })
@@ -146,7 +180,7 @@ class ActionReports(
                 previousMeetingId = previous?.id,
                 since = since,
                 builtAt = clock.instant().truncatedTo(ChronoUnit.MICROS),
-                rowCount = shown.size,
+                rowCount = shown.size + fixes.size,
                 moreCount = more.size,
                 heldCount = heldRows.size,
                 contentSha256 = sha,
@@ -162,7 +196,7 @@ class ActionReports(
                     "revision" to revision,
                     "itemId" to item.id.toString(),
                     "previousMeetingId" to previous?.id?.toString(),
-                    "rows" to ActionReportSection.SHOWN.associate { s -> s.name to shown.count { it.first == s } },
+                    "rows" to ActionReportSection.SHOWN.associate { s -> s.name to rows.count { it.section == s } },
                     "heldBack" to heldRows.size,
                     "more" to more.size,
                     "contentSha256" to sha,
@@ -170,6 +204,24 @@ class ActionReports(
         )
         return header
     }
+
+    /**
+     * Section 6: the corrections to earlier minutes approved since [since] ([ReportCorrections], E06 T8's
+     * `MinutesCorrections.since`), at most [room]; none while no module provides them.
+     */
+    private fun corrections(
+        forumId: UUID,
+        since: Instant?,
+        room: Int,
+    ): List<ReportRowInput> =
+        corrections.ifAvailable
+            ?.since(forumId, since)
+            .orEmpty()
+            .take(room.coerceAtLeast(0))
+            .map { c ->
+                val snapshot = json.writeValueAsString(CorrectionSnapshot(c.label, c.approvedAt))
+                ReportRowInput(ActionReportSection.CORRECTIONS, null, snapshot, c.item, c.itemId, c.classificationId)
+            }
 
     /** [meeting]'s MATTERS_ARISING item in its latest revision [revision], when that revision has no report yet. */
     private fun mattersArising(

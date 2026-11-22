@@ -583,6 +583,29 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(asked.response.status).describedAs(uri).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(asked.response.contentAsString).doesNotContain(it) }
                 }
+                // E06 T6: the review, the confirmation and the stamps: nothing on a meeting not held (404), or refused (403).
+                val versioned = mapOf("Idempotency-Key" to UUID.randomUUID().toString(), "If-Match" to "\"0\"")
+                listOf(
+                    send(HttpMethod.POST, "$base/review", person, """{"decision":"AGREE"}""", versioned),
+                    send(HttpMethod.POST, "$base/confirm", person, "{}", versioned),
+                    send(HttpMethod.POST, "$base/approvals/${UUID.randomUUID()}/check", person),
+                    read("$base/approvals", person.session),
+                ).forEach { answer ->
+                    assertThat(answer.response.status).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+            },
+            // E06 T6: the reader's copy and the comments: the readers of circulated minutes only; nothing on a meeting not held.
+            Surface.MINUTES_COPIES to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}/minutes"
+                listOf(
+                    read("$base/document", person.session),
+                    read("$base/comments", person.session),
+                    send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.recused}","text":"x"}"""),
+                ).forEach { answer ->
+                    assertThat(answer.response.status).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
             },
             // E07 T7: the next meeting's action taken report, on screen and as a PDF: rows by the one rule, so none of an item
             // the person does not see in full (or is recused from), and no canary in the PDF's text; 404 to the guest.

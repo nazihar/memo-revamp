@@ -318,7 +318,14 @@ class MinutesDraftIT : ReleaseFixture() {
         // Approved minutes freeze the decisions.
         transactions.inTenant(tenant.id) {
             val row = checkNotNull(minutesStore.lock(r.meeting.id))
-            check(minutesStore.update(row, row.copy(state = MinutesStage.APPROVED)))
+            // (as T6's confirmation leaves them: approved, with the time and the approval)
+            val approved =
+                row.copy(
+                    state = MinutesStage.APPROVED,
+                    approvedAt = java.time.Instant.now(),
+                    confirmedApprovalId = UUID.randomUUID(),
+                )
+            check(minutesStore.update(row, approved))
         }
         assertThat(refusal { decide(r, loan.item, correction.copy(reason = "Again")) }).isEqualTo("FROZEN")
     }

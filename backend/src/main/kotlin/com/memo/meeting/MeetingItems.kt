@@ -1,6 +1,8 @@
 package com.memo.meeting
 
 import com.memo.forum.AgendaSectionKind
+import com.memo.forum.ForumDirectory
+import com.memo.forum.ForumRole
 import com.memo.forum.StandingKind
 import com.memo.forum.SubmissionPurpose
 import com.memo.meeting.internal.AgendaRules
@@ -293,6 +295,7 @@ class MeetingViewers(
     private val paperAccess: PaperAccess,
     private val revisions: RevisionStore,
     private val items: MeetingItems,
+    private val directory: ForumDirectory,
 ) {
     /** The actor on [meetingId]; the meeting module's 404 when they do not see it or nobody is signed in. */
     fun of(meetingId: UUID): MeetingView = view(guard.requireVisible(meetingId).first)
@@ -300,9 +303,36 @@ class MeetingViewers(
     /** The actor on [meetingId]; null when they do not see it (a list across meetings skips it). */
     fun find(meetingId: UUID): MeetingView? = store.find(meetingId)?.takeIf { access.relation(it) != null }?.let(::view)
 
+    /**
+     * [userId] on [meetingId] as the paper rule sees them today (design E06 §1.9: a reader's copy of the minutes, the
+     * officers' preview "as"): their seats in office and their clearance, not their grants (another user's `forums.manage`
+     * and `forum.read` are not read, as for the agenda's preview). [asMember]: read as a member of the audience would be,
+     * for someone outside it asked for comments on the minutes (their clearance and recusals still apply). Null when there
+     * is no such meeting.
+     */
+    fun ofUser(
+        meetingId: UUID,
+        userId: UUID,
+        asMember: Boolean = false,
+    ): MeetingView? {
+        val meeting = store.find(meetingId) ?: return null
+        val seen = viewers.of(meeting, userId)
+        val viewer = if (asMember && !seen.member) seen.copy(member = true, membersOnly = false) else seen
+        val secretary = directory.membersOn(meeting.forumId).any { it.userId == userId && it.role == ForumRole.SECRETARY }
+        return view(meeting, userId, viewer, secretary)
+    }
+
     private fun view(meeting: MeetingRow): MeetingView {
         val user = checkNotNull(actorOrNull()) { "a meeting view needs a signed-in user" }
-        val viewer = checkNotNull(viewers.actor(meeting))
+        return view(meeting, user, checkNotNull(viewers.actor(meeting)), access.manages(meeting.forumId))
+    }
+
+    private fun view(
+        meeting: MeetingRow,
+        user: UUID,
+        viewer: PaperViewer,
+        manages: Boolean,
+    ): MeetingView {
         val agenda = items.agenda(meeting.id)
         val head = revisions.heads(meeting.id).lastOrNull()
         val published = head?.let { paperAccess.revision(viewer, it.id) } ?: Visibility(emptyMap(), emptySet())
@@ -318,7 +348,6 @@ class MeetingViewers(
             } else {
                 Visibility(emptyMap(), emptySet())
             }
-        val manages = access.manages(meeting.forumId)
         return MeetingView(
             meeting = meeting.ref(),
             userId = user,

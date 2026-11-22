@@ -5,11 +5,24 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MINUTES_DEADLINE_IDX
 import com.memo.jooq.indexes.MINUTES_FILE_UK
+import com.memo.jooq.indexes.MINUTES_FORUM_IDX
+import com.memo.jooq.indexes.MINUTES_LINKED_IDX
 import com.memo.jooq.indexes.MINUTES_STATE_IDX
+import com.memo.jooq.keys.MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MINUTES_COMMENT_REQUEST__MINUTES_COMMENT_REQUEST_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MINUTES_COMMENT__MINUTES_COMMENT_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_EVENT__MINUTES_EVENT_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_PKEY
+import com.memo.jooq.keys.MINUTES_REMINDER__MINUTES_REMINDER_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.tables.MinutesApproval.MinutesApprovalPath
+import com.memo.jooq.tables.MinutesComment.MinutesCommentPath
+import com.memo.jooq.tables.MinutesCommentRequest.MinutesCommentRequestPath
+import com.memo.jooq.tables.MinutesCopy.MinutesCopyPath
 import com.memo.jooq.tables.MinutesEvent.MinutesEventPath
+import com.memo.jooq.tables.MinutesReminder.MinutesReminderPath
 import com.memo.jooq.tables.records.MinutesRecord
 
 import java.time.OffsetDateTime
@@ -191,6 +204,66 @@ open class Minutes(
      */
     val VERSION: TableField<MinutesRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.minutes.reviewer_id</code>.
+     */
+    val REVIEWER_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("reviewer_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.reviewer_role</code>.
+     */
+    val REVIEWER_ROLE: TableField<MinutesRecord, String?> = createField(DSL.name("reviewer_role"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.minutes.comments_until</code>.
+     */
+    val COMMENTS_UNTIL: TableField<MinutesRecord, OffsetDateTime?> = createField(DSL.name("comments_until"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes.circulated_at</code>.
+     */
+    val CIRCULATED_AT: TableField<MinutesRecord, OffsetDateTime?> = createField(DSL.name("circulated_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes.linked_meeting_id</code>.
+     */
+    val LINKED_MEETING_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("linked_meeting_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.linked_item_id</code>.
+     */
+    val LINKED_ITEM_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("linked_item_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.approving_meeting_id</code>.
+     */
+    val APPROVING_MEETING_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("approving_meeting_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.approving_decision_id</code>.
+     */
+    val APPROVING_DECISION_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("approving_decision_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.awaiting_since</code>.
+     */
+    val AWAITING_SINCE: TableField<MinutesRecord, OffsetDateTime?> = createField(DSL.name("awaiting_since"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes.confirmed_approval_id</code>.
+     */
+    val CONFIRMED_APPROVAL_ID: TableField<MinutesRecord, UUID?> = createField(DSL.name("confirmed_approval_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes.approved_at</code>.
+     */
+    val APPROVED_AT: TableField<MinutesRecord, OffsetDateTime?> = createField(DSL.name("approved_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes.copies_seq</code>.
+     */
+    val COPIES_SEQ: TableField<MinutesRecord, Int?> = createField(DSL.name("copies_seq"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<MinutesRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MinutesRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MinutesRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -223,8 +296,72 @@ open class Minutes(
         override fun `as`(alias: Table<*>): MinutesPath = MinutesPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_FILE_UK, MINUTES_STATE_IDX)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_DEADLINE_IDX, MINUTES_FILE_UK, MINUTES_FORUM_IDX, MINUTES_LINKED_IDX, MINUTES_STATE_IDX)
     override fun getPrimaryKey(): UniqueKey<MinutesRecord> = MINUTES_PKEY
+
+    private lateinit var _minutesApproval: MinutesApprovalPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_approval</code> table
+     */
+    fun minutesApproval(): MinutesApprovalPath {
+        if (!this::_minutesApproval.isInitialized)
+            _minutesApproval = MinutesApprovalPath(this, null, MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesApproval;
+    }
+
+    val minutesApproval: MinutesApprovalPath
+        get(): MinutesApprovalPath = minutesApproval()
+
+    private lateinit var _minutesCommentRequest: MinutesCommentRequestPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_comment_request</code> table
+     */
+    fun minutesCommentRequest(): MinutesCommentRequestPath {
+        if (!this::_minutesCommentRequest.isInitialized)
+            _minutesCommentRequest = MinutesCommentRequestPath(this, null, MINUTES_COMMENT_REQUEST__MINUTES_COMMENT_REQUEST_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesCommentRequest;
+    }
+
+    val minutesCommentRequest: MinutesCommentRequestPath
+        get(): MinutesCommentRequestPath = minutesCommentRequest()
+
+    private lateinit var _minutesComment: MinutesCommentPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_comment</code> table
+     */
+    fun minutesComment(): MinutesCommentPath {
+        if (!this::_minutesComment.isInitialized)
+            _minutesComment = MinutesCommentPath(this, null, MINUTES_COMMENT__MINUTES_COMMENT_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesComment;
+    }
+
+    val minutesComment: MinutesCommentPath
+        get(): MinutesCommentPath = minutesComment()
+
+    private lateinit var _minutesCopy: MinutesCopyPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.minutes_copy</code>
+     * table
+     */
+    fun minutesCopy(): MinutesCopyPath {
+        if (!this::_minutesCopy.isInitialized)
+            _minutesCopy = MinutesCopyPath(this, null, MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesCopy;
+    }
+
+    val minutesCopy: MinutesCopyPath
+        get(): MinutesCopyPath = minutesCopy()
 
     private lateinit var _minutesEvent: MinutesEventPath
 
@@ -241,13 +378,35 @@ open class Minutes(
 
     val minutesEvent: MinutesEventPath
         get(): MinutesEventPath = minutesEvent()
+
+    private lateinit var _minutesReminder: MinutesReminderPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_reminder</code> table
+     */
+    fun minutesReminder(): MinutesReminderPath {
+        if (!this::_minutesReminder.isInitialized)
+            _minutesReminder = MinutesReminderPath(this, null, MINUTES_REMINDER__MINUTES_REMINDER_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesReminder;
+    }
+
+    val minutesReminder: MinutesReminderPath
+        get(): MinutesReminderPath = minutesReminder()
     override fun getChecks(): List<Check<MinutesRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("minutes_approved_ck"), "(((state = 'APPROVED'::text) = ((approved_at IS NOT NULL) AND (confirmed_approval_id IS NOT NULL))))", true),
+        Internal.createCheck(this, DSL.name("minutes_approving_ck"), "(((approving_meeting_id IS NULL) = (approving_decision_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_check"), "(((work_kind IS NULL) = (work_seq = 0)))", true),
         Internal.createCheck(this, DSL.name("minutes_check1"), "(((work_kind <> 'ITEM'::text) OR (work_item_id IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_check2"), "(((work_state = 'FAILED'::text) = (work_error IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_check3"), "(((checked_version_id IS NULL) = (structure_ok IS NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_comments_check"), "((comments >= 0))", true),
+        Internal.createCheck(this, DSL.name("minutes_copies_seq_check"), "((copies_seq >= 0))", true),
+        Internal.createCheck(this, DSL.name("minutes_linked_ck"), "(((linked_meeting_id IS NULL) = (linked_item_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_policy_check"), "(((jsonb_typeof(policy) = 'object'::text) AND (octet_length((policy)::text) <= 8192)))", true),
+        Internal.createCheck(this, DSL.name("minutes_reviewer_ck"), "(((reviewer_id IS NULL) = (reviewer_role IS NULL)))", true),
+        Internal.createCheck(this, DSL.name("minutes_reviewer_role_check"), "((reviewer_role = ANY (ARRAY['CHAIR'::text, 'VICE_CHAIR'::text])))", true),
         Internal.createCheck(this, DSL.name("minutes_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'CHAIR_REVIEW'::text, 'CIRCULATED'::text, 'AWAITING_CHAIR'::text, 'APPROVED'::text])))", true),
         Internal.createCheck(this, DSL.name("minutes_structure_problems_check"), "(((jsonb_typeof(structure_problems) = 'array'::text) AND (octet_length((structure_problems)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("minutes_tracked_changes_check"), "((tracked_changes >= 0))", true),

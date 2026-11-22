@@ -14,6 +14,7 @@ import com.memo.memo.internal.MemoReadable
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.Latency
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aPassword
 import com.memo.testsupport.aTestTenant
@@ -177,17 +178,7 @@ class NotesAccessPerformanceIT : IntegrationTest() {
         assertThat(p95).isLessThan(RECEIPTS_BUDGET_MS * 2)
     }
 
-    private fun p95(call: () -> Unit): Long {
-        repeat(WARM_UP) { call() }
-        val times =
-            (1..RUNS)
-                .map {
-                    val start = System.nanoTime()
-                    call()
-                    (System.nanoTime() - start) / NANOS_PER_MILLI
-                }.sorted()
-        return times[(RUNS * 95 / 100) - 1]
-    }
+    private fun p95(call: () -> Unit): Long = Latency.p95(WARM_UP, RUNS, call = call)
 
     private fun <T> asReader(
         write: Boolean = false,
@@ -208,7 +199,6 @@ class NotesAccessPerformanceIT : IntegrationTest() {
         const val PAGE = 25
         const val WARM_UP = 5
         const val RUNS = 20
-        const val NANOS_PER_MILLI = 1_000_000L
         const val SHEET_BUDGET_MS = 100L
         const val POST_BUDGET_MS = 150L
         const val LIST_BUDGET_MS = 100L

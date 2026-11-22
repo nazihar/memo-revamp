@@ -173,6 +173,10 @@ data class MinutesResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayConfirm: Boolean = false,
     /** May read their own copy now (`GET …/minutes/document`). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayReadCopy: Boolean = false,
+    /** When the last correction to the approved minutes was approved ("Corrected on …", E06 T8); null when none was. */
+    val correctedAt: Instant? = null,
+    /** May propose a correction to the approved minutes (a secretary or `forums.manage`; per item, not recused from it). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayProposeCorrection: Boolean = false,
 )
 
 /**
@@ -195,6 +199,7 @@ class MinutesPages(
     private val review: MinutesReview,
     private val comments: MinutesCommentStore,
     private val copies: MinutesCopies,
+    private val corrections: MinutesCorrectionStore,
 ) {
     fun view(meetingId: UUID): MinutesResponse {
         val view = reading.actorView(meetingId)
@@ -215,6 +220,7 @@ class MinutesPages(
                 commentsUntil = row.commentsUntil.takeIf { row.state in MinutesReading.READ_STAGES || scene.manager },
                 circulatedAt = row.circulatedAt,
                 approvedAt = row.approvedAt,
+                correctedAt = row.takeIf { it.state == MinutesStage.APPROVED }?.let { corrections.correctedAt(it.meetingId) },
                 approvingMeeting = row.approvingMeetingId?.let(::meetingOf),
                 linkedMeeting = row.linkedMeetingId?.let(::meetingOf),
                 agreed = scene.agreed,
@@ -319,6 +325,7 @@ class MinutesPages(
             mayComment = s.comments,
             mayConfirm = row.state == MinutesStage.AWAITING_CHAIR && s.confirmer?.userId == s.reader.userId,
             mayReadCopy = row.state in MinutesCopies.COPYING,
+            mayProposeCorrection = s.manager && row.state == MinutesStage.APPROVED,
         )
     }
 

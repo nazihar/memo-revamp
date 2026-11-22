@@ -176,6 +176,10 @@ enum class NotificationKind(
     MINUTES_COMMENTS_CLOSING(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_COMMENTS_CLOSING),
     MINUTES_CONFIRMATION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CONFIRMATION_REQUESTED),
     MINUTES_APPROVED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_APPROVED),
+
+    // A correction to approved minutes proposed by a secretary (E06 T8), to the approver (the chair, else the vice-chair):
+    // the same parameters; never the correction's text, reason or item.
+    MINUTES_CORRECTION_PROPOSED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CORRECTION_PROPOSED),
     MINUTES_COMMENT_ADDED(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_OVERDUE(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_READY(NotificationCategory.WORKFLOW, null),
@@ -187,6 +191,11 @@ enum class NotificationKind(
     // ISO) for the new action. Never the action's title, text or the item (ADR-0067).
     ACTION_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ASSIGNED),
     ACTION_SOURCE_CORRECTED(NotificationCategory.WORKFLOW, null),
+
+    // A follow-up memo of an action was decided (Phase 4 E07 T6, design E07 §1.11): to the holder of the owner's task, in
+    // the app (the email comes in the daily digest, T5). Parameters `committee`, `reference`, `organisation`, `link` and
+    // `outcome` (APPROVED, REJECTED, WITHDRAWN or CANCELLED). Never the memo's or the action's text.
+    ACTION_MEMO_DECIDED(NotificationCategory.WORKFLOW, null),
 
     // Progress, dates, owners and endings (E07 T4, design E07 §2.3): the owner of an action changed (to the previous and
     // the new owner, in the app and by email); a secretary recorded the risk accepted on the chair's behalf (to the chair,

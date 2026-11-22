@@ -111,6 +111,9 @@ data class ApprovalRow(
     val previousHash: String?,
     val recordHash: String,
     val at: Instant,
+    /** A CORRECTION approval (E06 T8): the correction it approves and the SHA-256 of what it says. */
+    val correctionId: UUID? = null,
+    val correctionSha256: String? = null,
 )
 
 /** The sweep's reminders on minutes (design E06 §9 (j)–(l)). */
@@ -425,6 +428,8 @@ class MinutesApprovalStore(
             .set(a.PREVIOUS_HASH, row.previousHash)
             .set(a.RECORD_HASH, row.recordHash)
             .set(a.AT, row.at.atOffset(ZoneOffset.UTC))
+            .set(a.CORRECTION_ID, row.correctionId)
+            .set(a.CORRECTION_SHA256, row.correctionSha256)
             .execute()
     }
 
@@ -472,6 +477,8 @@ class MinutesApprovalStore(
             previousHash = previousHash,
             recordHash = recordHash,
             at = at.toInstant(),
+            correctionId = correctionId,
+            correctionSha256 = correctionSha256,
         )
 }
 

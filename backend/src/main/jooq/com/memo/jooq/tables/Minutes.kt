@@ -14,6 +14,7 @@ import com.memo.jooq.keys.MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_I
 import com.memo.jooq.keys.MINUTES_COMMENT_REQUEST__MINUTES_COMMENT_REQUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_COMMENT__MINUTES_COMMENT_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MINUTES_CORRECTION__MINUTES_CORRECTION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_EVENT__MINUTES_EVENT_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_PKEY
 import com.memo.jooq.keys.MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_MEETING_ID_FKEY
@@ -22,6 +23,7 @@ import com.memo.jooq.tables.MinutesApproval.MinutesApprovalPath
 import com.memo.jooq.tables.MinutesComment.MinutesCommentPath
 import com.memo.jooq.tables.MinutesCommentRequest.MinutesCommentRequestPath
 import com.memo.jooq.tables.MinutesCopy.MinutesCopyPath
+import com.memo.jooq.tables.MinutesCorrection.MinutesCorrectionPath
 import com.memo.jooq.tables.MinutesEvent.MinutesEventPath
 import com.memo.jooq.tables.MinutesRecord.MinutesRecordPath
 import com.memo.jooq.tables.MinutesReminder.MinutesReminderPath
@@ -364,6 +366,22 @@ open class Minutes(
 
     val minutesCopy: MinutesCopyPath
         get(): MinutesCopyPath = minutesCopy()
+
+    private lateinit var _minutesCorrection: MinutesCorrectionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_correction</code> table
+     */
+    fun minutesCorrection(): MinutesCorrectionPath {
+        if (!this::_minutesCorrection.isInitialized)
+            _minutesCorrection = MinutesCorrectionPath(this, null, MINUTES_CORRECTION__MINUTES_CORRECTION_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _minutesCorrection;
+    }
+
+    val minutesCorrection: MinutesCorrectionPath
+        get(): MinutesCorrectionPath = minutesCorrection()
 
     private lateinit var _minutesEvent: MinutesEventPath
 

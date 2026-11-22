@@ -91,10 +91,15 @@ describe('minutes notifications (design E06 §2)', () => {
       'The minutes of Board Risk Committee on 2026-12-12 are ready for your approval',
     )
     expect(templateLabel(english, 'MINUTES_APPROVED')).toBe('Minutes approved')
+    expect(notificationText(english, 'MINUTES_CORRECTION_PROPOSED', minutes)).toBe(
+      'A correction to the approved minutes of Board Risk Committee on 2026-12-12 awaits your approval',
+    )
+    expect(templateLabel(english, 'MINUTES_CORRECTION_PROPOSED')).toBe('Correction to minutes to approve')
   })
 
   it('read in Arabic', () => {
     expect(notificationText(arabic, 'MINUTES_APPROVED', minutes)).toContain('اعتُمد محضر')
+    expect(notificationText(arabic, 'MINUTES_CORRECTION_PROPOSED', minutes)).toContain('بانتظار اعتمادك')
     expect(notificationText(arabic, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toContain('2026-12-19')
   })
 })

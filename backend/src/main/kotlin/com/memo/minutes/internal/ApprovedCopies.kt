@@ -93,7 +93,8 @@ class ApprovedCopies(
     ): RecordLookup {
         val versions = records.of(row.meetingId)
         val record = recordVersion?.let { n -> versions.firstOrNull { it.recordVersion == n } ?: throw MinutesNotFoundException("record") }
-        val chosen = record ?: versions.firstOrNull()
+        // The current version is the newest made one (E06 T8: version 1 stays what everyone reads while version 2 is made).
+        val chosen = record ?: versions.firstOrNull { it.state == RecordState.READY } ?: versions.firstOrNull()
         return when {
             chosen == null || chosen.state != RecordState.READY -> RecordLookup.Pending(chosen)
             set.redacted.isEmpty() -> RecordLookup.Ready(chosen, checkNotNull(chosen.fileVersionId), checkNotNull(chosen.sha256), null)

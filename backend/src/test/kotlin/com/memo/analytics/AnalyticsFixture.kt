@@ -16,7 +16,9 @@ import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.TimesInput
 import com.memo.meeting.internal.attendance.AttendanceInput
 import com.memo.minutes.ReleaseFixture
+import com.memo.org.internal.OrgCalendar
 import com.memo.testsupport.Person
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -28,12 +30,26 @@ import java.util.UUID
  * E06's Board Risk Committee (chair, vice-chair and two directors in seats, a secretary, a `forum.read` holder, someone
  * outside) with held meetings made as the committee makes them: memos escalated and placed on a meeting that started a
  * minute ago (late, so the chair took them), apologies recorded while it was scheduled, arrivals while it runs; and
- * overdue actions planted through the store with a due date in the past.
+ * overdue actions planted through the store with a due date in the past. The tenant keeps its dates in [ZONE], where the
+ * committee meets, as a provisioned tenant has a zone (`TenantProvisioning.defaults`).
  */
 abstract class AnalyticsFixture : ReleaseFixture() {
     @Autowired lateinit var actionStore: ActionStore
 
     @Autowired lateinit var meetingItems: MeetingItems
+
+    /**
+     * The default period ends on the tenant's today, and a meeting is dated in its own zone (design E08 §2.1). A test
+     * tenant has no zone (UTC), so from 18:00 to 24:00 UTC a meeting held a minute ago in Dhaka was dated the day after
+     * the period's end and every measure left it out. The tenant and the seeding share one zone.
+     */
+    @BeforeEach
+    fun tenantZone() {
+        transactions.inTenant(tenant.id) { settings.put(OrgCalendar.TIME_ZONE, ZONE.id) }
+    }
+
+    /** Today in the tenant's zone. */
+    fun today(): LocalDate = LocalDate.now(ZONE)
 
     /**
      * A meeting with the memos of [subjects] placed on it (published, the chair agreeing to take them late), [apologies]
@@ -48,7 +64,7 @@ abstract class AnalyticsFixture : ReleaseFixture() {
         published: (MeetingRow, List<Placed>) -> Unit = { _, _ -> },
     ): Running {
         val placed = subjects.map { s -> escalated(s).let { (memo, submission) -> Triple(s, memo, submission) } }
-        val zone = ZoneId.of("Asia/Dhaka")
+        val zone = ZONE
         val start = LocalDateTime.now(zone).truncatedTo(ChronoUnit.MINUTES).minusMinutes(1)
         val meeting =
             asUser(secretary.account) {
@@ -107,7 +123,7 @@ abstract class AnalyticsFixture : ReleaseFixture() {
                 .current()
                 .execute(
                     "update actions_item set due_date = ?, status = 'OPEN', version = version + 1 where id = ?",
-                    LocalDate.now(ZoneId.of("Asia/Dhaka")).minusDays(daysAgo),
+                    today().minusDays(daysAgo),
                     id,
                 )
         }
@@ -128,4 +144,9 @@ abstract class AnalyticsFixture : ReleaseFixture() {
         person: Person,
         query: String = "",
     ) = read("/api/v1/analytics/committees/$brc/attendance/export$query", person.session)
+
+    companion object {
+        /** The committee's zone, and the tenant's. */
+        val ZONE: ZoneId = ZoneId.of("Asia/Dhaka")
+    }
 }

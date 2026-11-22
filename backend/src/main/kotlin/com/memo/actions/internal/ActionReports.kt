@@ -38,7 +38,7 @@ enum class ActionReportSection {
     /** 5. Cancelled since the previous meeting's start, for noting ("risk accepted" in words). */
     CANCELLED,
 
-    /** 6. Corrections to earlier minutes (E06's `MinutesCorrections.since`): empty until E06 T8. */
+    /** 6. Corrections to earlier minutes (E06 T8's `MinutesCorrections.since`, through [ReportCorrections]). */
     CORRECTIONS,
 
     /** Held back by a secretary from this meeting's reports: counted for officers. */
@@ -102,8 +102,8 @@ data class ReportCorrection(
 )
 
 /**
- * Section 6's source (design E07 §11): E06 T8 publishes `MinutesCorrections.since(forumId, since)` in the minutes module,
- * and an adapter here provides this port from it. Until then no bean provides it and the section is empty.
+ * Section 6's source (design E07 §11): [ActionReportCorrections] provides it from E06 T8's
+ * `MinutesCorrections.since(forumId, since)`; without a provider the section is empty.
  */
 fun interface ReportCorrections {
     /** [forumId]'s approved corrections to earlier minutes after [since] (every one when null), oldest first. */
@@ -127,7 +127,7 @@ data class ReportRowSeen(
  * meeting's agenda with a MATTERS_ARISING item, and freezes it: a later revision gets its own report, earlier ones stay.
  * For the meeting's committee, every issued action:
  * 1. done, to be verified; 2. overdue; 3. open, due date first; 4. closed and 5. cancelled since the previous meeting's
- * start (every one when there was none); 6. corrections to earlier minutes ([ReportCorrections]; none until E06 T8).
+ * start (every one when there was none); 6. corrections to earlier minutes ([ReportCorrections], from E06 T8's `MinutesCorrections`).
  * An action a secretary held back from this meeting is left out and counted for officers. At most [ROWS_MAX] rows are
  * shown: beyond that, the latest-due open actions (then the last rows) are counted as "more". Audited
  * `actions.report.built` with the rows per section and the content's SHA-256.
@@ -233,26 +233,12 @@ class ActionReports(
         return agenda.items.firstOrNull { fresh && it.published && it.standingKind == StandingKind.MATTERS_ARISING }
     }
 
-    /** The committee's issued actions by section, each in its order. */
+    /** The committee's issued actions by section on the tenant's [today], each in its order. */
     private fun sections(
         forumId: UUID,
         since: Instant?,
         today: LocalDate,
-    ): Map<ActionReportSection, List<ActionRow>> {
-        val rows = candidates.forReport(forumId, since)
-        val byDue = compareBy<ActionRow>({ it.dueDate }, { it.numberYear }, { it.sequence })
-        val byEnd = compareBy<ActionRow>({ it.closedAt }, { it.numberYear }, { it.sequence })
-        val underway = rows.filter { it.status in ActionChecks.UNDERWAY }
-        return mapOf(
-            ActionReportSection.TO_CLOSE to
-                rows.filter { it.status == ActionStatus.DONE_PENDING }.sortedWith(compareBy<ActionRow>({ it.doneAt }).then(byDue)),
-            ActionReportSection.OVERDUE to underway.filter { it.dueDate?.isBefore(today) == true }.sortedWith(byDue),
-            ActionReportSection.OPEN to underway.filterNot { it.dueDate?.isBefore(today) == true }.sortedWith(byDue),
-            ActionReportSection.CLOSED to rows.filter { it.status == ActionStatus.CLOSED }.sortedWith(byEnd),
-            ActionReportSection.CANCELLED to rows.filter { it.status == ActionStatus.CANCELLED }.sortedWith(byEnd),
-            ActionReportSection.CORRECTIONS to emptyList(),
-        )
-    }
+    ): Map<ActionReportSection, List<ActionRow>> = ReportSections.of(candidates.forReport(forumId, since), today)
 
     /**
      * The rows shown, in section order, at most [ROWS_MAX]; and the rest. The latest-due open actions are left out first
@@ -325,6 +311,31 @@ class ActionReports(
 
         const val OBJECT_TYPE = "action_report"
         private const val EMPTY = "{}"
+    }
+}
+
+/**
+ * Which section each action of a report goes in (design E07 §1.12), on [today]: the tenant's date (`OrgDirectory.today`,
+ * the organisation's zone), never the database's `current_date` or the server's zone. Overdue is the red-amber-green
+ * rule's own test ([RagTest.PastDue]: past the due date), so the report and the colour agree on the tenant's day.
+ */
+object ReportSections {
+    fun of(
+        rows: List<ActionRow>,
+        today: LocalDate,
+    ): Map<ActionReportSection, List<ActionRow>> {
+        val byDue = compareBy<ActionRow>({ it.dueDate }, { it.numberYear }, { it.sequence })
+        val byEnd = compareBy<ActionRow>({ it.closedAt }, { it.numberYear }, { it.sequence })
+        val (overdue, open) = rows.filter { it.status in ActionChecks.UNDERWAY }.partition { RagTest.PastDue.holds(it.ragFacts, today) }
+        return mapOf(
+            ActionReportSection.TO_CLOSE to
+                rows.filter { it.status == ActionStatus.DONE_PENDING }.sortedWith(compareBy<ActionRow>({ it.doneAt }).then(byDue)),
+            ActionReportSection.OVERDUE to overdue.sortedWith(byDue),
+            ActionReportSection.OPEN to open.sortedWith(byDue),
+            ActionReportSection.CLOSED to rows.filter { it.status == ActionStatus.CLOSED }.sortedWith(byEnd),
+            ActionReportSection.CANCELLED to rows.filter { it.status == ActionStatus.CANCELLED }.sortedWith(byEnd),
+            ActionReportSection.CORRECTIONS to emptyList(),
+        )
     }
 }
 

@@ -120,9 +120,11 @@ import com.memo.jooq.tables.MinutesApproval
 import com.memo.jooq.tables.MinutesComment
 import com.memo.jooq.tables.MinutesCommentRequest
 import com.memo.jooq.tables.MinutesCopy
+import com.memo.jooq.tables.MinutesCorrection
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
+import com.memo.jooq.tables.MinutesExtract
 import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.MinutesRecord
 import com.memo.jooq.tables.MinutesReminder
@@ -788,6 +790,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MINUTES_COPY: MinutesCopy get() = MinutesCopy.MINUTES_COPY
 
     /**
+     * The table <code>memo.minutes_correction</code>.
+     */
+    val MINUTES_CORRECTION: MinutesCorrection get() = MinutesCorrection.MINUTES_CORRECTION
+
+    /**
      * The table <code>memo.minutes_decision</code>.
      */
     val MINUTES_DECISION: MinutesDecision get() = MinutesDecision.MINUTES_DECISION
@@ -801,6 +808,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.minutes_event</code>.
      */
     val MINUTES_EVENT: MinutesEvent get() = MinutesEvent.MINUTES_EVENT
+
+    /**
+     * The table <code>memo.minutes_extract</code>.
+     */
+    val MINUTES_EXTRACT: MinutesExtract get() = MinutesExtract.MINUTES_EXTRACT
 
     /**
      * The table <code>memo.minutes_item_note</code>.
@@ -1726,9 +1738,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MinutesComment.MINUTES_COMMENT,
         MinutesCommentRequest.MINUTES_COMMENT_REQUEST,
         MinutesCopy.MINUTES_COPY,
+        MinutesCorrection.MINUTES_CORRECTION,
         MinutesDecision.MINUTES_DECISION,
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
         MinutesEvent.MINUTES_EVENT,
+        MinutesExtract.MINUTES_EXTRACT,
         MinutesItemNote.MINUTES_ITEM_NOTE,
         MinutesRecord.MINUTES_RECORD,
         MinutesReminder.MINUTES_REMINDER,

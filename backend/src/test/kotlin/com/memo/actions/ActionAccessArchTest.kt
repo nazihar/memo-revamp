@@ -49,8 +49,8 @@ class ActionAccessArchTest {
             .that()
             .haveNameNotMatching(
                 // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL; T5: the digest's keys.
-                // T6: the memo links. T7: the reports' store, what the reports and update requests list, and the rule's parts as
-                // conditions. T8: the tracker's and E08's statistics' reads, every one on ActionAccess.seen (the one rule) and
+                // T6: the memo links. T7: the reports' store, what the reports and update requests list, and the rule's parts
+                // as conditions. T8: the tracker's and E08's statistics' reads, every one on ActionAccess.seen (the one rule) and
                 // RagRule.shows.
                 """com\.memo\.actions\.internal\.""" +
                     """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns|""" +
@@ -82,10 +82,10 @@ class ActionAccessArchTest {
                 """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|ActionMemoStore)""",
                 // T5: closure, the timers' reactions and the daily task (the digest's keys and the safety net).
                 """internal\.(ActionClosure|ActionClosureEffects|ActionTimerListener|ActionSafetyNet|ActionsDaily|ActionDigestStore)""",
-                // T7: the report's builder (at publication), holding back, and the update requests (the daily task and the button).
-                """internal\.(ActionReports|ActionReportHolds|ActionUpdateRequests)""",
                 // T6: follow-up memos, their listener, the memo's origins port and the action page's memos.
                 """internal\.(ActionFollowUps|ActionMemoListener|ActionMemoOrigins|ActionMemoViews)""",
+                // T7: the report's builder (at publication), holding back, and the update requests (the daily task and the button).
+                """internal\.(ActionReports|ActionReportHolds|ActionUpdateRequests)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }

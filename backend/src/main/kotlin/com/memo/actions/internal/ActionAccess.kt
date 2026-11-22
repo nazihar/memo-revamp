@@ -65,8 +65,8 @@ class ActionAccess(
     private val requests: ActionDueRequests,
     private val abilityRules: ActionAbilityRules,
     private val files: Files,
-    private val rule: ActionRuleConditions,
     private val memoViews: ActionMemoViews,
+    private val rule: ActionRuleConditions,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {

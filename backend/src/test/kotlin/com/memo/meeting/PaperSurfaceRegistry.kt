@@ -18,12 +18,12 @@ package com.memo.meeting
  * T7 made its record placeholder real: the record, its versions and its check (MINUTES_COPIES). E07 T3 made its actions
  * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing
  * (officers, with recusal columns or an officer probe). E07 T6 added raising and linking an action's follow-up memos (recusal
- * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E07
- * T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action back from it (recusal columns)
- * and "Ask owners for an update" (an officer probe). E08 T2 made the register part of its placeholder real: the decision
- * register's scope and search (REGISTER), probed in both suites; its [modules] are the real ones (`com.memo.search` with the
- * memo search endpoints listed in [search], and `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's
- * export (T3) waits.
+ * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E08
+ * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
+ * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
+ * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits. E07 T7 added the action
+ * taken report (ACTION_REPORT: on screen and as a PDF), holding an action back from it (recusal columns) and "Ask owners
+ * for an update" (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(

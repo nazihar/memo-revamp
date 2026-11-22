@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.assertj.MvcTestResult
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.node.JsonNodeFactory
 import java.io.ByteArrayOutputStream
@@ -172,6 +173,25 @@ abstract class RecusalLeakFixture : RecusalFixture() {
             declarants().filter { it != person }.map { natureOf(it) }
 
     protected fun declarants() = listOf(d1, d2, secretary, chair, observer)
+
+    /** Every handler method of [mapping] as ("METHOD path", path, the controller's package). */
+    protected fun handlerEndpoints(mapping: RequestMappingHandlerMapping): List<Triple<String, String, String>> =
+        mapping.handlerMethods.flatMap { (info, handler) ->
+            val methods = info.methodsCondition.methods.map { it.name }
+            info.patternValues.flatMap { path -> methods.map { Triple("$it $path", path, handler.beanType.packageName) } }
+        }
+
+    /** E08 T2: the register's scope, and a search for every canary of [person]'s: nothing found or counted, no canary. */
+    protected fun registerProbe(person: Person) {
+        val scope = read("/api/v1/decision-register/scope", person.session)
+        clean(person, scope)
+        assertThat(scope.json()["committees"].list().map { it["id"].asString() }).contains(brc.toString())
+        canaries(person).forEach { term ->
+            val found = post("/api/v1/decision-register/search", person.session, """{"text":"$term"}""")
+            clean(person, found)
+            assertThat(found.json()["total"].asInt()).describedAs("register hits for $term").isZero()
+        }
+    }
 
     protected fun natureOf(person: Person): String =
         "$CANARY_NATURE " +

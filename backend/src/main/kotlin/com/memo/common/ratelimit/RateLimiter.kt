@@ -54,6 +54,10 @@ enum class RateLimit(
 
     // Exports of the register of declarations by one person (design E04 §3, threat model): each holds up to 20,000 rows.
     DECLARATION_EXPORT_PER_USER(5, Duration.ofHours(1)),
+
+    // Searches of the decision register by one person (design E08 §3): the 31st in a minute is refused. Its own bucket, so
+    // an auditor working through the register does not use up their memo searches.
+    DECISION_SEARCH_PER_USER(30, Duration.ofMinutes(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

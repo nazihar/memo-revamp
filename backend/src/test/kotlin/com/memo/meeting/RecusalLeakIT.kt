@@ -214,6 +214,9 @@ class RecusalLeakIT : RecusalActionsFixture() {
                     "/api/v1/resolutions/${UUID.randomUUID()}",
                 ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
             },
+            // E08 T2: the register is every viewer's (each is in office); nothing of the planted items can be found or counted
+            // by its words. The items decided, with canaries in the decisions' text and conditions, are RegisterLeakIT.
+            Surface.REGISTER to { _, v -> registerProbe(v.person()) },
             // E06 T5: the minutes page, the secretaries' while drafting; nothing on a meeting not held (404), never a canary.
             Surface.MINUTES to { p, v ->
                 val page = read("/api/v1/meetings/${p.meeting.id}/minutes", v.person().session)
@@ -702,13 +705,9 @@ class RecusalLeakIT : RecusalActionsFixture() {
 
     @Test
     fun `every controller of the meeting, forum and later modules is registered with a recusal probe, and placeholders wait`() {
-        val all =
-            mapping.handlerMethods.flatMap { (info, handler) ->
-                val methods = info.methodsCondition.methods.map { it.name }
-                info.patternValues.flatMap { path -> methods.map { Triple("$it $path", path, handler.beanType.packageName) } }
-            }
+        val all = handlerEndpoints(mapping)
         val ours = all.filter { (_, _, pkg) -> PaperSurfaceRegistry.modules.any { pkg.startsWith(it) } }.map { it.first }.toSet()
-        val registered = PaperSurfaceRegistry.endpoints.keys + PaperSurfaceRegistry.officersOnly.keys + PaperSurfaceRegistry.forum.keys
+        val registered = PaperSurfaceRegistry.registered
         assertThat(ours - registered).describedAs("controller methods without a recusal probe (PaperSurfaceRegistry)").isEmpty()
         assertThat(registered - ours).describedAs("registry entries without an endpoint").isEmpty()
         assertThat(

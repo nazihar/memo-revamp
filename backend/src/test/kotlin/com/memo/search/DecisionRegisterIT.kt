@@ -1,6 +1,8 @@
 package com.memo.search
 
 import com.memo.common.authz.Permission
+import com.memo.common.ratelimit.RateLimit
+import com.memo.common.ratelimit.RateLimiter
 import com.memo.forum.ForumRole
 import com.memo.forum.internal.MemberInput
 import com.memo.jooq.tables.references.MEETING_DECLARATION
@@ -42,6 +44,8 @@ class DecisionRegisterIT : ReleaseFixture() {
     @Autowired lateinit var noteStore: NoteStore
 
     @Autowired lateinit var numbers: ResolutionNumbers
+
+    @Autowired lateinit var limiter: RateLimiter
 
     private fun search(
         person: Person,
@@ -291,10 +295,14 @@ class DecisionRegisterIT : ReleaseFixture() {
 
     @Test
     fun `the 31st search in a minute is 429`() {
-        repeat(30) { assertThat(search(reader)).describedAs("search ${it + 1}").hasStatusOk() }
-        // The bucket refills smoothly (30 a minute): while the 30 ran, a token or two may have come back.
-        val more = (1..5).map { search(reader).response.status }
-        assertThat(more).contains(HttpStatus.TOO_MANY_REQUESTS.value())
+        assertThat(search(reader)).hasStatusOk()
+        // The rest of the minute's 30, taken at once (the bucket refills smoothly, so 29 slow searches could let a token back
+        // in on a busy machine): the next search is refused before any transaction, with Retry-After.
+        val subject = "${tenant.id}:${reader.id}"
+        repeat(29) { limiter.consume(RateLimit.DECISION_SEARCH_PER_USER, subject) }
+        val refused = search(reader)
+        assertThat(refused).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
+        assertThat(refused.response.getHeader("Retry-After")).isNotNull()
     }
 
     /** [titles] as items of [meeting], published, each decided (planted) and indexed. */

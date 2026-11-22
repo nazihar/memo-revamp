@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Outlet, useRouterState } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
+import { listMyForumsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { AppShell } from '@/components/shell/AppShell'
 import { BrandingApplier } from '@/features/admin/BrandingApplier'
 import { AccountMenu } from '@/features/auth/AccountMenu'
@@ -23,11 +25,14 @@ export const Route = createFileRoute('/_shell')({
 
 function ShellLayout() {
   const session = useSession()
-  const access = useMyAccess(session.data?.state === 'AUTHENTICATED')
+  const signedIn = session.data?.state === 'AUTHENTICATED'
+  const access = useMyAccess(signedIn)
+  // The committees the user sits on decide the analytics entry (the home page reads the same list, from the cache).
+  const forums = useQuery({ ...listMyForumsOptions(), enabled: signedIn, staleTime: 5 * 60_000 })
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   return (
     <AppShell
-      viewer={viewerOf(session.data, access.data)}
+      viewer={viewerOf(session.data, access.data, forums.data)}
       account={<AccountMenu />}
       notifications={<NotificationBell />}
       search={

@@ -697,6 +697,7 @@
             "$ref" : "#/components/schemas/ActionsSummary"
           }
         },
+        "required" : [ "owners", "summary" ],
         "type" : "object"
       },
       "ActionsPolicy" : {
@@ -782,6 +783,7 @@
             "type" : "integer"
           }
         },
+        "required" : [ "closed", "closedByAgreedDate", "closedByOriginalDate", "overdue", "overdue1To30", "overdue31To90", "overdueOver90", "overdueRevised" ],
         "type" : "object"
       },
       "ActiveRequest" : {
@@ -1519,6 +1521,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "committees", "from", "to" ],
         "type" : "object"
       },
       "AppliedResponse" : {
@@ -1758,6 +1761,7 @@
             "$ref" : "#/components/schemas/AttendanceSummary"
           }
         },
+        "required" : [ "members", "membersOmitted", "ownRowOnly", "summary" ],
         "type" : "object"
       },
       "AttendanceEventRequest" : {
@@ -2009,6 +2013,7 @@
             "type" : [ "integer", "null" ]
           }
         },
+        "required" : [ "attended", "expected", "heldMeetings" ],
         "type" : "object"
       },
       "AuditEvent" : {
@@ -2888,6 +2893,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "access", "actions", "attendance", "code", "deferrals", "forumId", "from", "name", "papers", "shortName", "timeToDecision", "to" ],
         "type" : "object"
       },
       "CommitteeSummaryResponse" : {
@@ -2925,6 +2931,7 @@
             "$ref" : "#/components/schemas/TimingSummary"
           }
         },
+        "required" : [ "access", "actions", "attendance", "code", "deferrals", "forumId", "name", "papers", "shortName", "timeToDecision" ],
         "type" : "object"
       },
       "ComponentHealth" : {
@@ -4177,6 +4184,7 @@
             "$ref" : "#/components/schemas/DeferralSummary"
           }
         },
+        "required" : [ "byQuarter", "overall" ],
         "type" : "object"
       },
       "DeferralSummary" : {
@@ -4198,6 +4206,7 @@
             "type" : "integer"
           }
         },
+        "required" : [ "decisions", "deferred", "deferredTwice" ],
         "type" : "object"
       },
       "DefinitionChoice" : {
@@ -7811,6 +7820,7 @@
             "type" : [ "boolean", "null" ]
           }
         },
+        "required" : [ "attended", "date", "expected", "meetingId" ],
         "type" : "object"
       },
       "MeetingPolicy" : {
@@ -8235,6 +8245,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "absent", "apologies", "attended", "byAlternate", "expected", "inPerson", "joinedLate", "leftEarly", "meetings", "remote", "role", "seatFrom", "seatTo", "userId" ],
         "type" : "object"
       },
       "MemberAttribute" : {
@@ -8421,6 +8432,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "attendance", "byAlternate", "date", "joinedLate", "leftEarly", "meetingId" ],
         "type" : "object"
       },
       "MemberPaperResponse" : {
@@ -8918,10 +8930,14 @@
             "format" : "uuid",
             "type" : [ "string", "null" ]
           },
+          "memoTypeName" : {
+            "type" : [ "string", "null" ]
+          },
           "timing" : {
             "$ref" : "#/components/schemas/TimingSummary"
           }
         },
+        "required" : [ "timing" ],
         "type" : "object"
       },
       "MemoTypeVersionResponse" : {
@@ -11369,6 +11385,7 @@
             "type" : "integer"
           }
         },
+        "required" : [ "days1To30", "days31To90", "over90", "overdue", "revised" ],
         "type" : "object"
       },
       "PackFileResponse" : {
@@ -11404,6 +11421,7 @@
             "$ref" : "#/components/schemas/PapersSummary"
           }
         },
+        "required" : [ "meetings", "summary" ],
         "type" : "object"
       },
       "PapersSummary" : {
@@ -11433,6 +11451,7 @@
             "type" : "integer"
           }
         },
+        "required" : [ "meetings", "onTime", "withDeadline" ],
         "type" : "object"
       },
       "PasswordResetCompletion" : {
@@ -11988,6 +12007,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "deferrals", "quarter" ],
         "type" : "object"
       },
       "QuarterTimingResponse" : {
@@ -11999,6 +12019,7 @@
             "$ref" : "#/components/schemas/TimingSummary"
           }
         },
+        "required" : [ "quarter", "timing" ],
         "type" : "object"
       },
       "QueueMemberRequest" : {
@@ -15366,6 +15387,7 @@
             "$ref" : "#/components/schemas/TimingSummary"
           }
         },
+        "required" : [ "byMemoType", "byQuarter", "overall" ],
         "type" : "object"
       },
       "TimingSummary" : {
@@ -15394,6 +15416,7 @@
             "type" : [ "integer", "null" ]
           }
         },
+        "required" : [ "decisions", "enough" ],
         "type" : "object"
       },
       "ToBeRatifiedResponse" : {

@@ -194,6 +194,8 @@ Paper opens and reading time, meeting length, number of items or pages, composit
 | Items deferred | the register filtered to outcome DEFERRED |
 | Papers on time | the committee's meetings list for the period |
 
+**As built (T7).** The overview's numbers open their lists in the committee's detail (AW) until the screens they are drawn to exist: overdue and closed on time open "Actions overdue by owner" (`#actions`), time to decision and items deferred their quarters (`#timing`, `#deferrals`), papers on time the period's held meetings (`#papers`, each linking to its meeting page, with "Meetings of this committee" to the committee's Meetings tab). Attendance opens AV, and a member's row their meetings of the period. When E07's tracker web (T10, flow AN) and the register's web (T6, flow AS) are merged, the action and decision figures link to them with the filters above.
+
 ## 3. API
 Conventions as E03–E07: `/api/v1`, RFC 9457 errors, cursor paging, `Idempotency-Key` on mutating POSTs (none here mutate except exports' audit). Search inputs are POST bodies so that words stay out of URLs and logs (ADR-0054, Phase 3 threat model I4).
 
@@ -317,4 +319,4 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 
 **Module boundaries** (`ApplicationModules.verify()`):
 - `search` → memo (as today), minutes, meeting, forum, identity, authz, audit, common. Nothing depends on search except `demo` and `analytics`.
-- **`analytics`** (new, `com.memo.analytics`, packages `api`, `measures`, `export`) → search (`DecisionStats`), meeting (`AttendanceStats`, `AgendaTimeliness`), actions (`ActionStats`), forum (`ForumDirectory`), identity, authz, audit, common. Nothing depends on analytics.
+- **`analytics`** (new, `com.memo.analytics`, packages `api`, `measures`, `export`) → search (`DecisionStats`), meeting (`AttendanceStats`, `AgendaTimeliness`), actions (`ActionStats`), forum (`ForumDirectory`), memo (`MemoSearchSource.typeNames`, the memo types' names for time to decision by memo type; added in T7), identity, authz, audit, common. Nothing depends on analytics.

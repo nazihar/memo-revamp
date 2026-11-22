@@ -61,7 +61,7 @@ Chosen option 1.
 - Follow-ups: E05 adds the live evaluation, snapshots and overrides; E04 adds per-item recusal inputs.
 
 ### Confirmation
-- Property tests: monotonic (adding an attendee never breaks quorum), threshold arithmetic against a reference, presets against the cited charters' examples.
+- Property tests: monotonic (adding an attendee never breaks quorum, but for a composition majority: it is of those counted present, so an attendee without the attribute can break it), threshold arithmetic against a reference, presets against the cited charters' examples.
 - PIT on `Quorum`.
 - Jazzer on the rule's JSON reading (nightly).
 

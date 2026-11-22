@@ -61,7 +61,7 @@ Chosen option 1.
   - E08: attendance rates from the register.
 
 ### Confirmation
-- Property tests over random rules × rosters × attendance × recusals × alternates: monotonic (an arrival never breaks quorum; a departure or a recusal never creates it); an alternate never satisfies a required role or a composition condition; a recused member's alternate never counts for that item; a person never counts twice; the live evaluation at *t* equals a snapshot taken at *t*.
+- Property tests over random rules × rosters × attendance × recusals × alternates: monotonic (an arrival never breaks quorum; a departure or a recusal never creates it; but for a composition majority, which is of those counted present); an alternate never satisfies a required role or a composition condition; a recused member's alternate never counts for that item; a person never counts twice; the live evaluation at *t* equals a snapshot taken at *t*.
 - PIT on the presence builder and `Quorum`.
 - State-machine tests for every allowed and forbidden attendance event per meeting status and person state.
 - Integration tests that a snapshot's stored inputs re-evaluate to its stored result and hash.

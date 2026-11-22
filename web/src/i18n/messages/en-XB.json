@@ -39166,6 +39166,34 @@
       "value": "‬"
     }
   ],
+  "mail.template.actionOwnerChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯɯıʇʇǝǝ ɐɔʇıou oʍuǝɹ ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.actionRiskAccepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯɯıʇʇǝǝ ɐɔʇıou ɹısʞ ɐɔɔǝdʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.forumMembershipChanged": [
     {
       "type": 0,
@@ -62021,6 +62049,258 @@
     {
       "type": 0,
       "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionCancelled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionDueChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ıs uoʍ pnǝ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionDueDecided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ ɹǝbnǝsʇ ʇo ɯoʌǝ ɐɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ʇo "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs "
+    },
+    {
+      "type": 5,
+      "value": "decision",
+      "options": {
+        "AGREED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ɐƃɹǝǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "pǝɔʅıuǝp"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionDueRequested": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ oɟ ɐɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ɐsʞs ɟoɹ ɐ uǝʍ pɐʇǝ: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionOwnerChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oʍuǝɹ oɟ ɐɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionReopened": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝodǝuǝp, pnǝ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.actionRiskAccepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıou "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɔɐuɔǝʅʅǝp ʍıʇɥ ʇɥǝ ɹısʞ ɐɔɔǝdʇǝp ou ʎonɹ qǝɥɐʅɟ"
     },
     {
       "type": 0,

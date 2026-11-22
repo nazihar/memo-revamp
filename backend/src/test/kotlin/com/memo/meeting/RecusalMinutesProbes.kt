@@ -34,13 +34,14 @@ internal fun RecusalLeakIT.minutesOfficerProbes(): Map<String, (RecusalLeakFixtu
 
 private const val LATER_DAYS = 40L
 
-/** The review, the confirmation and the stamps (E06 T6), as [person] calls them on the planted meeting. */
+/** The minutes page (E06 T5, first), the review, the confirmation and the stamps (E06 T6), as [person] calls them. */
 internal fun RecusalLeakIT.minutesCalls(
     p: RecusalLeakFixture.Planted,
     person: com.memo.testsupport.Person,
 ): List<MvcTestResult> {
     val base = "/api/v1/meetings/${p.meeting.id}/minutes"
     return listOf(
+        read(base, person.session),
         send(HttpMethod.POST, "$base/review", person, """{"decision":"AGREE"}""", versioned(0)),
         send(HttpMethod.POST, "$base/confirm", person, "{}", versioned(0)),
         send(HttpMethod.POST, "$base/approvals/${UUID.randomUUID()}/check", person),
@@ -60,3 +61,11 @@ internal fun RecusalLeakIT.minutesCopyCalls(
         send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.item}","text":"x"}"""),
     )
 }
+
+/** The register and its check (officers; members 403), and one resolution (E06 T4), as [person] reads them. */
+internal fun RecusalLeakIT.resolutionReads(
+    forum: UUID,
+    person: com.memo.testsupport.Person,
+): List<MvcTestResult> =
+    listOf("/api/v1/forums/$forum/resolutions", "/api/v1/forums/$forum/resolutions/check", "/api/v1/resolutions/${UUID.randomUUID()}")
+        .map { read(it, person.session) }

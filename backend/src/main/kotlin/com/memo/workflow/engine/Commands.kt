@@ -116,11 +116,13 @@ data class Block(
 
 /**
  * The person a step resolved to changed (a position's holder changed, design E04 §4.6): its open decision tasks are
- * closed and the step resolves again. [actor] is whoever changed the organisation.
+ * closed and the step resolves again. [actor] is whoever changed the organisation. [reason] is recorded: HOLDER_CHANGED,
+ * or SUBJECT_CHANGED when the item named someone else for the step (ADR-0068 amendment: an action's new owner).
  */
 data class Reresolve(
     override val actor: UUID,
     val stepId: UUID,
+    val reason: String = StaffChanges.HOLDER_CHANGED,
 ) : Command
 
 /**

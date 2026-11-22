@@ -548,6 +548,9 @@
       "target" : "common",
       "types" : [ "USES_COMPONENT" ]
     }, {
+      "target" : "files",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
       "target" : "forum",
       "types" : [ "USES_COMPONENT" ]
     }, {

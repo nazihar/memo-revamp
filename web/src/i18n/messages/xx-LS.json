@@ -21822,6 +21822,18 @@
       "value": "Committee action assignedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.actionOwnerChanged": [
+    {
+      "type": 0,
+      "value": "Committee action owner changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.actionRiskAccepted": [
+    {
+      "type": 0,
+      "value": "Committee action risk acceptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.forumMembershipChanged": [
     {
       "type": 0,
@@ -34185,6 +34197,218 @@
     {
       "type": 0,
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionCancelled": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionDueChanged": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " is now due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionDueDecided": [
+    {
+      "type": 0,
+      "value": "Your request to move action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " was "
+    },
+    {
+      "type": 5,
+      "value": "decision",
+      "options": {
+        "AGREED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "agreed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "declined"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionDueRequested": [
+    {
+      "type": 0,
+      "value": "The owner of action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " asks for a new date: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionOwnerChanged": [
+    {
+      "type": 0,
+      "value": "The owner of action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionReopened": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " was reopened, due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionRiskAccepted": [
+    {
+      "type": 0,
+      "value": "Action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " was cancelled with the risk accepted on your behalfSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.actionSourceCorrected": [

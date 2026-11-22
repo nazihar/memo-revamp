@@ -7,10 +7,11 @@ package com.memo.jooq.tables
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.WORKFLOW_INSTANCE_DEFINITION_IDX
 import com.memo.jooq.indexes.WORKFLOW_INSTANCE_DOA_VERSION_IDX
+import com.memo.jooq.indexes.WORKFLOW_INSTANCE_SUBJECT_RUNNING_UK
 import com.memo.jooq.keys.WORKFLOW_ACTION__WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_INSTANCE_PKEY
+import com.memo.jooq.keys.WORKFLOW_INSTANCE_SUBJECT_RUN_UK
 import com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY
-import com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY
 import com.memo.jooq.keys.WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_DOA_VERSION_FK
 import com.memo.jooq.keys.WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_ROUND__WORKFLOW_ROUND_TENANT_ID_INSTANCE_ID_FKEY
@@ -169,6 +170,11 @@ open class WorkflowInstance(
      */
     val DOA_VERSION_ID: TableField<WorkflowInstanceRecord, UUID?> = createField(DSL.name("doa_version_id"), SQLDataType.UUID, this, "")
 
+    /**
+     * The column <code>memo.workflow_instance.run</code>.
+     */
+    val RUN: TableField<WorkflowInstanceRecord, Int?> = createField(DSL.name("run"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("1"), SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -201,9 +207,9 @@ open class WorkflowInstance(
         override fun `as`(alias: Table<*>): WorkflowInstancePath = WorkflowInstancePath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_INSTANCE_DEFINITION_IDX, WORKFLOW_INSTANCE_DOA_VERSION_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_INSTANCE_DEFINITION_IDX, WORKFLOW_INSTANCE_DOA_VERSION_IDX, WORKFLOW_INSTANCE_SUBJECT_RUNNING_UK)
     override fun getPrimaryKey(): UniqueKey<WorkflowInstanceRecord> = WORKFLOW_INSTANCE_PKEY
-    override fun getUniqueKeys(): List<UniqueKey<WorkflowInstanceRecord>> = listOf(WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY)
+    override fun getUniqueKeys(): List<UniqueKey<WorkflowInstanceRecord>> = listOf(WORKFLOW_INSTANCE_SUBJECT_RUN_UK, WORKFLOW_INSTANCE_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowInstanceRecord, *>> = listOf(WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_DOA_VERSION_FK, WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY)
 
     /**
@@ -303,6 +309,7 @@ open class WorkflowInstance(
         Internal.createCheck(this, DSL.name("workflow_instance_check"), "(((status = 'RUNNING'::text) = (current_step_id IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_current_round_check"), "((current_round >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_current_step_name_check"), "((length(current_step_name) <= 200))", true),
+        Internal.createCheck(this, DSL.name("workflow_instance_run_check"), "((run >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_status_check"), "((status = ANY (ARRAY['RUNNING'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_subject_type_check"), "((subject_type ~ '^[a-z][a-z0-9.-]{0,99}\$'::text))", true)
     )

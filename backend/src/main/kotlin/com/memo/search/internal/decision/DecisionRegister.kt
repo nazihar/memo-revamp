@@ -79,10 +79,7 @@ class DecisionRegister(
     /** One page of the register for the actor (design E08 §1.4); 403 without a scope, 422 for inputs the rules refuse. */
     fun search(request: DecisionSearchRequest): DecisionSearchView {
         val viewer = access.parameters() ?: throw noScope()
-        val committees = committees(viewer.scope).associateBy { it.id }
-        val asked = Asked.of(request)
-        val problems = problems(asked, committees.keys)
-        if (problems.isNotEmpty()) throw SearchRejectedException(problems)
+        val (committees, asked) = checked(viewer, request)
         val binding = "${tenantDsl.tenant().value}|${viewer.userId}|${asked.fingerprint()}"
         val query = asked.query().copy(cursor = request.cursor?.let { cursors.open(it, binding) })
         val page = access.find(viewer, query)
@@ -109,6 +106,22 @@ class DecisionRegister(
                 ),
             nextCursor = page.next?.let { cursors.seal(it, binding) },
         )
+    }
+
+    /**
+     * [request] checked for [viewer] as a search is (the text's caps, the committees against [within], or else the viewer's
+     * scope, the period, number order, the lists' sizes; 422 otherwise): the committees in scope by id, and the search.
+     */
+    internal fun checked(
+        viewer: RegisterViewer,
+        request: DecisionSearchRequest,
+        within: Set<UUID>? = null,
+    ): Pair<Map<UUID, ForumRef>, Asked> {
+        val committees = committees(viewer.scope).associateBy { it.id }
+        val asked = Asked.of(request)
+        val problems = problems(asked, within ?: committees.keys)
+        if (problems.isNotEmpty()) throw SearchRejectedException(problems)
+        return committees to asked
     }
 
     /** The committees of [scope]: every one of the tenant for oversight, else where the viewer is an officer or a member. */
@@ -164,18 +177,16 @@ class DecisionRegister(
             OBJECT_TYPE,
             viewer.toString(),
             after =
-                mapOf(
-                    // The words as a hash only (of the trimmed, lower-case text with single spaces): enough to check what
-                    // someone is said to have searched for, without the audit holding what they typed.
-                    "textSha256" to asked.text.takeIf { it.isNotEmpty() }?.let { sha256(asked.normal) },
-                    "terms" to asked.terms.size,
-                    "numberLookup" to (asked.text.isNotEmpty() && SearchReferences.keys(asked.text) != null),
-                    "filters" to asked.filters(),
-                    "sort" to asked.sort.name,
-                    "nextPage" to asked.paging,
-                    "total" to page.total,
-                    "capped" to page.capped,
-                    "decisions" to page.rows.map { it.decisionId.toString() },
+                (
+                    asked.words() +
+                        mapOf(
+                            "filters" to asked.filters(),
+                            "sort" to asked.sort.name,
+                            "nextPage" to asked.paging,
+                            "total" to page.total,
+                            "capped" to page.capped,
+                            "decisions" to page.rows.map { it.decisionId.toString() },
+                        )
                 ).filterValues { it != null },
         )
     }
@@ -227,11 +238,11 @@ class DecisionRegister(
         )
     }
 
-    private fun noScope() =
+    internal fun noScope() =
         ForbiddenException(Permission.FORUM_READ, detail = "The decision register is for committee members, officers and oversight.")
 
     /** A search as asked, normalised: the words trimmed, the lists distinct, the order the one the function will apply. */
-    private data class Asked(
+    internal data class Asked(
         val text: String,
         val forumIds: List<UUID>,
         val forumTypeIds: List<UUID>,
@@ -275,6 +286,17 @@ class DecisionRegister(
                 limit = limit,
             )
         }
+
+        /**
+         * The words for the audit, as a hash only (of the trimmed, lower-case text with single spaces): enough to check what
+         * someone is said to have searched for, without the audit holding what they typed; their number; a number lookup.
+         */
+        fun words(): Map<String, Any?> =
+            mapOf(
+                "textSha256" to text.takeIf { it.isNotEmpty() }?.let { sha256(normal) },
+                "terms" to terms.size,
+                "numberLookup" to (text.isNotEmpty() && SearchReferences.keys(text) != null),
+            )
 
         /** The filters for the audit: ids, dates and kinds only (no free text). */
         fun filters(): Map<String, Any> =

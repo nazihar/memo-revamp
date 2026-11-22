@@ -3085,6 +3085,76 @@
         "required" : [ "abstentions", "conditions", "correction", "decidedAt", "dissent", "outcome", "outcomeLabel", "ratificationRequired", "recordedAt", "recordedBy", "resolution", "seq", "snapshotId", "tookNoPart", "vote" ],
         "type" : "object"
       },
+      "DecisionExportRequest" : {
+        "properties" : {
+          "flags" : {
+            "items" : {
+              "enum" : [ "WITH_CONDITIONS", "WITH_DISSENT", "TO_BE_RATIFIED", "CORRECTED", "VALIDITY_PASSED" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "format" : {
+            "enum" : [ "XLSX", "PDF" ],
+            "type" : "string"
+          },
+          "forumIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "forumTypeIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "from" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "memoTypeIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "outcomes" : {
+            "items" : {
+              "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "resolutionsOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "sort" : {
+            "enum" : [ "RELEVANCE", "NEWEST", "OLDEST", "NUMBER" ],
+            "type" : [ "string", "null" ]
+          },
+          "states" : {
+            "items" : {
+              "enum" : [ "RECORDED", "NUMBERED", "RELEASED", "FINAL", "VOID" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "format" ],
+        "type" : "object"
+      },
       "DecisionFacetsView" : {
         "properties" : {
           "forums" : {
@@ -21115,6 +21185,48 @@
         },
         "summary" : "Pending by age, overdue, cycle time and throughput, for me or a unit I oversee (default: the last 12 weeks)",
         "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/decision-register/export" : {
+      "post" : {
+        "operationId" : "exportDecisionRegister",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DecisionExportRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/pdf" : {
+                "schema" : {
+                  "format" : "binary",
+                  "type" : "string"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : {
+                "schema" : {
+                  "format" : "binary",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "The spreadsheet or the PDF"
+          },
+          "422" : {
+            "description" : "The filters, or more rows than the format holds (TOO_MANY_ROWS)"
+          },
+          "429" : {
+            "description" : "Too many exports"
+          }
+        },
+        "summary" : "The register under the filters as a spreadsheet (at most 20,000 rows) or a PDF (2,000), with the number check (officers and oversight; audited; 5 an hour)",
+        "tags" : [ "search" ]
       }
     },
     "/api/v1/decision-register/scope" : {

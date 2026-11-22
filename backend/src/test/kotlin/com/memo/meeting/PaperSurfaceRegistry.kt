@@ -20,7 +20,8 @@ package com.memo.meeting
  * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
  * totals and its export (TRACKER). E08 T2 made the register part of its placeholder real: the decision register's scope and
  * search (REGISTER), probed in both suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints
- * listed in [search], and `com.memo.analytics`, whose surface stays a placeholder for T4).
+ * listed in [search], and `com.memo.analytics`, whose surface stays a placeholder for T4). E08 T3 added the register's
+ * export to REGISTER, and its two files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -74,7 +75,9 @@ object PaperSurfaceRegistry {
         REGISTER(
             "The decision register across committees (E08 T2): its scope, and the search's rows, totals, facets and order; a decision " +
                 "the viewer may not see in full is a restricted line (committee, meeting, item number, number and state) that no text, " +
-                "outcome, memo type or exception filter matches and no outcome facet counts; nothing above clearance or outside scope",
+                "outcome, memo type or exception filter matches and no outcome facet counts; nothing above clearance or outside scope. " +
+                "Its export (E08 T3): the same rows as XLSX or PDF for officers and oversight (members 403), lines as " +
+                "\"Restricted item\", the number check without the reason of a void the viewer may not see in full",
         ),
     }
 
@@ -147,6 +150,8 @@ object PaperSurfaceRegistry {
             // the one rule in search_find_decisions with the viewer's recusals read in the request.
             "GET /api/v1/decision-register/scope" to Surface.REGISTER,
             "POST /api/v1/decision-register/search" to Surface.REGISTER,
+            // E08 T3: its export, the same rows by the same rule (officers and oversight; members 403), its files in EXPORTS.
+            "POST /api/v1/decision-register/export" to Surface.REGISTER,
         )
 
     /**
@@ -301,7 +306,10 @@ object PaperSurfaceRegistry {
     ) {
         IN_APP("In-app notifications (`/me/notifications`): publication, changes, declarations, requests"),
         MAIL("Every email of the scenario (agenda, declarations, late papers, invitations and their calendar files), from Mailpit"),
-        EXPORTS("The register's and the action tracker's XLSX exports (their surfaces' probes) and the meeting's calendar file"),
+        EXPORTS(
+            "The registers' and the action tracker's XLSX exports (their surfaces' probes), the decision register's XLSX and PDF " +
+                "(every cell and the PDF's text, E08 T3) and the meeting's calendar file",
+        ),
         SEARCH("Memo search: meeting papers and their extracted text are never indexed (design E04 §1.7, ADR-0054)"),
         AUDIT("The audit viewer and the verifiable export: declarations carry hashes of the nature, never the text"),
         FORUM_QUEUE("The committee's submissions: officers by role, everyone else by the memo's own rule (design E04 §1.4)"),
@@ -386,8 +394,8 @@ object PaperSurfaceRegistry {
             Pending(
                 "E08",
                 "Meeting analytics and the attendance export (T4): measures over the rows the viewer sees in full, with live recusals " +
-                    "(the differential probe); the register's export (T3) is a REGISTER endpoint with its EXPORTS probe",
-                listOf("/api/v1/analytics", "/api/v1/decision-register/export"),
+                    "(the differential probe)",
+                listOf("/api/v1/analytics"),
             ),
         )
 }

@@ -545,6 +545,9 @@
     }, {
       "target" : "org",
       "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Search",
     "nested" : [ ],

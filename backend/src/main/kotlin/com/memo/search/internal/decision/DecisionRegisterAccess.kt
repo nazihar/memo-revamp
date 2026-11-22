@@ -105,7 +105,7 @@ class DecisionRegisterAccess(
                 cursor?.sequence,
                 cursor?.decisionId,
                 query.limit + 1,
-                SearchFinder.DEFAULT_CAP,
+                query.candidates,
             )
         val records =
             timed {

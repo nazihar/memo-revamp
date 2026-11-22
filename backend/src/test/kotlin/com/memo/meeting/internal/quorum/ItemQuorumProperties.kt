@@ -9,11 +9,14 @@ import com.memo.forum.QuorumResult
 import com.memo.forum.QuorumRule
 import com.memo.forum.QuorumThreshold
 import com.memo.forum.ThresholdKind
+import com.memo.forum.UnmetCondition
+import com.memo.forum.UnmetKind
 import com.memo.meeting.DeclarationState
 import com.memo.meeting.QuorumSnapshotInputs
 import net.jqwik.api.Arbitraries
 import net.jqwik.api.Arbitrary
 import net.jqwik.api.Combinators
+import net.jqwik.api.Example
 import net.jqwik.api.ForAll
 import net.jqwik.api.Property
 import net.jqwik.api.Provide
@@ -28,7 +31,8 @@ import java.util.UUID
  *  - with `recusedCount` false, a recused member and the alternate of a recused member never count for the item;
  *  - with `recusedCount` true, the member counts and their alternate still does not stand in;
  *  - a TAKING_PART or WITHDRAWN declaration changes nothing;
- *  - someone out of the room for the item never counts for it;
+ *  - someone out of the room for the item never counts for it, and back in the room never makes it less quorate but under a
+ *    composition majority, which is of those counted present;
  *  - live equals recorded: a snapshot's inputs re-evaluate to the live result, and their SHA-256 does not depend on the
  *    order of the lists but changes with any input.
  */
@@ -88,8 +92,73 @@ class ItemQuorumProperties {
         // Back in the room, they never make the item less quorate: one seat per person, and online attendance counting (an
         // online member back in the room for the item silences their alternate, PresenceBuilderProperties' example).
         if (meeting.roster.groupBy { it.userId }.any { it.value.size > 1 } || !rule.remoteCounts) return
+        // A composition majority is of those counted present (ADR-0057), so a member without the attribute coming back can
+        // break it (aMemberWithoutTheAttributeBackInTheRoomCanBreakACompositionMajority); every other condition is monotonic.
+        val monotonic = rule.copy(composition = rule.composition.filterNot { it.majority })
         val back = meeting.copy(present = meeting.present.mapValues { it.value.copy(steppedOutOf = null) })
-        if (result(rule, meeting).quorate) assertThat(result(rule, back).quorate).isTrue()
+        if (result(monotonic, meeting).quorate) assertThat(result(monotonic, back).quorate).isTrue()
+    }
+
+    /**
+     * The shrunk counterexample of `someoneOutOfTheRoomForTheItemNeverCountsForIt` (seed -1377197321439722442, CI run
+     * 45039708200): four voting chairs, two of them independent; the third holder, not independent, steps out of the item.
+     * Without them, 2 of the 3 present are independent, a majority; back in the room, 2 of 4 are not. That is the rule as
+     * ADR-0057 writes it ("a majority of those counted present") and as `QuorumTest` pins it, not a miscount.
+     */
+    @Example
+    fun aMemberWithoutTheAttributeBackInTheRoomCanBreakACompositionMajority() {
+        fun seat(
+            i: Long,
+            holder: Long,
+            independent: Boolean,
+        ) = ForumSeat(
+            memberId = UUID(1, i),
+            forumId = UUID(9, 1),
+            userId = UUID(2, holder),
+            positionId = null,
+            role = ForumRole.CHAIR,
+            voting = true,
+            attributes = if (independent) setOf("independent") else setOf(),
+            alternateUserId = UUID(2, 0),
+            startsOn = LocalDate.of(2026, 1, 1),
+            termEndsOn = null,
+            termNumber = 1,
+            until = null,
+        )
+        val roster = listOf(seat(0, 1, false), seat(1, 2, true), seat(2, 0, false), seat(3, 3, true))
+        val meeting =
+            Meeting(
+                roster = roster,
+                standIns = listOf(0L, 1L, 3L).associate { UUID(1, it) to UUID(2, 0) },
+                present =
+                    listOf(1L, 2L, 3L).associate { UUID(2, it) to PersonPresence(remote = true) } +
+                        (UUID(2, 0) to PersonPresence(remote = true, steppedOutOf = item)),
+                declarations = emptyMap(),
+            )
+        val rule =
+            QuorumRule(
+                threshold = QuorumThreshold(ThresholdKind.MAJORITY),
+                minimum = 1,
+                composition = listOf(QuorumComposition("independent", majority = true)),
+                recusedCount = true,
+            )
+        val back = meeting.copy(present = meeting.present.mapValues { it.value.copy(steppedOutOf = null) })
+
+        val out = live(rule, meeting)
+        assertThat(out.steppedOut).containsExactly(UUID(2, 0))
+        assertThat(out.seats.map { it.userId }).doesNotContain(UUID(2, 0))
+        assertThat(out.result.present).isEqualTo(3)
+        assertThat(out.result.quorate).isTrue()
+
+        val returned = result(rule, back)
+        assertThat(returned.present).isEqualTo(4)
+        assertThat(returned.quorate).isFalse()
+        assertThat(returned.unmet)
+            .containsExactly(UnmetCondition(UnmetKind.COMPOSITION, 3, 2, attribute = "independent", majority = true))
+        // The rest of the rule is monotonic: without the majority condition, the item stays quorate.
+        val monotonic = rule.copy(composition = emptyList())
+        assertThat(result(monotonic, meeting).quorate).isTrue()
+        assertThat(result(monotonic, back).quorate).isTrue()
     }
 
     @Property

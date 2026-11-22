@@ -8,6 +8,7 @@ import com.memo.files.internal.RenditionRetry
 import com.memo.files.internal.RenditionScheduler
 import com.memo.files.internal.RenditionWorker
 import com.memo.memo.internal.MemoAttachmentPurpose
+import com.memo.testsupport.Latency
 import com.memo.testsupport.MemoIntegrationTest
 import com.memo.testsupport.Person
 import com.memo.testsupport.Samples
@@ -98,17 +99,7 @@ class DocumentsPerformanceIT : MemoIntegrationTest() {
         }
     }
 
-    private fun p95(call: () -> Unit): Long {
-        repeat(WARM_UP) { call() }
-        val times =
-            (1..RUNS)
-                .map {
-                    val start = System.nanoTime()
-                    call()
-                    (System.nanoTime() - start) / NANOS_PER_MS
-                }.sorted()
-        return times[(times.size * P95 / PERCENT) - 1]
-    }
+    private fun p95(call: () -> Unit): Long = Latency.p95(WARM_UP, RUNS, call = call)
 
     private companion object {
         const val LIST_BUDGET_MS = 50L
@@ -116,8 +107,5 @@ class DocumentsPerformanceIT : MemoIntegrationTest() {
         const val ONE_MB_CHARS = 1_000_000
         const val WARM_UP = 5
         const val RUNS = 40
-        const val P95 = 95
-        const val PERCENT = 100
-        const val NANOS_PER_MS = 1_000_000L
     }
 }

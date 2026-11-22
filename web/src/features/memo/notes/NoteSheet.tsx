@@ -12,7 +12,7 @@ import type { HistoryAction, NoteEntryView, StampView } from '@/api/generated/ty
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
-import { pmv } from '@/features/forums/papers-messages'
+import { pm, pmv } from '@/features/forums/papers-messages'
 import { cn } from '@/lib/utils'
 import { actionLabels, mm, mmv } from '../memo-messages'
 import { NoteRender } from './NoteRender'
@@ -194,6 +194,8 @@ function Byline({ name, actingFor, label, at }: { name: string; actingFor?: stri
 }
 
 function noteLabel(intl: IntlShape, note: NoteEntryView): string {
+  // A line the system wrote: "Raised from action BRC A14/2026 (Board Risk Committee)" (Phase 4 E07 T6).
+  if (note.kind === 'COMMENT' && note.actionKind === 'RAISED_FROM_ACTION') return intl.formatMessage(pm.systemNote)
   if (note.kind === 'COMMENT') return intl.formatMessage(m.comment)
   if (note.kind === 'CORRECTION') return intl.formatMessage(m.correction)
   // A committee's return, decline or decision (ADR-0058): "Returned by the Management Credit Committee".

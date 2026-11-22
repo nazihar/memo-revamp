@@ -10,6 +10,7 @@ import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
+import com.memo.jooq.tables.ActionsMemo
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -228,6 +229,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.actions_item</code>.
      */
     val ACTIONS_ITEM: ActionsItem get() = ActionsItem.ACTIONS_ITEM
+
+    /**
+     * The table <code>memo.actions_memo</code>.
+     */
+    val ACTIONS_MEMO: ActionsMemo get() = ActionsMemo.ACTIONS_MEMO
 
     /**
      * The table <code>memo.audit_anchor</code>.
@@ -1597,6 +1603,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ActionsDueRequest.ACTIONS_DUE_REQUEST,
         ActionsEntry.ACTIONS_ENTRY,
         ActionsItem.ACTIONS_ITEM,
+        ActionsMemo.ACTIONS_MEMO,
         AuditAnchor.AUDIT_ANCHOR,
         AuditChainHead.AUDIT_CHAIN_HEAD,
         AuditEvent.AUDIT_EVENT,

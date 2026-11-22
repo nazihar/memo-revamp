@@ -16,11 +16,15 @@ package com.memo.meeting
  * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
  * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E06
  * T7 made its record placeholder real: the record, its versions and its check (MINUTES_COPIES). E07 T3 made its actions
- * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
- * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
- * totals and its export (TRACKER). E06 T8 added the corrections after approval (the list to MINUTES_COPIES, the approver's
- * answer to MINUTES, a secretary's proposal with recusal columns) and the certified extracts (EXTRACTS: a resolution's
- * extracts and one extract's PDF/A; issuing one is an officer's, with an officer probe).
+ * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing
+ * (officers, with recusal columns or an officer probe). E07 T6 added raising and linking an action's follow-up memos (recusal
+ * columns). E07 T8 made its tracker placeholder real: the committee's tracker with its totals and its export (TRACKER). E08
+ * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
+ * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
+ * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). The register's export (T3) waits. E06 T8 added the
+ * corrections after approval (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with
+ * recusal columns) and the certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an
+ * officer's, with an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -80,6 +84,11 @@ object PaperSurfaceRegistry {
         ANALYTICS(
             "Meeting analytics, the committee's detail and its attendance export (E08 T4): counts only, never an item; a recused or " +
                 "restricted viewer's decision, deferral, late-paper and action counts leave the item out (AnalyticsLeakIT's differential)",
+        ),
+        REGISTER(
+            "The decision register across committees (E08 T2): its scope, and the search's rows, totals, facets and order; a decision " +
+                "the viewer may not see in full is a restricted line (committee, meeting, item number, number and state) that no text, " +
+                "outcome, memo type or exception filter matches and no outcome facet counts; nothing above clearance or outside scope",
         ),
     }
 
@@ -154,6 +163,10 @@ object PaperSurfaceRegistry {
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
             "GET /api/v1/forums/{forumId}/actions" to Surface.TRACKER,
             "GET /api/v1/forums/{forumId}/actions/export" to Surface.TRACKER,
+            // E08 T2: the register (officers and members of their committees, forums.manage and forum.read; 403 to others), by
+            // the one rule in search_find_decisions with the viewer's recusals read in the request.
+            "GET /api/v1/decision-register/scope" to Surface.REGISTER,
+            "POST /api/v1/decision-register/search" to Surface.REGISTER,
             // E08 T4: analytics, counts of what the viewer sees in full (members their own attendance row, no late counts).
             "GET /api/v1/analytics/committees" to Surface.ANALYTICS,
             "GET /api/v1/analytics/committees/{forumId}" to Surface.ANALYTICS,
@@ -241,6 +254,11 @@ object PaperSurfaceRegistry {
                     "making the minutes' draft (E06 T5): secretaries not recused from any item; answered with the page (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate" to
                     "filling an item of the draft again (E06 T5): secretaries not recused from any item (recusal columns)",
+                "POST /api/v1/actions/{actionId}/memos" to
+                    "raising a follow-up memo (E07 T6): the action's owner and contributors; 404 to anyone recused who is not " +
+                    "involved (recusal columns)",
+                "POST /api/v1/actions/{actionId}/memos/link" to
+                    "linking a follow-up memo (E07 T6): the owner, contributors and secretaries not recused (recusal columns)",
                 // E07 T4: progress, dates, owners and endings; every one finds the action by the one rule first, so a recused
                 // viewer who is not involved gets 404, and a recused officer who is gets 403 RECUSED (ActionStateMachineTest).
                 "POST /api/v1/actions/{actionId}/updates" to
@@ -285,7 +303,27 @@ object PaperSurfaceRegistry {
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
     val modules: List<String> =
-        listOf("com.memo.meeting", "com.memo.forum", "com.memo.minutes", "com.memo.actions", "com.memo.analytics")
+        listOf("com.memo.meeting", "com.memo.forum", "com.memo.minutes", "com.memo.actions", "com.memo.search", "com.memo.analytics")
+
+    /**
+     * The search module's memo search endpoints and why none of them is an item surface: `search_memo` holds memos, their
+     * notes and their files only, read by the memo's own rule; meeting papers, their extracted text and decisions are never
+     * indexed there (design E04 §1.7, ADR-0054). The [Channel.SEARCH] probe searches every canary of a recused item.
+     */
+    val search: Map<String, String> =
+        listOf(
+            "POST /api/v1/search",
+            "POST /api/v1/search/suggest",
+        ).associateWith { "memo search: memos by the memo's own rule; no paper, agenda item or decision is indexed (SEARCH probe)" } +
+            listOf(
+                "GET /api/v1/saved-searches",
+                "POST /api/v1/saved-searches",
+                "PUT /api/v1/saved-searches/{id}",
+                "DELETE /api/v1/saved-searches/{id}",
+            ).associateWith { "saved memo searches: their owner's criteria only, no result is stored" }
+
+    /** Every endpoint registered here: the surfaces, the officers', the forum module's and the memo search's. */
+    val registered: Set<String> get() = endpoints.keys + officersOnly.keys + forum.keys + search.keys
 
     /**
      * What reaches a person about an item beyond the meeting module's endpoints (test plan E04, "Surfaces"): each has a
@@ -380,8 +418,9 @@ object PaperSurfaceRegistry {
         listOf(
             Pending(
                 "E08",
-                "The decision register, `search_decision` and analytics, with their exports: rows carry the item's recused ids",
-                listOf("/api/v1/decisions", "/api/v1/decision-register"),
+                "The decision register's export (T3): XLSX and PDF of the rows as the viewer sees them, restricted lines as \"Restricted " +
+                    "item\", the number check without a void's reason for an item the viewer may not see (EXPORTS probe)",
+                listOf("/api/v1/decision-register/export"),
             ),
         )
 }

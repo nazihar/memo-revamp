@@ -59,7 +59,11 @@ class FakeRenditionServices :
         input: RenditionInput,
         key: String,
         out: OutputStream,
-    ): RenditionOutcome = scripted(input, "pdfa") { out.write(pdfa(input.name)) }
+    ): RenditionOutcome =
+        scripted(input, "pdfa") {
+            // The minutes' record and approved copies (E06 T7): the document's text in the PDF/A, for the leak suites.
+            out.write(if (input.name.startsWith(MINUTES_RECORD)) pdfa(textPdf(input), input.name) else pdfa(input.name))
+        }
 
     override fun text(
         input: RenditionInput,
@@ -92,6 +96,7 @@ class FakeRenditionServices :
         input.open().use { it.readAllBytes() }
         return when {
             input.name.startsWith("final-") -> RenditionOutcome.Final("SIZE")
+            input.name.startsWith(MINUTES_RECORD) && minutesRecordDown -> RenditionOutcome.Retry("UNREACHABLE")
             input.name.startsWith("always-retry-") -> RenditionOutcome.Retry("UNREACHABLE")
             input.name.startsWith("retry-once-") && call == 1 -> RenditionOutcome.Retry("UNREACHABLE")
             else -> RenditionOutcome.Written().also { write() }
@@ -104,18 +109,31 @@ class FakeRenditionServices :
         /** The name the minutes' copy job gives its document (`MinutesCopies`). */
         const val MINUTES_COPY = "minutes-copy"
 
+        /** The name the minutes' record job gives its document (`MinutesRecordMaker`): the record and approved copies. */
+        const val MINUTES_RECORD = "minutes-record"
+
+        /** While true, the record's document cannot be converted now (a test of the record job's retries). */
+        @Volatile var minutesRecordDown: Boolean = false
+
         /** "Converted <name>" on one page, with the PDF/A metadata, so the record's text check and veraPDF see a real part. */
         fun pdfa(name: String): ByteArray {
             val raw = ByteArrayOutputStream()
             PdfBoxPageRenderer().render(PageDocument(name, "Converted", listOf(Block.Paragraph("Converted $name"))), raw)
-            return Loader.loadPDF(raw.toByteArray()).use { doc ->
+            return pdfa(raw.toByteArray(), name)
+        }
+
+        /** [pdf] with the PDF/A metadata. */
+        fun pdfa(
+            pdf: ByteArray,
+            name: String,
+        ): ByteArray =
+            Loader.loadPDF(pdf).use { doc ->
                 PdfaMetadata.apply(
                     doc,
                     RecordMetadata(name, name, "Converted $name", "test", "test", Instant.parse("2026-01-01T00:00:00Z")),
                 )
                 ByteArrayOutputStream().also { doc.save(it) }.toByteArray()
             }
-        }
 
         val PDF: ByteArray =
             PDDocument().use { document ->

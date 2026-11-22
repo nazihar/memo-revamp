@@ -6,10 +6,6 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
-import com.memo.files.FileServing
-import com.memo.files.OpenAudit
-import com.memo.files.ServeOutcome
-import com.memo.files.ServedContent
 import com.memo.identity.UserSummaries
 import com.memo.meeting.MeetingViewers
 import com.memo.system.Idempotency
@@ -327,7 +323,7 @@ class MinutesReviewController(
 
 /**
  * The readers' side of the minutes (design E06 §3, flows AE–AG; ADR-0066): the comments, the reader's copy (streamed through
- * `FileServing` after the minutes' own rule, the open audited once per session) and the officers' preview "as", and the
+ * `MinutesFileStreams` after the minutes' own rule, the open audited once per session) and the officers' preview "as", and the
  * approved minutes' stamps with their check.
  */
 @RestController
@@ -336,8 +332,9 @@ class MinutesReadingController(
     private val comments: MinutesComments,
     private val confirmation: MinutesConfirmation,
     private val reading: MinutesReading,
+    private val recordReading: MinutesRecordReading,
     private val commentViews: MinutesCommentViews,
-    private val serving: FileServing,
+    private val streams: MinutesFileStreams,
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
@@ -407,15 +404,22 @@ class MinutesReadingController(
     @SignedIn
     @Operation(
         operationId = "getMinutesDocument",
-        summary = "The viewer's copy of the draft minutes (PDF, supports Range); 202 while it is being made",
+        summary =
+            "The viewer's copy of the minutes at their stage (PDF, supports Range): the draft's, or once approved the record " +
+                "or their approved copy (PDF/A); 202 while it is being made, 409 RECORD_PENDING until the record is made",
     )
     fun document(
         @PathVariable meetingId: UUID,
         request: HttpServletRequest,
         response: HttpServletResponse,
     ) {
-        val (reader, lookup) = transactions.inTenant(TenantContext.current()) { reading.document(meetingId) }
-        serve(reader, lookup, null, request, response)
+        // Approved minutes are read from their record (a moment's race with the approval answers RECORD_PENDING: try again).
+        if (transactions.readInTenant(TenantContext.current()) { recordReading.approved(meetingId) }) {
+            streams.record(transactions.inTenant(TenantContext.current()) { recordReading.serve(meetingId, null) }, request, response)
+        } else {
+            val (reader, lookup) = transactions.inTenant(TenantContext.current()) { reading.document(meetingId) }
+            streams.copy(reader, lookup, null, request, response)
+        }
     }
 
     @GetMapping("/api/v1/meetings/{meetingId}/minutes/preview")
@@ -431,52 +435,10 @@ class MinutesReadingController(
         response: HttpServletResponse,
     ) {
         val (reader, lookup) = transactions.inTenant(TenantContext.current()) { reading.preview(meetingId, userId) }
-        serve(reader, lookup, userId, request, response)
-    }
-
-    /** Streams the copy (the open audited once per session, ADR-0061's `FileServing`), or answers 202 while it is made. */
-    private fun serve(
-        reader: MinutesReader,
-        lookup: CopyLookup,
-        previewAs: UUID?,
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-    ) {
-        val copy =
-            when (lookup) {
-                is CopyLookup.Building -> {
-                    response.status = HttpStatus.ACCEPTED.value()
-                    response.setHeader("Retry-After", RETRY_AFTER_SECONDS.toString())
-                    response.setHeader("Cache-Control", "no-store")
-                    return
-                }
-
-                is CopyLookup.Ready -> {
-                    lookup.copy
-                }
-            }
-        val audit =
-            OpenAudit(
-                action = "minutes.copy.opened",
-                objectType = MinutesDrafts.OBJECT_TYPE,
-                objectId = reader.row.meetingId.toString(),
-                details =
-                    mapOf(
-                        "stage" to copy.stage.name,
-                        "setKey" to copy.setKey,
-                        "sourceVersionId" to copy.sourceVersionId.toString(),
-                        "previewAs" to previewAs?.toString(),
-                    ),
-            )
-        val outcome = serving.serve(checkNotNull(copy.fileVersionId), ServedContent.ORIGINAL, request, response, audit)
-        if (outcome != ServeOutcome.SERVED) throw MinutesNotFoundException("copy")
+        streams.copy(reader, lookup, userId, request, response)
     }
 
     private fun <T : Any> read(block: () -> T): T = transactions.readInTenant(TenantContext.current(), block)
 
     private fun <T : Any> noStore(body: T): ResponseEntity<T> = ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(body)
-
-    private companion object {
-        const val RETRY_AFTER_SECONDS = 10
-    }
 }

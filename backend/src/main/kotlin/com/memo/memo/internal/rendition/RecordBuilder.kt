@@ -27,8 +27,7 @@ class RecordBuilder(
     private val store: MemoRenditionStore,
     private val planner: RecordPlanner,
     private val sources: RecordSources,
-    private val assembler: RecordAssembler,
-    private val validator: PdfaValidator,
+    private val maker: RecordFileMaker,
     private val renderer: PageRenderer,
     private val uploads: FileUploads,
     private val files: Files,
@@ -95,9 +94,10 @@ class RecordBuilder(
     ): BuiltRecord {
         val prepared = plan.parts.mapIndexed { i, planned -> sources.prepare(planned, i, rendition.id, spool) }
         val out = spool.resolve("record.pdf")
-        val assembly = assembler.assemble(prepared.map { it.part }, plan.metadata, out)
-        val validation = validator.validate(out)
-        val textMissing = RecordText.missing(out, plan.textItems)
+        val made = maker.make(prepared.map { it.part }, plan.metadata, plan.textItems, out)
+        val assembly = made.assembly
+        val validation = made.validation
+        val textMissing = made.textMissing
         val versionId = store(rendition, plan, out)
         val stored = checkNotNull(tx { files.version(versionId) }) { "stored record version missing" }
         val parts =

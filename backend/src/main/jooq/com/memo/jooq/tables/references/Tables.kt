@@ -121,6 +121,7 @@ import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesRecord
 import com.memo.jooq.tables.MinutesReminder
 import com.memo.jooq.tables.MinutesResolution
 import com.memo.jooq.tables.MinutesResolutionCounter
@@ -758,6 +759,11 @@ val MINUTES_EVENT: MinutesEvent = MinutesEvent.MINUTES_EVENT
  * The table <code>memo.minutes_item_note</code>.
  */
 val MINUTES_ITEM_NOTE: MinutesItemNote = MinutesItemNote.MINUTES_ITEM_NOTE
+
+/**
+ * The table <code>memo.minutes_record</code>.
+ */
+val MINUTES_RECORD: MinutesRecord = MinutesRecord.MINUTES_RECORD
 
 /**
  * The table <code>memo.minutes_reminder</code>.

@@ -55,3 +55,7 @@ endpoints:
     headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" }
   - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/approvals", rule: signedIn }
   - { endpoint: "POST /api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check", rule: signedIn }
+  # E06 T7: the approved minutes' record (the reader's approved copy), its versions and its check (MinutesRecordIT).
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/record", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/records", rule: signedIn }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/minutes/records/{version}/check", rule: signedIn }

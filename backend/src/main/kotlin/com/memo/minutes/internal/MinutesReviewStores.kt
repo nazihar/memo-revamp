@@ -10,6 +10,7 @@ import com.memo.jooq.tables.references.MINUTES_COMMENT_REQUEST
 import com.memo.jooq.tables.references.MINUTES_COPY
 import com.memo.jooq.tables.references.MINUTES_REMINDER
 import org.jooq.JSONB
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.JsonNode
@@ -88,6 +89,11 @@ data class CopyRow(
     val createdAt: Instant,
     val builtAt: Instant?,
     val version: Long,
+    /** The record version an APPROVED copy belongs to (E06 T7); null for a draft's copy. */
+    val recordVersion: Int? = null,
+    /** veraPDF's verdict on an APPROVED copy (a PDF/A record of its own), once built. */
+    val compliant: Boolean? = null,
+    val validation: Map<String, Any?>? = null,
 )
 
 /** The chair's authenticated confirmation of the minutes (ADR-0051), as stored. */
@@ -258,6 +264,7 @@ class MinutesCopyStore(
             .set(c.REDACTED, JSONB.jsonb(json.writeValueAsString(row.redacted)))
             .set(c.SET_KEY, row.setKey)
             .set(c.SOURCE_VERSION_ID, row.sourceVersionId)
+            .set(c.RECORD_VERSION, row.recordVersion)
             .set(c.STATE, CopyState.PENDING.name)
             .set(c.CREATED_AT, row.createdAt.atOffset(ZoneOffset.UTC))
             .set(c.VERSION, 0L)
@@ -299,6 +306,37 @@ class MinutesCopyStore(
             .limit(1)
             .fetchOne { it.row() }
 
+    /** The approved copies of [meetingId]'s record version [recordVersion] (E06 T7). */
+    fun ofRecord(
+        meetingId: UUID,
+        recordVersion: Int,
+    ): List<CopyRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_COPY)
+            .where(
+                MINUTES_COPY.MEETING_ID.eq(meetingId),
+                MINUTES_COPY.STAGE.eq(CopyStage.APPROVED.name),
+                MINUTES_COPY.RECORD_VERSION.eq(recordVersion),
+            ).orderBy(MINUTES_COPY.CREATED_AT, MINUTES_COPY.ID)
+            .fetch { it.row() }
+
+    /** The built approved copies after [after] in id order, at most [limit] (the weekly fixity run). */
+    fun approvedAfter(
+        after: UUID?,
+        limit: Int,
+    ): List<CopyRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_COPY)
+            .where(
+                MINUTES_COPY.STAGE.eq(CopyStage.APPROVED.name),
+                MINUTES_COPY.STATE.eq(CopyState.DONE.name),
+                after?.let { MINUTES_COPY.ID.gt(it) } ?: DSL.noCondition(),
+            ).orderBy(MINUTES_COPY.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
     /** [id], locked to the end of the transaction. */
     fun lock(id: UUID): CopyRow? =
         tenantDsl
@@ -323,6 +361,8 @@ class MinutesCopyStore(
             .set(c.FILE_VERSION_ID, after.fileVersionId)
             .set(c.SHA256, after.sha256)
             .set(c.BUILT_AT, after.builtAt?.atOffset(ZoneOffset.UTC))
+            .set(c.COMPLIANT, after.compliant)
+            .set(c.VALIDATION, after.validation?.let { JSONB.jsonb(json.writeValueAsString(it)) })
             .set(c.VERSION, before.version + 1)
             .where(c.ID.eq(before.id), c.VERSION.eq(before.version))
             .execute() == 1
@@ -344,10 +384,14 @@ class MinutesCopyStore(
             createdAt = createdAt.toInstant(),
             builtAt = builtAt?.toInstant(),
             version = version ?: 0,
+            recordVersion = recordVersion,
+            compliant = compliant,
+            validation = validation?.let { json.readValue(it.data(), VALIDATION) },
         )
 
     private companion object {
         val REDACTED = object : TypeReference<List<Redaction>>() {}
+        val VALIDATION = object : TypeReference<Map<String, Any?>>() {}
     }
 }
 

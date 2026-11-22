@@ -24,7 +24,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import java.io.ByteArrayInputStream
 import java.time.LocalDate
-import java.time.ZoneId
 
 /**
  * Meeting analytics end to end (ADR-0070; test plan E08 T4 `AnalyticsIT`, `AnalyticsCrossTenantIT`): two held meetings of
@@ -45,7 +44,7 @@ class AnalyticsIT : AnalyticsFixture() {
     private fun twoMeetings() {
         val first = meetingWith(listOf("Term loan, Karnaphuli Steel", "Facility renewal, Acme"), listOf(chair, vice, director, colleague))
         decide(first, first.item("Term loan, Karnaphuli Steel").item, APPROVED_WITH_CONDITIONS)
-        val target = LocalDate.now(ZoneId.of("Asia/Dhaka")).plusDays(30)
+        val target = today().plusDays(30)
         decide(first, first.item("Facility renewal, Acme").item, DecisionInput(OutcomeKind.DEFERRED, deferTo = DeferTarget(date = target)))
         held(first)
         overdueAction(first.meeting, null, director, daysAgo = 40)
@@ -179,7 +178,7 @@ class AnalyticsIT : AnalyticsFixture() {
             }
         }
         assertThatThrownBy { asOther { committeeAnalytics.detail(brc, null, null) } }.isInstanceOf(AnalyticsNotFoundException::class.java)
-        val today = LocalDate.now(ZoneId.of("Asia/Dhaka"))
+        val today = today()
         assertThat(asOther { attendanceStats.held(setOf(brc), today.minusDays(7), today, Int.MAX_VALUE) } as List<*>).isEmpty()
         assertThat(asOther { decisionStats.of(setOf(brc), today.minusDays(7), today) } as List<*>).isEmpty()
         val summary = asOther { committeeAnalytics.summary(null, null, emptySet()) } as com.memo.analytics.api.AnalyticsSummaryResponse

@@ -65833,6 +65833,118 @@
       "value": "]"
     }
   ],
+  "notificationKinds.actionMemoDecided": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş ȧȧƥƥřǿǿṽḗḗḓ. Ẏǿǿŭŭ ƈȧȧƞ ƞǿǿẇ ḿȧȧřķ ŧħḗḗ ȧȧƈŧīǿǿƞ ȧȧş ḓǿǿƞḗḗ."
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş řḗḗĵḗḗƈŧḗḗḓ"
+            }
+          ]
+        },
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş ẇīŧħḓřȧȧẇƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħḗḗ ƒǿǿŀŀǿǿẇ-ŭŭƥ ḿḗḗḿǿǿ ǿǿƒ ȧȧƈŧīǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ẇȧȧş şŧǿǿƥƥḗḗḓ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notificationKinds.actionNotRunning": [
     {
       "type": 0,
@@ -70847,6 +70959,20 @@
           ]
         }
       }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "papers.note.system": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƀẏ ŧħḗḗ şẏşŧḗḗḿ"
     },
     {
       "type": 0,

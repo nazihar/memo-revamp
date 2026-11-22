@@ -159,6 +159,7 @@ const kindsWithValues = defineMessages<{
   decisionsReleaseFailed: { committee: string; date: string; count: number }
   actionAssigned: { committee: string; reference: string; date: string }
   actionSourceCorrected: { committee: string; reference: string }
+  actionMemoDecided: { committee: string; reference: string; outcome: string }
   actionOwnerChanged: { committee: string; reference: string }
   actionRiskAccepted: { committee: string; reference: string }
   actionCancelled: { committee: string; reference: string }
@@ -410,6 +411,11 @@ const kindsWithValues = defineMessages<{
   actionSourceCorrected: {
     id: 'notificationKinds.actionSourceCorrected',
     defaultMessage: 'The decision that action {reference} of {committee} came from was corrected',
+  },
+  actionMemoDecided: {
+    id: 'notificationKinds.actionMemoDecided',
+    defaultMessage:
+      '{outcome, select, APPROVED {The follow-up memo of action {reference} ({committee}) was approved. You can now mark the action as done.} REJECTED {The follow-up memo of action {reference} ({committee}) was rejected} WITHDRAWN {The follow-up memo of action {reference} ({committee}) was withdrawn} other {The follow-up memo of action {reference} ({committee}) was stopped}}',
   },
   actionOwnerChanged: {
     id: 'notificationKinds.actionOwnerChanged',
@@ -688,6 +694,12 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.actionSourceCorrected, {
         committee: params.committee ?? '',
         reference: params.reference ?? '',
+      })
+    case 'ACTION_MEMO_DECIDED':
+      return intl.formatMessage(kindsWithValues.actionMemoDecided, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+        outcome: params.outcome ?? 'other',
       })
     case 'ACTION_OWNER_CHANGED':
       return intl.formatMessage(kindsWithValues.actionOwnerChanged, actionValues(params))

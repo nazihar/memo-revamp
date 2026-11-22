@@ -36773,6 +36773,114 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notificationKinds.actionMemoDecided": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was approved. You can now mark the action as done."
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was rejected"
+            }
+          ]
+        },
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was withdrawn"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was stopped"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notificationKinds.actionNotRunning": [
     {
       "type": 0,
@@ -40191,6 +40299,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.note.system": [
+    {
+      "type": 0,
+      "value": "Recorded by the systemSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "papers.outcome.approved": [

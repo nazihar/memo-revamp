@@ -160,8 +160,42 @@ internal class PageLayout(
         when (block) {
             is Block.PageBreak -> if (!fresh) newPage()
             is Block.Box -> box(block)
+            is Block.Table -> table(TableRows(breaker, block, width))
             else -> rows(block, MARGIN, width).forEach(::row)
         }
+    }
+
+    /**
+     * A table: its header at the top of each of its pages; a row whole on one page when it fits on a page (it starts a new
+     * page rather than being split), else in bands of lines continuing on the next pages (a decision's long text).
+     */
+    private fun table(table: TableRows) {
+        val header = table.band(table.header, 0, table.header.count)
+        val capacity = ((top - bottom - header.height - table.height(0)) / TableRows.LINE).toInt().coerceAtLeast(1)
+        val put = { r: Row ->
+            val at = y
+            pages.last() += { canvas -> r.draw(canvas, at) }
+            y -= r.height
+            fresh = false
+        }
+        if (y - header.height - table.height(1) < bottom) newPage()
+        put(header)
+        table.rows.forEach { cells ->
+            var start = 0
+            while (start < cells.count) {
+                val room = ((y - bottom - table.height(0)) / TableRows.LINE).toInt()
+                val left = cells.count - start
+                if (room < 1 || (start == 0 && left in (room + 1)..capacity)) {
+                    newPage()
+                    put(header)
+                } else {
+                    val take = minOf(room, left)
+                    put(table.band(cells, start, take))
+                    start += take
+                }
+            }
+        }
+        row(Row(SPACE * 2, spacer = true))
     }
 
     private fun box(block: Block.Box) {
@@ -231,7 +265,7 @@ internal class PageLayout(
                 listOf(Row(SPACE * 2) { canvas, at -> canvas.line(x, at - SPACE, x + width, at - SPACE) })
             }
 
-            is Block.Box, is Block.PageBreak -> {
+            is Block.Box, is Block.PageBreak, is Block.Table -> {
                 emptyList()
             }
         }

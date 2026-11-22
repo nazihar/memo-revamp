@@ -11,6 +11,7 @@ import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
+import com.memo.jooq.tables.ActionsMemo
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -211,6 +212,11 @@ val ACTIONS_ENTRY: ActionsEntry = ActionsEntry.ACTIONS_ENTRY
  * The table <code>memo.actions_item</code>.
  */
 val ACTIONS_ITEM: ActionsItem = ActionsItem.ACTIONS_ITEM
+
+/**
+ * The table <code>memo.actions_memo</code>.
+ */
+val ACTIONS_MEMO: ActionsMemo = ActionsMemo.ACTIONS_MEMO
 
 /**
  * The table <code>memo.audit_anchor</code>.

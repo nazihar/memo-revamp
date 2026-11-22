@@ -256,15 +256,15 @@ class MinutesPages(
 
     /** The reviewer's last answer, for the secretaries drafting (not one recused from an item: comments may name it). */
     private fun lastReview(s: Scene): MinutesReviewNoteResponse? {
-        if (!s.manager || s.recused || s.row.state != MinutesStage.DRAFT) return null
-        val step = store.events(s.row.meetingId).lastOrNull { it.kind in MinutesSteps.REVIEW_STEPS } ?: return null
-        val decision =
-            when (step.kind) {
-                MinutesEventKind.AGREED -> ReviewDecision.AGREE
-                MinutesEventKind.RETURNED -> ReviewDecision.RETURN
-                else -> return null
+        val step =
+            if (s.manager && !s.recused && s.row.state == MinutesStage.DRAFT) {
+                store.events(s.row.meetingId).lastOrNull { it.kind in MinutesSteps.REVIEW_STEPS }
+            } else {
+                null
             }
-        val by = step.actor ?: return null
+        val decision = step?.let { REVIEW_DECISIONS[it.kind] }
+        val by = step?.actor
+        if (step == null || decision == null || by == null) return null
         val names = users.names(setOfNotNull(by, step.onBehalfBy))
         val person = { id: UUID -> MinutesPerson(id, names[id].orEmpty()) }
         return MinutesReviewNoteResponse(
@@ -452,6 +452,10 @@ class MinutesPages(
     )
 
     private companion object {
+        /** The chair's answer each review step records. */
+        val REVIEW_DECISIONS =
+            mapOf(MinutesEventKind.AGREED to ReviewDecision.AGREE, MinutesEventKind.RETURNED to ReviewDecision.RETURN)
+
         /** The structure banner as anyone but the secretaries gets it: nothing. */
         val EMPTY_STRUCTURE = MinutesStructureResponse(null, false, null, emptyList(), 0, 0, null)
     }

@@ -156,6 +156,15 @@ const kindsWithValues = defineMessages<{
   minutesDraftOverdue: { committee: string; date: string }
   minutesDraftReady: { committee: string; date: string }
   decisionsReleaseFailed: { committee: string; date: string; count: number }
+  actionAssigned: { committee: string; reference: string; date: string }
+  actionSourceCorrected: { committee: string; reference: string }
+  actionOwnerChanged: { committee: string; reference: string }
+  actionRiskAccepted: { committee: string; reference: string }
+  actionCancelled: { committee: string; reference: string }
+  actionReopened: { committee: string; reference: string; date: string }
+  actionDueRequested: { committee: string; reference: string; date: string }
+  actionDueDecided: { committee: string; reference: string; date: string; decision: string }
+  actionDueChanged: { committee: string; reference: string; date: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -382,6 +391,43 @@ const kindsWithValues = defineMessages<{
     defaultMessage:
       '{count, plural, one {A decision of {committee} on {date} was not sent to its memo} other {# decisions of {committee} on {date} were not sent to their memos}}: open the meeting to try again',
   },
+  actionAssigned: {
+    id: 'notificationKinds.actionAssigned',
+    defaultMessage: '{committee} has given you an action, due {date} ({reference})',
+  },
+  actionSourceCorrected: {
+    id: 'notificationKinds.actionSourceCorrected',
+    defaultMessage: 'The decision that action {reference} of {committee} came from was corrected',
+  },
+  actionOwnerChanged: {
+    id: 'notificationKinds.actionOwnerChanged',
+    defaultMessage: 'The owner of action {reference} of {committee} changed',
+  },
+  actionRiskAccepted: {
+    id: 'notificationKinds.actionRiskAccepted',
+    defaultMessage: 'Action {reference} of {committee} was cancelled with the risk accepted on your behalf',
+  },
+  actionCancelled: {
+    id: 'notificationKinds.actionCancelled',
+    defaultMessage: 'Action {reference} of {committee} was cancelled',
+  },
+  actionReopened: {
+    id: 'notificationKinds.actionReopened',
+    defaultMessage: 'Action {reference} of {committee} was reopened, due {date}',
+  },
+  actionDueRequested: {
+    id: 'notificationKinds.actionDueRequested',
+    defaultMessage: 'The owner of action {reference} of {committee} asks for a new date: {date}',
+  },
+  actionDueDecided: {
+    id: 'notificationKinds.actionDueDecided',
+    defaultMessage:
+      'Your request to move action {reference} of {committee} to {date} was {decision, select, AGREED {agreed} other {declined}}',
+  },
+  actionDueChanged: {
+    id: 'notificationKinds.actionDueChanged',
+    defaultMessage: 'Action {reference} of {committee} is now due {date}',
+  },
 })
 
 const kinds = defineMessages({
@@ -393,6 +439,11 @@ const kinds = defineMessages({
 /** The values of the meeting kinds: the committee and the meeting's date (never an item's title, ADR-0030). */
 function meetingValues(params: Record<string, string>): { committee: string; date: string } {
   return { committee: params.committee ?? '', date: params.date ?? '' }
+}
+
+/** The values of the action kinds: the committee and the reference (never the action's title or text, design E07 §2.3). */
+function actionValues(params: Record<string, string>): { committee: string; reference: string } {
+  return { committee: params.committee ?? '', reference: params.reference ?? '' }
 }
 
 /** The values of the declaration kinds: the meeting and the item's number (never its title or the nature, ADR-0062). */
@@ -584,6 +635,38 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         ...meetingValues(params),
         count: Number(params.count ?? '1') || 1,
       })
+    case 'ACTION_ASSIGNED':
+      return intl.formatMessage(kindsWithValues.actionAssigned, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+        date: params.date ?? '',
+      })
+    case 'ACTION_SOURCE_CORRECTED':
+      return intl.formatMessage(kindsWithValues.actionSourceCorrected, {
+        committee: params.committee ?? '',
+        reference: params.reference ?? '',
+      })
+    case 'ACTION_OWNER_CHANGED':
+      return intl.formatMessage(kindsWithValues.actionOwnerChanged, actionValues(params))
+    case 'ACTION_RISK_ACCEPTED':
+      return intl.formatMessage(kindsWithValues.actionRiskAccepted, actionValues(params))
+    case 'ACTION_CANCELLED':
+      return intl.formatMessage(kindsWithValues.actionCancelled, actionValues(params))
+    case 'ACTION_REOPENED':
+      return intl.formatMessage(kindsWithValues.actionReopened, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_DUE_REQUESTED':
+      return intl.formatMessage(kindsWithValues.actionDueRequested, {
+        ...actionValues(params),
+        date: params.date ?? '',
+      })
+    case 'ACTION_DUE_DECIDED':
+      return intl.formatMessage(kindsWithValues.actionDueDecided, {
+        ...actionValues(params),
+        date: params.date ?? '',
+        decision: params.decision ?? '',
+      })
+    case 'ACTION_DUE_CHANGED':
+      return intl.formatMessage(kindsWithValues.actionDueChanged, { ...actionValues(params), date: params.date ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -698,6 +781,9 @@ const mailTemplates = defineMessages({
     defaultMessage: 'Minutes to approve',
   },
   MINUTES_APPROVED: { id: 'mail.template.minutesApproved', defaultMessage: 'Minutes approved' },
+  ACTION_ASSIGNED: { id: 'mail.template.actionAssigned', defaultMessage: 'Committee action assigned' },
+  ACTION_OWNER_CHANGED: { id: 'mail.template.actionOwnerChanged', defaultMessage: 'Committee action owner changed' },
+  ACTION_RISK_ACCEPTED: { id: 'mail.template.actionRiskAccepted', defaultMessage: 'Committee action risk accepted' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

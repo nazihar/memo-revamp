@@ -4,6 +4,12 @@
 package com.memo.jooq
 
 
+import com.memo.jooq.tables.ActionsContributor
+import com.memo.jooq.tables.ActionsCounter
+import com.memo.jooq.tables.ActionsDigest
+import com.memo.jooq.tables.ActionsDueRequest
+import com.memo.jooq.tables.ActionsEntry
+import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -183,6 +189,36 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
          */
         val MEMO: Memo = Memo()
     }
+
+    /**
+     * The table <code>memo.actions_contributor</code>.
+     */
+    val ACTIONS_CONTRIBUTOR: ActionsContributor get() = ActionsContributor.ACTIONS_CONTRIBUTOR
+
+    /**
+     * The table <code>memo.actions_counter</code>.
+     */
+    val ACTIONS_COUNTER: ActionsCounter get() = ActionsCounter.ACTIONS_COUNTER
+
+    /**
+     * The table <code>memo.actions_digest</code>.
+     */
+    val ACTIONS_DIGEST: ActionsDigest get() = ActionsDigest.ACTIONS_DIGEST
+
+    /**
+     * The table <code>memo.actions_due_request</code>.
+     */
+    val ACTIONS_DUE_REQUEST: ActionsDueRequest get() = ActionsDueRequest.ACTIONS_DUE_REQUEST
+
+    /**
+     * The table <code>memo.actions_entry</code>.
+     */
+    val ACTIONS_ENTRY: ActionsEntry get() = ActionsEntry.ACTIONS_ENTRY
+
+    /**
+     * The table <code>memo.actions_item</code>.
+     */
+    val ACTIONS_ITEM: ActionsItem get() = ActionsItem.ACTIONS_ITEM
 
     /**
      * The table <code>memo.audit_anchor</code>.
@@ -1191,6 +1227,12 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
+        ActionsContributor.ACTIONS_CONTRIBUTOR,
+        ActionsCounter.ACTIONS_COUNTER,
+        ActionsDigest.ACTIONS_DIGEST,
+        ActionsDueRequest.ACTIONS_DUE_REQUEST,
+        ActionsEntry.ACTIONS_ENTRY,
+        ActionsItem.ACTIONS_ITEM,
         AuditAnchor.AUDIT_ANCHOR,
         AuditChainHead.AUDIT_CHAIN_HEAD,
         AuditEvent.AUDIT_EVENT,

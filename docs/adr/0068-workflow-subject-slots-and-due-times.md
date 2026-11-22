@@ -87,3 +87,16 @@ Also: `WorkflowTaskCreated` gains a nullable `nodeId`, so subjects know a task's
 ## More information
 - ADR-0034, ADR-0035, ADR-0038, ADR-0040, ADR-0041, ADR-0067.
 - Design: `phase-4-forums-meetings/epic-07-action-items/design.md §2.2`.
+
+## Amendment (2026-11-22, E07 T4): runs again, and resolving again
+Two more general additions, found while building E07 T4. Both are behind `WorkflowSubject` or `Workflows`, and memo types keep today's behaviour.
+
+- **An item that runs again** (`WorkflowSubject.runsAgain`, default false). A reopened action (ADR-0067, design E07 §1.10) gets a new instance, but the engine kept one instance per item for its whole life (design E01 §2, invariant 1; `UNIQUE (tenant_id, subject_type, subject_id)`).
+  - `workflow/V17__subject_runs.sql` numbers an item's instances as runs (`run`, 1 for every existing instance). The uniqueness moves to `(tenant_id, subject_type, subject_id, run)`, and a partial unique index keeps at most one running instance per item.
+  - `Workflows.start` starts the next run when the subject type runs again and the item's last instance ended. Otherwise it refuses `ALREADY_STARTED`, as before. Every read by subject (`viewOf`, `dueOf`, `redue`, the task descriptions, the holders) follows the newest run.
+  - This is expand only: a column with a default, and the constraint replaced. No row is rewritten. An older application beside this one reads an item's instance as before, because no item has a second run until this release reopens an action.
+- **Resolving again for the subject** (`WorkflowResolutions.reresolve(subjectType, subjectId)`, a published service beside `Workflows`). When an action's owner or contributors change (design E07 §1.3), each active step of the running instance with an open decision resolves again, with its slot read anew. This is the holder-change path of ADR-0040, recorded as a reassignment with the reason `SUBJECT_CHANGED` (`Reresolve` gained a reason).
+  - The new owner gets the owner's task: the person, the position's holder, or their substitute.
+  - A contributor added during verification leaves the verifier pool.
+  - It needs a signed-in user, who is recorded as the actor.
+- **Confirmation:** `CancelReopenIT` (a reopened action on its second run, marked done again), `WorkflowServiceIT` (`ALREADY_STARTED` unchanged for an item that does not run again) and `OwnerChangeIT` (person to position and back; the verifier pool drawn again). The memo and workflow suites run unchanged.

@@ -12,7 +12,9 @@ package com.memo.meeting
  * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
  * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E06 T5
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
- * again (officers, with recusal columns); the readers' copies stay a placeholder for T6.
+ * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E06 T6 made the copies real
+ * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
+ * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -45,8 +47,14 @@ object PaperSurfaceRegistry {
                 "decision is seen in full, else its number, meeting and item number (\"restricted\"); one resolution as the decision",
         ),
         MINUTES(
-            "The minutes page while drafting (E06 T5): the committee's secretaries and forums.manage only (404 to everyone else); " +
-                "a secretary recused from any item gets the page without the draft, and the draft's file (`minutes.draft`) is not theirs",
+            "The minutes page (E06 T5, T6): the committee's secretaries and forums.manage once held, the reviewer while it is with " +
+                "them, the readers once circulated (404 to everyone else); stage, people and numbers only, never an item's text; a " +
+                "secretary recused from any item gets it without the draft; the review, the confirmation and the stamps",
+        ),
+        MINUTES_COPIES(
+            "A reader's copy of the draft minutes and the comments (E06 T6): the copy of their redaction set (ADR-0066: the recused " +
+                "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
+                "comments, the officers everyone's but on items they are recused from",
         ),
     }
 
@@ -94,6 +102,14 @@ object PaperSurfaceRegistry {
             "GET /api/v1/resolutions/{resolutionId}" to Surface.RESOLUTIONS,
             // E06 T5: the minutes page (secretaries and forums.manage while drafting; 404 to everyone else).
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
+            // E06 T6: the reviewer's answer, the confirmation and the stamps (the chair), the reader's copy and the comments.
+            "POST /api/v1/meetings/{meetingId}/minutes/review" to Surface.MINUTES,
+            "POST /api/v1/meetings/{meetingId}/minutes/confirm" to Surface.MINUTES,
+            "GET /api/v1/meetings/{meetingId}/minutes/approvals" to Surface.MINUTES,
+            "POST /api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check" to Surface.MINUTES,
+            "GET /api/v1/meetings/{meetingId}/minutes/document" to Surface.MINUTES_COPIES,
+            "GET /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
+            "POST /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
         )
 
     /**
@@ -169,6 +185,19 @@ object PaperSurfaceRegistry {
                     "making the minutes' draft (E06 T5): secretaries not recused from any item; answered with the page (officer probe)",
                 "POST /api/v1/meetings/{meetingId}/minutes/items/{itemId}/regenerate" to
                     "filling an item of the draft again (E06 T5): secretaries not recused from any item (recusal columns)",
+            ) +
+            listOf(
+                "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",
+                "POST /api/v1/meetings/{meetingId}/minutes/circulate",
+                "PUT /api/v1/meetings/{meetingId}/minutes/comments-until",
+                "POST /api/v1/meetings/{meetingId}/minutes/withdraw",
+                "POST /api/v1/meetings/{meetingId}/minutes/end-circulation",
+                "POST /api/v1/meetings/{meetingId}/minutes/comment-requests",
+                "POST /api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response",
+            ).associateWith { "the minutes' circulation (E06 T6): secretaries and forums.manage, answered with the page (officer probe)" } +
+            mapOf(
+                "GET /api/v1/meetings/{meetingId}/minutes/preview" to
+                    "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -268,14 +297,9 @@ object PaperSurfaceRegistry {
         listOf(
             Pending(
                 "E06",
-                "The readers' copies of the draft and approved minutes (T6, T7): the recused version (heading, own declaration and " +
-                    "decision; no discussion; ADR-0062)",
-                listOf(
-                    "/api/v1/meetings/{meetingId}/minutes/document",
-                    "/api/v1/meetings/{meetingId}/minutes/preview",
-                    "/api/v1/meetings/{meetingId}/minutes/record",
-                    "/api/v1/minutes",
-                ),
+                "The approved minutes' record and its copies (T7): the recused version (heading, own declaration and decision; no " +
+                    "discussion; ADR-0062)",
+                listOf("/api/v1/meetings/{meetingId}/minutes/record", "/api/v1/minutes"),
             ),
             Pending(
                 "E07",

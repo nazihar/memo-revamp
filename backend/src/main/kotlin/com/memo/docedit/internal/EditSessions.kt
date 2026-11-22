@@ -70,7 +70,8 @@ class EditSessions(
         val reusable = if (mode == EditMode.EDIT) usableOpenEdit(fileId, user, room) else null
         val session = reusable ?: start(fileId, mode, user, room?.baseVersionId ?: version.id, room, now)
         val name = users.of(user)?.displayName.orEmpty()
-        return OpenedEditor(session.id, adapter.config(EditorSubject(session, version.name, name, language)))
+        val review = mode == EditMode.EDIT && purpose.reviewOnly(file)
+        return OpenedEditor(session.id, adapter.config(EditorSubject(session, version.name, name, language, review)))
     }
 
     /** A new session: in [room] when there is one (its key and base), else on [base] with a key of its own. */

@@ -218,7 +218,11 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 val page = read("/api/v1/meetings/${p.meeting.id}/minutes", v.person().session)
                 assertThat(page).hasStatus(HttpStatus.NOT_FOUND)
                 clean(v.person(), page, statusBelow = 500)
+                // E06 T6: the review, the confirmation and the stamps, refused or not there, naming nothing.
+                minutesCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) }
             },
+            // E06 T6: the reader's copy and the comments: the copy of a recused reader is MinutesRedactionIT's; here nothing.
+            Surface.MINUTES_COPIES to { p, v -> minutesCopyCalls(p, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -586,7 +590,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
 
     private fun meetingVersion(p: Planted): Long = asUser(secretary2.account) { reads.get(p.meeting.id) }.version
 
-    private fun versioned(version: Long) = mapOf("If-Match" to "\"$version\"", "Idempotency-Key" to UUID.randomUUID().toString())
+    internal fun versioned(version: Long) = mapOf("If-Match" to "\"$version\"", "Idempotency-Key" to UUID.randomUUID().toString())
 
     /**
      * The officers' endpoints that name no item (sections, publishing, the chair's part, running the meeting, invitations,
@@ -687,6 +691,8 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // Making the minutes' draft (E06 T5): the recused secretary is refused (403 `RECUSED`), naming nothing.
             "POST /api/v1/meetings/{meetingId}/minutes/draft" to
                 { p -> send(HttpMethod.POST, "${base(p)}/minutes/draft", secretary, """{"replaceEdits":true}""") },
+            // The minutes' circulation and the preview "as" (E06 T6): the recused secretary is refused or finds nothing.
+            *minutesOfficerProbes().toList().toTypedArray(),
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to

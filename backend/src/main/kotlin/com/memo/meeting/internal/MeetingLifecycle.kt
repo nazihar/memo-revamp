@@ -187,6 +187,17 @@ class MeetingLifecycle(
     }
 
     /**
+     * The chair confirmed [id]'s minutes (E06, ADR-0066): HELD → MINUTES_APPROVED in the confirming transaction, the meeting
+     * row locked (the caller holds its decisions' rows first: the lock order of design E06 §1.4); attendance and declarations
+     * are frozen from then on (their rules read the status). No access check: the minutes module has checked the confirmer.
+     */
+    fun minutesApproved(id: UUID): MeetingRow {
+        val before = store.lock(id) ?: throw MeetingNotFoundException("meeting")
+        val after = before.copy(status = MeetingAction.APPROVE_MINUTES.next(before.status))
+        return save("meeting.minutes_approved", before, after, before.version)
+    }
+
+    /**
      * Discards a draft or calls off a scheduled meeting, with a reason: its agenda freezes and its submissions go back to the
      * tray (design E03 §1.1); a scheduled meeting's audience is told.
      */
@@ -244,6 +255,7 @@ class MeetingLifecycle(
                 "meeting.started" to MeetingChange.STARTED,
                 "meeting.ended" to MeetingChange.ENDED,
                 "meeting.cancelled" to MeetingChange.CANCELLED,
+                "meeting.minutes_approved" to MeetingChange.MINUTES_APPROVED,
             )
 
         fun audited(meeting: MeetingRow): Map<String, Any?> =

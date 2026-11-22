@@ -46,6 +46,9 @@ import java.util.UUID
  * - MEETING_REPLY_REMINDER, MEETING_QUORUM_AT_RISK: name, organisation, committee, date, link
  * - MEETING_REMINDER: name, organisation, committee, date, reply and declarations (sentences, empty when they do not
  *   apply), link (never an item or a paper)
+ * - MINUTES_REVIEW_REQUESTED, MINUTES_RETURNED, MINUTES_CONFIRMATION_REQUESTED, MINUTES_APPROVED: name, organisation,
+ *   committee, date (the meeting's), link (never an item or a word of the minutes, design E06 §2)
+ * - MINUTES_CIRCULATED, MINUTES_COMMENTS_REQUESTED, MINUTES_COMMENTS_CLOSING: as above, and until (the comment deadline)
  */
 enum class MailTemplate {
     INVITATION,
@@ -96,6 +99,13 @@ enum class MailTemplate {
     MEETING_REPLY_REMINDER,
     MEETING_REMINDER,
     MEETING_QUORUM_AT_RISK,
+    MINUTES_REVIEW_REQUESTED,
+    MINUTES_RETURNED,
+    MINUTES_CIRCULATED,
+    MINUTES_COMMENTS_REQUESTED,
+    MINUTES_COMMENTS_CLOSING,
+    MINUTES_CONFIRMATION_REQUESTED,
+    MINUTES_APPROVED,
 }
 
 /**

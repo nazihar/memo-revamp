@@ -74,9 +74,15 @@ class MeetingRemindersIT : AttendanceTestSupport() {
 
     @Autowired lateinit var tenantDsl: TenantDsl
 
+    /** The meeting module's own sweep only: the minutes' parts are MinutesCirculationIT's. */
+    private val sweepSteps =
+        org.springframework.beans.factory.support
+            .StaticListableBeanFactory()
+            .getBeanProvider(MeetingSweepStep::class.java)
+
     private val clock = MutableClock()
     private val sweep by lazy {
-        MeetingSweep(sweepStore, lateness, notifier, access, safetyNet, meetingReminders, declarationReminders, auditLog, clock)
+        MeetingSweep(sweepStore, lateness, notifier, access, safetyNet, meetingReminders, declarationReminders, auditLog, clock, sweepSteps)
     }
 
     override fun label() = "reminders"

@@ -3,6 +3,7 @@ package com.memo.meeting.internal
 import com.memo.forum.AgendaSectionKind
 import com.memo.forum.StandingKind
 import com.memo.forum.SubmissionPurpose
+import com.memo.meeting.ItemLink
 import com.memo.meeting.LineAccess
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.Visibility
@@ -76,6 +77,11 @@ data class MemberItemResponse(
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on an item the viewer sees in full: names and states, never the nature. */
     val declarations: List<DeclarationLineResponse> = emptyList(),
+    /**
+     * What a standing item the viewer sees in full links to (design E06 §2): the minutes of the previous meeting to read
+     * (E06), the action taken report (E07). Only on the latest revision.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val links: List<ItemLink> = emptyList(),
 )
 
 data class MemberSectionResponse(
@@ -178,6 +184,8 @@ data class MemberAgendaInput(
     val mayAsk: Boolean,
     /** The viewer reads members-only sections (an officer, or a member for them): their headings and titles. */
     val inCamera: Boolean,
+    /** What a standing item seen in full links to (design E06 §2), by item and kind; nothing in a preview or an old revision. */
+    val links: (UUID, StandingKind) -> List<ItemLink> = { _, _ -> emptyList() },
 )
 
 /** Builds what a viewer sees of a revision's body (design E03 §1.9): lines by the paper rule, papers it lets them read. */
@@ -347,6 +355,11 @@ object MemberAgendaRender {
             recused = item.itemId in input.visibility.recused,
             myDeclaration = mine(input, item, title),
             declarations = if (full) others(input, item) else emptyList(),
+            links =
+                item.standingKind
+                    ?.takeIf { full }
+                    ?.let { input.links(item.itemId, it) }
+                    .orEmpty(),
         )
     }
 

@@ -39656,6 +39656,104 @@
       "value": "]"
     }
   ],
+  "mail.template.minutesApproved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿīƞŭŭŧḗḗş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesCirculated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ƒǿǿř ƈǿǿḿḿḗḗƞŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesCommentsClosing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿḗḗƞŧş ǿǿƞ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ƈŀǿǿşḗḗ ŧǿǿḓȧȧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesCommentsRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿḗḗƞŧş ǿǿƞ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ȧȧşķḗḗḓ ƒǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesConfirmationRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿīƞŭŭŧḗḗş ŧǿǿ ȧȧƥƥřǿǿṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesReturned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş şḗḗƞŧ ƀȧȧƈķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.minutesReviewRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ŧǿǿ řḗḗṽīḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.passwordChanged": [
     {
       "type": 0,
@@ -61881,6 +61979,79 @@
       "value": "]"
     }
   ],
+  "notificationKinds.decisionsReleaseFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ ḓḗḗƈīşīǿǿƞ ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ẇȧȧş ƞǿǿŧ şḗḗƞŧ ŧǿǿ īŧş ḿḗḗḿǿǿ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ẇḗḗřḗḗ ƞǿǿŧ şḗḗƞŧ ŧǿǿ ŧħḗḗīř ḿḗḗḿǿǿş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": ǿǿƥḗḗƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ŧǿǿ ŧřẏ ȧȧɠȧȧīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notificationKinds.editNotSaved": [
     {
       "type": 0,
@@ -63414,6 +63585,378 @@
     {
       "type": 0,
       "value": "Ȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř řḗḗşḗḗŧ ẏǿǿŭŭř ŧẇǿǿ-şŧḗḗƥ şīɠƞ-īƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesAgreed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈħȧȧīř ȧȧɠřḗḗḗḗḓ ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": ȧȧƈƈḗḗƥŧ ŧħḗḗīř şŭŭɠɠḗḗşŧḗḗḓ ƈħȧȧƞɠḗḗş, ŧħḗḗƞ ƈīřƈŭŭŀȧȧŧḗḗ ŧħḗḗḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesApproved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧṽḗḗ ƀḗḗḗḗƞ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesCirculated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ƈīřƈŭŭŀȧȧŧḗḗḓ: ƥŀḗḗȧȧşḗḗ şḗḗƞḓ ȧȧƞẏ ƈǿǿḿḿḗḗƞŧş ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesCommentAdded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "NO_COMMENTS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ řḗḗȧȧḓḗḗř ħȧȧş ƞǿǿ ƈǿǿḿḿḗḗƞŧş ǿǿƞ ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ ƈǿǿřřḗḗƈŧīǿǿƞ ŧǿǿ ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ẇȧȧş şŭŭɠɠḗḗşŧḗḗḓ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesCommentsClosing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿḗḗƞŧş ǿǿƞ ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ƈŀǿǿşḗḗ ŧǿǿḓȧȧẏ, "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesCommentsRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ƈǿǿḿḿḗḗƞŧş ǿǿƞ ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ȧȧşķḗḗḓ ƒǿǿř, ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesConfirmationRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ řḗḗȧȧḓẏ ƒǿǿř ẏǿǿŭŭř ȧȧƥƥřǿǿṽȧȧŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesDraftOverdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ƞǿǿŧ ƈīřƈŭŭŀȧȧŧḗḗḓ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesDraftReady": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ řḗḗȧȧḓẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesReturned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ẇḗḗřḗḗ şḗḗƞŧ ƀȧȧƈķ ẇīŧħ ƈǿǿḿḿḗḗƞŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notificationKinds.minutesReviewRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřȧȧƒŧ ḿīƞŭŭŧḗḗş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ řḗḗȧȧḓẏ ƒǿǿř ẏǿǿŭŭř řḗḗṽīḗḗẇ"
     },
     {
       "type": 0,

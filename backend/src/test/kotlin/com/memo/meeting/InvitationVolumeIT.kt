@@ -58,6 +58,12 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class InvitationVolumeIT : MeetingVolumeSupport() {
+    /** The meeting module's own sweep only: the minutes' parts are MinutesCirculationIT's. */
+    private val sweepSteps =
+        org.springframework.beans.factory.support
+            .StaticListableBeanFactory()
+            .getBeanProvider(MeetingSweepStep::class.java)
+
     @Autowired lateinit var replies: Replies
 
     @Autowired lateinit var panel: InvitationPanel
@@ -187,7 +193,18 @@ class InvitationVolumeIT : MeetingVolumeSupport() {
                     .toInstant(),
             )
         val sweep =
-            MeetingSweep(sweepStore, lateness, notifier, access, safetyNet, meetingReminders, declarationReminders, auditLog, clock)
+            MeetingSweep(
+                sweepStore,
+                lateness,
+                notifier,
+                access,
+                safetyNet,
+                meetingReminders,
+                declarationReminders,
+                auditLog,
+                clock,
+                sweepSteps,
+            )
         measure("sweep pass (one tenant, 3,600 meetings)", SWEEP_BUDGET_MS, people.admin, write = true) { sweep.sweep() }
     }
 

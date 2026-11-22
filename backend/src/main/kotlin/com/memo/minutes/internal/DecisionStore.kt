@@ -78,6 +78,8 @@ data class EntryRow(
     val reason: String?,
     val recordedBy: UUID,
     val recordedAt: Instant,
+    /** On a "Minutes of the previous meeting" item: the meetings whose minutes it approves (AT_NEXT_MEETING, T6). */
+    val approvesMinutesIds: List<UUID> = emptyList(),
 )
 
 /** A decision with its current entry. */
@@ -142,6 +144,24 @@ class DecisionStore(
             .set(d.VERSION, decision.version + 1)
             .where(d.ID.eq(decision.id), d.VERSION.eq(decision.version), d.RELEASED_AT.isNull)
             .execute() == 1
+    }
+
+    /**
+     * Every decision of [meetingId] made final at [at] (the minutes approved, design E06 §1.6.4): set once, each row locked
+     * by the update (the first of the confirmation's locks); how many.
+     */
+    fun finalizeMeeting(
+        meetingId: UUID,
+        at: Instant,
+    ): Int {
+        val d = MINUTES_DECISION
+        return tenantDsl
+            .current()
+            .update(d)
+            .set(d.FINAL_AT, at.atOffset(ZoneOffset.UTC))
+            .set(d.VERSION, d.VERSION.plus(1))
+            .where(d.MEETING_ID.eq(meetingId), d.FINAL_AT.isNull)
+            .execute()
     }
 
     /** The decisions on [itemIds], locked in id order (one statement, so two callers never lock them crosswise). */
@@ -236,6 +256,7 @@ class DecisionStore(
             .set(e.SNAPSHOT_ID, entry.snapshotId)
             .set(e.RATIFICATION_REQUIRED, entry.ratificationRequired)
             .set(e.RATIFIES_DECISION_ID, entry.ratifiesDecisionId)
+            .set(e.APPROVES_MINUTES_IDS, entry.approvesMinutesIds.toTypedArray<UUID?>())
             .set(e.DECIDED_AT, entry.decidedAt.atOffset(ZoneOffset.UTC))
             .set(e.CONSENT_BATCH_ID, entry.consentBatchId)
             .set(e.CORRECTION, entry.correction)
@@ -368,6 +389,7 @@ private fun MinutesDecisionEntryRecord.entryRow(json: JsonMapper) =
         reason = reason,
         recordedBy = recordedBy,
         recordedAt = recordedAt.toInstant(),
+        approvesMinutesIds = approvesMinutesIds.orEmpty().filterNotNull(),
     )
 
 /** The secretary's notes per item (design E06 §1.2), append-only versions inside a tenant transaction. */

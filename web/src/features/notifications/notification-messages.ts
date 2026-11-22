@@ -144,6 +144,18 @@ const kindsWithValues = defineMessages<{
   meetingReplyReminder: { committee: string; date: string }
   meetingReminder: { committee: string; date: string; unanswered: string; toReview: number }
   meetingQuorumAtRisk: { committee: string; date: string }
+  minutesReviewRequested: { committee: string; date: string }
+  minutesReturned: { committee: string; date: string }
+  minutesAgreed: { committee: string; date: string }
+  minutesCirculated: { committee: string; date: string; until: string }
+  minutesCommentsRequested: { committee: string; date: string; until: string }
+  minutesCommentsClosing: { committee: string; date: string; until: string }
+  minutesConfirmationRequested: { committee: string; date: string }
+  minutesApproved: { committee: string; date: string }
+  minutesCommentAdded: { committee: string; date: string; kind: string }
+  minutesDraftOverdue: { committee: string; date: string }
+  minutesDraftReady: { committee: string; date: string }
+  decisionsReleaseFailed: { committee: string; date: string; count: number }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -319,6 +331,57 @@ const kindsWithValues = defineMessages<{
     defaultMessage:
       'From the replies so far, the meeting of {committee} on {date} or some of its items may not be quorate',
   },
+  minutesReviewRequested: {
+    id: 'notificationKinds.minutesReviewRequested',
+    defaultMessage: 'The draft minutes of {committee} on {date} are ready for your review',
+  },
+  minutesReturned: {
+    id: 'notificationKinds.minutesReturned',
+    defaultMessage: 'The draft minutes of {committee} on {date} were sent back with comments',
+  },
+  minutesAgreed: {
+    id: 'notificationKinds.minutesAgreed',
+    defaultMessage:
+      'The chair agreed the draft minutes of {committee} on {date}: accept their suggested changes, then circulate them',
+  },
+  minutesCirculated: {
+    id: 'notificationKinds.minutesCirculated',
+    defaultMessage: 'The draft minutes of {committee} on {date} are circulated: please send any comments by {until}',
+  },
+  minutesCommentsRequested: {
+    id: 'notificationKinds.minutesCommentsRequested',
+    defaultMessage: 'Your comments on the draft minutes of {committee} on {date} are asked for, by {until}',
+  },
+  minutesCommentsClosing: {
+    id: 'notificationKinds.minutesCommentsClosing',
+    defaultMessage: 'Comments on the draft minutes of {committee} on {date} close today, {until}',
+  },
+  minutesConfirmationRequested: {
+    id: 'notificationKinds.minutesConfirmationRequested',
+    defaultMessage: 'The minutes of {committee} on {date} are ready for your approval',
+  },
+  minutesApproved: {
+    id: 'notificationKinds.minutesApproved',
+    defaultMessage: 'The minutes of {committee} on {date} have been approved',
+  },
+  minutesCommentAdded: {
+    id: 'notificationKinds.minutesCommentAdded',
+    defaultMessage:
+      '{kind, select, NO_COMMENTS {A reader has no comments on the draft minutes of {committee} on {date}} other {A correction to the draft minutes of {committee} on {date} was suggested}}',
+  },
+  minutesDraftOverdue: {
+    id: 'notificationKinds.minutesDraftOverdue',
+    defaultMessage: 'The minutes of {committee} on {date} are not circulated yet',
+  },
+  minutesDraftReady: {
+    id: 'notificationKinds.minutesDraftReady',
+    defaultMessage: 'The draft minutes of {committee} on {date} are ready',
+  },
+  decisionsReleaseFailed: {
+    id: 'notificationKinds.decisionsReleaseFailed',
+    defaultMessage:
+      '{count, plural, one {A decision of {committee} on {date} was not sent to its memo} other {# decisions of {committee} on {date} were not sent to their memos}}: open the meeting to try again',
+  },
 })
 
 const kinds = defineMessages({
@@ -482,6 +545,45 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'MEETING_QUORUM_AT_RISK':
       return intl.formatMessage(kindsWithValues.meetingQuorumAtRisk, meetingValues(params))
+    case 'MINUTES_REVIEW_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesReviewRequested, meetingValues(params))
+    case 'MINUTES_RETURNED':
+      return intl.formatMessage(kindsWithValues.minutesReturned, meetingValues(params))
+    case 'MINUTES_AGREED':
+      return intl.formatMessage(kindsWithValues.minutesAgreed, meetingValues(params))
+    case 'MINUTES_CIRCULATED':
+      return intl.formatMessage(kindsWithValues.minutesCirculated, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_COMMENTS_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesCommentsRequested, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_COMMENTS_CLOSING':
+      return intl.formatMessage(kindsWithValues.minutesCommentsClosing, {
+        ...meetingValues(params),
+        until: params.until ?? '',
+      })
+    case 'MINUTES_CONFIRMATION_REQUESTED':
+      return intl.formatMessage(kindsWithValues.minutesConfirmationRequested, meetingValues(params))
+    case 'MINUTES_APPROVED':
+      return intl.formatMessage(kindsWithValues.minutesApproved, meetingValues(params))
+    case 'MINUTES_COMMENT_ADDED':
+      return intl.formatMessage(kindsWithValues.minutesCommentAdded, {
+        ...meetingValues(params),
+        kind: params.kind ?? '',
+      })
+    case 'MINUTES_DRAFT_OVERDUE':
+      return intl.formatMessage(kindsWithValues.minutesDraftOverdue, meetingValues(params))
+    case 'MINUTES_DRAFT_READY':
+      return intl.formatMessage(kindsWithValues.minutesDraftReady, meetingValues(params))
+    case 'DECISIONS_RELEASE_FAILED':
+      return intl.formatMessage(kindsWithValues.decisionsReleaseFailed, {
+        ...meetingValues(params),
+        count: Number(params.count ?? '1') || 1,
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -580,6 +682,22 @@ const mailTemplates = defineMessages({
   MEETING_REPLY_REMINDER: { id: 'mail.template.meetingReplyReminder', defaultMessage: 'Meeting reply reminder' },
   MEETING_REMINDER: { id: 'mail.template.meetingReminder', defaultMessage: 'Meeting reminder' },
   MEETING_QUORUM_AT_RISK: { id: 'mail.template.meetingQuorumAtRisk', defaultMessage: 'Meeting quorum at risk' },
+  MINUTES_REVIEW_REQUESTED: { id: 'mail.template.minutesReviewRequested', defaultMessage: 'Draft minutes to review' },
+  MINUTES_RETURNED: { id: 'mail.template.minutesReturned', defaultMessage: 'Draft minutes sent back' },
+  MINUTES_CIRCULATED: { id: 'mail.template.minutesCirculated', defaultMessage: 'Draft minutes for comments' },
+  MINUTES_COMMENTS_REQUESTED: {
+    id: 'mail.template.minutesCommentsRequested',
+    defaultMessage: 'Comments on draft minutes asked for',
+  },
+  MINUTES_COMMENTS_CLOSING: {
+    id: 'mail.template.minutesCommentsClosing',
+    defaultMessage: 'Comments on draft minutes close today',
+  },
+  MINUTES_CONFIRMATION_REQUESTED: {
+    id: 'mail.template.minutesConfirmationRequested',
+    defaultMessage: 'Minutes to approve',
+  },
+  MINUTES_APPROVED: { id: 'mail.template.minutesApproved', defaultMessage: 'Minutes approved' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

@@ -62,7 +62,8 @@ class ActionSlots(
         val verifiedBy = policies.current(row.forumId)?.actions?.verifiedBy ?: ActionVerifier.SECRETARY
         val excluded = owners(row) + lines.contributorsOf(row.id) + recused(row)
         val secretaries = secretaries(row.forumId) - excluded
-        val chair = listOfNotNull(chair(row.forumId)) - excluded
+        // The chair, else the vice-chair, under the same exclusions (a chair who owns the action leaves it to the vice-chair).
+        val chair = chairs(row.forumId).filterNot { it in excluded }.take(1)
         val first = if (verifiedBy == ActionVerifier.CHAIR) chair else secretaries
         val second = if (verifiedBy == ActionVerifier.CHAIR) secretaries else chair
         return first.ifEmpty { second }.ifEmpty { (access.tenantWideHolders(Permission.FORUMS_MANAGE) - excluded).sorted() }
@@ -84,6 +85,14 @@ class ActionSlots(
             .filter { it.role == ForumRole.SECRETARY }
             .map { it.userId }
             .distinct()
+
+    /** The chair in office and the vice-chair, in that order. */
+    private fun chairs(forumId: UUID): List<UUID> {
+        val seats = directory.membersOn(forumId)
+        return listOfNotNull(seats.firstOrNull { it.role == ForumRole.CHAIR }, seats.firstOrNull { it.role == ForumRole.VICE_CHAIR }).map {
+            it.userId
+        }
+    }
 
     private fun chair(forumId: UUID): UUID? {
         val seats = directory.membersOn(forumId)

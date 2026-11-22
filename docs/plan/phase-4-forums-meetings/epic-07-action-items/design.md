@@ -434,6 +434,27 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
     - email only: `ACTIONS_DIGEST`.
     - `ACTIONS_NOT_SENT` (drafts at the meeting's end), `ACTION_MEMO_DECIDED` (T6) and `ACTION_UPDATE_REQUESTED` (T7) are not built here.
 
+- **As built in T8, the tracker and its export** (§3, §8, flow AN, 2026-11-22):
+  - **Rows:** the committee's issued actions and its **direct drafts**. A meeting's drafts stay on the meeting's page, and a discarded draft is listed nowhere. Drafts are seen by the committee's secretaries and `forums.manage` (the one rule's draft clause).
+  - **Filters**, each optional:
+    - `status` (repeatable, any of them);
+    - `rag` (a colour, by `RagRule.shows`);
+    - `overdue` (OPEN or IN_PROGRESS past the date, §1.4; an overridden colour does not hide it);
+    - `owner` (a person, a position, or whoever holds the owner's task);
+    - `dueFrom` and `dueTo`, both included (instead of the sketch's `dueAfter`/`dueBefore`); 422 `RANGE` at `dueTo` when it is before `dueFrom`;
+    - `meetingId`, `itemId`, `source`;
+    - `text`, 1–200 characters (422 `LENGTH`). It matches the title and the description through `websearch_to_tsquery`, read twice (English stems, and `simple` for every other language), or the reference containing it. Blank is no filter.
+  - **Sorts:** `DUE` (soonest first; undated drafts last), `UPDATED` (the latest update, else the creation, newest first), `REFERENCE` (by year and number; drafts last). Keyset on the sort key and the id, 50 a page (at most 100). The cursor names its sort: a cursor that is not one, or of another sort, is 422 `cursor INVALID`.
+  - **Totals** per colour come from the same predicate and `RagRule.shows`, in one aggregate over the committee's rows: red, amber, green, `toVerify` (blue), `closed` (grey) and `drafts`. They take every filter but the colour ones (`rag`, `overdue`), so the key's counts stay put while the viewer moves between colours. `matching` is the count under every filter. The answer also carries the key's numbers (`amberWorkingDays`, `staleWorkingDays`) and `can` (raise, export).
+  - **Who has a tracker:** the committee's officers, its members in office, `forum.read`, and anyone involved in one of its issued actions (an owner outside the committee sees their own rows). Everyone else, and an unknown committee, get 404.
+  - **The export** (`GET …/actions/export`, the same filters and sort) is for the secretaries, the chair, `forums.manage` and `forum.read`; 403 to the others who have a tracker.
+    - The right and the filter are checked before the limit is counted (`ACTION_EXPORT_PER_USER`, 10 an hour).
+    - It writes one sheet through SXSSF with its temporary data encrypted, every value a string cell through `SheetCells` (a title beginning with `=` is written `'=…`), at most 5,000 rows, with a closing line when cut.
+    - It is audited as `actions.tracker.exported` on the committee, with the filter (the text as `textSha256`), the sort, the count and whether it was cut.
+  - **The reads** are `ActionTrackerReads`, the one other reader of `actions_item` that `ActionAccessArchTest` allows. Every query it runs is on `ActionAccess.seen`.
+  - **E08's ask:** the published `ActionStats` (`overdue(forumIds, today)` by committee and owner with the ageing bands and the revised count; `closedOnTime(forumIds, from, to)` with the original and the agreed date) is built here on the same rule, one query each. **The viewer is the signed-in person**, not a parameter: `ActionAccess`'s viewer is built from the security context (permissions, clearance), so nobody can count for someone else. Nobody signed in counts nothing. The viewer-less `ActionCounts.overdue(forumId)` of §2.1 was never built and is not.
+  - **No index or migration:** `EXPLAIN` of the page and the totals, with and without text, on 3,000 other actions of the tenant, uses `actions_item_forum_idx` (`ActionTrackerIT`). T9 measures the budgets at the design's volumes.
+
 ### 1.15 ERD
 ```mermaid
 erDiagram
@@ -569,7 +590,7 @@ Packages `raise`, `progress`, `closure`, `followup`, `report`, `access`, `subjec
   - `files`, `identity` (users, `RecipientLookup`), `org` (positions, holders), `notification`, `audit`, `common`.
 - **Published API** in `com.memo.actions`:
   - `ActionItems.ofDecision(decisionId)` and `ofItem(itemId)`, for E06's minutes loop through its port (§11) and for E08;
-  - `ActionCounts.overdue(forumId)`, for E08's analytics;
+  - `ActionStats.overdue` and `.closedOnTime` for the signed-in viewer (T8, on `ActionAccess`; the planned viewer-less `ActionCounts.overdue(forumId)` is not built), for E08's analytics;
   - the event `ActionChanged(tenantId, actionId, forumId, kind)` (kinds ISSUED, UPDATED, DUE_CHANGED, DONE, CLOSED, CANCELLED, REOPENED) for E08's indexing. Ids only.
 - **Listens to:**
   - `WorkflowActionTaken`, `WorkflowTaskCreated`, `WorkflowTaskClosed`, `WorkflowInstanceEnded`, `WorkflowTimerFired`, `WorkflowEscalated` for subject `action-item`: status, holder, step name, notifications. These are synchronous, in the engine's transaction.

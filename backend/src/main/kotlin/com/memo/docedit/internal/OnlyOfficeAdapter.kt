@@ -30,12 +30,13 @@ data class EditorCallback(
     }
 }
 
-/** What the editor needs about the person and the file. */
+/** What the editor needs about the person and the file; [review]: they edit in review mode (tracked changes only). */
 data class EditorSubject(
     val session: EditSession,
     val fileName: String,
     val userName: String,
     val language: String,
+    val review: Boolean = false,
 )
 
 /**
@@ -75,6 +76,8 @@ class OnlyOfficeAdapter(
         val content = "$base/content?exp=$expires&sig=${keys.linkSignature(session.tenantId, session.id, CONTENT, expires)}"
         val callback = "$base/callback?sig=${keys.linkSignature(session.tenantId, session.id, CALLBACK, null)}"
         val edit = session.mode == EditMode.EDIT
+        // Review mode (ADR-0066): the editor opens in edit mode, but every change is a tracked change.
+        val review = edit && subject.review
         val config =
             mapOf(
                 "documentType" to "word",
@@ -86,10 +89,10 @@ class OnlyOfficeAdapter(
                         "url" to content,
                         "permissions" to
                             mapOf(
-                                "edit" to edit,
+                                "edit" to (edit && !review),
                                 "download" to false,
                                 "print" to true,
-                                "review" to false,
+                                "review" to review,
                                 "comment" to false,
                                 "chat" to false,
                             ),

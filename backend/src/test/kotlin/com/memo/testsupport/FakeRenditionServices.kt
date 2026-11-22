@@ -10,6 +10,7 @@ import com.memo.memo.internal.rendition.PageDocument
 import com.memo.memo.internal.rendition.PdfBoxPageRenderer
 import com.memo.memo.internal.rendition.PdfaMetadata
 import com.memo.memo.internal.rendition.RecordMetadata
+import com.memo.templating.internal.PoiDocxCopies
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -41,7 +42,17 @@ class FakeRenditionServices :
         input: RenditionInput,
         key: String,
         out: OutputStream,
-    ): RenditionOutcome = scripted(input, "pdf") { out.write(PDF) }
+    ): RenditionOutcome = scripted(input, "pdf") { out.write(if (input.name.startsWith(MINUTES_COPY)) textPdf(input) else PDF) }
+
+    /**
+     * A reader's copy of the minutes (E06 T6) as a PDF whose text layer holds every paragraph of the document, as the document
+     * server's conversion would: the leak suites look for canaries in it.
+     */
+    private fun textPdf(input: RenditionInput): ByteArray {
+        val text = input.open().use { PoiDocxCopies().text(it) }
+        val blocks = text.lines().filter { it.isNotBlank() }.map { Block.Paragraph(it) }
+        return ByteArrayOutputStream().also { PdfBoxPageRenderer().render(PageDocument(input.name, "Converted", blocks), it) }.toByteArray()
+    }
 
     /** The final record's conversion (ADR-0053): a one-page PDF/A-2u naming the file, scripted like [toPdf]. */
     override fun toPdfA(
@@ -89,6 +100,9 @@ class FakeRenditionServices :
 
     companion object {
         private const val LARGE_LINES = 18_000
+
+        /** The name the minutes' copy job gives its document (`MinutesCopies`). */
+        const val MINUTES_COPY = "minutes-copy"
 
         /** "Converted <name>" on one page, with the PDF/A metadata, so the record's text check and veraPDF see a real part. */
         fun pdfa(name: String): ByteArray {

@@ -547,6 +547,31 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(listed).contains(CANARY_DESCRIPTION, CANARY_HIDDEN)
                 }
             },
+            // E07 T8: the committee's tracker lists and counts only the actions of the items the person sees in full (members
+            // and forum.read; a guest or an alternate standing in has none: 404); only forum.read exports, and its workbook
+            // holds no canary.
+            Surface.TRACKER to { p, person ->
+                val base = "/api/v1/forums/$brc/actions"
+                val page = read(base, person.session)
+                assertThat(page.response.status).isIn(200, 404)
+                p.canaries(person).forEach { assertThat(page.response.contentAsString).doesNotContain(it) }
+                if (page.response.status == 200) {
+                    val listed = page.json()["items"].list().map { UUID.fromString(it["id"].asString()) }
+                    val unseen = p.actions.filterValues { it in p.canaries(person) }.keys
+                    assertThat(listed).describedAs("tracker rows for ${person.id}").doesNotContainAnyElementsOf(unseen)
+                    assertThat(page.json()["totals"]["all"].asInt()).isEqualTo(listed.size)
+                }
+                if (person == d1) assertThat(page.response.contentAsString).contains(CANARY_DESCRIPTION, CANARY_HIDDEN)
+                val export = read("$base/export", person.session)
+                if (person == auditor) {
+                    assertThat(export).hasStatusOk()
+                    val cells = workbookText(export)
+                    p.canaries(person).forEach { assertThat(cells).doesNotContain(it) }
+                } else {
+                    assertThat(export.response.status).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(export.response.contentAsString).doesNotContain(it) }
+                }
+            },
             // E06 T4: the register and its check are forum.read's (a member 403, a guest and an alternate 404), each row of an
             // item they do not see in full "restricted"; one resolution only for whoever sees its item's decision (d1 the
             // recused view of the item they declared on), 404 to everyone else.
@@ -618,6 +643,29 @@ class PaperLeakIT : RecusalFixture() {
                     val asked = send(HttpMethod.POST, uri, person, "{}", mapOf("Idempotency-Key" to UUID.randomUUID().toString()))
                     assertThat(asked.response.status).describedAs(uri).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(asked.response.contentAsString).doesNotContain(it) }
+                }
+                // E06 T6: the review, the confirmation and the stamps: nothing on a meeting not held (404), or refused (403).
+                val versioned = mapOf("Idempotency-Key" to UUID.randomUUID().toString(), "If-Match" to "\"0\"")
+                listOf(
+                    send(HttpMethod.POST, "$base/review", person, """{"decision":"AGREE"}""", versioned),
+                    send(HttpMethod.POST, "$base/confirm", person, "{}", versioned),
+                    send(HttpMethod.POST, "$base/approvals/${UUID.randomUUID()}/check", person),
+                    read("$base/approvals", person.session),
+                ).forEach { answer ->
+                    assertThat(answer.response.status).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+            },
+            // E06 T6: the reader's copy and the comments: the readers of circulated minutes only; nothing on a meeting not held.
+            Surface.MINUTES_COPIES to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}/minutes"
+                listOf(
+                    read("$base/document", person.session),
+                    read("$base/comments", person.session),
+                    send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.recused}","text":"x"}"""),
+                ).forEach { answer ->
+                    assertThat(answer.response.status).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
                 }
             },
         )

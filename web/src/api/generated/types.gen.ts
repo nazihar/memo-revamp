@@ -89,6 +89,11 @@ export type ActionPosition = {
     title: string;
 };
 
+export type ActionRagKey = {
+    amberWorkingDays: number;
+    staleWorkingDays?: number | null;
+};
+
 export type ActionRagOverride = {
     by?: ActionPerson | null;
     rag: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
@@ -158,12 +163,14 @@ export type ActionStartedRequest = {
 export type ActionSummary = {
     committee: string;
     conditionIndex?: number | null;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
     decisionId?: string | null;
     dueDate?: string | null;
     dueRevisions: number;
     forumId: string;
     id: string;
     itemId?: string | null;
+    lastUpdateAt?: string | null;
     meetingId?: string | null;
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
@@ -176,6 +183,16 @@ export type ActionSummary = {
     stepName?: string | null;
     title: string;
     version: number;
+};
+
+export type ActionTotals = {
+    all: number;
+    amber: number;
+    closed: number;
+    drafts: number;
+    green: number;
+    red: number;
+    toVerify: number;
 };
 
 export type ActionUpdateRequest = {
@@ -1525,6 +1542,17 @@ export type FixityTotals = {
     verifyProblems: number;
 };
 
+export type ForumActionsResponse = {
+    can: TrackerAbilities;
+    committee: string;
+    forumId: string;
+    items: Array<ActionSummary>;
+    key: ActionRagKey;
+    matching: number;
+    nextCursor?: string | null;
+    totals: ActionTotals;
+};
+
 export type ForumCountView = {
     count: number;
     forumId: string;
@@ -2072,6 +2100,14 @@ export type ItemForecastResponse = {
     viewerRecused: boolean;
 };
 
+export type ItemLink = {
+    at?: string | null;
+    kind?: string;
+    label?: string;
+    meetingId?: string;
+    state?: string | null;
+};
+
 export type ItemNoteRequest = {
     text?: string | null;
 };
@@ -2374,6 +2410,11 @@ export type MeetingInvitationSummaryResponse = {
     sequence: number;
 };
 
+export type MeetingMinutesSummary = {
+    myAction?: string | null;
+    state?: string;
+};
+
 export type MeetingPageResponse = {
     items: Array<MeetingSummaryResponse>;
     nextCursor?: string | null;
@@ -2454,6 +2495,7 @@ export type MeetingSummaryResponse = {
     localEndsAt: string;
     localStartsAt: string;
     location?: string | null;
+    minutes?: MeetingMinutesSummary | null;
     mode: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
     relation: 'OFFICER' | 'MEMBER' | 'ALTERNATE' | 'GUEST' | 'ATTENDEE' | 'READER';
     rsvp?: MeetingRsvpResponse | null;
@@ -2506,6 +2548,7 @@ export type MemberItemResponse = {
     id: string;
     kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
     late: 'NONE' | 'LATE' | 'TABLED';
+    links?: Array<ItemLink>;
     localStartsAt?: string | null;
     minutes?: number | null;
     myDeclaration?: DeclarationResponse | null;
@@ -2787,6 +2830,91 @@ export type MigrationResponse = {
     toVersion: number;
 };
 
+export type MinutesAnswersResponse = {
+    noComments: number;
+    notYet: number;
+    readers: number;
+    suggestions: number;
+};
+
+export type MinutesApprovalCheckResponse = {
+    approvalId: string;
+    matches: boolean;
+    problems: Array<MinutesCheckProblem>;
+};
+
+export type MinutesApprovalResponse = {
+    at: string;
+    by: MinutesPerson;
+    client?: {
+        [key: string]: string;
+    } | null;
+    docxSha256: string;
+    docxVersionId: string;
+    factors: Array<string>;
+    id: string;
+    kind: string;
+    recordHash: string;
+    role: 'CHAIR' | 'VICE_CHAIR';
+    stepUpAgeSeconds?: number | null;
+};
+
+export type MinutesCheckProblem = {
+    code: string;
+    detail: string;
+};
+
+export type MinutesCirculateRequest = {
+    commentsUntil?: string | null;
+    reason?: string | null;
+};
+
+export type MinutesCommentInput = {
+    itemId?: string | null;
+    kind: 'NO_COMMENTS' | 'SUGGESTION';
+    text?: string | null;
+};
+
+export type MinutesCommentRequestRequest = {
+    itemIds: Array<string>;
+    userIds: Array<string>;
+};
+
+export type MinutesCommentResponse = {
+    at: string;
+    by: MinutesPerson;
+    id: string;
+    itemId?: string | null;
+    itemNumber?: string | null;
+    kind: 'NO_COMMENTS' | 'SUGGESTION';
+    mine: boolean;
+    respondedAt?: string | null;
+    respondedBy?: MinutesPerson | null;
+    response?: 'ADOPTED' | 'NOT_ADOPTED';
+    responseNote?: string | null;
+    text?: string | null;
+};
+
+export type MinutesCommentResponseRequest = {
+    note?: string | null;
+    response: 'ADOPTED' | 'NOT_ADOPTED';
+};
+
+export type MinutesCommentsResponse = {
+    all: boolean;
+    comments: Array<MinutesCommentResponse>;
+};
+
+export type MinutesCopySetResponse = {
+    readers: Array<MinutesPerson>;
+    redacted: Array<MinutesRedactionResponse>;
+    setKey: string;
+};
+
+export type MinutesDeadlineRequest = {
+    commentsUntil: string;
+};
+
 export type MinutesDraftRequest = {
     replaceEdits?: boolean;
 };
@@ -2808,6 +2936,12 @@ export type MinutesItemResponse = {
     number: string;
 };
 
+export type MinutesMeetingResponse = {
+    id: string;
+    label?: string | null;
+    startsAt: string;
+};
+
 export type MinutesPerson = {
     id: string;
     name: string;
@@ -2822,21 +2956,58 @@ export type MinutesPolicy = {
     templateFileId?: string | null;
 };
 
+export type MinutesReasonRequest = {
+    reason?: string | null;
+};
+
+export type MinutesRedactionResponse = {
+    itemId: string;
+    kind: 'RECUSED' | 'RESTRICTED' | 'HIDDEN';
+    number?: string | null;
+};
+
 export type MinutesResponse = {
+    agreed: boolean;
+    answered: boolean;
+    answers?: MinutesAnswersResponse | null;
     approval: 'AT_NEXT_MEETING' | 'BY_CIRCULATION';
+    approvedAt?: string | null;
+    approvingMeeting?: MinutesMeetingResponse | null;
+    circulatedAt?: string | null;
+    commentsUntil?: string | null;
+    confirmer?: MinutesPerson | null;
+    copies: Array<MinutesCopySetResponse>;
     draft?: MinutesDraftResponse | null;
     forumId: string;
     heldAt?: string | null;
     items: Array<MinutesItemResponse>;
+    linkedMeeting?: MinutesMeetingResponse | null;
+    mayCirculate: boolean;
+    mayComment: boolean;
+    mayConfirm: boolean;
     mayEdit: boolean;
+    mayEndCirculation: boolean;
     mayGenerate: boolean;
+    mayReadCopy: boolean;
+    mayReview: boolean;
+    maySendForReview: boolean;
+    mayWithdraw: boolean;
     meetingId: string;
+    myAction?: string | null;
+    reviewer?: MinutesPerson | null;
     state: 'DRAFT' | 'CHAIR_REVIEW' | 'CIRCULATED' | 'AWAITING_CHAIR' | 'APPROVED';
     structure: MinutesStructureResponse;
     undecided: Array<MinutesItemResponse>;
     version: number;
+    viewerAccess: 'MANAGER' | 'REVIEWER' | 'READER' | 'LINKED';
     viewerRecused: boolean;
     work?: MinutesWorkResponse | null;
+};
+
+export type MinutesReviewRequest = {
+    comment?: string | null;
+    decision: 'AGREE' | 'RETURN';
+    how?: 'EMAIL' | 'PHONE' | 'IN_PERSON' | 'OTHER';
 };
 
 export type MinutesStructureResponse = {
@@ -4671,6 +4842,11 @@ export type ToBeRatifiedResponse = {
     meetingId: string;
     meetingLabel?: string | null;
     outcomeLabel: string;
+};
+
+export type TrackerAbilities = {
+    export: boolean;
+    raise: boolean;
 };
 
 export type TriageRequest = {
@@ -8518,6 +8694,38 @@ export type UpdateForumResponses = {
 
 export type UpdateForumResponse = UpdateForumResponses[keyof UpdateForumResponses];
 
+export type GetForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/forums/{forumId}/actions';
+};
+
+export type GetForumActionsResponses = {
+    /**
+     * OK
+     */
+    200: ForumActionsResponse;
+};
+
+export type GetForumActionsResponse = GetForumActionsResponses[keyof GetForumActionsResponses];
+
 export type RaiseDirectActionData = {
     body: ActionFieldsRequest;
     headers: {
@@ -8538,6 +8746,43 @@ export type RaiseDirectActionResponses = {
 };
 
 export type RaiseDirectActionResponse = RaiseDirectActionResponses[keyof RaiseDirectActionResponses];
+
+export type ExportForumActionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED'>;
+        rag?: 'NONE' | 'GREY' | 'BLUE' | 'RED' | 'AMBER' | 'GREEN';
+        owner?: string;
+        overdue?: boolean;
+        dueFrom?: string;
+        dueTo?: string;
+        meetingId?: string;
+        itemId?: string;
+        source?: 'DECISION' | 'ITEM' | 'MEETING' | 'DIRECT';
+        text?: string;
+        sort?: 'DUE' | 'UPDATED' | 'REFERENCE';
+    };
+    url: '/api/v1/forums/{forumId}/actions/export';
+};
+
+export type ExportForumActionsErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportForumActionsResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportForumActionsResponse = ExportForumActionsResponses[keyof ExportForumActionsResponses];
 
 export type CloneForumData = {
     body: CloneRequest;
@@ -10610,6 +10855,207 @@ export type GetMinutesResponses = {
 
 export type GetMinutesResponse = GetMinutesResponses[keyof GetMinutesResponses];
 
+export type ListMinutesApprovalsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/approvals';
+};
+
+export type ListMinutesApprovalsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MinutesApprovalResponse>;
+};
+
+export type ListMinutesApprovalsResponse = ListMinutesApprovalsResponses[keyof ListMinutesApprovalsResponses];
+
+export type CheckMinutesApprovalData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        approvalId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/approvals/{approvalId}/check';
+};
+
+export type CheckMinutesApprovalResponses = {
+    /**
+     * OK
+     */
+    200: MinutesApprovalCheckResponse;
+};
+
+export type CheckMinutesApprovalResponse = CheckMinutesApprovalResponses[keyof CheckMinutesApprovalResponses];
+
+export type CirculateMinutesData = {
+    body?: MinutesCirculateRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/circulate';
+};
+
+export type CirculateMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type CirculateMinutesResponse = CirculateMinutesResponses[keyof CirculateMinutesResponses];
+
+export type AskForMinutesCommentsData = {
+    body: MinutesCommentRequestRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/comment-requests';
+};
+
+export type AskForMinutesCommentsResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type AskForMinutesCommentsResponse = AskForMinutesCommentsResponses[keyof AskForMinutesCommentsResponses];
+
+export type ListMinutesCommentsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/comments';
+};
+
+export type ListMinutesCommentsResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCommentsResponse;
+};
+
+export type ListMinutesCommentsResponse = ListMinutesCommentsResponses[keyof ListMinutesCommentsResponses];
+
+export type CommentOnMinutesData = {
+    body: MinutesCommentInput;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/comments';
+};
+
+export type CommentOnMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCommentResponse;
+};
+
+export type CommentOnMinutesResponse = CommentOnMinutesResponses[keyof CommentOnMinutesResponses];
+
+export type ChangeMinutesDeadlineData = {
+    body: MinutesDeadlineRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/comments-until';
+};
+
+export type ChangeMinutesDeadlineResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type ChangeMinutesDeadlineResponse = ChangeMinutesDeadlineResponses[keyof ChangeMinutesDeadlineResponses];
+
+export type RespondToMinutesCommentData = {
+    body: MinutesCommentResponseRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        commentId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/comments/{commentId}/response';
+};
+
+export type RespondToMinutesCommentResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCommentResponse;
+};
+
+export type RespondToMinutesCommentResponse = RespondToMinutesCommentResponses[keyof RespondToMinutesCommentResponses];
+
+export type ConfirmMinutesData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/confirm';
+};
+
+export type ConfirmMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type ConfirmMinutesResponse = ConfirmMinutesResponses[keyof ConfirmMinutesResponses];
+
+export type GetMinutesDocumentData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/document';
+};
+
+export type GetMinutesDocumentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
 export type MakeMinutesDraftData = {
     body?: MinutesDraftRequest;
     headers: {
@@ -10630,6 +11076,28 @@ export type MakeMinutesDraftResponses = {
 };
 
 export type MakeMinutesDraftResponse = MakeMinutesDraftResponses[keyof MakeMinutesDraftResponses];
+
+export type EndMinutesCirculationData = {
+    body: MinutesReasonRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/end-circulation';
+};
+
+export type EndMinutesCirculationResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type EndMinutesCirculationResponse = EndMinutesCirculationResponses[keyof EndMinutesCirculationResponses];
 
 export type RegenerateMinutesItemData = {
     body?: MinutesItemRequest;
@@ -10652,6 +11120,90 @@ export type RegenerateMinutesItemResponses = {
 };
 
 export type RegenerateMinutesItemResponse = RegenerateMinutesItemResponses[keyof RegenerateMinutesItemResponses];
+
+export type PreviewMinutesCopyData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query: {
+        as: string;
+    };
+    url: '/api/v1/meetings/{meetingId}/minutes/preview';
+};
+
+export type PreviewMinutesCopyResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ReviewMinutesData = {
+    body: MinutesReviewRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/review';
+};
+
+export type ReviewMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type ReviewMinutesResponse = ReviewMinutesResponses[keyof ReviewMinutesResponses];
+
+export type SendMinutesForReviewData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/send-for-review';
+};
+
+export type SendMinutesForReviewResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type SendMinutesForReviewResponse = SendMinutesForReviewResponses[keyof SendMinutesForReviewResponses];
+
+export type WithdrawMinutesData = {
+    body: MinutesReasonRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/withdraw';
+};
+
+export type WithdrawMinutesResponses = {
+    /**
+     * OK
+     */
+    200: MinutesResponse;
+};
+
+export type WithdrawMinutesResponse = WithdrawMinutesResponses[keyof WithdrawMinutesResponses];
 
 export type GetMeetingPaperContentData = {
     body?: never;

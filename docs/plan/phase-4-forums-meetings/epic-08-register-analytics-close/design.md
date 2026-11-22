@@ -304,7 +304,7 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 | `AttendanceStats.forMembers(forumIds, from, to, clearance)` and `.forCommittees(…)` | meeting | **New, E08 T4** (read-only over `meeting_attendance`, `meeting`, `ForumDirectory.membersOn`) | — |
 | `AgendaTimeliness.share(forumIds, from, to, clearance)` and `.lateCounts(viewer, meetingIds)` | meeting | **New, E08 T4**; uses `AgendaDeadlines.of` (E07 T7 publishes it, or E08 T4 if first) | — |
 | `SubmissionChains.chainStart(submissionId)` and `.chain(submissionId)`: the first `submitted_at` along `previous_id`, and the chain (named `SubmissionChains`: the forum module's internal `ForumSubmissions` service has the planned name) | forum | **Built, E08 T1** | — |
-| `ActionStats.overdue(viewer, forumIds, today)` and `.closedOnTime(viewer, forumIds, from, to)` on `ActionAccess`, replacing E07's viewer-less `ActionCounts.overdue(forumId)` | actions | **New ask of E07 T8** (beside the tracker's totals) | E08 T4 adds them in the actions module |
+| `ActionStats.overdue(viewer, forumIds, today)` and `.closedOnTime(viewer, forumIds, from, to)` on `ActionAccess`, replacing E07's viewer-less `ActionCounts.overdue(forumId)` | actions | **Built in E07 T8:** `ActionStats.overdue(forumIds, today)` and `.closedOnTime(forumIds, from, to)` for the signed-in viewer | — |
 | `ReportPages` landscape tables | memo (ADR-0052) | Built (used by E07's report PDF) | — |
 | `PaperSurfaceRegistry`: replace the E08 placeholder with the surfaces, and its `modules` list's `com.memo.decision` with `com.memo.search` (register endpoints; the memo search endpoints listed with their reason) and `com.memo.analytics` | test | E08 T2, T4 | — |
 

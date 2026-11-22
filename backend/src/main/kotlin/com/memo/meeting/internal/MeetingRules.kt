@@ -34,6 +34,9 @@ enum class MeetingAction(
 
     /** Add or remove guests: until the meeting is held. */
     GUESTS(setOf(MeetingStatus.DRAFT, MeetingStatus.SCHEDULED, MeetingStatus.IN_PROGRESS), null),
+
+    /** The chair confirmed the minutes (E06, ADR-0066): attendance and declarations freeze. */
+    APPROVE_MINUTES(setOf(MeetingStatus.HELD), MeetingStatus.MINUTES_APPROVED),
     ;
 
     fun allows(status: MeetingStatus): Boolean = status in from
@@ -53,6 +56,7 @@ enum class MeetingAction(
             END -> "ended"
             CANCEL -> "cancelled"
             GUESTS -> "given or relieved of guests"
+            APPROVE_MINUTES -> "given approved minutes"
         }
 }
 

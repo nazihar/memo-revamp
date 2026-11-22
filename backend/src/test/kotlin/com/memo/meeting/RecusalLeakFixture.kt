@@ -85,7 +85,7 @@ abstract class RecusalLeakFixture : RecusalFixture() {
      * lines and nobody declares. Both: another item's paper is replaced and an item added in revision 2, the notices of
      * both revisions are sent, and the control asks to discuss [item].
      */
-    protected inner class Planted(
+    inner class Planted(
         val content: Boolean,
         days: Long = DAYS_AHEAD,
     ) {

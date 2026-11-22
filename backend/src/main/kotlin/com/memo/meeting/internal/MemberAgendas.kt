@@ -5,12 +5,16 @@ import com.memo.files.FileRenditions
 import com.memo.files.RenditionKind
 import com.memo.files.RenditionState
 import com.memo.forum.ForumRole
+import com.memo.forum.StandingKind
 import com.memo.identity.UserSummaries
 import com.memo.meeting.DeclarationState
+import com.memo.meeting.ItemLink
+import com.memo.meeting.ItemLinks
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.PaperAccess
 import com.memo.meeting.PaperViewer
 import com.memo.meeting.Visibility
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -33,6 +37,7 @@ class MemberAgendas(
     private val renditions: FileRenditions,
     private val users: UserSummaries,
     private val declarations: DeclarationStore,
+    private val itemLinks: ObjectProvider<ItemLinks>,
 ) {
     /** Revision [number] of [meetingId]'s agenda (the latest when null) as the actor sees it; 404 when invisible. */
     fun agenda(
@@ -69,7 +74,10 @@ class MemberAgendas(
             note = head.note,
             preview = false,
             lastSeenRevision = lastSeen,
-            sections = MemberAgendaRender.sections(input(meeting, snapshot, visibility, viewer, mayAsk)) { reads(viewer, it) },
+            sections =
+                MemberAgendaRender.sections(input(meeting, snapshot, visibility, viewer, mayAsk, linked = head.number == latest)) {
+                    reads(viewer, it)
+                },
             whatChanged = whatChanged,
         )
     }
@@ -206,6 +214,7 @@ class MemberAgendas(
         viewer: PaperViewer,
         mayAsk: Boolean,
         withheld: Set<UUID> = emptySet(),
+        linked: Boolean = false,
     ): MemberAgendaInput {
         val shown = snapshot.body().papers.filter { it.paperId in visibility.papers }
         val pdf = renditions.states(shown.map { it.fileVersionId })
@@ -231,8 +240,21 @@ class MemberAgendas(
             viewerId = viewer.userId,
             mayAsk = mayAsk,
             inCamera = viewer.officer || (viewer.member && viewer.membersOnly),
+            links = if (linked) { item, kind -> links(meeting.id, item, kind) } else { _, _ -> emptyList() },
         )
     }
+
+    /** The links the providers for [kind] give (design E06 §2: E06's minutes, E07's action taken report). */
+    private fun links(
+        meetingId: UUID,
+        itemId: UUID,
+        kind: StandingKind,
+    ): List<ItemLink> =
+        itemLinks
+            .orderedStream()
+            .toList()
+            .filter { it.standingKind == kind }
+            .flatMap { it.links(meetingId, itemId) }
 
     /** Whether [viewer] sees the heading of a section with no line they see: not a members-only one for guests. */
     private fun reads(

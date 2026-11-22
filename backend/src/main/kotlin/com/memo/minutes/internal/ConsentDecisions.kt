@@ -40,6 +40,7 @@ class ConsentDecisions(
     private val effects: DecisionEffects,
     private val release: MinutesRelease,
     private val meetings: Meetings,
+    private val previous: PreviousMinutes,
     private val ids: IdGenerator,
     private val clock: Clock,
 ) {
@@ -118,11 +119,16 @@ class ConsentDecisions(
     ): CurrentDecision {
         val at = checkNotNull(plan.at)
         val snapshot = snapshots.take(view.meeting.id, plan.item.id, at)
-        val entry = DecisionRecorder.entry(ids.next(), 1, checkNotNull(plan.content), snapshot, at, null, now, batch)
+        val content = checkNotNull(plan.content)
+        val entry =
+            DecisionRecorder
+                .entry(ids.next(), 1, content, snapshot, at, null, now, batch)
+                .copy(approvesMinutesIds = previous.approvedBy(view.meeting.id, plan.item, content.outcome.kind))
         val head = head(view.meeting.id, view.meeting.forumId, plan.item, entry)
         if (!store.insert(head, entry)) throw ConcurrentModificationException("decision on item ${plan.item.id}", -1)
         val recorded = checkNotNull(reads.current(plan.item.id))
         effects.recorded(recorded, null, snapshot)
+        previous.decided(recorded)
         return recorded
     }
 

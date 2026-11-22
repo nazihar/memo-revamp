@@ -14,6 +14,13 @@ enum class EditMode { EDIT, VIEW }
  */
 interface EditableFilePurpose : FilePurpose {
     fun mayEdit(file: FileInfo): Boolean
+
+    /**
+     * Whether the actor, who may edit [file], edits it in review mode (ONLYOFFICE's `permissions.review`, ADR-0066: the
+     * chair's changes to draft minutes are tracked changes the secretary accepts or rejects). Saves are stored as for any
+     * editor. No by default.
+     */
+    fun reviewOnly(file: FileInfo): Boolean = false
 }
 
 /**

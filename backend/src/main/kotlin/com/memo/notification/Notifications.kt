@@ -161,6 +161,26 @@ enum class NotificationKind(
     MEETING_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_REMINDER),
     MEETING_QUORUM_AT_RISK(NotificationCategory.WORKFLOW, MailTemplate.MEETING_QUORUM_AT_RISK),
 
+    // Minutes (Phase 4 E06 T6, design E06 §2): the draft to review (the reviewer), sent back with comments or agreed (the
+    // secretaries), circulated for comments (the readers, with `until`), comments asked of someone (with `until`), the
+    // deadline today (readers who have not answered, with `until`), ready to approve (the confirmer, also the sweep's
+    // reminder), approved (the readers). In the app also: a comment added (the secretaries and the chair; `kind` NO_COMMENTS
+    // or SUGGESTION), the draft overdue (the secretaries), the draft made (the requester), decisions not sent to their memos
+    // after the last retry (the secretaries; `count`). Parameters `committee`, `date` (the meeting's), `organisation`, `link`;
+    // never an item's title, a comment or a word of the minutes.
+    MINUTES_REVIEW_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_REVIEW_REQUESTED),
+    MINUTES_RETURNED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_RETURNED),
+    MINUTES_AGREED(NotificationCategory.WORKFLOW, null),
+    MINUTES_CIRCULATED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CIRCULATED),
+    MINUTES_COMMENTS_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_COMMENTS_REQUESTED),
+    MINUTES_COMMENTS_CLOSING(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_COMMENTS_CLOSING),
+    MINUTES_CONFIRMATION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_CONFIRMATION_REQUESTED),
+    MINUTES_APPROVED(NotificationCategory.WORKFLOW, MailTemplate.MINUTES_APPROVED),
+    MINUTES_COMMENT_ADDED(NotificationCategory.WORKFLOW, null),
+    MINUTES_DRAFT_OVERDUE(NotificationCategory.WORKFLOW, null),
+    MINUTES_DRAFT_READY(NotificationCategory.WORKFLOW, null),
+    DECISIONS_RELEASE_FAILED(NotificationCategory.WORKFLOW, null),
+
     // Action items (Phase 4 E07, design E07 §2.3): a committee gave the person an action (to the holder of the owner's
     // task, when it is issued); the decision an action came from was corrected (to the committee's secretaries not recused
     // from the item, in the app only). Parameters `committee`, `reference`, `organisation`, `link`; `date` (the due date,

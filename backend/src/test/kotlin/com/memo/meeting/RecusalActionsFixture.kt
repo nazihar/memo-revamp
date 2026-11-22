@@ -4,7 +4,10 @@ import com.memo.actions.ActionPlanting
 import com.memo.actions.internal.ActionEvidencePurpose
 import com.memo.actions.internal.ActionStore
 import com.memo.actions.internal.ItemCopy
+import com.memo.meeting.internal.MeetingRow
 import com.memo.testsupport.Person
+import org.apache.pdfbox.Loader
+import org.apache.pdfbox.text.PDFTextStripper
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -64,6 +67,12 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
         val ofHidden = plant(p, p.hidden, "$CANARY_ACTION of the hidden item", control)
         val d1s = plant(p, p.hidden, "Confirm the covenant waiver", d1)
         val hiddenToAll = listOf(draft, issued, ofHidden)
+
+        /**
+         * E07 T7: the committee's next meeting, a week after the planted one, its agenda (from the template, with "Matters
+         * arising and actions") published once the actions are there: its action taken report lists them.
+         */
+        val next: MeetingRow by lazy { meeting(days = DAYS_AHEAD + 7).also { publish(it) } }
 
         /**
          * E07 T4: an evidence file on the issued action, uploaded by its owner (the control) through the whole pipeline and
@@ -139,6 +148,42 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
     }
 
     /**
+     * E07 T7's surface: the action taken report of the next meeting, on screen and as a PDF, has no row and no count of the
+     * item's actions for a viewer recused from it and not involved; d1 has their own action's row (they own it), without
+     * the hidden title. The control (the owner of the canaries) reads them.
+     */
+    protected fun actionReportProbe(
+        p: Planted,
+        v: Viewer,
+    ) {
+        val planted = actionsOf(p)
+        val uri = "/api/v1/meetings/${planted.next.id}/action-report"
+        assertThat(read(uri, control.session).response.contentAsString).contains(CANARY_ACTION)
+        val person = v.person()
+        val report = read(uri, person.session)
+        clean(person, report)
+        assertThat(report.response.contentAsString).doesNotContain(CANARY_ACTION)
+        val rows =
+            report
+                .json()["sections"]
+                .list()
+                .flatMap { it["rows"].list() }
+                .map { UUID.fromString(it["actionId"].asString()) }
+        assertThat(rows).doesNotContainAnyElementsOf(planted.hiddenToAll)
+        assertThat(report.json()["sections"].list().sumOf { it["count"].asInt() }).isEqualTo(rows.size)
+        val pdf = read("$uri/pdf", person.session)
+        clean(person, pdf)
+        val text = Loader.loadPDF(pdf.response.contentAsByteArray).use { PDFTextStripper().getText(it) }
+        (canaries(person) + CANARY_ACTION).forEach { assertThat(text).describedAs("a canary in the PDF").doesNotContain(it) }
+        if (v == Viewer.RECUSED) {
+            assertThat(rows).containsExactly(planted.d1s)
+            assertThat(text).contains("Confirm the covenant waiver")
+        } else {
+            assertThat(rows).doesNotContain(planted.d1s)
+        }
+    }
+
+    /**
      * E07 T4: the evidence through the generic files endpoints: the owner reads it, a recused viewer gets 403 or 404 for
      * the file, its content and each version, naming nothing.
      */
@@ -172,6 +217,11 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
             "POST /api/v1/forums/{forumId}/actions" to { _ ->
                 val body = """{"title":"Circulate the revised policy","sourceNote":"Chair's instruction"}"""
                 send(HttpMethod.POST, "/api/v1/forums/$brc/actions", secretary, body, key())
+            },
+            // E07 T7: asking for updates asks only for the actions the recused secretary sees; the answer is a count.
+            "POST /api/v1/forums/{forumId}/actions/ask-for-updates" to { p ->
+                actionsOf(p)
+                send(HttpMethod.POST, "/api/v1/forums/$brc/actions/ask-for-updates", secretary, "{}", key())
             },
             // E07 T5: closing the item's actions at the meeting, which the recused secretary does not see: refused naming nothing.
             "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to { p ->

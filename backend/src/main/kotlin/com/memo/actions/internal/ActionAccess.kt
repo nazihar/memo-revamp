@@ -65,6 +65,7 @@ class ActionAccess(
     private val requests: ActionDueRequests,
     private val abilityRules: ActionAbilityRules,
     private val files: Files,
+    private val rule: ActionRuleConditions,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {
@@ -191,54 +192,9 @@ class ActionAccess(
         forumId: UUID,
     ): Condition {
         val a = ACTIONS_ITEM
-        val paper = viewer.paper(forumId)
-        val cleared = if (viewer.cleared.isEmpty()) DSL.falseCondition() else a.CLASSIFICATION_ID.`in`(viewer.cleared)
-        val notRecused = exclusions.excluded(viewer.userId, a.ITEM_ID, a.ITEM_PARENT_ID).not()
         val drafts = if (viewer.manages(forumId)) DSL.trueCondition() else a.STATUS.ne(ActionStatus.DRAFT.name)
-        val withoutItem =
-            a.ITEM_ID.isNull.and(
-                if (viewer.officer(forumId) || viewer.reader ||
-                    viewer.member(forumId)
-                ) {
-                    DSL.trueCondition()
-                } else {
-                    DSL.falseCondition()
-                },
-            )
-        val reads =
-            if (viewer.reader && viewer.cleared.isNotEmpty()) {
-                a.ITEM_RESTRICTED_TO.isNull
-                    .and(a.ITEM_TITLE_HIDDEN.isFalse)
-                    .and(a.ITEM_MEMBERS_ONLY.isFalse)
-                    .and(a.ITEM_CLASSIFICATION_ID.`in`(viewer.cleared))
-            } else {
-                DSL.falseCondition()
-            }
-        val withItem = a.ITEM_ID.isNotNull.and(DSL.or(paperAccess.itemCondition(paper, COLUMNS), reads))
-        val byRule = cleared.and(notRecused).and(drafts).and(DSL.or(withoutItem, withItem))
-        return a.FORUM_ID.eq(forumId).and(DSL.or(a.STATUS.ne(ActionStatus.DRAFT.name).and(involved(viewer)), byRule))
-    }
-
-    /** Whether [viewer] is involved in the action: its holder, owner (or the position's holder), contributor or task holder. */
-    fun involved(viewer: ActionViewer): Condition {
-        val a = ACTIONS_ITEM
-        val c = ACTIONS_CONTRIBUTOR
-        val contributes =
-            DSL.exists(
-                DSL
-                    .selectOne()
-                    .from(c)
-                    .where(c.TENANT_ID.eq(a.TENANT_ID), c.ACTION_ID.eq(a.ID), c.USER_ID.eq(viewer.userId), c.REMOVED_AT.isNull),
-            )
-        return DSL.or(
-            listOfNotNull(
-                a.HOLDER_USER_ID.eq(viewer.userId),
-                a.OWNER_USER_ID.eq(viewer.userId),
-                viewer.positions.takeIf { it.isNotEmpty() }?.let { a.OWNER_POSITION_ID.`in`(it) },
-                contributes,
-                viewer.tasks().takeIf { it.isNotEmpty() }?.let { a.ID.`in`(it) },
-            ),
-        )
+        val byRule = rule.byRule(viewer, forumId, a.CLASSIFICATION_ID, COLUMNS).and(drafts)
+        return a.FORUM_ID.eq(forumId).and(DSL.or(a.STATUS.ne(ActionStatus.DRAFT.name).and(rule.involved(viewer)), byRule))
     }
 
     private fun response(

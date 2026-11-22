@@ -47,10 +47,11 @@ class ActionAccessArchTest {
         noClasses()
             .that()
             .haveNameNotMatching(
-                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL; T5: the digest's keys.
+                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL; T5: the digest's keys;
+                // T7: the reports' store, what the reports and update requests list, and the rule's parts as conditions.
                 """com\.memo\.actions\.internal\.""" +
                     """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns|""" +
-                    """ActionDigestStore)(\$.*)?""",
+                    """ActionDigestStore|ActionReportStore|ActionReportCandidates|ActionRuleConditions)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
             .should()
@@ -73,6 +74,8 @@ class ActionAccessArchTest {
                 """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests)""",
                 // T5: closure, the timers' reactions and the daily task (the digest's keys and the safety net).
                 """internal\.(ActionClosure|ActionClosureEffects|ActionTimerListener|ActionSafetyNet|ActionsDaily|ActionDigestStore)""",
+                // T7: the report's builder (at publication), holding back, and the update requests (the daily task and the button).
+                """internal\.(ActionReports|ActionReportHolds|ActionUpdateRequests)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }

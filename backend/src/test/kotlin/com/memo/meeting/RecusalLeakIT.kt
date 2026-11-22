@@ -205,6 +205,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
+            // E07 T7: the next meeting's action taken report and its PDF (RecusalActionsFixture).
+            Surface.ACTION_REPORT to { p, v -> actionReportProbe(p, v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v ->

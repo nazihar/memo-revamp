@@ -132,4 +132,19 @@ describe('action reminders, escalation and closure (design E07 §1.8, §1.9)', (
     expect(notificationText(arabic, 'ACTION_OVERDUE', { ...action, stage: 'ESCALATED' })).toContain('صُعّد')
     expect(notificationText(arabic, 'ACTION_TO_VERIFY', action)).toContain('BRC A9/2026')
   })
+
+  it('ask for an update before the papers, with the deadline when there is one (design E07 §1.12)', () => {
+    expect(
+      notificationText(english, 'ACTION_UPDATE_REQUESTED', { ...action, when: 'DEADLINE', deadline: '2026-12-05' }),
+    ).toBe(
+      "Please post an update on action BRC A9/2026 of Board Risk Committee before 2026-12-05, when the committee's papers are published",
+    )
+    expect(notificationText(english, 'ACTION_UPDATE_REQUESTED', { ...action, when: 'NEXT' })).toBe(
+      "Please post an update on action BRC A9/2026 of Board Risk Committee before the committee's next papers",
+    )
+    expect(templateLabel(english, 'ACTION_UPDATE_REQUESTED')).toBe('Committee action update asked for')
+    expect(
+      notificationText(arabic, 'ACTION_UPDATE_REQUESTED', { ...action, when: 'DEADLINE', deadline: '2026-12-05' }),
+    ).toContain('2026-12-05')
+  })
 })

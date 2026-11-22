@@ -160,6 +160,7 @@ const kindsWithValues = defineMessages<{
   actionNotRunning: { committee: string; reference: string }
   actionEscalated: { committee: string; reference: string; date: string; holder: string }
   actionSentBack: { committee: string; reference: string; date: string }
+  actionUpdateRequested: { committee: string; reference: string; deadline: string; when: string }
 }>({
   signInAlert: { id: 'notificationKinds.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notificationKinds.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -397,6 +398,11 @@ const kindsWithValues = defineMessages<{
     id: 'notificationKinds.actionEscalated',
     defaultMessage: 'Action {reference} of {committee}, held by {holder}, is overdue since {date}',
   },
+  actionUpdateRequested: {
+    id: 'notificationKinds.actionUpdateRequested',
+    defaultMessage:
+      "Please post an update on action {reference} of {committee} {when, select, DEADLINE {before {deadline}, when the committee's papers are published} other {before the committee's next papers}}",
+  },
   actionSentBack: {
     id: 'notificationKinds.actionSentBack',
     defaultMessage: 'Action {reference} of {committee}, due {date}, was sent back to you',
@@ -623,6 +629,12 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       })
     case 'ACTION_SENT_BACK':
       return intl.formatMessage(kindsWithValues.actionSentBack, { ...actionValues(params), date: params.date ?? '' })
+    case 'ACTION_UPDATE_REQUESTED':
+      return intl.formatMessage(kindsWithValues.actionUpdateRequested, {
+        ...actionValues(params),
+        deadline: params.deadline ?? '',
+        when: params.when ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -727,6 +739,10 @@ const mailTemplates = defineMessages({
   ACTION_ESCALATED: { id: 'mail.template.actionEscalated', defaultMessage: 'Committee action escalated' },
   ACTION_SENT_BACK: { id: 'mail.template.actionSentBack', defaultMessage: 'Committee action sent back' },
   ACTIONS_DIGEST: { id: 'mail.template.actionsDigest', defaultMessage: 'Daily digest of committee actions' },
+  ACTION_UPDATE_REQUESTED: {
+    id: 'mail.template.actionUpdateRequested',
+    defaultMessage: 'Committee action update asked for',
+  },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

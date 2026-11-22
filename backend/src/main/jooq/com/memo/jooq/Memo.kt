@@ -10,6 +10,10 @@ import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
+import com.memo.jooq.tables.ActionsReport
+import com.memo.jooq.tables.ActionsReportHold
+import com.memo.jooq.tables.ActionsReportRow
+import com.memo.jooq.tables.ActionsUpdateAsk
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
@@ -213,6 +217,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.actions_item</code>.
      */
     val ACTIONS_ITEM: ActionsItem get() = ActionsItem.ACTIONS_ITEM
+
+    /**
+     * The table <code>memo.actions_report</code>.
+     */
+    val ACTIONS_REPORT: ActionsReport get() = ActionsReport.ACTIONS_REPORT
+
+    /**
+     * The table <code>memo.actions_report_hold</code>.
+     */
+    val ACTIONS_REPORT_HOLD: ActionsReportHold get() = ActionsReportHold.ACTIONS_REPORT_HOLD
+
+    /**
+     * The table <code>memo.actions_report_row</code>.
+     */
+    val ACTIONS_REPORT_ROW: ActionsReportRow get() = ActionsReportRow.ACTIONS_REPORT_ROW
+
+    /**
+     * The table <code>memo.actions_update_ask</code>.
+     */
+    val ACTIONS_UPDATE_ASK: ActionsUpdateAsk get() = ActionsUpdateAsk.ACTIONS_UPDATE_ASK
 
     /**
      * The table <code>memo.audit_anchor</code>.
@@ -1197,6 +1221,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ActionsDueRequest.ACTIONS_DUE_REQUEST,
         ActionsEntry.ACTIONS_ENTRY,
         ActionsItem.ACTIONS_ITEM,
+        ActionsReport.ACTIONS_REPORT,
+        ActionsReportHold.ACTIONS_REPORT_HOLD,
+        ActionsReportRow.ACTIONS_REPORT_ROW,
+        ActionsUpdateAsk.ACTIONS_UPDATE_ASK,
         AuditAnchor.AUDIT_ANCHOR,
         AuditChainHead.AUDIT_CHAIN_HEAD,
         AuditEvent.AUDIT_EVENT,

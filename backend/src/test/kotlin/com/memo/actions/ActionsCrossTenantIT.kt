@@ -1,12 +1,17 @@
 package com.memo.actions
 
+import com.memo.actions.internal.ActionReportHolds
+import com.memo.actions.internal.ActionReportReads
 import com.memo.actions.internal.ActionSource
+import com.memo.actions.internal.ActionUpdateRequests
 import com.memo.actions.internal.RaiseInput
+import com.memo.actions.internal.ReportHoldRequest
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
 import com.memo.identity.UserAccount
+import com.memo.meeting.internal.AgendaOrigin
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.AppRoleJdbc.update
@@ -16,7 +21,9 @@ import com.memo.testsupport.aTestTenant
 import com.memo.testsupport.anActiveUser
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.sql.SQLException
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -70,6 +77,81 @@ class ActionsCrossTenantIT : ActionFixture() {
         }
         bWritesNothing(b, bAdmin, id)
         aIsIntact(id)
+    }
+
+    @Autowired lateinit var reportReads: ActionReportReads
+
+    @Autowired lateinit var reportHolds: ActionReportHolds
+
+    @Autowired lateinit var updateRequests: ActionUpdateRequests
+
+    @Test
+    fun `another tenant reads no action taken report, row or hold of A's, and asks no owner of A's for an update`() {
+        val (next, held, kept) = reported()
+        val b = registry.aTestTenant(transactions, settings, "actionsrb", mfaRequired = false)
+        val bAdmin = accounts.anActiveUser(transactions, b, aPassword(), tenantAdmin = true)
+        listOf<() -> Any>(
+            { reportReads.report(next, null) },
+            { reportReads.report(next, 1) },
+            { reportReads.pdf(next, null) },
+            { reportHolds.hold(kept, ReportHoldRequest("Mine now")) },
+            { updateRequests.askNow(brc) },
+        ).forEach { call ->
+            val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
+            assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "ActionNotFoundException")
+        }
+        val tables = listOf("actions_report", "actions_report_row", "actions_report_hold", "actions_update_ask")
+        AppRoleJdbc.inTransaction(b.id) { c ->
+            tables.forEach { assertThat(c.long("select count(*) from $it where tenant_id = ?", tenant.id.value)).describedAs(it).isZero() }
+            val joined = "select count(*) from actions_report r join actions_report_row w on w.report_id = r.id where r.meeting_id = ?"
+            assertThat(c.long(joined, next)).isZero()
+        }
+        reportsStayAsBuilt(b, bAdmin, next, held, kept)
+    }
+
+    /** A report of the next meeting with one action held back and one listed, and an update asked for: (meeting, held, kept). */
+    private fun reported(): Triple<UUID, UUID, UUID> {
+        val d = deciding()
+        val held = issue(raise(d.meeting.id, d.credit, fields()))
+        val created = asUser(secretary) { lifecycle.create(brc, place(), times(LocalDate.now(ZoneOffset.UTC).plusDays(14))) }
+        asUser(secretary) { agendaStart.start(created.id, AgendaOrigin.TEMPLATE, null) }
+        asUser(secretary) { reportHolds.hold(held.id, ReportHoldRequest("Discussed in camera", created.id)) }
+        val kept = issue(raise(d.meeting.id, d.appetite, fields()))
+        val next = asUser(secretary) { meeting(created.id).let { lifecycle.schedule(it.id, it.version) } }
+        asUser(chair) { chairing.agree(next.id, drafts.draft(next.id).version, false, null) }
+        asUser(secretary) { publisher.publish(next.id, drafts.draft(next.id).version, null, true) }
+        assertThat(asUser(secretary) { reportReads.report(next.id, null) }.sections.flatMap { it.rows }.map { it.actionId })
+            .containsExactly(kept.id)
+        asUser(secretary) { updateRequests.askNow(brc) }
+        return Triple(next.id, held.id, kept.id)
+    }
+
+    /** B's own rows pointing at A's are refused by the composite foreign keys; A's report and holds are insert only. */
+    private fun reportsStayAsBuilt(
+        b: TestTenant,
+        bAdmin: UserAccount,
+        next: UUID,
+        held: UUID,
+        kept: UUID,
+    ) {
+        val insert =
+            "insert into actions_report_hold (id, tenant_id, action_id, meeting_id, reason, held_by, held_at) values (?, ?, ?, ?, 'x', ?, ?)"
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val written =
+            runCatching {
+                AppRoleJdbc.inTransaction(
+                    b.id,
+                ) { c -> c.update(insert, UUID.randomUUID(), b.id.value, kept, next, bAdmin.id.value, now) }
+            }
+        assertThat(written.exceptionOrNull()).isInstanceOf(SQLException::class.java)
+        listOf(
+            "update actions_report_row set section = 'OPEN' where action_id = ?",
+            "delete from actions_report_row where action_id = ?",
+            "delete from actions_report_hold where action_id = ?",
+        ).forEach { sql ->
+            val changed = runCatching { AppRoleJdbc.inTransaction(tenant.id) { c -> c.update(sql, held) } }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
     }
 
     /** B writes no row for A or pointing at A's rows. */

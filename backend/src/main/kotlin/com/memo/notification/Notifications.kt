@@ -202,6 +202,13 @@ enum class NotificationKind(
     // The daily digest (E07 T5, design E07 §9): one email a day at most with the references of the action notices since the
     // last one, by kind (`lines`, sentences in the recipient's language); email only.
     ACTIONS_DIGEST(NotificationCategory.WORKFLOW, MailTemplate.ACTIONS_DIGEST, inApp = false),
+
+    // An update asked for before the committee's next papers (E07 T7, design E07 §1.12, §9 (b)), in the app and by email at
+    // once, to the holder of an open action with no update since the previous meeting: by the daily task the committee
+    // type's `updateRequestWorkingDays` before the next meeting's agenda deadline, or by a secretary's "Ask owners for an
+    // update". Parameters `committee`, `reference`, `organisation`, `link`, `date` (the due date, ISO), `when` (DEADLINE or
+    // NEXT) and `deadline` (the agenda deadline, ISO, when there is one).
+    ACTION_UPDATE_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_UPDATE_REQUESTED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

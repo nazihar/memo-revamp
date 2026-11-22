@@ -14,7 +14,8 @@ package com.memo.meeting
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
  * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E07 T3 made its actions placeholder
  * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
- * with recusal columns or an officer probe).
+ * with recusal columns or an officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF),
+ * holding an action back from it (recusal columns) and "Ask owners for an update" (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -49,6 +50,10 @@ object PaperSurfaceRegistry {
         RESOLUTIONS(
             "The committee's resolution register and its check, and one resolution (E06 T4): a row in full only when its item's " +
                 "decision is seen in full, else its number, meeting and item number (\"restricted\"); one resolution as the decision",
+        ),
+        ACTION_REPORT(
+            "The action taken report under Matters arising (E07 T7), on screen and as a PDF: the rows (snapshots) by the one rule on " +
+                "each row's copied item columns; a person recused from an item gets no row and no count of its actions unless involved",
         ),
         MINUTES(
             "The minutes page while drafting (E06 T5): the committee's secretaries and forums.manage only (404 to everyone else); " +
@@ -106,6 +111,9 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/minutes" to Surface.MINUTES,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
+            // E07 T7: the action taken report of a meeting's agenda revision, and its PDF: each reader's rows by the rule.
+            "GET /api/v1/meetings/{meetingId}/action-report" to Surface.ACTION_REPORT,
+            "GET /api/v1/meetings/{meetingId}/action-report/pdf" to Surface.ACTION_REPORT,
         )
 
     /**
@@ -212,6 +220,10 @@ object PaperSurfaceRegistry {
                     "verifying (E07 T5): the verifier pool, never the owner, a contributor or the recused (recusal columns)",
                 "POST /api/v1/meetings/{meetingId}/actions/close-agreed" to
                     "closing the actions agreed at a meeting (E07 T5): the verifiers; an unseen action is NOT_FOUND (officer probe)",
+                "POST /api/v1/actions/{actionId}/report-hold" to
+                    "holding an action back from the next report (E07 T7): secretaries not recused (recusal columns)",
+                "POST /api/v1/forums/{forumId}/actions/ask-for-updates" to
+                    "asking owners for an update (E07 T7): secretaries; only the actions they see by the rule (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -323,7 +335,8 @@ object PaperSurfaceRegistry {
             Pending(
                 "E07",
                 "The committee's action tracker, its totals and export (E07 T8): rows by the one rule, no row or count of a recused item",
-                listOf("/api/v1/forums/{forumId}/actions/"),
+                // T7's "Ask owners for an update" sits under the same path and has its officer probe.
+                listOf("/api/v1/forums/{forumId}/actions/export"),
             ),
             Pending(
                 "E08",

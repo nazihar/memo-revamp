@@ -233,3 +233,19 @@
   - After detekt's fixes, 2,609 tests over `com.memo.actions.*`, `com.memo.notification.*`, the leak suites, the matrix, endpoint, audit, architecture, modularity and contract tests: all green.
   - ktlint, detekt and SpotBugs are clean.
   - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged at 13.5 KiB; the texts are in `notificationKinds` and `admin`) and the notification texts' tests pass.
+
+## 2026-11-22 — T7: the action taken report under matters arising
+- **Built:**
+  - **`actions/V4__reports.sql`:** `actions_report`, `actions_report_row`, `actions_report_hold` and `actions_update_ask`, all insert only. **T6 (#230) holds `actions/V3`, so T6 merges before T7** (Flyway applies V3 before V4).
+  - **The report** (`ActionReports`), built in the publishing transaction of every revision with a MATTERS_ARISING item, once per revision and frozen: (1) proposed to close, (2) overdue, (3) open by due date, (4) closed and (5) cancelled since the previous meeting's start, (6) corrections to earlier minutes (empty until E06 T8). At most 500 rows shown; the latest-due open actions are left out first and counted. Audited `actions.report.built` with the rows per section and the content's SHA-256.
+  - **Held back** (`POST /actions/{id}/report-hold`): a secretary or `forums.manage` not recused, with a reason, for the next meeting (or one named still to come); absent from that meeting's later reports, counted for officers. Timeline `HELD_BACK`; audit `actions.report.held` (the reason's hash).
+  - **Reading** (`GET /meetings/{id}/action-report`, `?revision=`, and `…/pdf`): officers, members today and `forum.read` holders who see the MATTERS_ARISING item's line; 404 to guests, attendees, outsiders and former members. Each reader's rows and counts by `ActionAccess.reportRows` (the one rule on the row's copied columns, or involvement). The PDF through `ReportPages`, on demand. Every open audited `actions.report.opened` (SCREEN or PDF).
+  - **The item link:** E06 T6's `ItemLinks` port (#229, not merged) added here word for word, with its use in the members' agenda; `ActionReportLinks` links the MATTERS_ARISING item to the report with the reader's counts.
+  - **Update requests** (`ActionUpdateRequests`): the `actions-daily` task's part (b) on the day's first run, from `updateRequestWorkingDays` before the next meeting's agenda deadline (`AgendaDeadlines.of`, published by meeting) to the deadline, once per meeting and action; "Ask owners for an update" (`POST /forums/{fid}/actions/ask-for-updates`), at once, once a day per committee (409 `ALREADY_ASKED`), for the actions the asker sees by the rule. `ACTION_UPDATE_REQUESTED` in the app and by email (en/ar), the reference and dates only. Audit `actions.update_requests.sent`.
+  - Matrix rows in `p4-e07-actions.yaml`; leak suites: the ACTION_REPORT surface (screen and PDF text) in `RecusalLeakIT` (`RecusalActionsFixture.actionReportProbe`) and `PaperLeakIT`, report-hold with recusal columns, ask-for-updates as an officer probe. The E07 tracker placeholder now watches `/forums/{forumId}/actions/export` only (ask-for-updates sits under the old prefix).
+- **Choices made while building** (design §1.12 "As built in T7"):
+  - The report is built for an empty committee too: the frozen record says nothing was open.
+  - Held-back and left-out actions are stored as rows without a snapshot, so their counts follow the same rule as the rows and reveal nothing to a recused reader.
+  - With no previous meeting, every closed or cancelled action is listed (sections 4 and 5).
+  - The daily window runs from the request day to the deadline, so a missed run catches up; the button asks whatever was asked before.
+  - **Not built here:** follow-up memos in the snapshot (T6's `actions_memo`; joined when T6 and T7 meet), section 6's rows (E06 T8).

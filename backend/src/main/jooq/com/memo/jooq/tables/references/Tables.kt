@@ -122,7 +122,10 @@ import com.memo.jooq.tables.OrgLegalEntity
 import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
+import com.memo.jooq.tables.SearchDecisionStats
+import com.memo.jooq.tables.SearchDecisionUnindexed
 import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchFindDecisions
 import com.memo.jooq.tables.SearchSaved
 import com.memo.jooq.tables.SearchSnippets
 import com.memo.jooq.tables.SearchUnindexed
@@ -147,11 +150,15 @@ import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
 import com.memo.jooq.tables.WorkflowTimer
+import com.memo.jooq.tables.records.SearchDecisionStatsRecord
+import com.memo.jooq.tables.records.SearchDecisionUnindexedRecord
+import com.memo.jooq.tables.records.SearchFindDecisionsRecord
 import com.memo.jooq.tables.records.SearchFindRecord
 import com.memo.jooq.tables.records.SearchSnippetsRecord
 import com.memo.jooq.tables.records.SearchUnindexedRecord
 
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -747,6 +754,138 @@ val ORG_REPORTING_LINE: OrgReportingLine = OrgReportingLine.ORG_REPORTING_LINE
 val ORG_UNIT: OrgUnit = OrgUnit.ORG_UNIT
 
 /**
+ * The table <code>memo.search_decision_stats</code>.
+ */
+val SEARCH_DECISION_STATS: SearchDecisionStats = SearchDecisionStats.SEARCH_DECISION_STATS
+
+/**
+ * Call <code>memo.search_decision_stats</code>.
+ */
+fun SEARCH_DECISION_STATS(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pForums: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+): Result<SearchDecisionStatsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+      pTenant
+    , pViewer
+    , pRank
+    , pOfficerAll
+    , pOfficers
+    , pMembers
+    , pReader
+    , pRecused
+    , pForums
+    , pFrom
+    , pTo
+)).fetch()
+
+/**
+ * Get <code>memo.search_decision_stats</code> as a table.
+ */
+fun SEARCH_DECISION_STATS(
+      pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pForums: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+): SearchDecisionStats = com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pForums,
+    pFrom,
+    pTo
+)
+
+/**
+ * Get <code>memo.search_decision_stats</code> as a table.
+ */
+fun SEARCH_DECISION_STATS(
+      pTenant: Field<UUID?>
+    , pViewer: Field<UUID?>
+    , pRank: Field<Int?>
+    , pOfficerAll: Field<Boolean?>
+    , pOfficers: Field<Array<UUID?>?>
+    , pMembers: Field<Array<UUID?>?>
+    , pReader: Field<Boolean?>
+    , pRecused: Field<Array<UUID?>?>
+    , pForums: Field<Array<UUID?>?>
+    , pFrom: Field<LocalDate?>
+    , pTo: Field<LocalDate?>
+): SearchDecisionStats = com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pForums,
+    pFrom,
+    pTo
+)
+
+/**
+ * The table <code>memo.search_decision_unindexed</code>.
+ */
+val SEARCH_DECISION_UNINDEXED: SearchDecisionUnindexed = SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED
+
+/**
+ * Call <code>memo.search_decision_unindexed</code>.
+ */
+fun SEARCH_DECISION_UNINDEXED(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pLimit: Int?
+): Result<SearchDecisionUnindexedRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+      pTenant
+    , pLimit
+)).fetch()
+
+/**
+ * Get <code>memo.search_decision_unindexed</code> as a table.
+ */
+fun SEARCH_DECISION_UNINDEXED(
+      pTenant: UUID?
+    , pLimit: Int?
+): SearchDecisionUnindexed = com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
+
+/**
+ * Get <code>memo.search_decision_unindexed</code> as a table.
+ */
+fun SEARCH_DECISION_UNINDEXED(
+      pTenant: Field<UUID?>
+    , pLimit: Field<Int?>
+): SearchDecisionUnindexed = com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
+
+/**
  * The table <code>memo.search_find</code>.
  */
 val SEARCH_FIND: SearchFind = SearchFind.SEARCH_FIND
@@ -903,6 +1042,219 @@ fun SEARCH_FIND(
     pInDocs,
     pCap,
     pOrigins
+)
+
+/**
+ * The table <code>memo.search_find_decisions</code>.
+ */
+val SEARCH_FIND_DECISIONS: SearchFindDecisions = SearchFindDecisions.SEARCH_FIND_DECISIONS
+
+/**
+ * Call <code>memo.search_find_decisions</code>.
+ */
+fun SEARCH_FIND_DECISIONS(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pForums: Array<UUID?>?
+    , pForumTypes: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+    , pOutcomes: Array<String?>?
+    , pResolutionsOnly: Boolean?
+    , pStates: Array<String?>?
+    , pMemoTypes: Array<UUID?>?
+    , pFlags: Array<String?>?
+    , pToday: LocalDate?
+    , pSort: String?
+    , pAfterDate: LocalDate?
+    , pAfterAt: OffsetDateTime?
+    , pAfterScore: Float?
+    , pAfterPeriod: String?
+    , pAfterSequence: Long?
+    , pAfterId: UUID?
+    , pLimit: Int?
+    , pCap: Int?
+): Result<SearchFindDecisionsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+      pTenant
+    , pViewer
+    , pRank
+    , pOfficerAll
+    , pOfficers
+    , pMembers
+    , pReader
+    , pRecused
+    , pQuery
+    , pPrefix
+    , pRefNorm
+    , pRefTail
+    , pForums
+    , pForumTypes
+    , pFrom
+    , pTo
+    , pOutcomes
+    , pResolutionsOnly
+    , pStates
+    , pMemoTypes
+    , pFlags
+    , pToday
+    , pSort
+    , pAfterDate
+    , pAfterAt
+    , pAfterScore
+    , pAfterPeriod
+    , pAfterSequence
+    , pAfterId
+    , pLimit
+    , pCap
+)).fetch()
+
+/**
+ * Get <code>memo.search_find_decisions</code> as a table.
+ */
+fun SEARCH_FIND_DECISIONS(
+      pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pForums: Array<UUID?>?
+    , pForumTypes: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+    , pOutcomes: Array<String?>?
+    , pResolutionsOnly: Boolean?
+    , pStates: Array<String?>?
+    , pMemoTypes: Array<UUID?>?
+    , pFlags: Array<String?>?
+    , pToday: LocalDate?
+    , pSort: String?
+    , pAfterDate: LocalDate?
+    , pAfterAt: OffsetDateTime?
+    , pAfterScore: Float?
+    , pAfterPeriod: String?
+    , pAfterSequence: Long?
+    , pAfterId: UUID?
+    , pLimit: Int?
+    , pCap: Int?
+): SearchFindDecisions = com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pForums,
+    pForumTypes,
+    pFrom,
+    pTo,
+    pOutcomes,
+    pResolutionsOnly,
+    pStates,
+    pMemoTypes,
+    pFlags,
+    pToday,
+    pSort,
+    pAfterDate,
+    pAfterAt,
+    pAfterScore,
+    pAfterPeriod,
+    pAfterSequence,
+    pAfterId,
+    pLimit,
+    pCap
+)
+
+/**
+ * Get <code>memo.search_find_decisions</code> as a table.
+ */
+fun SEARCH_FIND_DECISIONS(
+      pTenant: Field<UUID?>
+    , pViewer: Field<UUID?>
+    , pRank: Field<Int?>
+    , pOfficerAll: Field<Boolean?>
+    , pOfficers: Field<Array<UUID?>?>
+    , pMembers: Field<Array<UUID?>?>
+    , pReader: Field<Boolean?>
+    , pRecused: Field<Array<UUID?>?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+    , pRefNorm: Field<String?>
+    , pRefTail: Field<String?>
+    , pForums: Field<Array<UUID?>?>
+    , pForumTypes: Field<Array<UUID?>?>
+    , pFrom: Field<LocalDate?>
+    , pTo: Field<LocalDate?>
+    , pOutcomes: Field<Array<String?>?>
+    , pResolutionsOnly: Field<Boolean?>
+    , pStates: Field<Array<String?>?>
+    , pMemoTypes: Field<Array<UUID?>?>
+    , pFlags: Field<Array<String?>?>
+    , pToday: Field<LocalDate?>
+    , pSort: Field<String?>
+    , pAfterDate: Field<LocalDate?>
+    , pAfterAt: Field<OffsetDateTime?>
+    , pAfterScore: Field<Float?>
+    , pAfterPeriod: Field<String?>
+    , pAfterSequence: Field<Long?>
+    , pAfterId: Field<UUID?>
+    , pLimit: Field<Int?>
+    , pCap: Field<Int?>
+): SearchFindDecisions = com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pForums,
+    pForumTypes,
+    pFrom,
+    pTo,
+    pOutcomes,
+    pResolutionsOnly,
+    pStates,
+    pMemoTypes,
+    pFlags,
+    pToday,
+    pSort,
+    pAfterDate,
+    pAfterAt,
+    pAfterScore,
+    pAfterPeriod,
+    pAfterSequence,
+    pAfterId,
+    pLimit,
+    pCap
 )
 
 /**

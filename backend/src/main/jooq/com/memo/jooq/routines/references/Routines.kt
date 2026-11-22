@@ -6,23 +6,34 @@ package com.memo.jooq.routines.references
 
 
 import com.memo.jooq.routines.SearchPutChunks
+import com.memo.jooq.routines.SearchPutDecision
+import com.memo.jooq.routines.SearchPutDecisionItems
+import com.memo.jooq.routines.SearchPutDecisionsFinal
 import com.memo.jooq.routines.SearchPutMemo
 import com.memo.jooq.routines.SearchPutNote
 import com.memo.jooq.routines.SearchSetChunkRank
 import com.memo.jooq.routines.TenancySettingCount
+import com.memo.jooq.tables.SearchDecisionStats
+import com.memo.jooq.tables.SearchDecisionUnindexed
 import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchFindDecisions
 import com.memo.jooq.tables.SearchSnippets
 import com.memo.jooq.tables.SearchUnindexed
+import com.memo.jooq.tables.records.SearchDecisionStatsRecord
+import com.memo.jooq.tables.records.SearchDecisionUnindexedRecord
+import com.memo.jooq.tables.records.SearchFindDecisionsRecord
 import com.memo.jooq.tables.records.SearchFindRecord
 import com.memo.jooq.tables.records.SearchSnippetsRecord
 import com.memo.jooq.tables.records.SearchUnindexedRecord
 
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.UUID
 
 import org.jooq.Configuration
 import org.jooq.Field
+import org.jooq.JSONB
 import org.jooq.Result
 
 
@@ -91,6 +102,229 @@ fun searchPutChunks(
     f.setPMemo(pMemo)
     f.setPRank(pRank)
     f.setPChunks(pChunks)
+
+    return f.asField()
+}
+
+/**
+ * Call <code>memo.search_put_decision</code>
+ */
+fun searchPutDecision(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pDecision: UUID?
+    , pForum: UUID?
+    , pForumType: UUID?
+    , pMeeting: UUID?
+    , pMeetingLabel: String?
+    , pMeetingDate: LocalDate?
+    , pItem: UUID?
+    , pItemParent: UUID?
+    , pItemNumber: String?
+    , pRank: Int?
+    , pRestrictedTo: Array<UUID?>?
+    , pTitleHidden: Boolean?
+    , pMembersOnly: Boolean?
+    , pTitle: String?
+    , pOutcomeKind: String?
+    , pOutcomeLabel: String?
+    , pIsResolution: Boolean?
+    , pResolution: UUID?
+    , pResolutionNumber: String?
+    , pResolutionState: String?
+    , pNumberPeriod: String?
+    , pNumberSequence: Long?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pState: String?
+    , pDecidedAt: OffsetDateTime?
+    , pFinalAt: OffsetDateTime?
+    , pEntrySeq: Int?
+    , pText: String?
+    , pConditions: Array<String?>?
+    , pValidUntil: LocalDate?
+    , pHasDissent: Boolean?
+    , pVoteMode: String?
+    , pRatificationRequired: Boolean?
+    , pRatifiedBy: UUID?
+    , pSubmission: UUID?
+    , pMemo: UUID?
+    , pMemoType: UUID?
+    , pMemoNumber: String?
+    , pMemoRefNorm: String?
+    , pChainSubmittedAt: OffsetDateTime?
+    , pPriorDeferrals: Int?
+    , pUpdated: OffsetDateTime?
+): Unit {
+    val p = SearchPutDecision()
+    p.setPTenant(pTenant)
+    p.setPDecision(pDecision)
+    p.setPForum(pForum)
+    p.setPForumType(pForumType)
+    p.setPMeeting(pMeeting)
+    p.setPMeetingLabel(pMeetingLabel)
+    p.setPMeetingDate(pMeetingDate)
+    p.setPItem(pItem)
+    p.setPItemParent(pItemParent)
+    p.setPItemNumber(pItemNumber)
+    p.setPRank(pRank)
+    p.setPRestrictedTo(pRestrictedTo)
+    p.setPTitleHidden(pTitleHidden)
+    p.setPMembersOnly(pMembersOnly)
+    p.setPTitle(pTitle)
+    p.setPOutcomeKind(pOutcomeKind)
+    p.setPOutcomeLabel(pOutcomeLabel)
+    p.setPIsResolution(pIsResolution)
+    p.setPResolution(pResolution)
+    p.setPResolutionNumber(pResolutionNumber)
+    p.setPResolutionState(pResolutionState)
+    p.setPNumberPeriod(pNumberPeriod)
+    p.setPNumberSequence(pNumberSequence)
+    p.setPRefNorm(pRefNorm)
+    p.setPRefTail(pRefTail)
+    p.setPState(pState)
+    p.setPDecidedAt(pDecidedAt)
+    p.setPFinalAt(pFinalAt)
+    p.setPEntrySeq(pEntrySeq)
+    p.setPText(pText)
+    p.setPConditions(pConditions)
+    p.setPValidUntil(pValidUntil)
+    p.setPHasDissent(pHasDissent)
+    p.setPVoteMode(pVoteMode)
+    p.setPRatificationRequired(pRatificationRequired)
+    p.setPRatifiedBy(pRatifiedBy)
+    p.setPSubmission(pSubmission)
+    p.setPMemo(pMemo)
+    p.setPMemoType(pMemoType)
+    p.setPMemoNumber(pMemoNumber)
+    p.setPMemoRefNorm(pMemoRefNorm)
+    p.setPChainSubmittedAt(pChainSubmittedAt)
+    p.setPPriorDeferrals(pPriorDeferrals)
+    p.setPUpdated(pUpdated)
+
+    p.execute(configuration)
+}
+
+/**
+ * Call <code>memo.search_put_decision_items</code>
+ */
+fun searchPutDecisionItems(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pMeeting: UUID?
+    , pLabel: String?
+    , pDate: LocalDate?
+    , pItems: JSONB?
+    , pUpdated: OffsetDateTime?
+): Int? {
+    val f = SearchPutDecisionItems()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPLabel(pLabel)
+    f.setPDate(pDate)
+    f.setPItems(pItems)
+    f.setPUpdated(pUpdated)
+
+    f.execute(configuration)
+    return f.returnValue
+}
+
+/**
+ * Get <code>memo.search_put_decision_items</code> as a field.
+ */
+fun searchPutDecisionItems(
+      pTenant: UUID?
+    , pMeeting: UUID?
+    , pLabel: String?
+    , pDate: LocalDate?
+    , pItems: JSONB?
+    , pUpdated: OffsetDateTime?
+): Field<Int?> {
+    val f = SearchPutDecisionItems()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPLabel(pLabel)
+    f.setPDate(pDate)
+    f.setPItems(pItems)
+    f.setPUpdated(pUpdated)
+
+    return f.asField()
+}
+
+/**
+ * Get <code>memo.search_put_decision_items</code> as a field.
+ */
+fun searchPutDecisionItems(
+      pTenant: Field<UUID?>
+    , pMeeting: Field<UUID?>
+    , pLabel: Field<String?>
+    , pDate: Field<LocalDate?>
+    , pItems: Field<JSONB?>
+    , pUpdated: Field<OffsetDateTime?>
+): Field<Int?> {
+    val f = SearchPutDecisionItems()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPLabel(pLabel)
+    f.setPDate(pDate)
+    f.setPItems(pItems)
+    f.setPUpdated(pUpdated)
+
+    return f.asField()
+}
+
+/**
+ * Call <code>memo.search_put_decisions_final</code>
+ */
+fun searchPutDecisionsFinal(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pMeeting: UUID?
+    , pFinalAt: OffsetDateTime?
+    , pUpdated: OffsetDateTime?
+): Int? {
+    val f = SearchPutDecisionsFinal()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPFinalAt(pFinalAt)
+    f.setPUpdated(pUpdated)
+
+    f.execute(configuration)
+    return f.returnValue
+}
+
+/**
+ * Get <code>memo.search_put_decisions_final</code> as a field.
+ */
+fun searchPutDecisionsFinal(
+      pTenant: UUID?
+    , pMeeting: UUID?
+    , pFinalAt: OffsetDateTime?
+    , pUpdated: OffsetDateTime?
+): Field<Int?> {
+    val f = SearchPutDecisionsFinal()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPFinalAt(pFinalAt)
+    f.setPUpdated(pUpdated)
+
+    return f.asField()
+}
+
+/**
+ * Get <code>memo.search_put_decisions_final</code> as a field.
+ */
+fun searchPutDecisionsFinal(
+      pTenant: Field<UUID?>
+    , pMeeting: Field<UUID?>
+    , pFinalAt: Field<OffsetDateTime?>
+    , pUpdated: Field<OffsetDateTime?>
+): Field<Int?> {
+    val f = SearchPutDecisionsFinal()
+    f.setPTenant(pTenant)
+    f.setPMeeting(pMeeting)
+    f.setPFinalAt(pFinalAt)
+    f.setPUpdated(pUpdated)
 
     return f.asField()
 }
@@ -229,6 +463,128 @@ fun tenancySettingCount(): Field<Long?> {
 
     return f.asField()
 }
+
+/**
+ * Call <code>memo.search_decision_stats</code>.
+ */
+fun searchDecisionStats(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pForums: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+): Result<SearchDecisionStatsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+      pTenant
+    , pViewer
+    , pRank
+    , pOfficerAll
+    , pOfficers
+    , pMembers
+    , pReader
+    , pRecused
+    , pForums
+    , pFrom
+    , pTo
+)).fetch()
+
+/**
+ * Get <code>memo.search_decision_stats</code> as a table.
+ */
+fun searchDecisionStats(
+      pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pForums: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+): SearchDecisionStats = com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pForums,
+    pFrom,
+    pTo
+)
+
+/**
+ * Get <code>memo.search_decision_stats</code> as a table.
+ */
+fun searchDecisionStats(
+      pTenant: Field<UUID?>
+    , pViewer: Field<UUID?>
+    , pRank: Field<Int?>
+    , pOfficerAll: Field<Boolean?>
+    , pOfficers: Field<Array<UUID?>?>
+    , pMembers: Field<Array<UUID?>?>
+    , pReader: Field<Boolean?>
+    , pRecused: Field<Array<UUID?>?>
+    , pForums: Field<Array<UUID?>?>
+    , pFrom: Field<LocalDate?>
+    , pTo: Field<LocalDate?>
+): SearchDecisionStats = com.memo.jooq.tables.SearchDecisionStats.SEARCH_DECISION_STATS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pForums,
+    pFrom,
+    pTo
+)
+
+/**
+ * Call <code>memo.search_decision_unindexed</code>.
+ */
+fun searchDecisionUnindexed(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pLimit: Int?
+): Result<SearchDecisionUnindexedRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+      pTenant
+    , pLimit
+)).fetch()
+
+/**
+ * Get <code>memo.search_decision_unindexed</code> as a table.
+ */
+fun searchDecisionUnindexed(
+      pTenant: UUID?
+    , pLimit: Int?
+): SearchDecisionUnindexed = com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
+
+/**
+ * Get <code>memo.search_decision_unindexed</code> as a table.
+ */
+fun searchDecisionUnindexed(
+      pTenant: Field<UUID?>
+    , pLimit: Field<Int?>
+): SearchDecisionUnindexed = com.memo.jooq.tables.SearchDecisionUnindexed.SEARCH_DECISION_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
 
 /**
  * Call <code>memo.search_find</code>.
@@ -382,6 +738,214 @@ fun searchFind(
     pInDocs,
     pCap,
     pOrigins
+)
+
+/**
+ * Call <code>memo.search_find_decisions</code>.
+ */
+fun searchFindDecisions(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pForums: Array<UUID?>?
+    , pForumTypes: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+    , pOutcomes: Array<String?>?
+    , pResolutionsOnly: Boolean?
+    , pStates: Array<String?>?
+    , pMemoTypes: Array<UUID?>?
+    , pFlags: Array<String?>?
+    , pToday: LocalDate?
+    , pSort: String?
+    , pAfterDate: LocalDate?
+    , pAfterAt: OffsetDateTime?
+    , pAfterScore: Float?
+    , pAfterPeriod: String?
+    , pAfterSequence: Long?
+    , pAfterId: UUID?
+    , pLimit: Int?
+    , pCap: Int?
+): Result<SearchFindDecisionsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+      pTenant
+    , pViewer
+    , pRank
+    , pOfficerAll
+    , pOfficers
+    , pMembers
+    , pReader
+    , pRecused
+    , pQuery
+    , pPrefix
+    , pRefNorm
+    , pRefTail
+    , pForums
+    , pForumTypes
+    , pFrom
+    , pTo
+    , pOutcomes
+    , pResolutionsOnly
+    , pStates
+    , pMemoTypes
+    , pFlags
+    , pToday
+    , pSort
+    , pAfterDate
+    , pAfterAt
+    , pAfterScore
+    , pAfterPeriod
+    , pAfterSequence
+    , pAfterId
+    , pLimit
+    , pCap
+)).fetch()
+
+/**
+ * Get <code>memo.search_find_decisions</code> as a table.
+ */
+fun searchFindDecisions(
+      pTenant: UUID?
+    , pViewer: UUID?
+    , pRank: Int?
+    , pOfficerAll: Boolean?
+    , pOfficers: Array<UUID?>?
+    , pMembers: Array<UUID?>?
+    , pReader: Boolean?
+    , pRecused: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pForums: Array<UUID?>?
+    , pForumTypes: Array<UUID?>?
+    , pFrom: LocalDate?
+    , pTo: LocalDate?
+    , pOutcomes: Array<String?>?
+    , pResolutionsOnly: Boolean?
+    , pStates: Array<String?>?
+    , pMemoTypes: Array<UUID?>?
+    , pFlags: Array<String?>?
+    , pToday: LocalDate?
+    , pSort: String?
+    , pAfterDate: LocalDate?
+    , pAfterAt: OffsetDateTime?
+    , pAfterScore: Float?
+    , pAfterPeriod: String?
+    , pAfterSequence: Long?
+    , pAfterId: UUID?
+    , pLimit: Int?
+    , pCap: Int?
+): SearchFindDecisions = com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pForums,
+    pForumTypes,
+    pFrom,
+    pTo,
+    pOutcomes,
+    pResolutionsOnly,
+    pStates,
+    pMemoTypes,
+    pFlags,
+    pToday,
+    pSort,
+    pAfterDate,
+    pAfterAt,
+    pAfterScore,
+    pAfterPeriod,
+    pAfterSequence,
+    pAfterId,
+    pLimit,
+    pCap
+)
+
+/**
+ * Get <code>memo.search_find_decisions</code> as a table.
+ */
+fun searchFindDecisions(
+      pTenant: Field<UUID?>
+    , pViewer: Field<UUID?>
+    , pRank: Field<Int?>
+    , pOfficerAll: Field<Boolean?>
+    , pOfficers: Field<Array<UUID?>?>
+    , pMembers: Field<Array<UUID?>?>
+    , pReader: Field<Boolean?>
+    , pRecused: Field<Array<UUID?>?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+    , pRefNorm: Field<String?>
+    , pRefTail: Field<String?>
+    , pForums: Field<Array<UUID?>?>
+    , pForumTypes: Field<Array<UUID?>?>
+    , pFrom: Field<LocalDate?>
+    , pTo: Field<LocalDate?>
+    , pOutcomes: Field<Array<String?>?>
+    , pResolutionsOnly: Field<Boolean?>
+    , pStates: Field<Array<String?>?>
+    , pMemoTypes: Field<Array<UUID?>?>
+    , pFlags: Field<Array<String?>?>
+    , pToday: Field<LocalDate?>
+    , pSort: Field<String?>
+    , pAfterDate: Field<LocalDate?>
+    , pAfterAt: Field<OffsetDateTime?>
+    , pAfterScore: Field<Float?>
+    , pAfterPeriod: Field<String?>
+    , pAfterSequence: Field<Long?>
+    , pAfterId: Field<UUID?>
+    , pLimit: Field<Int?>
+    , pCap: Field<Int?>
+): SearchFindDecisions = com.memo.jooq.tables.SearchFindDecisions.SEARCH_FIND_DECISIONS.call(
+    pTenant,
+    pViewer,
+    pRank,
+    pOfficerAll,
+    pOfficers,
+    pMembers,
+    pReader,
+    pRecused,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pForums,
+    pForumTypes,
+    pFrom,
+    pTo,
+    pOutcomes,
+    pResolutionsOnly,
+    pStates,
+    pMemoTypes,
+    pFlags,
+    pToday,
+    pSort,
+    pAfterDate,
+    pAfterAt,
+    pAfterScore,
+    pAfterPeriod,
+    pAfterSequence,
+    pAfterId,
+    pLimit,
+    pCap
 )
 
 /**

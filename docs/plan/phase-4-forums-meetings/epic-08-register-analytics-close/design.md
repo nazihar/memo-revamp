@@ -243,8 +243,8 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 - **`search/V4__decisions.sql`** (T1): `search_decision` with:
   - PK `(tenant_id, decision_id)`;
   - GIN on `tsv` (`fastupdate` on, 2 MB pending list, as `search_memo`);
-  - `(tenant_id, meeting_date DESC, decided_at DESC, decision_id)` for the cross-committee list;
-  - `(tenant_id, forum_id, meeting_date DESC, decided_at DESC, decision_id)` for one committee;
+  - `(tenant_id, meeting_date, decided_at, decision_id)` for the cross-committee list (newest first is its backward scan; as built in T1);
+  - `(tenant_id, forum_id, meeting_date, decided_at, decision_id)` for one committee;
   - `(tenant_id, forum_id, number_period, number_sequence) WHERE resolution_id IS NOT NULL` for number order;
   - `(tenant_id, ref_norm)`, `(tenant_id, ref_tail)`, `(tenant_id, memo_ref_norm)`;
   - `(tenant_id, meeting_id)` and `(tenant_id, item_id)` for the listeners' set-based updates;
@@ -295,7 +295,7 @@ In the request's transaction (AGENTS §3.3). Free text is kept only in the audit
 | `Recusals.itemsOf(userId)`: items (with sub-items) the person may not see in full, including alternates' inheritance and awaiting rulings | meeting (E04's `RecusalStore`) | **New, E08 T1** | — |
 | `AttendanceStats.forMembers(forumIds, from, to, clearance)` and `.forCommittees(…)` | meeting | **New, E08 T4** (read-only over `meeting_attendance`, `meeting`, `ForumDirectory.membersOn`) | — |
 | `AgendaTimeliness.share(forumIds, from, to, clearance)` and `.lateCounts(viewer, meetingIds)` | meeting | **New, E08 T4**; uses `AgendaDeadlines.of` (E07 T7 publishes it, or E08 T4 if first) | — |
-| `ForumSubmissions.chainStart(submissionId)`: the first `submitted_at` along `previous_id` | forum | **New, E08 T1** | — |
+| `SubmissionChains.chainStart(submissionId)` and `.chain(submissionId)`: the first `submitted_at` along `previous_id`, and the chain (named `SubmissionChains`: the forum module's internal `ForumSubmissions` service has the planned name) | forum | **Built, E08 T1** | — |
 | `ActionStats.overdue(viewer, forumIds, today)` and `.closedOnTime(viewer, forumIds, from, to)` on `ActionAccess`, replacing E07's viewer-less `ActionCounts.overdue(forumId)` | actions | **New ask of E07 T8** (beside the tracker's totals) | E08 T4 adds them in the actions module |
 | `ReportPages` landscape tables | memo (ADR-0052) | Built (used by E07's report PDF) | — |
 | `PaperSurfaceRegistry`: replace the E08 placeholder with the surfaces, and its `modules` list's `com.memo.decision` with `com.memo.search` (register endpoints; the memo search endpoints listed with their reason) and `com.memo.analytics` | test | E08 T2, T4 | — |

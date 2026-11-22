@@ -264,6 +264,25 @@ class DecisionReads(
     /** [meetingId]'s current decisions: one query on `(tenant_id, meeting_id)` joined to the current entries. */
     fun currentOf(meetingId: UUID): List<CurrentDecision> = currentWhere(MINUTES_DECISION.MEETING_ID.eq(meetingId))
 
+    /** The current decisions on the submissions of [submissionIds]. */
+    fun currentOfSubmissions(submissionIds: Collection<UUID>): List<CurrentDecision> =
+        if (submissionIds.isEmpty()) emptyList() else currentWhere(MINUTES_DECISION.SUBMISSION_ID.`in`(submissionIds))
+
+    /** Up to [limit] decision ids after [after] (from the first when null), in id order. */
+    fun ids(
+        after: UUID?,
+        limit: Int,
+    ): List<UUID> =
+        tenantDsl
+            .current()
+            .select(MINUTES_DECISION.ID)
+            .from(MINUTES_DECISION)
+            .where(if (after == null) DSL.noCondition() else MINUTES_DECISION.ID.gt(after))
+            .orderBy(MINUTES_DECISION.ID)
+            .limit(limit)
+            .fetch(MINUTES_DECISION.ID)
+            .filterNotNull()
+
     /** [forumId]'s current decisions taken without a quorum and not yet ratified by a later decision. */
     fun toBeRatified(forumId: UUID): List<CurrentDecision> {
         val later = MINUTES_DECISION_ENTRY.`as`("later")

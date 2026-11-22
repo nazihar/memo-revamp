@@ -309,8 +309,8 @@ class ActionAccess(
         }
     }
 
-    /** Lists' lines, each with its red, amber or green from the SQL reading of the rule. */
-    private fun summaries(found: List<Pair<ActionRow, RagWord>>): List<ActionSummary> {
+    /** Lists' lines, each with its red, amber or green from the SQL reading of the rule (also the tracker's). */
+    fun summaries(found: List<Pair<ActionRow, RagWord>>): List<ActionSummary> {
         if (found.isEmpty()) return emptyList()
         val rows = found.map { it.first }
         val people = People.of(rows, emptyList(), users, org)
@@ -337,6 +337,8 @@ class ActionAccess(
                 dueRevisions = row.dueRevisions,
                 stepName = row.stepName,
                 rag = ActionRagResponse(word.colour, word),
+                confidence = row.confidence,
+                lastUpdateAt = row.lastUpdateAt,
             )
         }
     }

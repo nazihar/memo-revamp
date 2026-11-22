@@ -148,6 +148,52 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
     }
 
     /**
+     * E07 T8's surface: the committee's tracker answers none of the item's actions, nor counts them, for a viewer recused
+     * from it and not involved (d1 has their own action of the hidden item only); filtered to the item or searched for the
+     * canary, nothing and a count of 0; the export is 403 to a recused member, and a recused secretary's or chair's workbook
+     * holds the rows of their tracker only, no canary. The control (the owner) reads the canaries in theirs.
+     */
+    protected fun trackerProbe(
+        p: Planted,
+        v: Viewer,
+    ) {
+        val planted = actionsOf(p)
+        val person = v.person()
+        val base = "/api/v1/forums/$brc/actions"
+        assertThat(read(base, control.session).response.contentAsString).contains(CANARY_ACTION)
+        val page = read(base, person.session)
+        clean(person, page)
+        assertThat(page.response.contentAsString).doesNotContain(CANARY_ACTION)
+        val listed = page.json()["items"].list().map { UUID.fromString(it["id"].asString()) }
+        assertThat(listed).doesNotContainAnyElementsOf(planted.hiddenToAll)
+        assertThat(page.json()["totals"]["all"].asInt()).describedAs("totals of what is listed").isEqualTo(listed.size)
+        if (v == Viewer.RECUSED) assertThat(listed).containsExactly(planted.d1s) else assertThat(listed).doesNotContain(planted.d1s)
+        listOf("?itemId=${p.item}", "?text=CANARY-ACT", "?rag=GREEN&itemId=${p.hidden}").forEach { query ->
+            val narrowed = read(base + query, person.session)
+            clean(person, narrowed)
+            val ids = narrowed.json()["items"].list().map { UUID.fromString(it["id"].asString()) }
+            assertThat(ids).describedAs(query).doesNotContainAnyElementsOf(planted.hiddenToAll)
+            assertThat(narrowed.json()["totals"]["all"].asInt()).describedAs(query).isEqualTo(ids.size)
+        }
+        val export = read("$base/export", person.session)
+        if (v.officer) {
+            assertThat(export).hasStatusOk()
+            val rows = workbookRows(export)
+            assertThat(rows.joinToString("\n")).doesNotContain(CANARY_ACTION)
+            assertThat(rows.drop(1)).describedAs("the rows of their tracker").hasSize(listed.size)
+        } else {
+            assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+            clean(person, export, statusBelow = 500)
+        }
+    }
+
+    /** Each row of an exported workbook, its cells joined. */
+    protected fun workbookRows(result: MvcTestResult): List<String> =
+        org.apache.poi.xssf.usermodel
+            .XSSFWorkbook(java.io.ByteArrayInputStream(result.response.contentAsByteArray))
+            .use { workbook -> workbook.getSheetAt(0).map { row -> row.joinToString(" | ") { it.stringCellValue } } }
+
+    /**
      * E07 T7's surface: the action taken report of the next meeting, on screen and as a PDF, has no row and no count of the
      * item's actions for a viewer recused from it and not involved; d1 has their own action's row (they own it), without
      * the hidden title. The control (the owner of the canaries) reads them.

@@ -22,11 +22,11 @@ package com.memo.meeting
  * T2 made the register part of its placeholder real: the decision register's scope and search (REGISTER), probed in both
  * suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints listed in [search], and
  * `com.memo.analytics`); E08 T4 added analytics (ANALYTICS). E08 T3 added the register's export to REGISTER, and its two
- * files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel. E07 T7 added the action taken report
- * (ACTION_REPORT: on screen and as a PDF), holding an action back from it (recusal columns) and "Ask owners for an update"
- * (an officer probe). E06 T8 added the corrections after approval (the list to MINUTES_COPIES, the approver's answer to
- * MINUTES, a secretary's proposal with recusal columns) and the certified extracts (EXTRACTS: a resolution's extracts and
- * one extract's PDF/A; issuing one is an officer's, with an officer probe).
+ * files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel. E06 T8 added the corrections after approval
+ * (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with recusal columns) and the
+ * certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an officer's, with an
+ * officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action
+ * back from it (recusal columns) and "Ask owners for an update" (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(

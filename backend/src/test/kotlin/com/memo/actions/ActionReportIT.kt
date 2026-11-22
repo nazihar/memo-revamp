@@ -43,6 +43,17 @@ class ActionReportIT : ActionFixture() {
 
     @Autowired lateinit var guestsOf: com.memo.meeting.internal.MeetingGuests
 
+    @Autowired lateinit var orgDirectory: com.memo.org.OrgDirectory
+
+    /** The committee's tenant keeps its meetings' zone (UTC+6), so its day differs from UTC's from 18:00 UTC. */
+    @org.junit.jupiter.api.BeforeEach
+    fun tenantZone() {
+        transactions.inTenant(tenant.id) { settings.put(com.memo.org.internal.OrgCalendar.TIME_ZONE, "Asia/Dhaka") }
+    }
+
+    /** The tenant's today, as the report reads it. */
+    private fun tenantToday(): LocalDate = transactions.readInTenant(tenant.id) { orgDirectory.today() }
+
     /** The next BRC meeting, [days] ahead, its agenda from the template ("Matters arising and actions"), scheduled. */
     private fun nextMeeting(days: Long = 14): MeetingRow {
         val created = asUser(secretary) { lifecycle.create(brc, place(), times(today.plusDays(days))) }
@@ -107,8 +118,10 @@ class ActionReportIT : ActionFixture() {
         // One marked done for real (its note is the latest update), one through the row; dates and endings through the row.
         asUser(director2) { closure.done(toClose[0].id, row(toClose[0].id).version, "Plan revised and approved by ALCO", emptyList()) }
         alter(toClose[1].id, "status = 'DONE_PENDING', done_at = now() + interval '1 hour'")
-        overdue.forEachIndexed { i, a -> alter(a.id, "due_date = current_date - ${3 - i}") }
-        open.forEachIndexed { i, a -> alter(a.id, "due_date = current_date + ${20 - i}") }
+        // Dates on the tenant's day (its zone), never the database's current_date (the session's zone).
+        val today = tenantToday()
+        overdue.forEachIndexed { i, a -> alter(a.id, "due_date = ?", today.minusDays(3L - i)) }
+        open.forEachIndexed { i, a -> alter(a.id, "due_date = ?", today.plusDays(20L - i)) }
         closed.forEach { alter(it.id, "status = 'CLOSED', closed_at = now(), step_name = null") }
         alter(closedBefore.id, "status = 'CLOSED', closed_at = now() - interval '2 days', step_name = null")
         alter(
@@ -309,7 +322,7 @@ class ActionReportIT : ActionFixture() {
                     classification_id, owner_kind, owner_user_id, holder_user_id, due_date, original_due_date, status, created_by,
                     created_at, issued_by, issued_at)
                 select gen_random_uuid(), ?, ?, 2099, g, 'BRC A' || g || '/2099', 'DIRECT', 'Board Risk Committee', 'Bulk action ' || g,
-                    ?, 'PERSON', ?, ?, current_date + 30 + g, current_date + 30 + g, 'OPEN', ?, now(), ?, now()
+                    ?, 'PERSON', ?, ?, ?::date + 30 + g, ?::date + 30 + g, 'OPEN', ?, now(), ?, now()
                 from generate_series(1, 505) g
                 """.trimIndent(),
                 tenant.id.value,
@@ -317,6 +330,8 @@ class ActionReportIT : ActionFixture() {
                 level,
                 director2.id.value,
                 director2.id.value,
+                tenantToday(),
+                tenantToday(),
                 secretary.id.value,
                 secretary.id.value,
             )

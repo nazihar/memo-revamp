@@ -64,8 +64,9 @@ class JooqCodegenTest : IntegrationTest() {
                                         "memo_number_guard",
                                         "memo_imported_guard",
                                         // Search tables are reached only through the search functions (ADR-0054).
-                                        "search_memo|search_note|search_chunk",
+                                        "search_memo|search_note|search_chunk|search_decision",
                                         "search_tenant|search_query|search_keep|search_find_sql",
+                                        "search_decision_level|search_find_decisions_sql",
                                     ).joinToString(" | "),
                                 ),
                         ).withGenerate(

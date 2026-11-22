@@ -34,7 +34,7 @@ class RlsMetaTest : IntegrationTest() {
      * Search tables (ADR-0054): RLS enabled but not forced, so the search functions (owned by the schema owner) can use
      * their GIN indexes; memo_app holds no privilege on them and reaches them only through [allowedSecurityDefiner].
      */
-    private val searchTables = setOf("search_memo", "search_note", "search_chunk")
+    private val searchTables = setOf("search_memo", "search_note", "search_chunk", "search_decision")
 
     /** SECURITY DEFINER functions allowed: the search entry points only (ADR-0054). */
     private val allowedSecurityDefiner =
@@ -46,6 +46,13 @@ class RlsMetaTest : IntegrationTest() {
             "search_unindexed",
             "search_find",
             "search_snippets",
+            // The decision register (ADR-0069, E08 T1).
+            "search_put_decision",
+            "search_put_decisions_final",
+            "search_put_decision_items",
+            "search_decision_unindexed",
+            "search_find_decisions",
+            "search_decision_stats",
         )
 
     private fun <T> query(
@@ -111,7 +118,7 @@ class RlsMetaTest : IntegrationTest() {
                 """
                 select table_name || ':' || privilege_type from information_schema.role_table_grants
                 where table_schema = 'memo' and grantee in ('memo_app', 'PUBLIC')
-                  and table_name in ('search_memo', 'search_note', 'search_chunk')
+                  and table_name in ('search_memo', 'search_note', 'search_chunk', 'search_decision')
                 """,
             ) { it.getString(1) }
         assertThat(granted).describedAs("privileges on search tables").isEmpty()

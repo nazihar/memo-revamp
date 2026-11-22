@@ -32,6 +32,8 @@ data class ForumTypePolicy(
     val agenda: AgendaPolicy,
     /** Action items (design E07 §1.13): read from the version in force today ([ForumPolicies.current]), not a pinned one. */
     val actions: ActionsPolicy,
+    /** How long the meeting records of the type are kept (ADR-0056): the minutes' record is locked that long (E06 T7). */
+    val retention: ForumRetention? = null,
 )
 
 /**
@@ -100,5 +102,6 @@ class ForumPolicies(
             outcomes = settings.outcomes,
             agenda = settings.agenda,
             actions = settings.actions,
+            retention = settings.retention,
         )
 }

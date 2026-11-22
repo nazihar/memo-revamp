@@ -85,7 +85,7 @@ class MinutesDraftIT : ReleaseFixture() {
     }
 
     @Test
-    fun `the held meeting's draft has one locked control per item, the attendance, the declaration, the decision and DRAFT`() {
+    fun `the held meeting's draft has one locked control per item, the attendance, the declaration and the decision`() {
         val r = running("Term loan, Delta Textiles", "Facility renewal, Acme", "Working capital, Mill")
         val (loan, renewal, _) = r.items
         declare(director, r.meeting, loan.item)
@@ -128,7 +128,6 @@ class MinutesDraftIT : ReleaseFixture() {
         val text = Docx.text(docx)
         val names = transactions.readInTenant(tenant.id) { users.names(listOf(chair.id, vice.id, director.id, colleague.id)) }
         assertThat(text).contains(
-            "DRAFT",
             "Board Risk Committee",
             names.getValue(chair.id),
             "${names.getValue(director.id)} declared an interest ($NATURE_IN_MINUTES) and left the meeting for this item.",

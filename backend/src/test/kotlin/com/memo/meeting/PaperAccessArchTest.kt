@@ -43,12 +43,12 @@ class PaperAccessArchTest {
     }
 
     @Test
-    fun `only the meeting module and the minutes' copy endpoint stream a file through FileServing`() {
+    fun `only the meeting module and the minutes' file streams (copies and records) stream a file through FileServing`() {
         noClasses()
             .that()
             .resideOutsideOfPackages("com.memo.meeting..", "com.memo.files..")
             .and()
-            .haveNameNotMatching("""com\.memo\.minutes\.internal\.MinutesReadingController(\$.*)?""")
+            .haveNameNotMatching("""com\.memo\.minutes\.internal\.MinutesFileStreams(\$.*)?""")
             .should()
             .dependOnClassesThat()
             .haveFullyQualifiedName("com.memo.files.FileServing")

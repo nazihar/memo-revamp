@@ -82,10 +82,12 @@ class RecordAssembler(
     private val renderer: PageRenderer,
     private val validator: PdfaValidator,
 ) {
+    /** [stamp]: a line drawn at the foot of every page (the approval stamp of approved minutes, ADR-0066); none for memos. */
     fun assemble(
         parts: List<RecordPart>,
         metadata: RecordMetadata,
         out: Path,
+        stamp: String? = null,
     ): Assembly {
         val spool = Files.createTempDirectory("record-")
         try {
@@ -102,6 +104,7 @@ class RecordAssembler(
             try {
                 PDDocument(IOUtils.createTempFileOnlyStreamCache()).use { record ->
                     val placed = merge(record, made, sources)
+                    stamp?.let { missing += stamp(record, it) }
                     finish(record, placed, made.map { it.first }, metadata)
                     record.save(out.toFile())
                     return Assembly(record.numberOfPages, placed, missing)
@@ -211,6 +214,33 @@ class RecordAssembler(
         PDPageContentStream(doc, page).use { it.drawImage(image, (box.width - width) / 2, (box.height - height) / 2, width, height) }
     }
 
+    /**
+     * [text] at the foot of every page, in grey, in the embedded Noto Sans (a PDF/A font); cut to fit the page's width.
+     * Returns the characters drawn as replacements.
+     */
+    private fun stamp(
+        record: PDDocument,
+        text: String,
+    ): Int {
+        val fonts = PageFonts(record, regularOnly = true)
+        val clean = fonts.clean(text.replace('\n', ' '))
+        record.pages.forEach { page ->
+            val box = page.mediaBox
+            val room = box.width - 2 * STAMP_MARGIN
+            var line = clean
+            while (line.isNotEmpty() && fonts.regular.getStringWidth(line) / FONT_UNITS * STAMP_SIZE > room) line = line.dropLast(1)
+            PDPageContentStream(record, page, PDPageContentStream.AppendMode.APPEND, true, true).use { cs ->
+                cs.setNonStrokingColor(STAMP_GREY, STAMP_GREY, STAMP_GREY)
+                cs.beginText()
+                cs.setFont(fonts.regular, STAMP_SIZE)
+                cs.newLineAtOffset(box.lowerLeftX + STAMP_MARGIN, box.lowerLeftY + STAMP_BASELINE)
+                cs.showText(line)
+                cs.endText()
+            }
+        }
+        return fonts.missing
+    }
+
     private fun merge(
         record: PDDocument,
         made: List<Triple<RecordPart, Path, PartMode>>,
@@ -263,5 +293,11 @@ class RecordAssembler(
 
         /** Pictures fill at most this share of the page, leaving a margin. */
         const val FILL = 0.9f
+
+        const val STAMP_SIZE = 7f
+        const val STAMP_MARGIN = 28f
+        const val STAMP_BASELINE = 12f
+        const val STAMP_GREY = 0.35f
+        const val FONT_UNITS = 1000f
     }
 }

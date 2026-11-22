@@ -58,6 +58,12 @@ data class DecisionEntryRef(
     val correction: Boolean,
     val recordedBy: UUID,
     val recordedAt: Instant,
+    /** CONSENSUS or VOTE (E08's register shows the mode, never the names). */
+    val voteMode: String = "CONSENSUS",
+    /** Someone dissented by name (the names stay with the decision; E08 indexes only that there was dissent). */
+    val dissent: Boolean = false,
+    /** The earlier decision this one ratifies (taken without a quorum), if any. */
+    val ratifiesDecisionId: UUID? = null,
 )
 
 /**
@@ -102,6 +108,18 @@ class Decisions(
     /** The current decision on [itemId]; null when it has none. */
     fun ofItem(itemId: UUID): DecisionRef? = reads.current(itemId)?.let { refs(listOf(it)).single() }
 
+    /** The current decisions on the submissions of [submissionIds] (a deferred submission is decided again later). */
+    fun ofSubmissions(submissionIds: Collection<UUID>): List<DecisionRef> = refs(reads.currentOfSubmissions(submissionIds))
+
+    /** The decisions whose current entry ratifies [decisionId] (taken without a quorum), in id order. */
+    fun ratifiers(decisionId: UUID): List<UUID> = reads.ratifiers(listOf(decisionId))[decisionId].orEmpty().sorted()
+
+    /** Up to [limit] decision ids after [after] (from the first when null), in id order: E08's rebuild walks them. */
+    fun ids(
+        after: UUID?,
+        limit: Int,
+    ): List<UUID> = reads.ids(after, limit)
+
     /** Entry [seq] of [decisionId] (a correction's earlier entries stay readable); null when there is none. */
     fun entry(
         decisionId: UUID,
@@ -144,6 +162,9 @@ class Decisions(
             correction = correction,
             recordedBy = recordedBy,
             recordedAt = recordedAt,
+            voteMode = voteMode.name,
+            dissent = dissent.isNotEmpty(),
+            ratifiesDecisionId = ratifiesDecisionId,
         )
 }
 

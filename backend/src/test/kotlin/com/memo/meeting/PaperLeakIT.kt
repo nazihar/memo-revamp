@@ -596,12 +596,16 @@ class PaperLeakIT : RecusalFixture() {
                 }
             },
             // E06 T6: the reader's copy and the comments: the readers of circulated minutes only; nothing on a meeting not held.
+            // E06 T7: the approved minutes' record, its versions and its check: their readers only, once approved.
             Surface.MINUTES_COPIES to { p, person ->
                 val base = "/api/v1/meetings/${p.meeting.id}/minutes"
                 listOf(
                     read("$base/document", person.session),
                     read("$base/comments", person.session),
                     send(HttpMethod.POST, "$base/comments", person, """{"kind":"SUGGESTION","itemId":"${p.recused}","text":"x"}"""),
+                    read("$base/record", person.session),
+                    read("$base/records", person.session),
+                    send(HttpMethod.POST, "$base/records/1/check", person),
                 ).forEach { answer ->
                     assertThat(answer.response.status).isIn(403, 404)
                     p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }

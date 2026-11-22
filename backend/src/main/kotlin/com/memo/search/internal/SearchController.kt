@@ -12,6 +12,7 @@ import com.memo.common.web.ProblemTypes
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.memo.MemoOrigin
+import com.memo.search.internal.decision.TooManyRowsException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
+import java.util.Locale
 import java.util.UUID
 
 /**
@@ -215,6 +217,29 @@ class SearchProblems {
         ResponseEntity
             .status(HttpStatus.UNPROCESSABLE_CONTENT)
             .body(ProblemTypes.validation(ex.problems).apply { status = HttpStatus.UNPROCESSABLE_CONTENT.value() })
+
+    /**
+     * The register's export holds more rows than its format allows (design E08 §1.5, flow AT "too many rows"): 422 with the
+     * count (`moreThan` when it is a lower bound) and the format's maximum, so the dialog can say "narrow the filters".
+     */
+    @ExceptionHandler(TooManyRowsException::class)
+    fun tooMany(ex: TooManyRowsException): ResponseEntity<ProblemDetail> {
+        val count = (if (ex.moreThan) "More than " else "") + "%,d".format(Locale.ENGLISH, ex.rows)
+        val problem =
+            FieldProblem(
+                "format",
+                "TOO_MANY_ROWS",
+                "$count decisions match; this format holds up to ${"%,d".format(Locale.ENGLISH, ex.format.maxRows)}. Narrow the filters.",
+            )
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+            ProblemTypes.validation(listOf(problem)).apply {
+                status = HttpStatus.UNPROCESSABLE_CONTENT.value()
+                setProperty("rows", ex.rows)
+                setProperty("moreThan", ex.moreThan)
+                setProperty("maximum", ex.format.maxRows)
+            },
+        )
+    }
 
     @ExceptionHandler(SavedSearchNotFoundException::class)
     fun notFound(ex: SavedSearchNotFoundException): ResponseEntity<ProblemDetail> =

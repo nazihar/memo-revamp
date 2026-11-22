@@ -62,10 +62,16 @@ data class DecisionQuery(
     val flags: Set<DecisionFlag> = emptySet(),
     val sort: DecisionSort = DecisionSort.NEWEST,
     val cursor: DecisionCursor? = null,
+    /** Rows a page: 1 to [MAX_PAGE]. */
     val limit: Int = DEFAULT_PAGE,
+    /** At most this many FULL rows match the words before ranking (ADR-0054's cap; up to [MAX_CANDIDATES] for an export). */
+    val candidates: Int = DEFAULT_CANDIDATES,
 ) {
     companion object {
         const val DEFAULT_PAGE = 50
+        const val MAX_PAGE = 1000
+        const val DEFAULT_CANDIDATES = 2000
+        const val MAX_CANDIDATES = 10_000
     }
 }
 

@@ -192,6 +192,11 @@ enum class NotificationKind(
     ACTION_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ASSIGNED),
     ACTION_SOURCE_CORRECTED(NotificationCategory.WORKFLOW, null),
 
+    // A follow-up memo of an action was decided (Phase 4 E07 T6, design E07 §1.11): to the holder of the owner's task, in
+    // the app (the email comes in the daily digest, T5). Parameters `committee`, `reference`, `organisation`, `link` and
+    // `outcome` (APPROVED, REJECTED, WITHDRAWN or CANCELLED). Never the memo's or the action's text.
+    ACTION_MEMO_DECIDED(NotificationCategory.WORKFLOW, null),
+
     // Progress, dates, owners and endings (E07 T4, design E07 §2.3): the owner of an action changed (to the previous and
     // the new owner, in the app and by email); a secretary recorded the risk accepted on the chair's behalf (to the chair,
     // by email at once). In the app only, their emails in the daily digest from T5: the action was cancelled or reopened

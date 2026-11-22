@@ -11,6 +11,7 @@ const API = `${API_ORIGIN}/api/v1`
 /** A credit proposal waiting for the Management Credit Committee (ADR-0058): no holder, no task. */
 const memo: MemoView = {
   origin: 'NATIVE',
+  followsUp: [],
   id: 'm1',
   reference: 'CR/2026-27/0042',
   subject: 'Term loan, Delta Textiles',

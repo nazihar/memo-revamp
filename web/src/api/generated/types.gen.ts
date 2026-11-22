@@ -18,8 +18,10 @@ export type ActionAbilities = {
     discard: boolean;
     edit: boolean;
     issue: boolean;
+    linkMemo: boolean;
     markDone: boolean;
     overrideRag: boolean;
+    raiseMemo: boolean;
     reopen: boolean;
     requestDue: boolean;
     start: boolean;
@@ -70,6 +72,16 @@ export type ActionFieldsRequest = {
     reason?: string | null;
     sourceNote?: string | null;
     title?: string | null;
+};
+
+export type ActionMemoResponse = {
+    kind: 'RAISED' | 'LINKED';
+    linkedAt: string;
+    memoId: string;
+    readable: boolean;
+    reference?: string | null;
+    status?: string | null;
+    subject?: string | null;
 };
 
 export type ActionOwnerResponse = {
@@ -126,6 +138,7 @@ export type ActionResponse = {
     id: string;
     issuedAt?: string | null;
     lastUpdateAt?: string | null;
+    memos: Array<ActionMemoResponse>;
     originalDueDate?: string | null;
     owner?: ActionOwnerResponse | null;
     pendingRequest?: DueRequestResponse | null;
@@ -1074,6 +1087,21 @@ export type DecisionEntryResponse = {
     tookNoPart: Array<DecisionPerson>;
     validUntil?: string | null;
     vote: DecisionVoteResponse;
+};
+
+export type DecisionExportRequest = {
+    flags?: Array<'WITH_CONDITIONS' | 'WITH_DISSENT' | 'TO_BE_RATIFIED' | 'CORRECTED' | 'VALIDITY_PASSED'> | null;
+    format: 'XLSX' | 'PDF';
+    forumIds?: Array<string> | null;
+    forumTypeIds?: Array<string> | null;
+    from?: string | null;
+    memoTypeIds?: Array<string> | null;
+    outcomes?: Array<'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN'> | null;
+    resolutionsOnly?: boolean | null;
+    sort?: 'RELEVANCE' | 'NEWEST' | 'OLDEST' | 'NUMBER';
+    states?: Array<'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL' | 'VOID'> | null;
+    text?: string | null;
+    to?: string | null;
 };
 
 export type DecisionFacetsView = {
@@ -2359,6 +2387,10 @@ export type LegalEntityRequest = {
     validFrom?: string | null;
 };
 
+export type LinkMemoRequest = {
+    memoId: string;
+};
+
 export type LinkRequest = {
     kind?: 'REFERS_TO' | 'SUPERSEDES' | 'FOLLOWS_UP';
     targetReference: string;
@@ -2765,6 +2797,14 @@ export type MemoLinkView = {
     subject: string;
 };
 
+export type MemoOriginLabel = {
+    kind: 'RAISED_FROM' | 'LINKED_TO';
+    owner: string;
+    recordId?: string | null;
+    recordType: string;
+    reference: string;
+};
+
 export type MemoRequest = {
     classificationId?: string | null;
     metadata?: {
@@ -2882,6 +2922,7 @@ export type MemoView = {
     details: Array<MemoDetailView>;
     document?: DocumentView | null;
     dueAt?: string | null;
+    followsUp: Array<MemoOriginLabel>;
     holders: Array<Named>;
     id: string;
     initiator?: Named | null;
@@ -4114,9 +4155,22 @@ export type RaiseActionRequest = {
     title?: string | null;
 };
 
+export type RaiseMemoRequest = {
+    classificationId?: string | null;
+    confirmLowerLevel?: boolean;
+    subject?: string | null;
+    typeId: string;
+};
+
 export type RaiseScope = {
     roles?: Array<string>;
     units?: Array<ScopeUnit>;
+};
+
+export type RaisedMemoResponse = {
+    action: ActionResponse;
+    memoId: string;
+    templateFilled: boolean;
 };
 
 export type ReassignRequest = {
@@ -5476,6 +5530,48 @@ export type IssueActionResponses = {
 };
 
 export type IssueActionResponse = IssueActionResponses[keyof IssueActionResponses];
+
+export type RaiseActionMemoData = {
+    body: RaiseMemoRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/memos';
+};
+
+export type RaiseActionMemoResponses = {
+    /**
+     * OK
+     */
+    200: RaisedMemoResponse;
+};
+
+export type RaiseActionMemoResponse = RaiseActionMemoResponses[keyof RaiseActionMemoResponses];
+
+export type LinkActionMemoData = {
+    body: LinkMemoRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/memos/link';
+};
+
+export type LinkActionMemoResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type LinkActionMemoResponse = LinkActionMemoResponses[keyof LinkActionMemoResponses];
 
 export type ChangeActionOwnerData = {
     body: OwnerChangeRequest;
@@ -8542,6 +8638,33 @@ export type ApprovalsDashboardResponses = {
 };
 
 export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
+
+export type ExportDecisionRegisterData = {
+    body: DecisionExportRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/decision-register/export';
+};
+
+export type ExportDecisionRegisterErrors = {
+    /**
+     * The filters, or more rows than the format holds (TOO_MANY_ROWS)
+     */
+    422: unknown;
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportDecisionRegisterResponses = {
+    /**
+     * The spreadsheet or the PDF
+     */
+    200: Blob | File;
+};
+
+export type ExportDecisionRegisterResponse = ExportDecisionRegisterResponses[keyof ExportDecisionRegisterResponses];
 
 export type GetDecisionRegisterScopeData = {
     body?: never;

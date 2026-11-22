@@ -65,6 +65,7 @@ class ActionAccess(
     private val requests: ActionDueRequests,
     private val abilityRules: ActionAbilityRules,
     private val files: Files,
+    private val memoViews: ActionMemoViews,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {
@@ -283,7 +284,12 @@ class ActionAccess(
             createdAt = row.createdAt,
             viewerRecused = recused,
             warnings = if (manages) warnings(row, contributors) else emptyList(),
-            can = abilityRules.of(viewer, row, recused, contributors, policy.dueChange, pending, today),
+            can =
+                abilityRules.of(viewer, row, recused, contributors, policy.dueChange, pending, today).copy(
+                    raiseMemo = memoViews.mayRaise(viewer, row, contributors),
+                    linkMemo = memoViews.mayLink(viewer, row, contributors, manages),
+                ),
+            memos = memoViews.of(viewer, row, manages),
             rag = ActionRagResponse(word.colour, word, override),
             confidence = row.confidence,
             lastUpdateAt = row.lastUpdateAt,

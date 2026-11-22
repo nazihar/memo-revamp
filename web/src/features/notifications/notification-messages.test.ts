@@ -117,6 +117,18 @@ describe('action items (design E07 §2.3)', () => {
     expect(templateLabel(english, 'ACTION_ASSIGNED')).toBe('Committee action assigned')
     expect(notificationText(arabic, 'ACTION_ASSIGNED', action)).toContain('BRC A14/2026')
   })
+
+  it('tell the holder how a follow-up memo was decided, without the memo (design E07 §1.11)', () => {
+    expect(notificationText(english, 'ACTION_MEMO_DECIDED', { ...action, outcome: 'APPROVED' })).toBe(
+      'The follow-up memo of action BRC A14/2026 (Board Risk Committee) was approved. You can now mark the action as done.',
+    )
+    expect(notificationText(english, 'ACTION_MEMO_DECIDED', { ...action, outcome: 'REJECTED' })).toBe(
+      'The follow-up memo of action BRC A14/2026 (Board Risk Committee) was rejected',
+    )
+    expect(notificationText(arabic, 'ACTION_MEMO_DECIDED', { ...action, outcome: 'APPROVED' })).toContain(
+      'BRC A14/2026',
+    )
+  })
 })
 
 describe('action progress, dates and endings (design E07 §2.3)', () => {

@@ -53,6 +53,7 @@ import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_si
 import { Route as ShellSignedInMeetingsMeetingIdRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId'
 import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_signedIn/memos.$memoId'
 import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_signedIn/memos.new'
+import { Route as ShellSignedInResolutionsResolutionIdRouteImport } from './routes/_shell/_signedIn/resolutions.$resolutionId'
 import { Route as ShellSignedInSearchSavedRouteImport } from './routes/_shell/_signedIn/search_.saved'
 import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
@@ -316,6 +317,12 @@ const ShellSignedInMemosNewRoute = ShellSignedInMemosNewRouteImport.update({
   path: '/memos/new',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInResolutionsResolutionIdRoute =
+  ShellSignedInResolutionsResolutionIdRouteImport.update({
+    id: '/resolutions/$resolutionId',
+    path: '/resolutions/$resolutionId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInSearchSavedRoute =
   ShellSignedInSearchSavedRouteImport.update({
     id: '/search_/saved',
@@ -531,6 +538,7 @@ export interface FileRoutesByFullPath {
   '/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
+  '/resolutions/$resolutionId': typeof ShellSignedInResolutionsResolutionIdRoute
   '/search/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
@@ -600,6 +608,7 @@ export interface FileRoutesByTo {
   '/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
+  '/resolutions/$resolutionId': typeof ShellSignedInResolutionsResolutionIdRoute
   '/search/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
@@ -674,6 +683,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/_shell/_signedIn/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/_shell/_signedIn/memos/new': typeof ShellSignedInMemosNewRoute
+  '/_shell/_signedIn/resolutions/$resolutionId': typeof ShellSignedInResolutionsResolutionIdRoute
   '/_shell/_signedIn/search_/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
@@ -747,6 +757,7 @@ export interface FileRouteTypes {
     | '/meetings/$meetingId'
     | '/memos/$memoId'
     | '/memos/new'
+    | '/resolutions/$resolutionId'
     | '/search/saved'
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
@@ -816,6 +827,7 @@ export interface FileRouteTypes {
     | '/meetings/$meetingId'
     | '/memos/$memoId'
     | '/memos/new'
+    | '/resolutions/$resolutionId'
     | '/search/saved'
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
@@ -889,6 +901,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/meetings/$meetingId'
     | '/_shell/_signedIn/memos/$memoId'
     | '/_shell/_signedIn/memos/new'
+    | '/_shell/_signedIn/resolutions/$resolutionId'
     | '/_shell/_signedIn/search_/saved'
     | '/platform/_operator/tenants/$tenantId'
     | '/platform/_operator/tenants/new'
@@ -1239,6 +1252,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInMemosNewRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/resolutions/$resolutionId': {
+      id: '/_shell/_signedIn/resolutions/$resolutionId'
+      path: '/resolutions/$resolutionId'
+      fullPath: '/resolutions/$resolutionId'
+      preLoaderRoute: typeof ShellSignedInResolutionsResolutionIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/search_/saved': {
       id: '/_shell/_signedIn/search_/saved'
       path: '/search/saved'
@@ -1542,6 +1562,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInMeetingsMeetingIdRoute: typeof ShellSignedInMeetingsMeetingIdRoute
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
+  ShellSignedInResolutionsResolutionIdRoute: typeof ShellSignedInResolutionsResolutionIdRoute
   ShellSignedInSearchSavedRoute: typeof ShellSignedInSearchSavedRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
   ShellSignedInAnalyticsIndexRoute: typeof ShellSignedInAnalyticsIndexRoute
@@ -1598,6 +1619,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMeetingsMeetingIdRoute: ShellSignedInMeetingsMeetingIdRoute,
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
+  ShellSignedInResolutionsResolutionIdRoute:
+    ShellSignedInResolutionsResolutionIdRoute,
   ShellSignedInSearchSavedRoute: ShellSignedInSearchSavedRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
   ShellSignedInAnalyticsIndexRoute: ShellSignedInAnalyticsIndexRoute,

@@ -7,6 +7,7 @@ import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
 import com.memo.minutes.internal.ResolutionNumbers
+import com.memo.search.RegisterFiles
 import com.memo.search.RegisterTable
 import com.memo.search.internal.decision.DecisionIndex
 import com.memo.testsupport.Person
@@ -26,7 +27,10 @@ import java.util.UUID
  * conditions, memo, flags or decision time; no words, outcome or exception filter finds it and no outcome facet counts it;
  * its number finds the line only. The `forum.read` holder reads the shown item in full and the hidden one as a line; the
  * observer, a guest and someone outside are 403. Every search's audit holds the words as a hash, so no canary reaches
- * the audit viewer either.
+ * the audit viewer either. E08 T3, the leak suite's EXPORTS channel for the register's files: the recused secretary and
+ * chair export both items as restricted lines (every cell of the spreadsheet and the PDF's text read: no canary, the line's
+ * words and number), the recused members and the awaiting one are members (403), `forum.read` exports the shown item in
+ * full and the hidden one as a line, and the export's audit holds no canary.
  */
 class RegisterLeakIT : RecusalLeakFixture() {
     @Autowired lateinit var decisionStore: DecisionStore
@@ -104,6 +108,59 @@ class RegisterLeakIT : RecusalLeakFixture() {
         (REGISTER_CANARIES + d.number).forEach { assertThat(entries.response.contentAsString).doesNotContain(it) }
     }
 
+    @Test
+    fun `the register's files give a recused officer restricted lines only, members none, and no canary in either format`() {
+        val d = Decided()
+        // The canaries are in the files: the other secretary, who declared nothing, exports both decisions in full.
+        RegisterFiles.formats.forEach { format ->
+            assertThat(RegisterFiles.text(exported(secretary2, format)))
+                .contains(CANARY_DEC_TEXT, CANARY_DEC_CONDITION, CANARY_DEC_HIDDEN, CANARY_DEC_HIDDEN_CONDITION, CANARY_TITLE)
+        }
+        for (viewer in Viewer.entries) {
+            runCatching { exportedBy(d, viewer) }.onFailure { throw AssertionError("the register's files leak to $viewer", it) }
+        }
+        // forum.read: the shown item in full, the hidden one as a line; the observer, a guest and someone outside: 403.
+        RegisterFiles.formats.forEach { format ->
+            val text = RegisterFiles.text(exported(auditor, format))
+            assertThat(text).contains(CANARY_DEC_TEXT, "Restricted item: restricted to named members")
+            assertThat(text).doesNotContain(CANARY_DEC_HIDDEN, CANARY_DEC_HIDDEN_CONDITION, CANARY_TITLE)
+            listOf(observer, guest, outsider).forEach { person ->
+                val refused = post(EXPORT, person.session, """{"format":"$format","forumIds":["$brc"]}""")
+                assertThat(refused).hasStatus(HttpStatus.FORBIDDEN)
+                REGISTER_CANARIES.forEach { assertThat(refused.response.contentAsString).doesNotContain(it) }
+            }
+        }
+        val entries = read("/api/v1/admin/audit?action=search.decisions.exported&limit=200", auditReader().session)
+        assertThat(entries.json()["items"].list()).hasSize(RegisterFiles.formats.size * 4)
+        (REGISTER_CANARIES + CANARY_TITLE).forEach { assertThat(entries.response.contentAsString).doesNotContain(it) }
+    }
+
+    /** [viewer]'s files: an officer's hold both items as RECUSED lines with their numbers and nothing else; a member's 403. */
+    private fun exportedBy(
+        d: Decided,
+        viewer: Viewer,
+    ) {
+        val person = viewer.person()
+        RegisterFiles.formats.forEach { format ->
+            val result = post(EXPORT, person.session, """{"format":"$format","forumIds":["$brc"]}""")
+            if (!viewer.officer) {
+                assertThat(result).hasStatus(HttpStatus.FORBIDDEN)
+                clean(person, result, statusBelow = 500)
+                return@forEach
+            }
+            assertThat(result).hasStatusOk()
+            val text = RegisterFiles.text(result)
+            (REGISTER_CANARIES + canaries(person)).forEach { assertThat(text).describedAs("$format: $it").doesNotContain(it) }
+            assertThat(text).contains("Restricted item: you declared an interest in this item", d.number)
+            assertThat(text).doesNotContain("term loan", "Security perfected")
+        }
+    }
+
+    private fun exported(
+        person: Person,
+        format: String,
+    ): MvcTestResult = post(EXPORT, person.session, """{"format":"$format","forumIds":["$brc"]}""").also { assertThat(it).hasStatusOk() }
+
     /** [person], recused from both items: two RECUSED lines with no content, found by nothing but the number. */
     private fun recusedViewer(
         d: Decided,
@@ -178,6 +235,8 @@ class RegisterLeakIT : RecusalLeakFixture() {
         person().also { reader -> asUser(admin) { access.grantCustom(reader.id, "Auditors", setOf(Permission.AUDIT_READ)) } }
 
     private companion object {
+        const val EXPORT = "/api/v1/decision-register/export"
+
         /** One word in both planted decisions' text, and their texts, conditions and a dissent's reason. */
         const val CANARY_DEC_WORD = "Karnaphulicanary"
         const val CANARY_DEC_TEXT = "CANARY-DT $CANARY_DEC_WORD decision text"

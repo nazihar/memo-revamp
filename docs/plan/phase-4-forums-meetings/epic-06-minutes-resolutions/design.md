@@ -245,6 +245,7 @@ stateDiagram-v2
 - The policy is pinned with the type version on each meeting (ADR-0060) and copied onto the `minutes` row at its creation, so later type changes do not alter a meeting's minutes.
 - Publishing a type version is refused when its numbering could render the same numbers as another type's for a committee with the same code (impossible in practice: codes are unique per tenant) or when the template has problems (`TEMPLATE_PROBLEMS`).
 - **As built (T2):** the numbering must contain the committee's code (`COMMITTEE_CODE_MISSING`), which is what makes the overlap check above unnecessary; problems are under `minutes/…`; an uploaded template becomes the draft's through the generic upload (owner = the version id), and a submit with template problems answers 422 `minutes/templateFileId:TEMPLATE_PROBLEMS`; the preview is `POST …/minutes-template/preview`; the live example is `POST /admin/forum-types/resolution-numbering/preview` (log, T2).
+- **As built (T10):** the committee's policy as its members and secretaries read it (`GET /forums/{id}/policy`, the published version) carries `quorumOverride` and `memoResumes`, so the decision screen says before acting whether a decision may be recorded without a quorum and when memos move on (used only when the meeting is pinned to that version).
 
 ### 1.9 Who reads what (the one rule extended)
 `MinutesAccess` builds on `PaperAccess` (ADR-0061) and `Recusals` (ADR-0062); it is the only class that selects from the minutes tables for readers (architecture test).

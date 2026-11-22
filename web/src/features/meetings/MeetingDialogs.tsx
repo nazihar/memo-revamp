@@ -24,6 +24,7 @@ import { Input, Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { FormDialog } from '@/features/forums/FormDialog'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
+import { HeldConsequences } from '@/features/decisions/HeldConsequences'
 import { useTerms } from '@/features/terms/terms'
 import { missingTimes, placeBody, placeOf, timesBody, timesOf } from './form'
 import { ClassificationField, KindField, PlaceFields, TimesFields, TitleField } from './MeetingFields'
@@ -396,7 +397,9 @@ function StepDialog({
       cancelLabel={intl.formatMessage(mm.dismiss)}
       onSubmit={() => change(texts.run, intl.formatMessage(texts.done))}
       onClose={onClose}
-    />
+    >
+      {step === 'end' ? <HeldConsequences meeting={meeting} /> : null}
+    </FormDialog>
   )
 }
 

@@ -88,8 +88,22 @@ class Resolutions(
         return ResolutionChecks.of(forumId, counter, counters.sequences(forumId, period))
     }
 
+    /**
+     * The void numbers of [forumId]'s [period] in number order, at most [MAX_VOIDS] (the register's number check, E08 T3).
+     * Each carries its reason: the caller shows it only to those who see the decision in full.
+     */
+    fun voids(
+        forumId: UUID,
+        period: String,
+    ): List<ResolutionRef> = store.page(forumId, period, ResolutionState.VOID, null, MAX_VOIDS).map { it.ref() }.sortedBy { it.sequence }
+
     private fun ResolutionRow.ref() =
         ResolutionRef(id, decisionId, forumId, meetingId, period, sequence, number, numberedAt, state, voidReason, voidedAt)
+
+    companion object {
+        /** How many void numbers of a period [voids] lists (a period has a handful). */
+        const val MAX_VOIDS = 500
+    }
 }
 
 /** What happened to a resolution number. */

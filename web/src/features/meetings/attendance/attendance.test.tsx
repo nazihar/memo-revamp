@@ -264,6 +264,8 @@ const policy: ForumPolicyResponse = {
   quorum: { counts: 'VOTING', basis: 'IN_OFFICE', recusedCount: false, remoteCounts: true, alternatesCount: true },
   quorumBasis: 7,
   quorumNeeded: 4,
+  quorumOverride: 'NEVER',
+  memoResumes: 'AT_MEETING_END',
   submissionPolicy: {},
   termPolicy: {},
 }

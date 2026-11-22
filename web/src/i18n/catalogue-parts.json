@@ -108,5 +108,20 @@
   "legacy": {
     "routes": ["/memos"],
     "prefixes": ["legacy"]
+  },
+  "decisions": {
+    "$comment": "Recording decisions (Phase 4 E06 T10, flows AA and AB): the officers’ Decisions tab on the meeting page, notes, consent sections and corrections, what Mark the meeting as held says will happen (also from the committee page’s meeting menu), and the decisions on the members’ agenda.",
+    "routes": ["/meetings", "/committees"],
+    "prefixes": ["decisions"]
+  },
+  "resolutions": {
+    "$comment": "Resolutions (Phase 4 E06 T10, flow AC): the committee’s register, one resolution, certified extracts and the starting number.",
+    "routes": ["/committees", "/resolutions"],
+    "prefixes": ["resolutions"]
+  },
+  "forumMinutes": {
+    "$comment": "The committee type’s Minutes tab (Phase 4 E06 T10, flow AI): how minutes are approved, when memos move on, resolution numbers and the minutes template.",
+    "routes": ["/admin/committee-types"],
+    "prefixes": ["forumMinutes"]
   }
 }

@@ -30,6 +30,8 @@ export const pm = defineMessages({
     id: 'papers.forInformation',
     defaultMessage: 'Sent for information: the memo’s route did not wait.',
   },
+  /** A line the system wrote on the note sheet, such as "Raised from action BRC A14/2026" (Phase 4 E07 T6). */
+  systemNote: { id: 'papers.note.system', defaultMessage: 'Recorded by the system' },
 })
 
 /** Texts with values. */

@@ -173,6 +173,51 @@ None about the screens. Reported (ADR-0069, ADR-0070):
 | AU committee analytics overview | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AV attendance per member | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AW a committee's detail | 2026-11-21 | Delegated (Phase 4 Q1) |
-| Manual keyboard and screen-reader pass over AS–AW | — | T6, T7 |
+| Manual keyboard and screen-reader pass over AS–AW | 2026-11-22 (AU–AW) | AU–AW: the agent's keyboard and structure pass done (T7, below), two defects fixed; the screen-reader pass by a person is carried (checklist below). AS–AT: T6 |
 | The owner's walk through the representative committee cycle on dev (exit criterion 3, A1) | — | T9 |
 | Moderated usability walkthrough of the committee cycle (overview §5) | — | T9 |
+
+## Keyboard and screen-reader pass over AU–AW (T7, 2026-11-22)
+Done by the agent in Chromium (Playwright, headless) against the production build (`vite build --mode e2e`, `vite preview`, the real CSP) with the analytics API answered by fixed data: a Board Risk Committee with every measure filled, three seat holders (one with an alternate standing in, one with a long name), four quarters, an owner who is a position, three held meetings (on time, late, no deadline), in English and Arabic, and at 320 CSS px wide. The demo stack has too few held meetings to fill every figure until T8 seeds a year of history; the journey `meeting-analytics.spec` walks the same pages against it on every PR. A screen reader cannot be driven from there, so the spoken output is for a person (below).
+
+### What the agent checked, and found
+- **axe** (WCAG 2.2 A/AA): nothing on the overview, a committee's detail, attendance per member and a member's meetings, in English and Arabic. The component tests (`analytics.test.tsx`) keep this, and the journey checks the overview, the detail and attendance in both languages.
+- **Structure, AU:** H1 "Committee analytics", the period, "Showing …", then one `figure` per committee:
+  - named by its H2 (the committee) and described by its sentence ("92% attendance at 12 meetings · 3 actions overdue · decisions took a median of 18 days");
+  - then "Based on 27 decisions you can see in full." and the table: caption (the committee), column headers Measure, Value and Detail, and the measure as row header;
+  - the bars sit in the Detail cells and are `aria-hidden`; the words beside them start with the share the bar shows, so no number lives only in a bar;
+  - every value is a link to its list, named by its number and read with its row header ("Attendance, 92%, link").
+- **Structure, AW:** H1 the committee, then four figures with H2s ("Time from submission to decision", "Items deferred", "Actions overdue by owner", "Papers on time"). Each reads sentence → basis → table. The bars beside a table are one `aria-hidden` block. "Count working days" is a toggle button (`aria-pressed`) described by its hint. Papers on time per meeting reads "On time", "Late" or "No deadline" in a pill with an icon: never colour alone.
+- **Structure, AV:**
+  - H1 "Board Risk Committee — attendance", then "12 meetings held. Overall attendance 92%.";
+  - one table with a caption, column headers and the member as row header;
+  - Member and Rate are buttons inside their headers, and the header carries `aria-sort` (ascending by name, descending by rate);
+  - "(1 by alternate)" is in words in the Apologies cell, explained under the table;
+  - a member reads "Your attendance: 10 of 12 meetings (83%). The committee's overall attendance: 92%." before their row, with no export button.
+- **Tab order** follows the reading order, with a visible focus ring on every stop.
+  - AU: period → each value link of the table, row by row → "Attendance per member" → "Committee detail" → the next committee.
+  - AW: "All committee analytics" → period → "Attendance per member" → "Count working days" → each meeting → "Meetings of this committee".
+  - AV: "Export for the annual report" → period → Member, Rate → each name → "Back to the committee detail".
+- **Targets:** buttons 44 px high (export, period, working days), sort buttons 40 px; links 40 px high after the fix below.
+- **Reflow at 400 %** (320 CSS px): nothing scrolls sideways on the four pages in either language. The overview's table and the attendance table scroll inside their own boxes (`TableScroll`), which WCAG 1.4.10 allows for data tables.
+- **Right to left:** bars grow from the inline start (logical width and radius), so they grow from the right in Arabic; arrows turn round; numbers, dates and percentages follow the locale.
+
+### Defects found and fixed here
+1. **Figure links were 24 px high, and the overview's "3" was 8 px wide.** WCAG 2.5.8 passes on spacing, but AGENTS §3.7 asks for large targets for older readers. The figure links are now at least 40 × 40 px (`LINK` in `analytics/words.ts`), and the value links keep their numbers aligned to the end of the cell.
+2. **A figure link from the overview did not reach its section** (`/analytics/committees/{id}#actions`). The sections exist only once the detail has loaded, so the browser had nothing to scroll to. The detail now scrolls to the section and moves focus to its figure (`tabIndex=-1`) once the data has come, so a screen reader reads on from there.
+
+### Observed, not changed
+- **Figure links into the action tracker and the decision register** (design §2.6) wait for those screens (E07 T10, E08 T6). Until then the numbers open their lists in the committee's detail (design §2.6 "As built").
+- **Below 5 decisions** AW says "Too few decisions to show a typical time" in the cells. Listing those decisions instead (flow AW) needs the register's rows (T6).
+- **Visual baselines** for the analytics pages are not in the nightly `visual` project yet: they are rendered in the Linux Playwright image (`e2e/update-visual-baselines.sh`). Carried to T8, with the demo history.
+
+### For a person with a screen reader (still to do)
+Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and Arabic, as the company secretary (every committee in full), `auditor@` (`forum.read`) and Demo Head of Finance (a member of the Management Credit Committee), once T8 has seeded a year of BRC and MCC history.
+1. **The overview:** each committee is announced as a figure with its name, and its sentence is read as the figure's description before the table; "Based on n decisions you can see in full." follows.
+2. **The table:** with table navigation (Ctrl+Alt+arrows, VO+arrows) each cell is read with its column header and its measure ("Items deferred, Value, 3 of 27, link"); the bars are never announced; the Detail cell's words make sense alone ("11%; 1 item deferred twice").
+3. **Links:** the links list (NVDA+F7, the VoiceOver rotor) names each link by its number. Check that, read in its row, each says where it goes, and that following one lands in the detail at its section with focus there.
+4. **The period:** the select and its label are read; "Choose dates" shows From, To and Show, each labelled; a refused period ("A period can be at most 10 years …") is announced.
+5. **AW:** "Count working days" is read as a toggle button with its hint, pressed or not; the quarters table reads its new values after a press; "On time", "Late" and "No deadline" are read as words.
+6. **AV:** the Member and Rate headers are read as buttons with the column's sort order; after a press the new order can be found; "(1 by alternate)" and the note under the table make the alternate rule clear; the export button is read and, after a download, "The attendance workbook has been downloaded." is announced.
+7. **A member's view:** "Your attendance: …" is read before the row, with no export; another member's address (`…/attendance/{someone else}`) says "This person held no seat at a meeting in this period."
+8. **A member's meetings:** each meeting link and its attendance in words ("Apologies (represented by their alternate)") are read in order.

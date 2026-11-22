@@ -210,8 +210,8 @@ export type ActionWarning = {
 };
 
 export type ActionsDetail = {
-    owners?: Array<OwnerOverdueResponse>;
-    summary?: ActionsSummary;
+    owners: Array<OwnerOverdueResponse>;
+    summary: ActionsSummary;
 };
 
 export type ActionsPolicy = {
@@ -227,16 +227,16 @@ export type ActionsPolicy = {
 };
 
 export type ActionsSummary = {
-    closed?: number;
-    closedByAgreedDate?: number;
+    closed: number;
+    closedByAgreedDate: number;
     closedByAgreedPercent?: number | null;
-    closedByOriginalDate?: number;
+    closedByOriginalDate: number;
     closedByOriginalPercent?: number | null;
-    overdue?: number;
-    overdue1To30?: number;
-    overdue31To90?: number;
-    overdueOver90?: number;
-    overdueRevised?: number;
+    overdue: number;
+    overdue1To30: number;
+    overdue31To90: number;
+    overdueOver90: number;
+    overdueRevised: number;
 };
 
 export type ActiveRequest = {
@@ -451,9 +451,9 @@ export type AllowedApprovers = {
 };
 
 export type AnalyticsSummaryResponse = {
-    committees?: Array<CommitteeSummaryResponse>;
-    from?: string;
-    to?: string;
+    committees: Array<CommitteeSummaryResponse>;
+    from: string;
+    to: string;
 };
 
 export type AppliedResponse = {
@@ -522,10 +522,10 @@ export type AttendanceCountsResponse = {
 };
 
 export type AttendanceDetail = {
-    members?: Array<MemberAttendanceResponse>;
-    membersOmitted?: boolean;
-    ownRowOnly?: boolean;
-    summary?: AttendanceSummary;
+    members: Array<MemberAttendanceResponse>;
+    membersOmitted: boolean;
+    ownRowOnly: boolean;
+    summary: AttendanceSummary;
 };
 
 export type AttendanceEventRequest = {
@@ -593,9 +593,9 @@ export type AttendanceResponse = {
 };
 
 export type AttendanceSummary = {
-    attended?: number;
-    expected?: number;
-    heldMeetings?: number;
+    attended: number;
+    expected: number;
+    heldMeetings: number;
     ratePercent?: number | null;
 };
 
@@ -926,31 +926,31 @@ export type CodeRequest = {
 };
 
 export type CommitteeDetailResponse = {
-    access?: 'FULL' | 'MEMBER';
-    actions?: ActionsDetail;
-    attendance?: AttendanceDetail;
-    code?: string;
-    deferrals?: DeferralDetail;
-    forumId?: string;
-    from?: string;
-    name?: string;
-    papers?: PapersDetail;
-    shortName?: string;
-    timeToDecision?: TimingDetail;
-    to?: string;
+    access: 'FULL' | 'MEMBER';
+    actions: ActionsDetail;
+    attendance: AttendanceDetail;
+    code: string;
+    deferrals: DeferralDetail;
+    forumId: string;
+    from: string;
+    name: string;
+    papers: PapersDetail;
+    shortName: string;
+    timeToDecision: TimingDetail;
+    to: string;
 };
 
 export type CommitteeSummaryResponse = {
-    access?: 'FULL' | 'MEMBER';
-    actions?: ActionsSummary;
-    attendance?: AttendanceSummary;
-    code?: string;
-    deferrals?: DeferralSummary;
-    forumId?: string;
-    name?: string;
-    papers?: PapersSummary;
-    shortName?: string;
-    timeToDecision?: TimingSummary;
+    access: 'FULL' | 'MEMBER';
+    actions: ActionsSummary;
+    attendance: AttendanceSummary;
+    code: string;
+    deferrals: DeferralSummary;
+    forumId: string;
+    name: string;
+    papers: PapersSummary;
+    shortName: string;
+    timeToDecision: TimingSummary;
 };
 
 export type ComponentHealth = {
@@ -1238,15 +1238,15 @@ export type DeferTarget = {
 };
 
 export type DeferralDetail = {
-    byQuarter?: Array<QuarterDeferralResponse>;
-    overall?: DeferralSummary;
+    byQuarter: Array<QuarterDeferralResponse>;
+    overall: DeferralSummary;
 };
 
 export type DeferralSummary = {
-    decisions?: number;
-    deferred?: number;
+    decisions: number;
+    deferred: number;
     deferredPercent?: number | null;
-    deferredTwice?: number;
+    deferredTwice: number;
 };
 
 export type DefinitionChoice = {
@@ -2427,13 +2427,13 @@ export type MeetingPageResponse = {
 };
 
 export type MeetingPapersResponse = {
-    attended?: number;
-    date?: string;
-    expected?: number;
+    attended: number;
+    date: string;
+    expected: number;
     label?: string | null;
     lateItems?: number | null;
     latePapers?: number | null;
-    meetingId?: string;
+    meetingId: string;
     onTime?: boolean | null;
 };
 
@@ -2539,22 +2539,22 @@ export type MemberAgendaResponse = {
 };
 
 export type MemberAttendanceResponse = {
-    absent?: number;
-    apologies?: number;
-    attended?: number;
-    byAlternate?: number;
-    expected?: number;
-    inPerson?: number;
-    joinedLate?: number;
-    leftEarly?: number;
-    meetings?: Array<MemberMeetingResponse>;
+    absent: number;
+    apologies: number;
+    attended: number;
+    byAlternate: number;
+    expected: number;
+    inPerson: number;
+    joinedLate: number;
+    leftEarly: number;
+    meetings: Array<MemberMeetingResponse>;
     name?: string | null;
     ratePercent?: number | null;
-    remote?: number;
-    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
-    seatFrom?: string;
-    seatTo?: string;
-    userId?: string;
+    remote: number;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    seatFrom: string;
+    seatTo: string;
+    userId: string;
 };
 
 export type MemberAttribute = {
@@ -2602,12 +2602,12 @@ export type MemberItemResponse = {
 };
 
 export type MemberMeetingResponse = {
-    attendance?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES' | 'ABSENT';
-    byAlternate?: boolean;
-    date?: string;
-    joinedLate?: boolean;
-    leftEarly?: boolean;
-    meetingId?: string;
+    attendance: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES' | 'ABSENT';
+    byAlternate: boolean;
+    date: string;
+    joinedLate: boolean;
+    leftEarly: boolean;
+    meetingId: string;
 };
 
 export type MemberPaperResponse = {
@@ -2763,7 +2763,8 @@ export type MemoTypeTemplateView = {
 
 export type MemoTypeTimingResponse = {
     memoTypeId?: string | null;
-    timing?: TimingSummary;
+    memoTypeName?: string | null;
+    timing: TimingSummary;
 };
 
 export type MemoTypeVersionResponse = {
@@ -3555,16 +3556,16 @@ export type OwnerInput = {
 };
 
 export type OwnerOverdueResponse = {
-    days1To30?: number;
-    days31To90?: number;
+    days1To30: number;
+    days31To90: number;
     holderName?: string | null;
     holderUserId?: string | null;
-    over90?: number;
-    overdue?: number;
+    over90: number;
+    overdue: number;
     ownerName?: string | null;
     ownerPositionId?: string | null;
     ownerUserId?: string | null;
-    revised?: number;
+    revised: number;
 };
 
 export type PackFileResponse = {
@@ -3575,17 +3576,17 @@ export type PackFileResponse = {
 };
 
 export type PapersDetail = {
-    meetings?: Array<MeetingPapersResponse>;
-    summary?: PapersSummary;
+    meetings: Array<MeetingPapersResponse>;
+    summary: PapersSummary;
 };
 
 export type PapersSummary = {
     lateItems?: number | null;
     latePapers?: number | null;
-    meetings?: number;
-    onTime?: number;
+    meetings: number;
+    onTime: number;
     onTimePercent?: number | null;
-    withDeadline?: number;
+    withDeadline: number;
 };
 
 export type PasswordResetCompletion = {
@@ -3821,13 +3822,13 @@ export type PublishedRevisionResponse = {
 };
 
 export type QuarterDeferralResponse = {
-    deferrals?: DeferralSummary;
-    quarter?: string;
+    deferrals: DeferralSummary;
+    quarter: string;
 };
 
 export type QuarterTimingResponse = {
-    quarter?: string;
-    timing?: TimingSummary;
+    quarter: string;
+    timing: TimingSummary;
 };
 
 export type QueueMemberRequest = {
@@ -4921,14 +4922,14 @@ export type TermsUpdate = {
 };
 
 export type TimingDetail = {
-    byMemoType?: Array<MemoTypeTimingResponse>;
-    byQuarter?: Array<QuarterTimingResponse>;
-    overall?: TimingSummary;
+    byMemoType: Array<MemoTypeTimingResponse>;
+    byQuarter: Array<QuarterTimingResponse>;
+    overall: TimingSummary;
 };
 
 export type TimingSummary = {
-    decisions?: number;
-    enough?: boolean;
+    decisions: number;
+    enough: boolean;
     medianDays?: number | null;
     medianWorkingDays?: number | null;
     p90Days?: number | null;

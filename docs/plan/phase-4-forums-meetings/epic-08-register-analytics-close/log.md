@@ -59,3 +59,32 @@
   - `PaperSurfaceRegistry.modules` gets `com.memo.analytics` in place of `com.memo.decision` (T2 adds `com.memo.search`); the E08 placeholder keeps the register's paths only;
   - the cross-tenant checks are a test of `AnalyticsIT` rather than a separate `AnalyticsCrossTenantIT`;
   - late counts for `forum.read` use the reader's line rule (unrestricted, title shown, not members-only), since the paper rule gives readers lines only.
+
+## 2026-11-22 — T7: web, committee analytics (flows AU, AV, AW)
+- **Branch** `phase4/e08-t7` on top of T4 (#236, in review).
+- **Screens** (`web/src/features/analytics/`, routes under `/analytics/committees`):
+  - **AU overview** (`OverviewPage`): one table-first figure per committee in scope, by name: the sentence ("92% attendance at 12 meetings · 3 actions overdue · decisions took a median of 18 days"), "Based on n decisions you can see in full.", the table Measure | Value | Detail with a bar beside each share. A select narrows the page to one committee (`?committee=`); none in scope (403) says "Analytics are for committee members, officers and oversight.". A member's block has no late-paper counts;
+  - **AW a committee's detail** (`DetailPage`): time from submission to decision by quarter (bars beside the table, calendar days with "Count working days") and by memo type; items deferred by quarter; actions overdue by owner with ageing and the closed-on-time sentence; papers on time per held meeting ("On time", "Late", "No deadline", late counts for officers and oversight), each meeting linking to its page;
+  - **AV attendance per member** (`AttendancePage`): the table with Expected "6 (from Jul 1)", Apologies "1 (1 by alternate)" and the note, Rate with a bar; Member and Rate sort (`aria-sort`, `?sort=rate`); "Export for the annual report" (the XLSX, officers and oversight, within five years). A member reads "Your attendance: 10 of 12 meetings (83%). The committee's overall attendance: 92%." and their row, with no export;
+  - **a member's meetings** (`MemberPage`, design §2.6): the period's held meetings with the attendance in words, each linking to the meeting;
+  - **the period** (`PeriodPicker`) on every page, in the address: last 12 months (the server's default), last 2 or 5 years, this year so far, the last calendar year, or two dates; 422 `RANGE` is said in words; above five years the member rows are left out with a note.
+- **`Figure` extended** (`features/dashboard/Figure.tsx`, the dashboard unchanged by default): `tableFirst` (the summary sentence first, the table visible with no "Show as table", the chart beside it as one `aria-hidden` block), `basis`, `controls`, `notes`, `link`, `headingLevel` and an `id` that a link can open (focusable). `DataTableOf` cells take nodes. **Bars** (`analytics/bars.tsx`): horizontal, HTML not SVG, one hue (`--chart-1`, the dashboard's validated first series) on a light track, 4 px rounded data end, logical widths (they grow from the right in Arabic), forced-colours fallback, always beside the words or numbers they show and hidden from assistive technology. No line, pie or donut chart.
+- **Each figure's link** (design §2.6, "As built"): attendance → AV, a member → their meetings, papers on time → the period's meetings and the committee's Meetings tab. The actions and decisions figures open their sections in AW (`#actions`, `#timing`, `#deferrals`) until E07's tracker web (T10) and the register's web (T6) exist.
+- **Menu:** "Committee analytics" in Work for a seat in office as secretary, chair, vice-chair or member (from `GET /me/forums`, read once by the shell) or `forum.read` / `forums.manage` (a new `seatOrAnyOf` audience; `holdsCommitteeSeat` in `session.ts`).
+- **Backend (small, on T4's code):**
+  - the analytics responses mark their non-null fields required, so the generated client has no optional numbers;
+  - `MemoTypeTimingResponse.memoTypeName`, from `MemoSearchSource.typeNames`, so AW can say "Credit proposal: 22 days (19)". `analytics` now depends on `memo` (no cycle; module metadata and the contract regenerated);
+  - `AnalyticsIT` checks the name.
+- **i18n:** a new catalogue part `analytics` (`/analytics`, prefix `analytics`), 2.5 KiB gzip in English and 3.5 KiB in Arabic; only the menu entry and four breadcrumbs are in core (Arabic core 13.6 KiB). 155 messages with real Arabic (plural forms, the committee's term).
+- **Tests:**
+  - `analytics.test.tsx`, 16 tests: the sentence before the table; the table visible; bars `aria-hidden`; every value's link; the basis line; a member's block without late counts; narrowing and the period in the address; 403 and 422 in words; AW's figures with the working-days toggle, the memo type line and the papers' words; AV's rows, the alternate note, sorting and the export button; the member's own row; above five years; a member's meetings; Arabic; the menu entry's audience;
+  - axe in English and Arabic; the dashboard's tests unchanged and passing;
+  - the journey `meeting-analytics.spec` (secretary and member, axe in English and Arabic) for the PR stage;
+  - backend: `AnalyticsIT`, `AnalyticsLeakIT`, the measures' unit tests, `ModularityTest`, `ModuleMetadataIT`, `OpenApiContractTest`, detekt and ktlint green, again after merging T4 and master;
+  - the whole web suite (458 tests) ran on a machine busy with Gradle: the files that timed out there (first renders over 5 s) pass when re-run on their own with two workers. `DataTable.test.tsx`'s check that every table sits in a scroll box found the overview's table, now in `TableScroll`. The dashboard's first wait is 10 s, because its first render loads the route tree and Recharts.
+- **The agent's keyboard and structure pass** over AU–AW is in `ux-review.md`. Two defects were found and fixed: link targets below 40 px, and figure links not reaching their section in AW. The screen-reader pass by a person is carried with its checklist.
+- **Deviations:**
+  - the actions and decisions figures link into AW until the tracker and register screens exist (above);
+  - AW below five decisions says "too few" in the cells rather than listing the decisions (needs the register's rows);
+  - visual baselines for the analytics pages are carried to T8 (they are rendered in the Linux Playwright image, and the demo history comes with T8);
+  - the memo type's name and the required fields were added to T4's API here.

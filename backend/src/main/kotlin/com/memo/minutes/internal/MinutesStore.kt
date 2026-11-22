@@ -37,6 +37,7 @@ enum class MinutesEventKind {
     LINKED_TO_MEETING,
     APPROVED_AT_MEETING,
     CONFIRMED,
+    CORRECTION_APPROVED,
 }
 
 /** Who reviews or confirms the minutes, as what (design E06 §1.6.2, §1.6.4). */

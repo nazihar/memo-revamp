@@ -13,18 +13,33 @@ data class RecordContext(
     val source: DraftSource,
     val row: MinutesRow,
     val record: RecordRow,
+    /** The approval this version records: the chair's confirmation (version 1) or a correction's approval (E06 T8). */
     val approval: ApprovalRow,
-    /** The approver's name as the stamp prints it. */
+    /** The confirmer's name as the stamp prints it. */
     val approver: String,
     /** The meeting that approved them (AT_NEXT_MEETING): its label. */
     val approvingMeeting: String?,
+    /** The chair's confirmation of the minutes ([approval] for version 1). */
+    val confirmation: ApprovalRow = approval,
+    /** The corrections this version carries in its annex (approved up to it), oldest first (E06 T8). */
+    val corrections: List<RecordCorrection> = emptyList(),
+)
+
+/** An approved correction as a version of the record prints it, with the approval and the approver's name. */
+data class RecordCorrection(
+    val correction: CorrectionRow,
+    val approval: ApprovalRow,
+    val approver: String,
 )
 
 /**
  * The generated pages of the approved minutes' record (ADR-0066), pure, in English, times in UTC: the cover (the committee,
  * the meeting, how and by whom the minutes were approved, the approved .docx's hash and the approval's, and for a reader's
  * copy the items redacted in it), the resolutions annex (each numbered resolution, an item the reader may not read as its
- * number and "restricted"), the stamp line printed on every page, and the text the record's check looks for.
+ * number and "restricted"), from version 2 the corrections annex (E06 T8: each approved correction with its approval; one
+ * on an item the reader may not read as its number only), the stamp line printed on every page, and the text the record's
+ * check looks for. The stamp names the confirmation, not the version, so a corrected version's pages of the minutes are
+ * those of version 1; the cover and the annexes name the version.
  */
 object MinutesRecordPages {
     private val TIME = DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm 'UTC'", Locale.ENGLISH).withZone(ZoneOffset.UTC)
@@ -51,6 +66,7 @@ object MinutesRecordPages {
                     ),
                 )
                 add(ReportSection("The approval", lines = approval(c)))
+                if (c.corrections.isNotEmpty()) add(MinutesCorrectionPages.correctedVersion(c))
                 if (set.redacted.isNotEmpty()) add(redactions(c, set))
                 add(
                     ReportSection(
@@ -69,7 +85,7 @@ object MinutesRecordPages {
     }
 
     private fun approval(c: RecordContext): List<Pair<String, String>> {
-        val a = c.approval
+        val a = c.confirmation
         val atMeeting = c.row.policy.approval == MinutesApproval.AT_NEXT_MEETING
         val how =
             when {
@@ -77,13 +93,11 @@ object MinutesRecordPages {
                 atMeeting -> "At the next meeting"
                 else -> "By circulation"
             }
-        val factors = a.authentication["factors"]?.let { f -> (0 until f.size()).map { f.get(it).asString() } }.orEmpty()
         return listOf(
             "Approved" to how,
             "Confirmed by" to "${c.approver} (${role(a.role)})",
             "On" to TIME.format(a.at),
-            "Authenticated with" to
-                factors.joinToString(" and ") { FACTORS[it] ?: it.lowercase(Locale.ROOT) }.ifEmpty { "no recorded factor" },
+            "Authenticated with" to MinutesCorrectionPages.factors(a),
             "Approved document" to "SHA-256 ${a.docxSha256}",
             "Approval record hash" to a.recordHash,
             "Previous approval" to (a.previousHash ?: "none (the committee's first)"),
@@ -175,16 +189,18 @@ object MinutesRecordPages {
             c.source.resolutions[decision.decision.id]?.let { item to it }
         }
 
-    /** The line at the foot of every page: what this is and who approved it, with the approval's hash. */
+    /**
+     * The line at the foot of every page: what this is and who confirmed it, with the confirmation's hash. It names no record
+     * version (the cover and the annexes' footers do), so every version's pages of the minutes read the same (E06 T8).
+     */
     fun stamp(
         c: RecordContext,
         set: RedactionSet,
     ): String {
         val copy = if (set.redacted.isEmpty()) "" else " · a reader's copy (${set.redacted.size} redacted)"
-        return "Approved minutes of ${label(
-            c,
-        )} · confirmed by ${c.approver} (${role(c.approval.role)}) on ${TIME.format(c.approval.at)} · " +
-            "approval ${c.approval.recordHash.take(HASH_SHOWN)} · record version ${c.record.recordVersion}$copy"
+        val a = c.confirmation
+        return "Approved minutes of ${label(c)} · confirmed by ${c.approver} (${role(a.role)}) on ${TIME.format(a.at)} · " +
+            "approval ${a.recordHash.take(HASH_SHOWN)}$copy"
     }
 
     /** What must come back from the record's text, in order: the cover's committee and meeting, then each resolution number. */
@@ -194,7 +210,10 @@ object MinutesRecordPages {
         RecordPdfMetadata(
             title = "Minutes of ${label(c)}",
             identifier = label(c),
-            description = "Approved document SHA-256 ${c.approval.docxSha256}; approval ${c.approval.recordHash}",
+            description =
+                "Approved document SHA-256 ${c.confirmation.docxSha256}; approval ${c.confirmation.recordHash}; " +
+                    "record version ${c.record.recordVersion}" +
+                    if (c.corrections.isEmpty()) "" else " (corrections approved, approval ${c.approval.recordHash})",
             author = c.source.committee,
             created = c.approval.at,
         )
@@ -204,7 +223,7 @@ object MinutesRecordPages {
             .toString()
 
     /** [title] with the running header (the committee and meeting) and footer (the record version). */
-    private fun document(
+    fun document(
         c: RecordContext,
         title: String,
         sections: List<ReportSection>,
@@ -215,8 +234,7 @@ object MinutesRecordPages {
         sections,
     )
 
-    private fun role(role: MinutesRole) = if (role == MinutesRole.CHAIR) "chair" else "vice-chair"
+    fun role(role: MinutesRole) = if (role == MinutesRole.CHAIR) "chair" else "vice-chair"
 
     private const val HASH_SHOWN = 16
-    private val FACTORS = mapOf("TOTP" to "authenticator", "RECOVERY_CODE" to "recovery code")
 }

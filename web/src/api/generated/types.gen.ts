@@ -2961,6 +2961,41 @@ export type MinutesCopySetResponse = {
     setKey: string;
 };
 
+export type MinutesCorrectionDecisionRequest = {
+    decision: 'APPROVE' | 'DECLINE';
+    note?: string | null;
+};
+
+export type MinutesCorrectionInput = {
+    itemId?: string | null;
+    reason: string;
+    text: string;
+};
+
+export type MinutesCorrectionResponse = {
+    approvalId?: string | null;
+    decidedAt?: string | null;
+    decidedBy?: MinutesPerson | null;
+    id: string;
+    itemId?: string | null;
+    itemNumber?: string | null;
+    note?: string | null;
+    proposedAt: string;
+    proposedBy: MinutesPerson;
+    reason?: string | null;
+    recordVersion?: number | null;
+    state: 'PROPOSED' | 'APPROVED' | 'DECLINED';
+    text?: string | null;
+    withheld: boolean;
+};
+
+export type MinutesCorrectionsResponse = {
+    approver?: MinutesPerson | null;
+    corrections: Array<MinutesCorrectionResponse>;
+    mayDecide: boolean;
+    mayPropose: boolean;
+};
+
 export type MinutesDeadlineRequest = {
     commentsUntil: string;
 };
@@ -3055,6 +3090,7 @@ export type MinutesResponse = {
     commentsUntil?: string | null;
     confirmer?: MinutesPerson | null;
     copies: Array<MinutesCopySetResponse>;
+    correctedAt?: string | null;
     draft?: MinutesDraftResponse | null;
     forumId: string;
     heldAt?: string | null;
@@ -3066,6 +3102,7 @@ export type MinutesResponse = {
     mayEdit: boolean;
     mayEndCirculation: boolean;
     mayGenerate: boolean;
+    mayProposeCorrection: boolean;
     mayReadCopy: boolean;
     mayReview: boolean;
     maySendForReview: boolean;
@@ -4243,6 +4280,21 @@ export type ResolutionEntryResponse = {
     voidedAt?: string | null;
 };
 
+export type ResolutionExtractResponse = {
+    certificationHash: string;
+    compliant?: boolean | null;
+    error?: string | null;
+    id: string;
+    issuedAt: string;
+    issuedBy: MinutesPerson;
+    minutesApproved: boolean;
+    minutesApprovedAt?: string | null;
+    pages?: number | null;
+    resolutionId: string;
+    sha256?: string | null;
+    state: string;
+};
+
 export type ResolutionMemo = {
     id: string;
     reference?: string | null;
@@ -4289,10 +4341,12 @@ export type ResolutionResponse = {
     id: string;
     itemNumber?: string | null;
     itemTitle?: string | null;
+    mayIssueExtract: boolean;
     meetingDate: string;
     meetingId: string;
     meetingLabel?: string | null;
     memo?: ResolutionMemo | null;
+    minutesApprovedAt?: string | null;
     number: string;
     numberedAt: string;
     outcome: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
@@ -11173,6 +11227,67 @@ export type ConfirmMinutesResponses = {
 
 export type ConfirmMinutesResponse = ConfirmMinutesResponses[keyof ConfirmMinutesResponses];
 
+export type ListMinutesCorrectionsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/corrections';
+};
+
+export type ListMinutesCorrectionsResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCorrectionsResponse;
+};
+
+export type ListMinutesCorrectionsResponse = ListMinutesCorrectionsResponses[keyof ListMinutesCorrectionsResponses];
+
+export type ProposeMinutesCorrectionData = {
+    body: MinutesCorrectionInput;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/corrections';
+};
+
+export type ProposeMinutesCorrectionResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCorrectionResponse;
+};
+
+export type ProposeMinutesCorrectionResponse = ProposeMinutesCorrectionResponses[keyof ProposeMinutesCorrectionResponses];
+
+export type DecideMinutesCorrectionData = {
+    body: MinutesCorrectionDecisionRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        correctionId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/corrections/{correctionId}/decide';
+};
+
+export type DecideMinutesCorrectionResponses = {
+    /**
+     * OK
+     */
+    200: MinutesCorrectionResponse;
+};
+
+export type DecideMinutesCorrectionResponse = DecideMinutesCorrectionResponses[keyof DecideMinutesCorrectionResponses];
+
 export type GetMinutesDocumentData = {
     body?: never;
     path: {
@@ -13530,6 +13645,62 @@ export type GetResolutionResponses = {
 };
 
 export type GetResolutionResponse = GetResolutionResponses[keyof GetResolutionResponses];
+
+export type ListResolutionExtractsData = {
+    body?: never;
+    path: {
+        resolutionId: string;
+    };
+    query?: never;
+    url: '/api/v1/resolutions/{resolutionId}/extracts';
+};
+
+export type ListResolutionExtractsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ResolutionExtractResponse>;
+};
+
+export type ListResolutionExtractsResponse = ListResolutionExtractsResponses[keyof ListResolutionExtractsResponses];
+
+export type IssueResolutionExtractData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        resolutionId: string;
+    };
+    query?: never;
+    url: '/api/v1/resolutions/{resolutionId}/extracts';
+};
+
+export type IssueResolutionExtractResponses = {
+    /**
+     * OK
+     */
+    200: ResolutionExtractResponse;
+};
+
+export type IssueResolutionExtractResponse = IssueResolutionExtractResponses[keyof IssueResolutionExtractResponses];
+
+export type GetResolutionExtractData = {
+    body?: never;
+    path: {
+        resolutionId: string;
+        extractId: string;
+    };
+    query?: never;
+    url: '/api/v1/resolutions/{resolutionId}/extracts/{extractId}/content';
+};
+
+export type GetResolutionExtractResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type ListSavedSearchesData = {
     body?: never;

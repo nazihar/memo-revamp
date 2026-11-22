@@ -9241,6 +9241,119 @@
         "required" : [ "readers", "redacted", "setKey" ],
         "type" : "object"
       },
+      "MinutesCorrectionDecisionRequest" : {
+        "properties" : {
+          "decision" : {
+            "enum" : [ "APPROVE", "DECLINE" ],
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "decision" ],
+        "type" : "object"
+      },
+      "MinutesCorrectionInput" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : "string"
+          },
+          "text" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "reason", "text" ],
+        "type" : "object"
+      },
+      "MinutesCorrectionResponse" : {
+        "properties" : {
+          "approvalId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "decidedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "proposedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "proposedBy" : {
+            "$ref" : "#/components/schemas/MinutesPerson"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "recordVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "state" : {
+            "enum" : [ "PROPOSED", "APPROVED", "DECLINED" ],
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "withheld" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "id", "proposedAt", "proposedBy", "state", "withheld" ],
+        "type" : "object"
+      },
+      "MinutesCorrectionsResponse" : {
+        "properties" : {
+          "approver" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "corrections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCorrectionResponse"
+            },
+            "type" : "array"
+          },
+          "mayDecide" : {
+            "type" : "boolean"
+          },
+          "mayPropose" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "corrections", "mayDecide", "mayPropose" ],
+        "type" : "object"
+      },
       "MinutesDeadlineRequest" : {
         "properties" : {
           "commentsUntil" : {
@@ -9532,6 +9645,10 @@
             },
             "type" : "array"
           },
+          "correctedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
           "draft" : {
             "oneOf" : [ {
               "$ref" : "#/components/schemas/MinutesDraftResponse"
@@ -9576,6 +9693,9 @@
             "type" : "boolean"
           },
           "mayGenerate" : {
+            "type" : "boolean"
+          },
+          "mayProposeCorrection" : {
             "type" : "boolean"
           },
           "mayReadCopy" : {
@@ -9636,7 +9756,7 @@
             } ]
           }
         },
-        "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayReadCopy", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
+        "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayProposeCorrection", "mayReadCopy", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
         "type" : "object"
       },
       "MinutesReviewRequest" : {
@@ -12959,6 +13079,53 @@
         "required" : [ "id", "meetingId", "number", "numberedAt", "restricted", "sequence", "state" ],
         "type" : "object"
       },
+      "ResolutionExtractResponse" : {
+        "properties" : {
+          "certificationHash" : {
+            "type" : "string"
+          },
+          "compliant" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "error" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "issuedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "issuedBy" : {
+            "$ref" : "#/components/schemas/MinutesPerson"
+          },
+          "minutesApproved" : {
+            "type" : "boolean"
+          },
+          "minutesApprovedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "pages" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "resolutionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "sha256" : {
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "certificationHash", "id", "issuedAt", "issuedBy", "minutesApproved", "resolutionId", "state" ],
+        "type" : "object"
+      },
       "ResolutionMemo" : {
         "properties" : {
           "id" : {
@@ -13107,6 +13274,9 @@
           "itemTitle" : {
             "type" : [ "string", "null" ]
           },
+          "mayIssueExtract" : {
+            "type" : "boolean"
+          },
           "meetingDate" : {
             "format" : "date",
             "type" : "string"
@@ -13124,6 +13294,10 @@
             }, {
               "type" : "null"
             } ]
+          },
+          "minutesApprovedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
           },
           "number" : {
             "type" : "string"
@@ -13165,7 +13339,7 @@
             "type" : [ "string", "null" ]
           }
         },
-        "required" : [ "conditions", "decisionId", "forumId", "forumName", "full", "id", "meetingDate", "meetingId", "number", "numberedAt", "outcome", "outcomeLabel", "state", "viewerRecused" ],
+        "required" : [ "conditions", "decisionId", "forumId", "forumName", "full", "id", "mayIssueExtract", "meetingDate", "meetingId", "number", "numberedAt", "outcome", "outcomeLabel", "state", "viewerRecused" ],
         "type" : "object"
       },
       "Retention" : {
@@ -27074,6 +27248,130 @@
         "tags" : [ "minutes" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/minutes/corrections" : {
+      "get" : {
+        "operationId" : "listMinutesCorrections",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCorrectionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The corrections to the approved minutes, as the viewer reads them",
+        "tags" : [ "minutes" ]
+      },
+      "post" : {
+        "operationId" : "proposeMinutesCorrection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCorrectionInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCorrectionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Propose a correction to the approved minutes (a secretary not recused from the item); the chair approves it",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/corrections/{correctionId}/decide" : {
+      "post" : {
+        "operationId" : "decideMinutesCorrection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "correctionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MinutesCorrectionDecisionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesCorrectionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Approve or decline a proposed correction (the chair, with a fresh step-up): approval makes a new record version",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/minutes/document" : {
       "get" : {
         "operationId" : "getMinutesDocument",
@@ -31422,6 +31720,99 @@
           }
         },
         "summary" : "One resolution as the viewer may see it",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/resolutions/{resolutionId}/extracts" : {
+      "get" : {
+        "operationId" : "listResolutionExtracts",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "resolutionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResolutionExtractResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A resolution's certified extracts, the latest first",
+        "tags" : [ "minutes" ]
+      },
+      "post" : {
+        "operationId" : "issueResolutionExtract",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "resolutionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResolutionExtractResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Issue a certified extract of a resolution (a secretary not recused from the item, with a fresh step-up)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/resolutions/{resolutionId}/extracts/{extractId}/content" : {
+      "get" : {
+        "operationId" : "getResolutionExtract",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "resolutionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "extractId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "A certified extract as PDF/A (an attachment; supports Range); 202 while it is being made",
         "tags" : [ "minutes" ]
       }
     },

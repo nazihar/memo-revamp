@@ -6,12 +6,15 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MINUTES_APPROVAL_CHAIN_UK
+import com.memo.jooq.indexes.MINUTES_APPROVAL_CORRECTION_IDX
 import com.memo.jooq.indexes.MINUTES_APPROVAL_FORUM_IDX
 import com.memo.jooq.indexes.MINUTES_APPROVAL_MEETING_IDX
 import com.memo.jooq.keys.MINUTES_APPROVAL_PKEY
+import com.memo.jooq.keys.MINUTES_APPROVAL__MINUTES_APPROVAL_CORRECTION_FK
 import com.memo.jooq.keys.MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_APPROVAL_ID_FKEY
 import com.memo.jooq.tables.Minutes.MinutesPath
+import com.memo.jooq.tables.MinutesCorrection.MinutesCorrectionPath
 import com.memo.jooq.tables.MinutesRecord.MinutesRecordPath
 import com.memo.jooq.tables.records.MinutesApprovalRecord
 
@@ -154,6 +157,16 @@ open class MinutesApproval(
      */
     val AT: TableField<MinutesApprovalRecord, OffsetDateTime?> = createField(DSL.name("at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.minutes_approval.correction_id</code>.
+     */
+    val CORRECTION_ID: TableField<MinutesApprovalRecord, UUID?> = createField(DSL.name("correction_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.minutes_approval.correction_sha256</code>.
+     */
+    val CORRECTION_SHA256: TableField<MinutesApprovalRecord, String?> = createField(DSL.name("correction_sha256"), SQLDataType.CLOB, this, "")
+
     private constructor(alias: Name, aliased: Table<MinutesApprovalRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MinutesApprovalRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MinutesApprovalRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -186,9 +199,16 @@ open class MinutesApproval(
         override fun `as`(alias: Table<*>): MinutesApprovalPath = MinutesApprovalPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_APPROVAL_CHAIN_UK, MINUTES_APPROVAL_FORUM_IDX, MINUTES_APPROVAL_MEETING_IDX)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_APPROVAL_CHAIN_UK, MINUTES_APPROVAL_CORRECTION_IDX, MINUTES_APPROVAL_FORUM_IDX, MINUTES_APPROVAL_MEETING_IDX)
     override fun getPrimaryKey(): UniqueKey<MinutesApprovalRecord> = MINUTES_APPROVAL_PKEY
-    override fun getReferences(): List<ForeignKey<MinutesApprovalRecord, *>> = listOf(MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY)
+    override fun getReferences(): List<ForeignKey<MinutesApprovalRecord, *>> = listOf(MINUTES_APPROVAL__MINUTES_APPROVAL_CORRECTION_FK, MINUTES_APPROVAL__MINUTES_APPROVAL_TENANT_ID_MEETING_ID_FKEY)
+
+    /**
+     * Get the implicit join path to the <code>memo.minutes_correction</code>
+     * table.
+     */
+    fun minutesCorrection(): MinutesCorrectionPath = minutesCorrection
+    val minutesCorrection: MinutesCorrectionPath by lazy { MinutesCorrectionPath(this, MINUTES_APPROVAL__MINUTES_APPROVAL_CORRECTION_FK, null) }
 
     /**
      * Get the implicit join path to the <code>memo.minutes</code> table.
@@ -214,8 +234,10 @@ open class MinutesApproval(
     override fun getChecks(): List<Check<MinutesApprovalRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_approval_authentication_check"), "(((jsonb_typeof(authentication) = 'object'::text) AND (octet_length((authentication)::text) <= 4096)))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_client_check"), "(((jsonb_typeof(client) = 'object'::text) AND (octet_length((client)::text) <= 4096)))", true),
+        Internal.createCheck(this, DSL.name("minutes_approval_correction_ck"), "(((kind = 'CORRECTION'::text) = ((correction_id IS NOT NULL) AND (correction_sha256 IS NOT NULL))))", true),
+        Internal.createCheck(this, DSL.name("minutes_approval_correction_sha256_check"), "((correction_sha256 ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_docx_sha256_check"), "((docx_sha256 ~ '^[0-9a-f]{64}\$'::text))", true),
-        Internal.createCheck(this, DSL.name("minutes_approval_kind_check"), "((kind = 'CONFIRMATION'::text))", true),
+        Internal.createCheck(this, DSL.name("minutes_approval_kind_check"), "((kind = ANY (ARRAY['CONFIRMATION'::text, 'CORRECTION'::text])))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_previous_hash_check"), "((previous_hash ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_record_hash_check"), "((record_hash ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_approval_role_check"), "((role = ANY (ARRAY['CHAIR'::text, 'VICE_CHAIR'::text])))", true)

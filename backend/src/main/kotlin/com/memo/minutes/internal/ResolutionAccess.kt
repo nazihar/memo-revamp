@@ -12,6 +12,7 @@ import com.memo.forum.ForumPolicies
 import com.memo.forum.ForumRef
 import com.memo.forum.ForumRole
 import com.memo.forum.ResolutionNumbering
+import com.memo.meeting.MeetingStatus
 import com.memo.meeting.MeetingView
 import com.memo.meeting.MeetingViewers
 import com.memo.meeting.Meetings
@@ -43,6 +44,7 @@ class ResolutionAccess(
     private val memos: MemoReaders,
     private val policy: Policy,
     private val audit: AuditLog,
+    private val minutes: MinutesStore,
 ) {
     /**
      * A page of [forumId]'s register for [period] (default: its latest), the latest number first; [before] is the cursor
@@ -188,6 +190,8 @@ class ResolutionAccess(
             full = full,
             voidedAt = row.voidedAt,
             voidReason = row.voidReason.takeIf { full },
+            minutesApprovedAt = minutes.find(row.meetingId)?.takeIf { it.state == MinutesStage.APPROVED }?.approvedAt,
+            mayIssueExtract = mayIssueExtract(row, decision, meeting, view),
         )
     }
 
@@ -219,6 +223,29 @@ class ResolutionAccess(
             forum.id.toString(),
             after = mapOf("period" to period, "next" to next),
         )
+    }
+
+    /**
+     * Whether the actor may issue a certified extract of [row] now (design E06 §1.6.6): a secretary of its committee in
+     * office, not recused from the item, the number in force and the memo moved on (released; for an item without a memo,
+     * the meeting held).
+     */
+    private fun mayIssueExtract(
+        row: ResolutionRow,
+        decision: CurrentDecision,
+        meeting: com.memo.meeting.MeetingRef,
+        view: MeetingView?,
+    ): Boolean {
+        val user = actorOrNull() ?: return false
+        val secretary = directory.membersOn(row.forumId).any { it.userId == user && it.role == ForumRole.SECRETARY }
+        val recused = view != null && decision.decision.itemId in view.recused
+        val released =
+            if (decision.decision.submissionId != null) {
+                decision.decision.releasedAt != null
+            } else {
+                meeting.status == MeetingStatus.HELD || meeting.status == MeetingStatus.MINUTES_APPROVED
+            }
+        return secretary && !recused && row.state == ResolutionState.IN_FORCE && released
     }
 
     /** Called with the period's format before the step-up, so a refusal does not ask for one. */

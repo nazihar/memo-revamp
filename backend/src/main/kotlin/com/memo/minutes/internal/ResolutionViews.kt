@@ -85,6 +85,10 @@ data class ResolutionResponse(
     val voidedAt: Instant?,
     /** Why it is void: for those who see the decision in full. */
     val voidReason: String?,
+    /** When the minutes of its meeting were approved; null while they are not (an extract says which, E06 T8). */
+    val minutesApprovedAt: Instant? = null,
+    /** May issue a certified extract now (a secretary of the committee not recused from the item, once the memo moved on). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayIssueExtract: Boolean = false,
 )
 
 /** The register check (design E06 §1.3, flow AC1 "Check the register"): "1 to 16 are all accounted for (15 in force, 1 void)". */

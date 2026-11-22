@@ -117,9 +117,11 @@ import com.memo.jooq.tables.MinutesApproval
 import com.memo.jooq.tables.MinutesComment
 import com.memo.jooq.tables.MinutesCommentRequest
 import com.memo.jooq.tables.MinutesCopy
+import com.memo.jooq.tables.MinutesCorrection
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
+import com.memo.jooq.tables.MinutesExtract
 import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.MinutesRecord
 import com.memo.jooq.tables.MinutesReminder
@@ -741,6 +743,11 @@ val MINUTES_COMMENT_REQUEST: MinutesCommentRequest = MinutesCommentRequest.MINUT
 val MINUTES_COPY: MinutesCopy = MinutesCopy.MINUTES_COPY
 
 /**
+ * The table <code>memo.minutes_correction</code>.
+ */
+val MINUTES_CORRECTION: MinutesCorrection = MinutesCorrection.MINUTES_CORRECTION
+
+/**
  * The table <code>memo.minutes_decision</code>.
  */
 val MINUTES_DECISION: MinutesDecision = MinutesDecision.MINUTES_DECISION
@@ -754,6 +761,11 @@ val MINUTES_DECISION_ENTRY: MinutesDecisionEntry = MinutesDecisionEntry.MINUTES_
  * The table <code>memo.minutes_event</code>.
  */
 val MINUTES_EVENT: MinutesEvent = MinutesEvent.MINUTES_EVENT
+
+/**
+ * The table <code>memo.minutes_extract</code>.
+ */
+val MINUTES_EXTRACT: MinutesExtract = MinutesExtract.MINUTES_EXTRACT
 
 /**
  * The table <code>memo.minutes_item_note</code>.

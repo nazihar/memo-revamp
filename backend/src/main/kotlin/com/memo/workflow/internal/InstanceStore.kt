@@ -118,17 +118,20 @@ class InstanceStore(
             .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
             .fetchOne { SubjectRef(it.value1()!!, it.value2()!!) }
 
-    fun instanceOfSubject(
+    /** The item's newest run: its instance, its number and whether it ended; null if it was never started. */
+    fun latestRun(
         subjectType: String,
         subjectId: UUID,
-    ): UUID? =
+    ): Triple<UUID, Int, Boolean>? =
         tenantDsl
             .current()
-            .select(WORKFLOW_INSTANCE.ID)
+            .select(WORKFLOW_INSTANCE.ID, WORKFLOW_INSTANCE.RUN, WORKFLOW_INSTANCE.STATUS)
             .from(WORKFLOW_INSTANCE)
             .where(WORKFLOW_INSTANCE.SUBJECT_TYPE.eq(subjectType))
             .and(WORKFLOW_INSTANCE.SUBJECT_ID.eq(subjectId))
-            .fetchOne(WORKFLOW_INSTANCE.ID)
+            .orderBy(WORKFLOW_INSTANCE.RUN.desc())
+            .limit(1)
+            .fetchOne { Triple(it.value1()!!, it.value2()!!, InstanceStatus.valueOf(it.value3()!!).terminal) }
 
     /** The instance and its current round; [lock] takes the row `FOR UPDATE` (actions), reads go without. */
     fun load(
@@ -261,6 +264,8 @@ class InstanceStore(
         state: InstanceState,
         now: OffsetDateTime,
         doaVersionId: UUID? = null,
+        /** The item's run: 1, or the next after its last ended (a subject type that runs again). */
+        run: Int = 1,
     ) {
         tenantDsl
             .current()
@@ -269,6 +274,7 @@ class InstanceStore(
             .set(WORKFLOW_INSTANCE.TENANT_ID, tenantDsl.tenant().value)
             .set(WORKFLOW_INSTANCE.SUBJECT_TYPE, subjectType)
             .set(WORKFLOW_INSTANCE.SUBJECT_ID, subjectId)
+            .set(WORKFLOW_INSTANCE.RUN, run)
             .set(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID, definitionVersionId)
             .set(WORKFLOW_INSTANCE.DOA_VERSION_ID, doaVersionId)
             .set(WORKFLOW_INSTANCE.INITIATOR_ID, state.initiator)
@@ -335,3 +341,9 @@ private fun task(task: WorkflowTaskRecord): Task =
         waiting = task.waiting == true,
         parentTaskId = task.parentTaskId,
     )
+
+/** The item's instance: its newest run when its subject type runs again (ADR-0068 amendment); null if never started. */
+internal fun InstanceStore.instanceOfSubject(
+    subjectType: String,
+    subjectId: UUID,
+): UUID? = latestRun(subjectType, subjectId)?.first

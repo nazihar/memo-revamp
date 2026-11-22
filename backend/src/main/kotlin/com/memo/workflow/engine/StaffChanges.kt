@@ -51,7 +51,7 @@ internal class StaffChanges(
         // A route entry restarts with the rest of the route rebuilt behind it, as after a send back.
         val restarted = if (step.routeIndex != null) replaced.skipPending() else replaced
         val walk = rounds.reactivate(restarted, step.copy(assignee = null), state.initiator)
-        val details = mapOf("step" to step.nodeId, "reason" to HOLDER_CHANGED, "from" to open.mapNotNull { it.assignee?.toString() })
+        val details = mapOf("step" to step.nodeId, "reason" to command.reason, "from" to open.mapNotNull { it.assignee?.toString() })
         val action = record(ActionKind.REASSIGN, state, null, command.actor, null).copy(details = details)
         return Outcome(state.copy(round = walk.round), action, closed + walk.effects, walk.followUps)
     }
@@ -59,6 +59,7 @@ internal class StaffChanges(
     companion object {
         const val INACTIVE = "INACTIVE"
         const val HOLDER_CHANGED = "HOLDER_CHANGED"
+        const val SUBJECT_CHANGED = "SUBJECT_CHANGED"
 
         fun refusal(
             state: InstanceState,

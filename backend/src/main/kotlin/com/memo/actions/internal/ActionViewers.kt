@@ -30,7 +30,7 @@ class ActionViewer(
     /** Their role in each committee today. */
     private val roles: Map<UUID, ForumRole>,
     /** Whether they chair a committee: the chair, or the vice-chair when there is no chair. */
-    private val chairs: (UUID) -> Boolean,
+    private val chairing: (UUID) -> Boolean,
     /** The actions whose open task they hold or may claim (a verification pool, ADR-0068). */
     val tasks: () -> Set<UUID>,
 ) {
@@ -39,6 +39,12 @@ class ActionViewer(
 
     /** [manages], or the chair in office (the vice-chair when there is none). */
     fun officer(forumId: UUID): Boolean = manages(forumId) || chairs(forumId)
+
+    /** A secretary of [forumId] in office (not `forums.manage` alone): writes for an owner, decides date requests. */
+    fun secretary(forumId: UUID): Boolean = roles[forumId] == ForumRole.SECRETARY
+
+    /** The chair of [forumId] in office, or the vice-chair when there is no chair. */
+    fun chairs(forumId: UUID): Boolean = chairing(forumId)
 
     /** A member of [forumId] in office today, of any role. */
     fun member(forumId: UUID): Boolean = roles[forumId] != null
@@ -95,7 +101,7 @@ class ActionViewers(
                     .toSet(),
             positions = org.positionsOf(listOf(user))[user]?.let { setOf(it.id) }.orEmpty(),
             roles = roles,
-            chairs = { forum ->
+            chairing = { forum ->
                 chairs.getOrPut(forum) {
                     when (roles[forum]) {
                         ForumRole.CHAIR -> true

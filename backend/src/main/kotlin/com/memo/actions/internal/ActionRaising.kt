@@ -43,6 +43,7 @@ class ActionRaising(
     private val decisions: DecisionSource,
     private val directory: ForumDirectory,
     private val effects: ActionItemEffects,
+    private val ownership: ActionOwnership,
     private val ids: IdGenerator,
     private val clock: Clock,
 ) {
@@ -110,14 +111,18 @@ class ActionRaising(
         return draft(forum, Source(ActionSource.DIRECT, null, null, null, null), label, checked).id
     }
 
-    /** Replaces the draft [actionId]'s fields, seen at [version] (If-Match). */
+    /**
+     * Replaces the draft [actionId]'s fields, seen at [version] (If-Match). An issued action is edited with a [reason]
+     * ([ActionOwnership.editIssued]).
+     */
     fun edit(
         actionId: UUID,
         version: Long,
         fields: ActionFields,
+        reason: String? = null,
     ): ActionRow {
         val row = scenes.officer(actionId)
-        ActionRules.requireDraft(row.status)
+        if (row.status != ActionStatus.DRAFT) return ownership.editIssued(actionId, version, fields, reason)
         if (version != row.version) throw ConcurrentModificationException("action $actionId", version)
         val direct = row.source == ActionSource.DIRECT
         val problems =
@@ -160,7 +165,7 @@ class ActionRaising(
             FieldProblem("reason", "LENGTH", "At most ${ActionRules.REASON_MAX} characters.")
                 .takeIf { (trimmed?.length ?: 0) > ActionRules.REASON_MAX },
         )
-        if (version != row.version || !store.discard(row.id, version, trimmed)) {
+        if (version != row.version || !store.change(row.id, version, setOf(ActionStatus.DRAFT), discarded(trimmed))) {
             throw ConcurrentModificationException("action $actionId", version)
         }
         lines.entry(row.id, "DISCARDED", actor(), mapOf("reasonSha256" to trimmed?.let(ActionRules::sha256)), now())
@@ -296,3 +301,11 @@ class ActionRaising(
 
     private fun now(): Instant = clock.instant().truncatedTo(ChronoUnit.MICROS)
 }
+
+/** A discarded draft: CANCELLED, DISCARDED, kept and never numbered. */
+private fun discarded(reason: String?): Map<ActionStore.Column, Any?> =
+    mapOf(
+        ActionStore.Column.STATUS to ActionStatus.CANCELLED,
+        ActionStore.Column.CANCEL_KIND to CancelKind.DISCARDED,
+        ActionStore.Column.CANCEL_REASON to reason,
+    )

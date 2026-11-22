@@ -7,6 +7,7 @@ import com.memo.workflow.internal.InstanceStore
 import com.memo.workflow.internal.TaskDescriptions
 import com.memo.workflow.internal.TaskQueryStore
 import com.memo.workflow.internal.WorkflowRunner
+import com.memo.workflow.internal.instanceOfSubject
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.UUID

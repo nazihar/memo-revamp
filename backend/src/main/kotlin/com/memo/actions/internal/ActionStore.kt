@@ -5,6 +5,7 @@ import com.memo.jooq.tables.records.ActionsItemRecord
 import com.memo.jooq.tables.references.ACTIONS_COUNTER
 import com.memo.jooq.tables.references.ACTIONS_ITEM
 import org.jooq.Condition
+import org.jooq.Field
 import org.springframework.stereotype.Repository
 import java.time.Instant
 import java.time.LocalDate
@@ -63,7 +64,21 @@ data class ActionRow(
     val issuedBy: UUID?,
     val issuedAt: Instant?,
     val version: Long,
-)
+    // Progress, dates and endings (T4): kept last, with defaults, so a draft is written without them.
+    val confidence: Confidence? = null,
+    val lastUpdateAt: Instant? = null,
+    val staleFrom: LocalDate? = null,
+    val ragOverride: RagColour? = null,
+    val ragOverrideReason: String? = null,
+    val ragOverrideBy: UUID? = null,
+    val ragOverrideUntil: LocalDate? = null,
+    val cancelReason: String? = null,
+    val supersededBy: UUID? = null,
+    val closedBy: UUID? = null,
+) {
+    /** What red, amber and green read of it (design E07 §1.5). */
+    val ragFacts: RagFacts get() = RagFacts(status, dueDate, amberFrom, staleFrom, confidence, ragOverride, ragOverrideUntil)
+}
 
 /** A person involved beside the owner, while they are (design E07 §1.3). */
 data class ContributorRow(
@@ -81,6 +96,24 @@ data class EntryRow(
     val actorId: UUID?,
     val details: Map<String, Any?>,
     val at: Instant,
+    val more: EntryMore = EntryMore(),
+)
+
+/** How a secretary heard from the owner they write for (design E07 §1.6). */
+enum class How { PHONE, EMAIL, IN_PERSON, MEETING }
+
+/** What an entry carries beyond its kind and details: what someone wrote, and how. */
+data class EntryMore(
+    /** The owner a secretary writes for. */
+    val onBehalfOf: UUID? = null,
+    val how: How? = null,
+    /** What was written (an update, a reason): business content, never audited. */
+    val text: String? = null,
+    val confidence: Confidence? = null,
+    /** Evidence files (`action.evidence`). */
+    val fileIds: List<UUID> = emptyList(),
+    /** The earlier entry this one corrects. */
+    val corrects: Int? = null,
 )
 
 /**
@@ -192,24 +225,6 @@ class ActionStore(
             .execute() == 1
     }
 
-    /** Discards the draft as seen at [version] (CANCELLED, DISCARDED; kept, never deleted); false when it moved on. */
-    fun discard(
-        id: UUID,
-        version: Long,
-        reason: String?,
-    ): Boolean {
-        val a = ACTIONS_ITEM
-        return tenantDsl
-            .current()
-            .update(a)
-            .set(a.STATUS, ActionStatus.CANCELLED.name)
-            .set(a.CANCEL_KIND, CancelKind.DISCARDED.name)
-            .set(a.CANCEL_REASON, reason)
-            .set(a.VERSION, version + 1)
-            .where(a.ID.eq(id), a.STATUS.eq(ActionStatus.DRAFT.name), a.VERSION.eq(version))
-            .execute() == 1
-    }
-
     /** The next number of [forumId]'s actions in [year]: the counter row stays locked until commit (gapless). */
     fun nextNumber(
         forumId: UUID,
@@ -247,11 +262,77 @@ class ActionStore(
             .set(a.REFERENCE, issue.reference)
             .set(a.ORIGINAL_DUE_DATE, issue.dueDate)
             .set(a.AMBER_FROM, issue.amberFrom)
+            .set(a.STALE_FROM, issue.staleFrom)
             .set(a.ISSUED_BY, issue.by)
             .set(a.ISSUED_AT, issue.at.atOffset(ZoneOffset.UTC))
             .set(a.VERSION, version + 1)
             .where(a.ID.eq(id), a.STATUS.eq(ActionStatus.DRAFT.name), a.VERSION.eq(version), a.DUE_DATE.eq(issue.dueDate))
             .execute() == 1
+    }
+
+    /**
+     * Changes the open action [id] as seen at [version] in one of [from]: sets [values] and moves the version by one (the
+     * guarded update of design E07 §1.1, §6); false when it moved on or is in another status. Instants are written in
+     * UTC and enums by name.
+     */
+    fun change(
+        id: UUID,
+        version: Long,
+        from: Collection<ActionStatus>,
+        values: Map<Column, Any?>,
+    ): Boolean {
+        val a = ACTIONS_ITEM
+        val set: Map<Field<*>, Any?> =
+            values.entries.associate { (column, value) ->
+                column.field to
+                    when (value) {
+                        is Instant -> value.atOffset(ZoneOffset.UTC)
+                        is Enum<*> -> value.name
+                        else -> value
+                    }
+            } + (a.VERSION to version + 1)
+        return tenantDsl
+            .current()
+            .update(a)
+            .set(set)
+            .where(a.ID.eq(id), a.STATUS.`in`(from.map { it.name }), a.VERSION.eq(version))
+            .execute() == 1
+    }
+
+    /** The columns of an action its changes set (design E07 §1.1); the rest are set once or by the engine's events. */
+    enum class Column(
+        val field: Field<*>,
+    ) {
+        STATUS(ACTIONS_ITEM.STATUS),
+        TITLE(ACTIONS_ITEM.TITLE),
+        DESCRIPTION(ACTIONS_ITEM.DESCRIPTION),
+        CONTEXT(ACTIONS_ITEM.CONTEXT),
+        PRIORITY(ACTIONS_ITEM.PRIORITY),
+        CLASSIFICATION_ID(ACTIONS_ITEM.CLASSIFICATION_ID),
+        OWNER_KIND(ACTIONS_ITEM.OWNER_KIND),
+        OWNER_USER_ID(ACTIONS_ITEM.OWNER_USER_ID),
+        OWNER_POSITION_ID(ACTIONS_ITEM.OWNER_POSITION_ID),
+        HOLDER_USER_ID(ACTIONS_ITEM.HOLDER_USER_ID),
+        OWNER_STEP(ACTIONS_ITEM.OWNER_STEP),
+        STEP_NAME(ACTIONS_ITEM.STEP_NAME),
+        WORKFLOW_INSTANCE_ID(ACTIONS_ITEM.WORKFLOW_INSTANCE_ID),
+        DUE_DATE(ACTIONS_ITEM.DUE_DATE),
+        DUE_REVISIONS(ACTIONS_ITEM.DUE_REVISIONS),
+        AMBER_FROM(ACTIONS_ITEM.AMBER_FROM),
+        CONFIDENCE(ACTIONS_ITEM.CONFIDENCE),
+        LAST_UPDATE_AT(ACTIONS_ITEM.LAST_UPDATE_AT),
+        STALE_FROM(ACTIONS_ITEM.STALE_FROM),
+        RAG_OVERRIDE(ACTIONS_ITEM.RAG_OVERRIDE),
+        RAG_OVERRIDE_REASON(ACTIONS_ITEM.RAG_OVERRIDE_REASON),
+        RAG_OVERRIDE_BY(ACTIONS_ITEM.RAG_OVERRIDE_BY),
+        RAG_OVERRIDE_UNTIL(ACTIONS_ITEM.RAG_OVERRIDE_UNTIL),
+        DONE_AT(ACTIONS_ITEM.DONE_AT),
+        CLOSED_AT(ACTIONS_ITEM.CLOSED_AT),
+        CLOSED_BY(ACTIONS_ITEM.CLOSED_BY),
+        CANCEL_KIND(ACTIONS_ITEM.CANCEL_KIND),
+        CANCEL_REASON(ACTIONS_ITEM.CANCEL_REASON),
+        SUPERSEDED_BY(ACTIONS_ITEM.SUPERSEDED_BY),
+        REOPEN_COUNT(ACTIONS_ITEM.REOPEN_COUNT),
     }
 
     /** What issuing writes. */
@@ -263,6 +344,8 @@ class ActionStore(
         val amberFrom: LocalDate?,
         val by: UUID,
         val at: Instant,
+        /** "No recent update" from this day, counted from the issue; null when the committee type has no such rule. */
+        val staleFrom: LocalDate? = null,
     )
 }
 
@@ -316,4 +399,14 @@ internal fun ActionsItemRecord.actionRow() =
         issuedBy = issuedBy,
         issuedAt = issuedAt?.toInstant(),
         version = version ?: 0,
+        confidence = confidence?.let(Confidence::valueOf),
+        lastUpdateAt = lastUpdateAt?.toInstant(),
+        staleFrom = staleFrom,
+        ragOverride = ragOverride?.let(RagColour::valueOf),
+        ragOverrideReason = ragOverrideReason,
+        ragOverrideBy = ragOverrideBy,
+        ragOverrideUntil = ragOverrideUntil,
+        cancelReason = cancelReason,
+        supersededBy = supersededBy,
+        closedBy = closedBy,
     )

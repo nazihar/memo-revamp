@@ -7,6 +7,8 @@ package com.memo.jooq.keys
 
 import com.memo.jooq.tables.ActionsContributor
 import com.memo.jooq.tables.ActionsCounter
+import com.memo.jooq.tables.ActionsDigest
+import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsEntry
 import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.AuditAnchor
@@ -149,6 +151,8 @@ import com.memo.jooq.tables.WorkflowTask
 import com.memo.jooq.tables.WorkflowTimer
 import com.memo.jooq.tables.records.ActionsContributorRecord
 import com.memo.jooq.tables.records.ActionsCounterRecord
+import com.memo.jooq.tables.records.ActionsDigestRecord
+import com.memo.jooq.tables.records.ActionsDueRequestRecord
 import com.memo.jooq.tables.records.ActionsEntryRecord
 import com.memo.jooq.tables.records.ActionsItemRecord
 import com.memo.jooq.tables.records.AuditAnchorRecord
@@ -304,6 +308,8 @@ import org.jooq.impl.QOM.ForeignKeyRule
 
 val ACTIONS_CONTRIBUTOR_PKEY: UniqueKey<ActionsContributorRecord> = Internal.createUniqueKey(ActionsContributor.ACTIONS_CONTRIBUTOR, DSL.name("actions_contributor_pkey"), arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ID), true)
 val ACTIONS_COUNTER_PKEY: UniqueKey<ActionsCounterRecord> = Internal.createUniqueKey(ActionsCounter.ACTIONS_COUNTER, DSL.name("actions_counter_pkey"), arrayOf(ActionsCounter.ACTIONS_COUNTER.TENANT_ID, ActionsCounter.ACTIONS_COUNTER.FORUM_ID, ActionsCounter.ACTIONS_COUNTER.YEAR), true)
+val ACTIONS_DIGEST_PKEY: UniqueKey<ActionsDigestRecord> = Internal.createUniqueKey(ActionsDigest.ACTIONS_DIGEST, DSL.name("actions_digest_pkey"), arrayOf(ActionsDigest.ACTIONS_DIGEST.TENANT_ID, ActionsDigest.ACTIONS_DIGEST.USER_ID, ActionsDigest.ACTIONS_DIGEST.DAY), true)
+val ACTIONS_DUE_REQUEST_PKEY: UniqueKey<ActionsDueRequestRecord> = Internal.createUniqueKey(ActionsDueRequest.ACTIONS_DUE_REQUEST, DSL.name("actions_due_request_pkey"), arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ID), true)
 val ACTIONS_ENTRY_PKEY: UniqueKey<ActionsEntryRecord> = Internal.createUniqueKey(ActionsEntry.ACTIONS_ENTRY, DSL.name("actions_entry_pkey"), arrayOf(ActionsEntry.ACTIONS_ENTRY.TENANT_ID, ActionsEntry.ACTIONS_ENTRY.ACTION_ID, ActionsEntry.ACTIONS_ENTRY.SEQ), true)
 val ACTIONS_ITEM_NUMBER_UK: UniqueKey<ActionsItemRecord> = Internal.createUniqueKey(ActionsItem.ACTIONS_ITEM, DSL.name("actions_item_number_uk"), arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.FORUM_ID, ActionsItem.ACTIONS_ITEM.NUMBER_YEAR, ActionsItem.ACTIONS_ITEM.SEQUENCE), true)
 val ACTIONS_ITEM_PKEY: UniqueKey<ActionsItemRecord> = Internal.createUniqueKey(ActionsItem.ACTIONS_ITEM, DSL.name("actions_item_pkey"), arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.ID), true)
@@ -521,8 +527,8 @@ val WORKFLOW_DOA_VERSION_PKEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.cr
 val WORKFLOW_DOA_VERSION_TENANT_ID_ID_KEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.createUniqueKey(WorkflowDoaVersion.WORKFLOW_DOA_VERSION, DSL.name("workflow_doa_version_tenant_id_id_key"), arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.TENANT_ID, WorkflowDoaVersion.WORKFLOW_DOA_VERSION.ID), true)
 val WORKFLOW_DOA_VERSION_TENANT_ID_NUMBER_KEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.createUniqueKey(WorkflowDoaVersion.WORKFLOW_DOA_VERSION, DSL.name("workflow_doa_version_tenant_id_number_key"), arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.TENANT_ID, WorkflowDoaVersion.WORKFLOW_DOA_VERSION.NUMBER), true)
 val WORKFLOW_INSTANCE_PKEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_pkey"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.ID), true)
+val WORKFLOW_INSTANCE_SUBJECT_RUN_UK: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_subject_run_uk"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_TYPE, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_ID, WorkflowInstance.WORKFLOW_INSTANCE.RUN), true)
 val WORKFLOW_INSTANCE_TENANT_ID_ID_KEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_id_key"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true)
-val WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_subject_type_subject_id_key"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_TYPE, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_ID), true)
 val WORKFLOW_QUEUE_PKEY: UniqueKey<WorkflowQueueRecord> = Internal.createUniqueKey(WorkflowQueue.WORKFLOW_QUEUE, DSL.name("workflow_queue_pkey"), arrayOf(WorkflowQueue.WORKFLOW_QUEUE.ID), true)
 val WORKFLOW_QUEUE_TENANT_ID_ID_KEY: UniqueKey<WorkflowQueueRecord> = Internal.createUniqueKey(WorkflowQueue.WORKFLOW_QUEUE, DSL.name("workflow_queue_tenant_id_id_key"), arrayOf(WorkflowQueue.WORKFLOW_QUEUE.TENANT_ID, WorkflowQueue.WORKFLOW_QUEUE.ID), true)
 val WORKFLOW_QUEUE_TENANT_ID_KEY_KEY: UniqueKey<WorkflowQueueRecord> = Internal.createUniqueKey(WorkflowQueue.WORKFLOW_QUEUE, DSL.name("workflow_queue_tenant_id_key_key"), arrayOf(WorkflowQueue.WORKFLOW_QUEUE.TENANT_ID, WorkflowQueue.WORKFLOW_QUEUE.KEY), true)
@@ -544,6 +550,7 @@ val WORKFLOW_TIMER_TENANT_ID_ID_KEY: UniqueKey<WorkflowTimerRecord> = Internal.c
 // -------------------------------------------------------------------------
 
 val ACTIONS_CONTRIBUTOR__ACTIONS_CONTRIBUTOR_TENANT_ID_ACTION_ID_FKEY: ForeignKey<ActionsContributorRecord, ActionsItemRecord> = Internal.createForeignKey(ActionsContributor.ACTIONS_CONTRIBUTOR, DSL.name("actions_contributor_tenant_id_action_id_fkey"), arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID), com.memo.jooq.keys.ACTIONS_ITEM_PKEY, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ACTIONS_DUE_REQUEST__ACTIONS_DUE_REQUEST_TENANT_ID_ACTION_ID_FKEY: ForeignKey<ActionsDueRequestRecord, ActionsItemRecord> = Internal.createForeignKey(ActionsDueRequest.ACTIONS_DUE_REQUEST, DSL.name("actions_due_request_tenant_id_action_id_fkey"), arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ACTION_ID), com.memo.jooq.keys.ACTIONS_ITEM_PKEY, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ACTIONS_ENTRY__ACTIONS_ENTRY_TENANT_ID_ACTION_ID_FKEY: ForeignKey<ActionsEntryRecord, ActionsItemRecord> = Internal.createForeignKey(ActionsEntry.ACTIONS_ENTRY, DSL.name("actions_entry_tenant_id_action_id_fkey"), arrayOf(ActionsEntry.ACTIONS_ENTRY.TENANT_ID, ActionsEntry.ACTIONS_ENTRY.ACTION_ID), com.memo.jooq.keys.ACTIONS_ITEM_PKEY, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ACTIONS_ITEM__ACTIONS_ITEM_TENANT_ID_SUPERSEDED_BY_FKEY: ForeignKey<ActionsItemRecord, ActionsItemRecord> = Internal.createForeignKey(ActionsItem.ACTIONS_ITEM, DSL.name("actions_item_tenant_id_superseded_by_fkey"), arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.SUPERSEDED_BY), com.memo.jooq.keys.ACTIONS_ITEM_PKEY, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val AUTHZ_CLEARANCE__AUTHZ_CLEARANCE_TENANT_ID_LEVEL_ID_FKEY: ForeignKey<AuthzClearanceRecord, AuthzClassificationLevelRecord> = Internal.createForeignKey(AuthzClearance.AUTHZ_CLEARANCE, DSL.name("authz_clearance_tenant_id_level_id_fkey"), arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.LEVEL_ID), com.memo.jooq.keys.AUTHZ_CLASSIFICATION_LEVEL_TENANT_ID_ID_KEY, arrayOf(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID, AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

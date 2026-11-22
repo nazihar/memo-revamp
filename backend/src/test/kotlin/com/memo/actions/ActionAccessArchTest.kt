@@ -47,7 +47,9 @@ class ActionAccessArchTest {
         noClasses()
             .that()
             .haveNameNotMatching(
-                """com\.memo\.actions\.internal\.(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking)(\$.*)?""",
+                // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL.
+                """com\.memo\.actions\.internal\.""" +
+                    """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
             .should()
@@ -62,9 +64,12 @@ class ActionAccessArchTest {
         /** The rule, the services and listeners that write (they read what they lock), the minutes' port, the subject. */
         val WRITERS =
             listOf(
-                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionMinutes)""",
+                """internal\.(ActionAccess|ActionRaising|ActionRaisingKt|ActionIssuing|ActionScenes|ActionMinutes)""",
                 """internal\.(ActionWorkflowListener|ActionSourceListener)""",
-                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking)""",
+                // T4: progress, dates, owners and endings, their effects, and the evidence files' purpose.
+                """internal\.(ActionProgress|ActionDates|ActionOwnership|ActionEnding)""",
+                """internal\.(ActionProgressEffects|ActionDateEffects|ActionEvidencePurpose)""",
+                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }

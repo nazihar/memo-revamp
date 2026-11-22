@@ -18,11 +18,15 @@ import java.time.ZoneOffset
 import java.util.UUID
 import com.memo.jooq.tables.references.MEMO_ as MEMO
 
-/** What another module may show of a memo its actor can read: its number (null until numbered) and subject. */
+/**
+ * What another module may show of a memo its actor can read: its number (null until numbered), subject and status (the
+ * memo's own: DRAFT, IN_REVIEW, RETURNED, APPROVED, REJECTED, WITHDRAWN, DISCARDED, CANCELLED or CLOSED).
+ */
 data class MemoBrief(
     val id: UUID,
     val reference: String?,
     val subject: String,
+    val status: String,
 )
 
 /**
@@ -49,11 +53,27 @@ class MemoReaders(
         if (user == null || memoIds.isEmpty()) return emptyMap()
         return tenantDsl
             .current()
-            .select(MEMO.ID, MEMO.REFERENCE, MEMO.SUBJECT)
+            .select(MEMO.ID, MEMO.REFERENCE, MEMO.SUBJECT, MEMO.STATUS)
             .from(MEMO)
             .where(MEMO.ID.`in`(memoIds), readable.condition(user))
             .fetch()
-            .associate { it.value1()!! to MemoBrief(it.value1()!!, it.value2(), it.value3().orEmpty()) }
+            .associate { it.value1()!! to MemoBrief(it.value1()!!, it.value2(), it.value3().orEmpty(), it.value4().orEmpty()) }
+    }
+
+    /**
+     * The status of each memo of [memoIds] that exists, whoever reads it (design E07 §1.11): for a module that shows the
+     * outcome of a memo to someone who needs it and may not read the memo (an action's verifier). The status says nothing
+     * of the memo's content; the caller decides who sees it.
+     */
+    fun statuses(memoIds: Collection<UUID>): Map<UUID, String> {
+        if (memoIds.isEmpty()) return emptyMap()
+        return tenantDsl
+            .current()
+            .select(MEMO.ID, MEMO.STATUS)
+            .from(MEMO)
+            .where(MEMO.ID.`in`(memoIds))
+            .fetch()
+            .associate { it.value1()!! to it.value2().orEmpty() }
     }
 
     /**

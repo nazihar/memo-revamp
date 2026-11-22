@@ -2,6 +2,7 @@ package com.memo.actions
 
 import com.memo.actions.internal.ActionAccess
 import com.memo.actions.internal.ActionLines
+import com.memo.actions.internal.ActionMemoStore
 import com.memo.actions.internal.ActionStore
 import com.memo.actions.internal.ActionTracking
 import com.tngtech.archunit.core.domain.JavaClass
@@ -27,7 +28,7 @@ class ActionAccessArchTest {
             .areAnnotatedWith(RestController::class.java)
             .should()
             .dependOnClassesThat()
-            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java)
+            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java, ActionMemoStore::class.java)
             .check(classes)
     }
 
@@ -38,7 +39,7 @@ class ActionAccessArchTest {
             .haveNameNotMatching(WRITERS)
             .should()
             .dependOnClassesThat()
-            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java)
+            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java, ActionMemoStore::class.java)
             .check(classes)
     }
 
@@ -48,11 +49,13 @@ class ActionAccessArchTest {
             .that()
             .haveNameNotMatching(
                 // T4: the date requests' store, and the columns the red-amber-green rule reads in SQL; T5: the digest's keys.
-                // T7: the reports' store, what the reports and update requests list, and the rule's parts as conditions.
-                // T8: the tracker's and E08's statistics' reads, every one on ActionAccess.seen (the one rule) and RagRule.shows.
+                // T6: the memo links. T7: the reports' store, what the reports and update requests list, and the rule's parts
+                // as conditions. T8: the tracker's and E08's statistics' reads, every one on ActionAccess.seen (the one rule) and
+                // RagRule.shows.
                 """com\.memo\.actions\.internal\.""" +
                     """(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|RagColumns|""" +
-                    """ActionDigestStore|ActionTrackerReads|ActionReportStore|ActionReportCandidates|ActionRuleConditions)(\$.*)?""",
+                    """ActionDigestStore|ActionMemoStore|ActionTrackerReads|ActionReportStore|ActionReportCandidates|""" +
+                    """ActionRuleConditions)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
             .should()
@@ -64,7 +67,11 @@ class ActionAccessArchTest {
     }
 
     private companion object {
-        /** The rule, the services and listeners that write (they read what they lock), the minutes' port, the subject. */
+        /**
+         * The rule, the services and listeners that write (they read what they lock), the minutes' port, the subject and its
+         * slots, and the follow-up memos' own reads: the action page's memos (by the memo's rule) and the memo's "Raised from
+         * action" (an action's id only through the rule's `sees`).
+         */
         val WRITERS =
             listOf(
                 """internal\.(ActionAccess|ActionRaising|ActionRaisingKt|ActionIssuing|ActionScenes|ActionMinutes)""",
@@ -72,9 +79,11 @@ class ActionAccessArchTest {
                 // T4: progress, dates, owners and endings, their effects, and the evidence files' purpose.
                 """internal\.(ActionProgress|ActionDates|ActionOwnership|ActionEnding)""",
                 """internal\.(ActionProgressEffects|ActionDateEffects|ActionEvidencePurpose)""",
-                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests)""",
+                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionDueRequests|ActionMemoStore)""",
                 // T5: closure, the timers' reactions and the daily task (the digest's keys and the safety net).
                 """internal\.(ActionClosure|ActionClosureEffects|ActionTimerListener|ActionSafetyNet|ActionsDaily|ActionDigestStore)""",
+                // T6: follow-up memos, their listener, the memo's origins port and the action page's memos.
+                """internal\.(ActionFollowUps|ActionMemoListener|ActionMemoOrigins|ActionMemoViews)""",
                 // T7: the report's builder (at publication), holding back, and the update requests (the daily task and the button).
                 """internal\.(ActionReports|ActionReportHolds|ActionUpdateRequests)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",

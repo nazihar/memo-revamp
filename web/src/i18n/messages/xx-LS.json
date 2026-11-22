@@ -4576,6 +4576,2296 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "analytics.actions.none": [
+    {
+      "type": 0,
+      "value": "No action you can see is overdue.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.actions.summary": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action is overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions are overdue"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "over90",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "none for over 90 days"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " for over 90 days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.actions.title": [
+    {
+      "type": 0,
+      "value": "Actions overdue by ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.allCommittees": [
+    {
+      "type": 0,
+      "value": "All my "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.altNote": [
+    {
+      "type": 0,
+      "value": "“By alternate”: an alternate attended in the member’s place; this is not counted as the member’s attendance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.apologiesAlt": [
+    {
+      "type": 1,
+      "value": "apologies"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "alternate"
+    },
+    {
+      "type": 0,
+      "value": " by alternate)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.atMeetings": [
+    {
+      "type": 0,
+      "value": "at "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.expectedFrom": [
+    {
+      "type": 1,
+      "value": "expected"
+    },
+    {
+      "type": 0,
+      "value": " (from "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.export": [
+    {
+      "type": 0,
+      "value": "Export for the annual reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.exportFailed": [
+    {
+      "type": 0,
+      "value": "The export could not be made. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.exportHint": [
+    {
+      "type": 0,
+      "value": "A spreadsheet of this table with the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ", the period and who produced it. Each export is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.exportTooMany": [
+    {
+      "type": 0,
+      "value": "You have exported 5 times in the last hour. Please try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.exported": [
+    {
+      "type": 0,
+      "value": "The attendance workbook has been downloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.heading": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " — attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.lead": [
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting held"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings held"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Overall attendance "
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.membersOmitted": [
+    {
+      "type": 0,
+      "value": "Attendance per member covers at most 5 years. Choose a shorter period to see each member and to export.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.noOwnRow": [
+    {
+      "type": 0,
+      "value": "You held no seat at a meeting in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.noRows": [
+    {
+      "type": 0,
+      "value": "Nobody held a seat at a meeting in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.ownRow": [
+    {
+      "type": 0,
+      "value": "Your attendance: "
+    },
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 6,
+      "value": "expected",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": "). The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s overall attendance: "
+    },
+    {
+      "type": 1,
+      "value": "overall"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendance.title": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.attendedOf": [
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "expected"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.basis": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No decision you can see in full in this period."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Based on "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision you can see in full."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Based on "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions you can see in full."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.byMemoType": [
+    {
+      "type": 0,
+      "value": "By memo type: "
+    },
+    {
+      "type": 1,
+      "value": "list"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.closed.detail": [
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " by the original date; "
+    },
+    {
+      "type": 1,
+      "value": "agreed"
+    },
+    {
+      "type": 0,
+      "value": " by the agreed dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.closed.summary": [
+    {
+      "type": 6,
+      "value": "closed",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No action was closed in the period."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " closed in the period: "
+            },
+            {
+              "type": 1,
+              "value": "original"
+            },
+            {
+              "type": 0,
+              "value": " by the original date, "
+            },
+            {
+              "type": 1,
+              "value": "agreed"
+            },
+            {
+              "type": 0,
+              "value": " by the agreed date."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " closed in the period: "
+            },
+            {
+              "type": 1,
+              "value": "original"
+            },
+            {
+              "type": 0,
+              "value": " by the original date, "
+            },
+            {
+              "type": 1,
+              "value": "agreed"
+            },
+            {
+              "type": 0,
+              "value": " by the agreed date."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.1to30": [
+    {
+      "type": 0,
+      "value": "1–30 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.31to90": [
+    {
+      "type": 0,
+      "value": "31–90 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.absent": [
+    {
+      "type": 0,
+      "value": "AbsentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.attendance": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.attended": [
+    {
+      "type": 0,
+      "value": "AttendedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.attendedOf": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.decisions": [
+    {
+      "type": 0,
+      "value": "DecisionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.deferred": [
+    {
+      "type": 0,
+      "value": "DeferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.detail": [
+    {
+      "type": 0,
+      "value": "DetailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.expected": [
+    {
+      "type": 0,
+      "value": "ExpectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.lateItems": [
+    {
+      "type": 0,
+      "value": "Late itemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.latePapers": [
+    {
+      "type": 0,
+      "value": "Late papersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.measure": [
+    {
+      "type": 0,
+      "value": "MeasureSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.median": [
+    {
+      "type": 0,
+      "value": "MedianSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.over90": [
+    {
+      "type": 0,
+      "value": "Over 90 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.overdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.owner": [
+    {
+      "type": 0,
+      "value": "OwnerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.p90": [
+    {
+      "type": 0,
+      "value": "9 in 10 withinSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.papers": [
+    {
+      "type": 0,
+      "value": "Agenda and papersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.quarter": [
+    {
+      "type": 0,
+      "value": "QuarterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.rate": [
+    {
+      "type": 0,
+      "value": "RateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.remote": [
+    {
+      "type": 0,
+      "value": "Of which remoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.revised": [
+    {
+      "type": 0,
+      "value": "Date changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.share": [
+    {
+      "type": 0,
+      "value": "ShareSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.col.value": [
+    {
+      "type": 0,
+      "value": "ValueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.committee": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.days": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.deferrals.summary": [
+    {
+      "type": 0,
+      "value": "Items deferred: "
+    },
+    {
+      "type": 1,
+      "value": "deferred"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": "); "
+    },
+    {
+      "type": 6,
+      "value": "twice",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no item deferred twice"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item deferred twice"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items deferred twice"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.deferrals.title": [
+    {
+      "type": 0,
+      "value": "Items deferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.deferred.detail": [
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "twice",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no item deferred twice"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item deferred twice"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items deferred twice"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.attendance": [
+    {
+      "type": 0,
+      "value": "Attendance per memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.backToAttendance": [
+    {
+      "type": 0,
+      "value": "Back to attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.backToDetail": [
+    {
+      "type": 0,
+      "value": "Back to the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " detailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.detail": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " detailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.link.meetings": [
+    {
+      "type": 0,
+      "value": "Meetings of this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.attendance": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.closed": [
+    {
+      "type": 0,
+      "value": "Actions closed on timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.deferred": [
+    {
+      "type": 0,
+      "value": "Items deferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.overdue": [
+    {
+      "type": 0,
+      "value": "Actions overdue nowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.papers": [
+    {
+      "type": 0,
+      "value": "Papers on timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.measure.timing": [
+    {
+      "type": 0,
+      "value": "Time to decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.meetingOf": [
+    {
+      "type": 0,
+      "value": "Meeting of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.member.heading": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.member.lead": [
+    {
+      "type": 0,
+      "value": "Attended "
+    },
+    {
+      "type": 1,
+      "value": "attended"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 6,
+      "value": "expected",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.member.none": [
+    {
+      "type": 0,
+      "value": "This person held no seat at a meeting in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.member.showingRole": [
+    {
+      "type": 1,
+      "value": "showing"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.member.title": [
+    {
+      "type": 0,
+      "value": "Meetings and attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.memoType.few": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ": too few to show ("
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.memoType.timing": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "decisions"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noActionsClosed": [
+    {
+      "type": 0,
+      "value": "No action was closed in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noDeadline": [
+    {
+      "type": 0,
+      "value": "No meeting had a papers deadline.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noDecisions": [
+    {
+      "type": 0,
+      "value": "No decision you can see in full.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noMeetings": [
+    {
+      "type": 0,
+      "value": "No meeting was held in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noMemoType": [
+    {
+      "type": 0,
+      "value": "No memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.noScope": [
+    {
+      "type": 0,
+      "value": "Analytics are for "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " members, officers and oversight.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.none": [
+    {
+      "type": 0,
+      "value": "NoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.notFound": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " is not in your analytics. Choose one from the overview."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.notShown": [
+    {
+      "type": 0,
+      "value": "Not shownSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.ofTotal": [
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.overdue.detail": [
+    {
+      "type": 6,
+      "value": "over90",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "none over 90 days"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " over 90 days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "revised",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no date changed"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " with its date changed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " with their date changed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.overview.lead": [
+    {
+      "type": 0,
+      "value": "These figures count only the meetings, decisions and actions you can see.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.overview.title": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " analyticsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.ownerHolder": [
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.detail": [
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " of meetings published by the papers deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.detailLate": [
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": " of meetings published by the papers deadline; "
+    },
+    {
+      "type": 1,
+      "value": "late"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.late": [
+    {
+      "type": 0,
+      "value": "LateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.lateCounts": [
+    {
+      "type": 6,
+      "value": "items",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late item"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late items"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "papers",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late paper"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late papers"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.lateSummary": [
+    {
+      "type": 6,
+      "value": "papers",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late paper"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late papers"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 6,
+      "value": "items",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late item"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " late items"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " in the period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.noDeadline": [
+    {
+      "type": 0,
+      "value": "No deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.none": [
+    {
+      "type": 0,
+      "value": "No meeting was held in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.onTime": [
+    {
+      "type": 0,
+      "value": "On timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.summary": [
+    {
+      "type": 0,
+      "value": "Papers on time: "
+    },
+    {
+      "type": 1,
+      "value": "onTime"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " with a deadline.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.papers.title": [
+    {
+      "type": 0,
+      "value": "Papers on timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period": [
+    {
+      "type": 0,
+      "value": "PeriodSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.12m": [
+    {
+      "type": 0,
+      "value": "Last 12 monthsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.2y": [
+    {
+      "type": 0,
+      "value": "Last 2 yearsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.5y": [
+    {
+      "type": 0,
+      "value": "Last 5 yearsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.apply": [
+    {
+      "type": 0,
+      "value": "ShowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.backwards": [
+    {
+      "type": 0,
+      "value": "The period must end on or after the day it starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.custom": [
+    {
+      "type": 0,
+      "value": "Choose datesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.lastYear": [
+    {
+      "type": 0,
+      "value": "Last calendar yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.thisYear": [
+    {
+      "type": 0,
+      "value": "This year so farSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.period.tooLong": [
+    {
+      "type": 0,
+      "value": "A period can be at most 10 years. Choose a shorter one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.quarter": [
+    {
+      "type": 0,
+      "value": "Q"
+    },
+    {
+      "type": 1,
+      "value": "quarter"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "year"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.observer": [
+    {
+      "type": 0,
+      "value": "ObserverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.secretary": [
+    {
+      "type": 0,
+      "value": "SecretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "Standing inviteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.role.viceChair": [
+    {
+      "type": 0,
+      "value": "Vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.absent": [
+    {
+      "type": 0,
+      "value": "AbsentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.byAlternate": [
+    {
+      "type": 0,
+      "value": "represented by their alternateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.inPerson": [
+    {
+      "type": 0,
+      "value": "Attended in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.joinedLate": [
+    {
+      "type": 0,
+      "value": "joined lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.leftEarly": [
+    {
+      "type": 0,
+      "value": "left earlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seat.remote": [
+    {
+      "type": 0,
+      "value": "Attended remotelySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.seatWithNotes": [
+    {
+      "type": 1,
+      "value": "seat"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "notes"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.showing": [
+    {
+      "type": 0,
+      "value": "Showing "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.sort.name": [
+    {
+      "type": 0,
+      "value": "Sort by nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.sort.rate": [
+    {
+      "type": 0,
+      "value": "Sort by rateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.summary": [
+    {
+      "type": 1,
+      "value": "attendance"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "actions"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "timing"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.summary.attendance": [
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": " attendance at "
+    },
+    {
+      "type": 6,
+      "value": "meetings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meeting"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " meetings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.summary.median": [
+    {
+      "type": 0,
+      "value": "decisions took a median of "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.summary.noMeetings": [
+    {
+      "type": 0,
+      "value": "no meetings heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.summary.overdue": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no actions overdue"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions overdue"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.detail": [
+    {
+      "type": 0,
+      "value": "median; 9 in 10 within "
+    },
+    {
+      "type": 6,
+      "value": "p90",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 6,
+      "value": "decisions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.few": [
+    {
+      "type": 0,
+      "value": "Too few decisions to show a typical time ("
+    },
+    {
+      "type": 6,
+      "value": "decisions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decision"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " decisions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.none": [
+    {
+      "type": 0,
+      "value": "No decision on a submission you can see in full.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.summary": [
+    {
+      "type": 0,
+      "value": "Decisions took a median of "
+    },
+    {
+      "type": 6,
+      "value": "median",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; 9 in 10 within "
+    },
+    {
+      "type": 6,
+      "value": "p90",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.title": [
+    {
+      "type": 0,
+      "value": "Time from submission to decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.tooFew": [
+    {
+      "type": 0,
+      "value": "Too few decisions to show a typical time.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.timing.value": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.toOverview": [
+    {
+      "type": 0,
+      "value": "All "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " analyticsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.tooFew": [
+    {
+      "type": 0,
+      "value": "Too few decisions to show a typical timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.unknownOwner": [
+    {
+      "type": 0,
+      "value": "Owner not knownSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.unnamed": [
+    {
+      "type": 0,
+      "value": "Name not availableSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.workingDays": [
+    {
+      "type": 0,
+      "value": "Count working daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "analytics.workingDays.hint": [
+    {
+      "type": 0,
+      "value": "Calendar days by default; working days follow the business calendar.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -33885,6 +36175,38 @@
       "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.analytics": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " analyticsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.analyticsAttendance": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.analyticsCommittee": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.analyticsMember": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.audit": [
     {
       "type": 0,
@@ -34445,6 +36767,114 @@
     {
       "type": 1,
       "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.actionMemoDecided": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was approved. You can now mark the action as done."
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was rejected"
+            }
+          ]
+        },
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was withdrawn"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The follow-up memo of action "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") was stopped"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,
@@ -37903,6 +40333,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.note.system": [
+    {
+      "type": 0,
+      "value": "Recorded by the systemSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "papers.outcome.approved": [

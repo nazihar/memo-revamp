@@ -184,6 +184,7 @@ const report: ImportReportView = {
 
 const imported: MemoView = {
   origin: 'IMPORTED',
+  followsUp: [],
   id: 'm1',
   reference: 'CR/2016/0108',
   subject: 'Working capital line for Meghna Agro',

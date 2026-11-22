@@ -167,6 +167,7 @@
   - Load and stress (weekly and before each release) — verify budgets and find the breaking point.
   - Soak (8–24 hours, before milestones) — memory leaks, connection exhaustion, job backlog.
 - **Database:** `pg_stat_statements` reviewed after each perf run; the slowest queries get explicit fixes; `EXPLAIN` plans for new list/search queries are reviewed against seeded volumes during development.
+- **Budget checks in the normal suite:** the `*PerformanceIT` tests check each budget with 2x headroom against a small volume, measured with `testsupport/Latency`: the p95 of the timed calls in each of three rounds, keeping the best round. The suite shares one JVM with every cached test context and their background jobs, so one slow call must not fail a budget, while a real regression is slow in every round. The budgets themselves are measured at volume in the weekly `load` run.
 - **Release regression gate:** p95 latency of key endpoints must not regress by more than 10% against the previous release.
 - **Resilience (weekly + release):** Toxiproxy-injected latency and failures for PostgreSQL, SeaweedFS, ONLYOFFICE, ClamAV and SMTP — the app degrades gracefully, jobs retry idempotently, nothing is half-written; kill an app node mid-job and verify db-scheduler resumes; database failover in the HA test environment.
 - **Backup and restore drill** (automated, before every milestone and quarterly in production): restore to a clean environment, verify audit-chain integrity and object-lock state, measure against RPO/RTO.

@@ -3,6 +3,7 @@ import {
   Bookmark,
   CalendarClock,
   ChartColumn,
+  ChartNoAxesColumn,
   FileClock,
   House,
   Inbox,
@@ -34,8 +35,12 @@ import { patternsEnabled } from './features'
 
 export type NavGroup = 'work' | 'administration' | 'developer'
 
-/** Who sees a menu entry: everyone, any signed-in user, or holders of a permission (ADR-0027). The server decides. */
-export type Audience = 'everyone' | 'signedIn' | { permission: string } | { anyOf: string[] }
+/**
+ * Who sees a menu entry: everyone, any signed-in user, holders of a permission (ADR-0027), or people with a committee
+ * seat in office and holders of a permission (`seatOrAnyOf`). The server decides.
+ */
+export type Audience =
+  'everyone' | 'signedIn' | { permission: string } | { anyOf: string[] } | { seatOrAnyOf: string[] }
 
 export interface NavItem {
   id: string
@@ -53,6 +58,8 @@ export interface Viewer {
   signedIn: boolean
   /** Permission keys held anywhere (`GET /me/access`). */
   permissions: string[]
+  /** A secretary, chair, vice-chair or member seat in office on a committee (`GET /me/forums`). */
+  committeeSeat?: boolean
 }
 
 export const ANONYMOUS: Viewer = { signedIn: false, permissions: [] }
@@ -62,6 +69,7 @@ const messages = defineMessages({
   inbox: { id: 'nav.inbox', defaultMessage: 'Inbox' },
   savedSearches: { id: 'nav.savedSearches', defaultMessage: 'Saved searches' },
   dashboard: { id: 'nav.dashboard', defaultMessage: 'Dashboard' },
+  analytics: { id: 'nav.analytics', defaultMessage: '{Forum} analytics' },
   workflowTasks: { id: 'nav.workflowTasks', defaultMessage: 'Open tasks' },
   memoTypes: { id: 'nav.memoTypes', defaultMessage: 'Memo types' },
   memoNumbering: { id: 'nav.memoNumbering', defaultMessage: 'Memo numbering' },
@@ -159,6 +167,16 @@ export const navigation: NavItem[] = [
     icon: ScrollText,
     group: 'work',
     audience: { anyOf: ['forum.read', 'forums.manage'] },
+    enabled: true,
+  },
+  {
+    // Committee analytics (Phase 4 E08 T7): members and officers in office, and oversight (design E08 §2.3).
+    id: 'analytics',
+    to: '/analytics/committees',
+    label: messages.analytics,
+    icon: ChartNoAxesColumn,
+    group: 'work',
+    audience: { seatOrAnyOf: ['forum.read', 'forums.manage'] },
     enabled: true,
   },
   { id: 'org', to: '/org', label: messages.org, icon: Network, group: 'work', audience: 'signedIn', enabled: true },
@@ -356,6 +374,12 @@ export const navigation: NavItem[] = [
 function visibleTo(viewer: Viewer, audience: Audience): boolean {
   if (audience === 'everyone') return true
   if (audience === 'signedIn') return viewer.signedIn
+  if ('seatOrAnyOf' in audience) {
+    return (
+      viewer.signedIn &&
+      (viewer.committeeSeat === true || audience.seatOrAnyOf.some((p) => viewer.permissions.includes(p)))
+    )
+  }
   if ('anyOf' in audience) return viewer.signedIn && audience.anyOf.some((p) => viewer.permissions.includes(p))
   return viewer.signedIn && viewer.permissions.includes(audience.permission)
 }

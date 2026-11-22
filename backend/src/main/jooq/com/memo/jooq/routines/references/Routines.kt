@@ -5,6 +5,7 @@
 package com.memo.jooq.routines.references
 
 
+import com.memo.jooq.routines.SearchDecisionStatsSql
 import com.memo.jooq.routines.SearchPutChunks
 import com.memo.jooq.routines.SearchPutDecision
 import com.memo.jooq.routines.SearchPutDecisionItems
@@ -37,6 +38,27 @@ import org.jooq.JSONB
 import org.jooq.Result
 
 
+
+/**
+ * Call <code>memo.search_decision_stats_sql</code>
+ */
+fun searchDecisionStatsSql(
+      configuration: Configuration
+): String? {
+    val f = SearchDecisionStatsSql()
+
+    f.execute(configuration)
+    return f.returnValue
+}
+
+/**
+ * Get <code>memo.search_decision_stats_sql</code> as a field.
+ */
+fun searchDecisionStatsSql(): Field<String?> {
+    val f = SearchDecisionStatsSql()
+
+    return f.asField()
+}
 
 /**
  * Call <code>memo.search_put_chunks</code>

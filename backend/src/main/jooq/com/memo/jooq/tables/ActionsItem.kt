@@ -20,11 +20,13 @@ import com.memo.jooq.keys.ACTIONS_ITEM_NUMBER_UK
 import com.memo.jooq.keys.ACTIONS_ITEM_PKEY
 import com.memo.jooq.keys.ACTIONS_ITEM_REFERENCE_UK
 import com.memo.jooq.keys.ACTIONS_ITEM__ACTIONS_ITEM_TENANT_ID_SUPERSEDED_BY_FKEY
+import com.memo.jooq.keys.ACTIONS_MEMO__ACTIONS_MEMO_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.keys.ACTIONS_REPORT_HOLD__ACTIONS_REPORT_HOLD_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.keys.ACTIONS_REPORT_ROW__ACTIONS_REPORT_ROW_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.tables.ActionsContributor.ActionsContributorPath
 import com.memo.jooq.tables.ActionsDueRequest.ActionsDueRequestPath
 import com.memo.jooq.tables.ActionsEntry.ActionsEntryPath
+import com.memo.jooq.tables.ActionsMemo.ActionsMemoPath
 import com.memo.jooq.tables.ActionsReportHold.ActionsReportHoldPath
 import com.memo.jooq.tables.ActionsReportRow.ActionsReportRowPath
 import com.memo.jooq.tables.records.ActionsItemRecord
@@ -463,6 +465,22 @@ open class ActionsItem(
 
     val actionsEntry: ActionsEntryPath
         get(): ActionsEntryPath = actionsEntry()
+
+    private lateinit var _actionsMemo: ActionsMemoPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.actions_memo</code>
+     * table
+     */
+    fun actionsMemo(): ActionsMemoPath {
+        if (!this::_actionsMemo.isInitialized)
+            _actionsMemo = ActionsMemoPath(this, null, ACTIONS_MEMO__ACTIONS_MEMO_TENANT_ID_ACTION_ID_FKEY.inverseKey)
+
+        return _actionsMemo;
+    }
+
+    val actionsMemo: ActionsMemoPath
+        get(): ActionsMemoPath = actionsMemo()
 
     private lateinit var _actionsReportHold: ActionsReportHoldPath
 

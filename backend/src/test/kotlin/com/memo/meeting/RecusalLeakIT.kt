@@ -207,6 +207,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
             // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
             Surface.TRACKER to { p, v -> trackerProbe(p, v) },
+            // E08 T4: analytics and the attendance export (counts only; the differential is AnalyticsLeakIT).
+            Surface.ANALYTICS to { _, v -> analyticsProbe(v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },
@@ -294,40 +296,6 @@ class RecusalLeakIT : RecusalActionsFixture() {
         val cells = workbookText(export)
         canaries(v.person()).forEach { assertThat(cells).doesNotContain(it) }
         assertThat(cells).contains(natureOf(v.person()))
-    }
-
-    /**
-     * E06 T3's surface, in the shared scenario: the decisions list answers no canary and names no decision of the hidden
-     * item, and the items' history and notes are 404. The planted decisions have a test of their
-     * own (a decided item freezes its declarations, which the other probes and the last ruling of the scenario change).
-     */
-    private fun decisionsProbe(
-        p: Planted,
-        person: Person,
-        planted: Boolean = false,
-    ) {
-        val base = "/api/v1/meetings/${p.meeting.id}"
-        val list = read("$base/decisions", person.session)
-        clean(person, list)
-        assertThat(list.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE)
-        val decisions = list.json()["decisions"].list().associateBy { UUID.fromString(it["itemId"].asString()) }
-        assertThat(decisions.keys).describedAs("the hidden item's decision").doesNotContain(p.hidden)
-        if (planted) {
-            val mine = decisions.getValue(p.item)
-            assertThat(
-                mine["viewerRecused"].asBoolean() to mine["text"].asString(),
-            ).isEqualTo(true to "It was resolved that the term loan be approved.")
-            listOf("vote", "dissent", "abstentions", "tookNoPart", "snapshotId", "recordedBy").forEach {
-                assertThat(mine.absent(it)).describedAs("$it of a recused view").isTrue()
-            }
-        }
-        p.both.forEach { item ->
-            listOf("$base/items/$item/decision/entries", "$base/items/$item/notes").forEach { uri ->
-                val answer = read(uri, person.session)
-                assertThat(answer).hasStatus(HttpStatus.NOT_FOUND)
-                assertThat(answer.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE, CANARY_TITLE)
-            }
-        }
     }
 
     /**
@@ -740,10 +708,6 @@ class RecusalLeakIT : RecusalActionsFixture() {
     }
 
     private companion object {
-        /** E06 T3: a dissent's reason and the secretary's notes on the planted item, which no recused viewer may read. */
-        const val CANARY_DISSENT = "CANARY-DS dissent reason"
-        const val CANARY_NOTE = "CANARY-NT secretary notes"
-
         /** The officer probes the recused chair makes; the recused secretary makes the others. */
         val BY_THE_CHAIR =
             setOf(

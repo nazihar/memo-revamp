@@ -80,6 +80,7 @@ class MinutesConfirmation(
     private val viewers: MeetingViewers,
     private val meetingMinutes: MeetingMinutes,
     private val release: MinutesReleaseScheduler,
+    private val records: MinutesRecords,
     private val files: Files,
     private val authentication: AuthenticationContext,
     private val stepUp: StepUpCheck,
@@ -150,6 +151,8 @@ class MinutesConfirmation(
                     "meetingStatus" to meeting.status.name,
                 ),
         )
+        // The record (E06 T7): version 1, of this approval, made by the `minutes-record` job.
+        records.request(after, approval)
         release.approved(meetingId)
         events.publishEvent(MinutesApproved(TenantContext.current().value, meetingId, row.forumId))
         notifier.notify(people.readers(after).keys, NotificationKind.MINUTES_APPROVED, meetingId)

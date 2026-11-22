@@ -1,0 +1,27 @@
+# Phase 4 E08 T4 meeting analytics (design E08 §2.3, §3, §4; ADR-0070). The overview and a committee's detail are for
+# committee people and oversight: a committee's officers (secretary, chair, vice-chair) and members in office (their
+# committees), forums.manage and forum.read (every committee). A signed-in user with none of these is 403 (a tenant
+# administrator holds forums.manage, so the overview answers them). On a random committee the detail and the export answer
+# 404 to anyone with a scope (outside it, never "forbidden"), and 403 to someone without one. Who sees which committee,
+# members' own rows, late counts for officers only and the export's 403 for members are AnalyticsIT; another tenant's
+# committee AnalyticsIT's cross-tenant test; a recused or restricted viewer's numbers AnalyticsLeakIT (the differential).
+# The rows live in their own file beside T2's p4-e08-register-analytics.yaml, so the two tasks' branches do not collide.
+#
+# Recusal columns: the status on the leak suite's published meeting's committee for a member recused from the item, one
+# awaiting the chair's ruling, a recused secretary and a recused chair. Each is still in office, so their analytics stay
+# theirs (200) without the item's counts (RecusalLeakIT's ANALYTICS surface); a recused member may not export (403), a
+# recused secretary or chair exports the committee's attendance, which holds no item at all.
+epic: P4-E08
+endpoints:
+  - endpoint: "GET /api/v1/analytics/committees"
+    rule: signedIn
+    expect: { user: 403 }
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "GET /api/v1/analytics/committees/{forumId}"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 404, tenantAdminStale: 404 }
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "GET /api/v1/analytics/committees/{forumId}/attendance/export"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 404, tenantAdminStale: 404 }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }

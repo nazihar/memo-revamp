@@ -190,6 +190,7 @@ const preview: MemberAgendaResponse = {
           papers: [],
           presenters: [],
           subItems: [],
+          links: [],
         },
         {
           id: 'i6',
@@ -202,6 +203,7 @@ const preview: MemberAgendaResponse = {
           papers: [],
           presenters: [],
           subItems: [],
+          links: [],
           recused: true,
         },
       ],

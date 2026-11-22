@@ -12,6 +12,7 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FileContents
 import com.memo.files.Files
+import com.memo.memo.RecordFixitySource
 import com.memo.memo.internal.Memos
 import com.memo.memo.internal.legacy.LegacyMemoReader
 import org.slf4j.LoggerFactory
@@ -38,6 +39,14 @@ data class FixityResult(
     val mismatched: Int,
     val originalsChecked: Int = 0,
     val originalsMismatched: Int = 0,
+    /** Other modules' records ([RecordFixitySource], for example the approved minutes' records and copies), by source. */
+    val sources: Map<String, FixityCount> = emptyMap(),
+)
+
+/** What a fixity run found in one source. */
+data class FixityCount(
+    val checked: Int,
+    val mismatched: Int,
 )
 
 /**
@@ -55,13 +64,48 @@ class RecordFixity(
     private val contents: FileContents,
     private val transactions: TenantTransactions,
     private val audit: AuditLog,
+    private val others: ObjectProvider<RecordFixitySource>,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
     fun verify(): FixityResult {
         val records = records()
         val originals = originals()
-        return FixityResult(records.checked, records.mismatched, originals.checked, originals.mismatched)
+        val sources = others.orderedStream().toList().associate { it.verifiedAction to source(it) }
+        return FixityResult(records.checked, records.mismatched, originals.checked, originals.mismatched, sources)
+    }
+
+    /** Another module's records ([RecordFixitySource]): each version against the hash recorded when it was stored. */
+    private fun source(source: RecordFixitySource): FixityCount {
+        val tenant = TenantContext.current()
+        val result =
+            paged({ after -> transactions.readInTenant(tenant) { source.page(after, PAGE) } }, { it.id }) { page ->
+                page.count { record ->
+                    val actual = hashOf(record.fileVersionId)
+                    val mismatch = actual == null || !actual.equals(record.sha256, ignoreCase = true)
+                    if (mismatch) {
+                        log.error("Record {} ({}) does not match its recorded hash", record.id, source.mismatchAction)
+                        transactions.inTenant(tenant) {
+                            audit.record(
+                                source.mismatchAction,
+                                record.objectType,
+                                record.objectId,
+                                after = record.details + mapOf("expected" to record.sha256, "actual" to actual),
+                            )
+                        }
+                    }
+                    mismatch
+                }
+            }
+        transactions.inTenant(tenant) {
+            audit.record(
+                source.verifiedAction,
+                source.objectType,
+                null,
+                after = mapOf("checked" to result.checked, "mismatched" to result.mismatched),
+            )
+        }
+        return FixityCount(result.checked, result.mismatched)
     }
 
     /** Final records: each made version against the hash recorded when it was made. */

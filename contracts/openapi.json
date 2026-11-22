@@ -685,6 +685,20 @@
         "required" : [ "code", "userId" ],
         "type" : "object"
       },
+      "ActionsDetail" : {
+        "properties" : {
+          "owners" : {
+            "items" : {
+              "$ref" : "#/components/schemas/OwnerOverdueResponse"
+            },
+            "type" : "array"
+          },
+          "summary" : {
+            "$ref" : "#/components/schemas/ActionsSummary"
+          }
+        },
+        "type" : "object"
+      },
       "ActionsPolicy" : {
         "properties" : {
           "amberWorkingDays" : {
@@ -723,6 +737,51 @@
           }
         },
         "required" : [ "amberWorkingDays", "defaultDue", "defaultDueWorkingDays", "definitionKey", "dueChange", "evidenceRequired", "staleWorkingDays", "updateRequestWorkingDays", "verifiedBy" ],
+        "type" : "object"
+      },
+      "ActionsSummary" : {
+        "properties" : {
+          "closed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "closedByAgreedDate" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "closedByAgreedPercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "closedByOriginalDate" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "closedByOriginalPercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "overdue" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "overdue1To30" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "overdue31To90" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "overdueOver90" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "overdueRevised" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
         "type" : "object"
       },
       "ActiveRequest" : {
@@ -1443,6 +1502,25 @@
         },
         "type" : "object"
       },
+      "AnalyticsSummaryResponse" : {
+        "properties" : {
+          "committees" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CommitteeSummaryResponse"
+            },
+            "type" : "array"
+          },
+          "from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "to" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "AppliedResponse" : {
         "properties" : {
           "moved" : {
@@ -1660,6 +1738,26 @@
           }
         },
         "required" : [ "absent", "apologies", "expected", "inPerson", "left", "remote", "total" ],
+        "type" : "object"
+      },
+      "AttendanceDetail" : {
+        "properties" : {
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemberAttendanceResponse"
+            },
+            "type" : "array"
+          },
+          "membersOmitted" : {
+            "type" : "boolean"
+          },
+          "ownRowOnly" : {
+            "type" : "boolean"
+          },
+          "summary" : {
+            "$ref" : "#/components/schemas/AttendanceSummary"
+          }
+        },
         "type" : "object"
       },
       "AttendanceEventRequest" : {
@@ -1890,6 +1988,27 @@
           }
         },
         "required" : [ "canRecord", "correcting", "counts", "meetingId", "status" ],
+        "type" : "object"
+      },
+      "AttendanceSummary" : {
+        "properties" : {
+          "attended" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "expected" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "heldMeetings" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "ratePercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
         "type" : "object"
       },
       "AuditEvent" : {
@@ -2724,6 +2843,88 @@
           }
         },
         "required" : [ "code" ],
+        "type" : "object"
+      },
+      "CommitteeDetailResponse" : {
+        "properties" : {
+          "access" : {
+            "enum" : [ "FULL", "MEMBER" ],
+            "type" : "string"
+          },
+          "actions" : {
+            "$ref" : "#/components/schemas/ActionsDetail"
+          },
+          "attendance" : {
+            "$ref" : "#/components/schemas/AttendanceDetail"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "deferrals" : {
+            "$ref" : "#/components/schemas/DeferralDetail"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "papers" : {
+            "$ref" : "#/components/schemas/PapersDetail"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "timeToDecision" : {
+            "$ref" : "#/components/schemas/TimingDetail"
+          },
+          "to" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "CommitteeSummaryResponse" : {
+        "properties" : {
+          "access" : {
+            "enum" : [ "FULL", "MEMBER" ],
+            "type" : "string"
+          },
+          "actions" : {
+            "$ref" : "#/components/schemas/ActionsSummary"
+          },
+          "attendance" : {
+            "$ref" : "#/components/schemas/AttendanceSummary"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "deferrals" : {
+            "$ref" : "#/components/schemas/DeferralSummary"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "papers" : {
+            "$ref" : "#/components/schemas/PapersSummary"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "timeToDecision" : {
+            "$ref" : "#/components/schemas/TimingSummary"
+          }
+        },
         "type" : "object"
       },
       "ComponentHealth" : {
@@ -3890,6 +4091,41 @@
           },
           "next" : {
             "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "DeferralDetail" : {
+        "properties" : {
+          "byQuarter" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QuarterDeferralResponse"
+            },
+            "type" : "array"
+          },
+          "overall" : {
+            "$ref" : "#/components/schemas/DeferralSummary"
+          }
+        },
+        "type" : "object"
+      },
+      "DeferralSummary" : {
+        "properties" : {
+          "decisions" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "deferred" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "deferredPercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "deferredTwice" : {
+            "format" : "int32",
+            "type" : "integer"
           }
         },
         "type" : "object"
@@ -7472,6 +7708,41 @@
         "required" : [ "items" ],
         "type" : "object"
       },
+      "MeetingPapersResponse" : {
+        "properties" : {
+          "attended" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "expected" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "label" : {
+            "type" : [ "string", "null" ]
+          },
+          "lateItems" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "latePapers" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "onTime" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "MeetingPolicy" : {
         "properties" : {
           "invitationTitle" : {
@@ -7826,6 +8097,76 @@
         "required" : [ "endsAt", "latestRevision", "meetingId", "preview", "sections", "startsAt", "status", "timeZone" ],
         "type" : "object"
       },
+      "MemberAttendanceResponse" : {
+        "properties" : {
+          "absent" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "apologies" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "attended" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "byAlternate" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "expected" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "inPerson" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "joinedLate" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "leftEarly" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "meetings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemberMeetingResponse"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : [ "string", "null" ]
+          },
+          "ratePercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "remote" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "seatFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "seatTo" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "MemberAttribute" : {
         "properties" : {
           "key" : {
@@ -7984,6 +8325,32 @@
           }
         },
         "required" : [ "access", "changes", "id", "kind", "late", "papers", "presenters", "subItems" ],
+        "type" : "object"
+      },
+      "MemberMeetingResponse" : {
+        "properties" : {
+          "attendance" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES", "ABSENT" ],
+            "type" : "string"
+          },
+          "byAlternate" : {
+            "type" : "boolean"
+          },
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "joinedLate" : {
+            "type" : "boolean"
+          },
+          "leftEarly" : {
+            "type" : "boolean"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "MemberPaperResponse" : {
@@ -8473,6 +8840,18 @@
           }
         },
         "required" : [ "available", "owner" ],
+        "type" : "object"
+      },
+      "MemoTypeTimingResponse" : {
+        "properties" : {
+          "memoTypeId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "timing" : {
+            "$ref" : "#/components/schemas/TimingSummary"
+          }
+        },
         "type" : "object"
       },
       "MemoTypeVersionResponse" : {
@@ -9258,6 +9637,94 @@
         },
         "type" : "object"
       },
+      "MinutesRecordCheckResponse" : {
+        "properties" : {
+          "matches" : {
+            "type" : "boolean"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesCheckProblem"
+            },
+            "type" : "array"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "matches", "problems", "version" ],
+        "type" : "object"
+      },
+      "MinutesRecordFile" : {
+        "properties" : {
+          "compliant" : {
+            "type" : "boolean"
+          },
+          "full" : {
+            "type" : "boolean"
+          },
+          "sha256" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "compliant", "full", "sha256" ],
+        "type" : "object"
+      },
+      "MinutesRecordResponse" : {
+        "properties" : {
+          "approvalId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "builtAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "current" : {
+            "type" : "boolean"
+          },
+          "file" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesRecordFile"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "redacted" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesRedactedItem"
+            },
+            "type" : "array"
+          },
+          "state" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "approvalId", "createdAt", "current", "redacted", "state", "version" ],
+        "type" : "object"
+      },
+      "MinutesRedactedItem" : {
+        "properties" : {
+          "itemNumber" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "RECUSED", "RESTRICTED", "HIDDEN" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "itemNumber", "kind" ],
+        "type" : "object"
+      },
       "MinutesRedactionResponse" : {
         "properties" : {
           "itemId" : {
@@ -9526,11 +9993,14 @@
       "MinutesTemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {
             "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
           },
           "paragraph" : {
             "format" : "int32",
@@ -9612,9 +10082,15 @@
             }, {
               "type" : "null"
             } ]
+          },
+          "warnings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateProblemView"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "available", "owner", "problems", "refusals", "tags" ],
+        "required" : [ "available", "owner", "problems", "refusals", "tags", "warnings" ],
         "type" : "object"
       },
       "MinutesWorkResponse" : {
@@ -10782,6 +11258,49 @@
         },
         "type" : "object"
       },
+      "OwnerOverdueResponse" : {
+        "properties" : {
+          "days1To30" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "days31To90" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "holderName" : {
+            "type" : [ "string", "null" ]
+          },
+          "holderUserId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "over90" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "overdue" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "ownerName" : {
+            "type" : [ "string", "null" ]
+          },
+          "ownerPositionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "ownerUserId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "revised" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
       "PackFileResponse" : {
         "properties" : {
           "classificationId" : {
@@ -10801,6 +11320,49 @@
           }
         },
         "required" : [ "classificationId", "fileId", "source", "title" ],
+        "type" : "object"
+      },
+      "PapersDetail" : {
+        "properties" : {
+          "meetings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MeetingPapersResponse"
+            },
+            "type" : "array"
+          },
+          "summary" : {
+            "$ref" : "#/components/schemas/PapersSummary"
+          }
+        },
+        "type" : "object"
+      },
+      "PapersSummary" : {
+        "properties" : {
+          "lateItems" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "latePapers" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "meetings" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "onTime" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "onTimePercent" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "withDeadline" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
         "type" : "object"
       },
       "PasswordResetCompletion" : {
@@ -11345,6 +11907,28 @@
           }
         },
         "required" : [ "number", "publishedAt" ],
+        "type" : "object"
+      },
+      "QuarterDeferralResponse" : {
+        "properties" : {
+          "deferrals" : {
+            "$ref" : "#/components/schemas/DeferralSummary"
+          },
+          "quarter" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "QuarterTimingResponse" : {
+        "properties" : {
+          "quarter" : {
+            "type" : "string"
+          },
+          "timing" : {
+            "$ref" : "#/components/schemas/TimingSummary"
+          }
+        },
         "type" : "object"
       },
       "QueueMemberRequest" : {
@@ -14547,7 +15131,7 @@
       "TemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {
@@ -14692,6 +15276,54 @@
           }
         },
         "required" : [ "locale", "terms" ],
+        "type" : "object"
+      },
+      "TimingDetail" : {
+        "properties" : {
+          "byMemoType" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoTypeTimingResponse"
+            },
+            "type" : "array"
+          },
+          "byQuarter" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QuarterTimingResponse"
+            },
+            "type" : "array"
+          },
+          "overall" : {
+            "$ref" : "#/components/schemas/TimingSummary"
+          }
+        },
+        "type" : "object"
+      },
+      "TimingSummary" : {
+        "properties" : {
+          "decisions" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "enough" : {
+            "type" : "boolean"
+          },
+          "medianDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "medianWorkingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "p90Days" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "p90WorkingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
         "type" : "object"
       },
       "ToBeRatifiedResponse" : {
@@ -20132,6 +20764,145 @@
         },
         "summary" : "Give a claimed step back to everyone it was offered to",
         "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/analytics/committees" : {
+      "get" : {
+        "operationId" : "getCommitteeAnalytics",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "forumIds",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AnalyticsSummaryResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The five measures of each committee in the viewer's scope over a period (default the last 12 months)",
+        "tags" : [ "analytics" ]
+      }
+    },
+    "/api/v1/analytics/committees/{forumId}" : {
+      "get" : {
+        "operationId" : "getCommitteeAnalyticsDetail",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CommitteeDetailResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee's measures in detail: attendance per member, overdue actions by owner, timing by quarter and memo type",
+        "tags" : [ "analytics" ]
+      }
+    },
+    "/api/v1/analytics/committees/{forumId}/attendance/export" : {
+      "get" : {
+        "operationId" : "exportCommitteeAttendance",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : {
+                "schema" : {
+                  "format" : "binary",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "The workbook"
+          },
+          "429" : {
+            "description" : "Too many exports"
+          }
+        },
+        "summary" : "A committee's attendance per seat holder as an Excel workbook, for the annual report (audited; 5 an hour)",
+        "tags" : [ "analytics" ]
       }
     },
     "/api/v1/auth/csrf" : {
@@ -26749,7 +27520,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "The viewer's copy of the draft minutes (PDF, supports Range); 202 while it is being made",
+        "summary" : "The viewer's copy of the minutes at their stage (PDF, supports Range): the draft's, or once approved the record or their approved copy (PDF/A); 202 while it is being made, 409 RECORD_PENDING until the record is made",
         "tags" : [ "minutes" ]
       }
     },
@@ -26927,6 +27698,102 @@
           }
         },
         "summary" : "The copy a given reader gets (secretaries), the secretary's own recusals applying; 202 while it is being made",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/record" : {
+      "get" : {
+        "operationId" : "getMinutesRecord",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "version",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "The approved minutes' record as the viewer reads it (PDF/A, supports Range): the record itself, or their approved copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/records" : {
+      "get" : {
+        "operationId" : "listMinutesRecords",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MinutesRecordResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The approved minutes' record versions as the viewer reads them",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/records/{version}/check" : {
+      "post" : {
+        "operationId" : "checkMinutesRecord",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "version",
+          "required" : true,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesRecordCheckResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Recompute a record version's approval hashes and chain, and re-hash the approved document and the viewer's file",
         "tags" : [ "minutes" ]
       }
     },

@@ -167,6 +167,8 @@ class MinutesCrossTenantIT : DecisionFixture() {
 
     @Autowired lateinit var minutesConfirmation: com.memo.minutes.internal.MinutesConfirmation
 
+    @Autowired lateinit var minutesRecordReading: com.memo.minutes.internal.MinutesRecordReading
+
     @Test
     fun `another tenant neither reviews, reads, comments on nor confirms the minutes, nor sees their T6 rows`() {
         val d = deciding()
@@ -193,6 +195,10 @@ class MinutesCrossTenantIT : DecisionFixture() {
             { minutesReading.preview(held.id, director.id.value) },
             { minutesConfirmation.requireConfirmer(held.id) },
             { minutesConfirmation.approvalsOf(held.id) },
+            // E06 T7: the record, its versions and its check.
+            { minutesRecordReading.serve(held.id, null) ?: "building" },
+            { minutesRecordReading.versions(held.id) },
+            { minutesRecordReading.approvedReader(held.id) },
         ).forEach { call ->
             val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
             assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "MinutesNotFoundException")

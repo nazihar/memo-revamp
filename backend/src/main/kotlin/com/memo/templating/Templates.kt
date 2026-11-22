@@ -111,6 +111,9 @@ enum class TemplateProblemCode {
      * block is used twice, or it is inside another block.
      */
     BLOCK_PLACEMENT,
+
+    /** A tag that still works but is no longer recommended ([TagVocabulary.deprecated]): a warning, never a problem. */
+    DEPRECATED_TAG,
 }
 
 /** Something to fix before a template can be used, with where it is and the text around it. */
@@ -122,6 +125,8 @@ data class TemplateProblem(
     val tag: String? = null,
     /** The closest known tag, when there is one. */
     val suggestion: String? = null,
+    /** Why, for a warning ([TemplateProblemCode.DEPRECATED_TAG]). */
+    val note: String? = null,
 ) {
     companion object {
         const val EXCERPT_CHARS = 80
@@ -150,6 +155,11 @@ data class TagVocabulary(
     val loops: Map<String, Set<String>>,
     val blocks: Map<String, TagVocabulary> = emptyMap(),
     val aliases: Map<String, String> = emptyMap(),
+    /**
+     * Tags still filled but no longer recommended, with why (E06 T7): using one is not a problem
+     * ([DocxTemplates.check]) but a warning ([DocxTemplates.warnings], [TemplateProblemCode.DEPRECATED_TAG]).
+     */
+    val deprecated: Map<String, String> = emptyMap(),
 )
 
 /**
@@ -164,6 +174,12 @@ data class TemplateData(
     val blocks: Map<String, List<TemplateData>> = emptyMap(),
     /** On a block element: wrap the element's rendered block in this content control. Ignored elsewhere. */
     val control: ControlMark? = null,
+    /**
+     * Row-level content controls (ADR-0066, E06 T7): for a loop of [rows], the tag of each of its rows (same order; null
+     * for none). Each rendered row of such a loop is wrapped in a row-level `w:sdt` with that tag, unlocked, so a reader's
+     * copy can drop the rows of items it redacts ([DocxControls.dropRows]). Tags as [ControlMark.tag]. Top level only.
+     */
+    val rowTags: Map<String, List<String?>> = emptyMap(),
 )
 
 /**
@@ -201,6 +217,19 @@ interface DocxTemplates {
         scan: TemplateScan,
         vocabulary: TagVocabulary,
     ): List<TemplateProblem>
+
+    /** The tags of [scan] that [vocabulary] marks deprecated, once per place, in document order: warnings, not problems. */
+    fun warnings(
+        scan: TemplateScan,
+        vocabulary: TagVocabulary,
+    ): List<TemplateProblem> =
+        scan.tags
+            .filter { it.kind == TagKind.VALUE || it.kind == TagKind.SECTION_START }
+            .mapNotNull { tag ->
+                vocabulary.deprecated[tag.name]?.let { why ->
+                    TemplateProblem(TemplateProblemCode.DEPRECATED_TAG, tag.location, tag.excerpt, tag.name, note = why)
+                }
+            }
 }
 
 /** Why a fill did not produce a document. */

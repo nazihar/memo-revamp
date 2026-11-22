@@ -5,8 +5,8 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MINUTES_COPY_APPROVED_IDX
 import com.memo.jooq.indexes.MINUTES_COPY_SET_IDX
-import com.memo.jooq.indexes.MINUTES_COPY_UK
 import com.memo.jooq.keys.MINUTES_COPY_PKEY
 import com.memo.jooq.keys.MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.tables.Minutes.MinutesPath
@@ -156,6 +156,21 @@ open class MinutesCopy(
      */
     val VERSION: TableField<MinutesCopyRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.minutes_copy.record_version</code>.
+     */
+    val RECORD_VERSION: TableField<MinutesCopyRecord, Int?> = createField(DSL.name("record_version"), SQLDataType.INTEGER, this, "")
+
+    /**
+     * The column <code>memo.minutes_copy.compliant</code>.
+     */
+    val COMPLIANT: TableField<MinutesCopyRecord, Boolean?> = createField(DSL.name("compliant"), SQLDataType.BOOLEAN, this, "")
+
+    /**
+     * The column <code>memo.minutes_copy.validation</code>.
+     */
+    val VALIDATION: TableField<MinutesCopyRecord, JSONB?> = createField(DSL.name("validation"), SQLDataType.JSONB, this, "")
+
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -188,7 +203,7 @@ open class MinutesCopy(
         override fun `as`(alias: Table<*>): MinutesCopyPath = MinutesCopyPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_COPY_SET_IDX, MINUTES_COPY_UK)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_COPY_APPROVED_IDX, MINUTES_COPY_SET_IDX)
     override fun getPrimaryKey(): UniqueKey<MinutesCopyRecord> = MINUTES_COPY_PKEY
     override fun getReferences(): List<ForeignKey<MinutesCopyRecord, *>> = listOf(MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY)
 
@@ -200,12 +215,16 @@ open class MinutesCopy(
     override fun getChecks(): List<Check<MinutesCopyRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_copy_check"), "(((state = 'DONE'::text) = ((file_version_id IS NOT NULL) AND (sha256 IS NOT NULL) AND (built_at IS NOT NULL))))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_check1"), "(((state = 'FAILED'::text) = (error IS NOT NULL)))", true),
+        Internal.createCheck(this, DSL.name("minutes_copy_compliant_ck"), "(((stage = 'APPROVED'::text) OR ((compliant IS NULL) AND (validation IS NULL))))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_error_check"), "(((char_length(error) >= 1) AND (char_length(error) <= 100)))", true),
+        Internal.createCheck(this, DSL.name("minutes_copy_record_ck"), "(((stage = 'APPROVED'::text) = (record_version IS NOT NULL)))", true),
+        Internal.createCheck(this, DSL.name("minutes_copy_record_version_check"), "((record_version >= 1))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_redacted_check"), "(((jsonb_typeof(redacted) = 'array'::text) AND (octet_length((redacted)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_set_key_check"), "((set_key ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_sha256_check"), "((sha256 ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_stage_check"), "((stage = ANY (ARRAY['DRAFT'::text, 'APPROVED'::text])))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_state_check"), "((state = ANY (ARRAY['PENDING'::text, 'DONE'::text, 'FAILED'::text])))", true),
+        Internal.createCheck(this, DSL.name("minutes_copy_validation_check"), "(((validation IS NULL) OR ((jsonb_typeof(validation) = 'object'::text) AND (octet_length((validation)::text) <= 16384))))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_version_check"), "((version >= 0))", true)
     )
     override fun `as`(alias: String): MinutesCopy = MinutesCopy(DSL.name(alias), this)

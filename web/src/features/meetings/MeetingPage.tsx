@@ -9,6 +9,8 @@ import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { MeetingActions } from '@/features/actions/officer/MeetingActions'
+import { WITH_ACTIONS } from '@/features/actions/officer/shared'
 import { DecisionsPanel } from '@/features/decisions/DecisionsPanel'
 import { dm } from '@/features/decisions/messages'
 import { AgendaLink } from './agenda/AgendaLink'
@@ -41,7 +43,8 @@ import { cityOf, viewerZone, whenIn, yourTimes } from './time'
  * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs; and for the officers and the
  * committee's chair or vice-chair, "Declarations" (E04 T7, flow T). From the start of the meeting (E05 T8): for the
  * officers the live quorum above the tabs and the "Attendance" register (flows X and Y), the tab they land on while it
- * runs; for the audience, "At the meeting" with how they are recorded and, for members, whether it is quorate.
+ * runs; for the audience, "At the meeting" with how they are recorded and, for members, whether it is quorate. From the
+ * start of the meeting, its officers see "Actions from this meeting" with its drafts and "Send the drafts" (E07 T10, AJ3).
  */
 export function MeetingPage({ meetingId }: { meetingId: string }) {
   const intl = useIntl()
@@ -185,6 +188,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       ) : (
         <MeetingAgenda meetingId={m.id} relation={m.relation} />
       )}
+      {officer && WITH_ACTIONS.includes(m.status) ? <MeetingActions meeting={m} /> : null}
       <Facts meeting={m} />
       {officer || m.canManage ? <Guests meeting={m} /> : null}
       {officer ? <AgendaLink meetingId={m.id} /> : null}

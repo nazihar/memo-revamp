@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, Circle } from 'lucide-react'
-import { useEffect, useId, useRef, useState, type ComponentProps, type RefObject } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ComponentProps, type RefObject } from 'react'
 import { useIntl } from 'react-intl'
 import {
   getDecisionsToBeRatifiedOptions,
@@ -14,6 +14,8 @@ import type { DecisionResponse, LiveQuorumResponse, MeetingResponse } from '@/ap
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ItemActions, MakeActionButton } from '@/features/actions/officer/MeetingActions'
+import { RAISING } from '@/features/actions/officer/shared'
 import { LIVE_REFRESH_MS } from '@/features/meetings/attendance/words'
 import { cn } from '@/lib/utils'
 import { ConsentDialog } from './ConsentDialog'
@@ -252,6 +254,9 @@ function ItemPanel({
   const titleId = useId()
   const [correcting, setCorrecting] = useState(false)
   const [history, setHistory] = useState(false)
+  // A condition's "Make this an action" opens the action form (E07 T10, flow AJ1); the secretaries, not recused.
+  const [raiseCondition, setRaiseCondition] = useState<number>()
+  const raising = m.canManage && RAISING.includes(m.status) && !item.recused
   const live = m.status === 'IN_PROGRESS'
   const recording = RECORDING.includes(m.status)
   // The quorum for the item: now while the meeting runs; once held, at the time it was taken when known.
@@ -264,6 +269,9 @@ function ItemPanel({
   const frozen = decision?.state === 'FINAL'
   const purpose = purposeWords(intl, item.purpose)
   const editing = recording && !item.recused && !frozen && (!decision || correcting)
+  const clearRaise = useCallback(() => {
+    setRaiseCondition(undefined)
+  }, [])
 
   return (
     <section aria-labelledby={titleId} className="flex min-w-0 flex-col gap-4 rounded-md border p-4">
@@ -308,7 +316,22 @@ function ItemPanel({
         />
       ) : decision ? (
         <div className="flex flex-col gap-3">
-          <DecisionText decision={decision} timeZone={m.timeZone} />
+          <DecisionText
+            decision={decision}
+            timeZone={m.timeZone}
+            {...(raising && decision.conditions.length
+              ? {
+                  conditionAction: (index: number) => (
+                    <MakeActionButton
+                      index={index}
+                      onPress={() => {
+                        setRaiseCondition(index)
+                      }}
+                    />
+                  ),
+                }
+              : {})}
+          />
           {decision.toBeRatified ? <Badge tone="warn">{intl.formatMessage(dm.toBeRatified)}</Badge> : null}
           {frozen ? <p className="text-base text-muted-foreground">{intl.formatMessage(dm.frozenLine)}</p> : null}
           {!item.recused ? (
@@ -341,6 +364,17 @@ function ItemPanel({
       ) : (
         <p className="text-base text-muted-foreground">{intl.formatMessage(dm.notYet)}</p>
       )}
+
+      {!item.recused ? (
+        <ItemActions
+          meeting={m}
+          itemId={item.id}
+          item={itemShort(intl, item)}
+          decision={decision}
+          raise={raiseCondition}
+          onRaised={clearRaise}
+        />
+      ) : null}
 
       {recording && !item.recused ? (
         <NotesBox meetingId={m.id} itemId={item.id} timeZone={m.timeZone} editable={notesEditable} />

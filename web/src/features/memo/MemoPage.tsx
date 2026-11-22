@@ -36,6 +36,7 @@ import { MemoCoauthors } from './MemoCoauthors'
 import { MemoCommittees } from './MemoCommittees'
 import { MemoDetails } from './MemoDetails'
 import { CompareVersions } from './CompareVersions'
+import { MemoOrigins } from '@/features/actions/ActionLinks'
 import { useSession } from '@/features/auth/session'
 import { pmv } from '@/features/forums/papers-messages'
 import { GitCompare } from 'lucide-react'
@@ -222,6 +223,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
           </>
         }
       />
+      <MemoOrigins labels={view.followsUp} />
       <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="flex flex-col gap-6">
           <MemoDetails memo={view} />

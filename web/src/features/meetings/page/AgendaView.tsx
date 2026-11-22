@@ -9,6 +9,7 @@ import type {
 } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ActionReportLinks } from '@/features/actions/ActionLinks'
 import { ItemDecisionLine } from '@/features/decisions/MemberDecisions'
 import { ItemDeclaration, StandingDeclarations } from '@/features/meetings/declarations/ItemDeclaration'
 import { cn } from '@/lib/utils'
@@ -190,6 +191,7 @@ function Details({
       {lines.length ? <p>{lines.join(' · ')}</p> : null}
       {item.resolutionSought ? <p>{item.resolutionSought}</p> : null}
       {item.description ? <p className="whitespace-pre-line text-muted-foreground">{item.description}</p> : null}
+      {item.standingKind === 'MATTERS_ARISING' ? <ActionReportLinks links={item.links} /> : null}
       {discussion?.requestedBy.length ? (
         <p className="font-medium">
           {intl.formatMessage(pmv.liftedBy, {

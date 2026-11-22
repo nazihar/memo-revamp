@@ -671,6 +671,5492 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "actionLinks.count.cancelled": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " cancelled since the last meeting"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.count.closed": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " closed since the last meeting"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.count.corrections": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " correction"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " corrections"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " to earlier minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.count.open": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " open"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.count.overdue": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " overdue"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.count.toClose": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " proposed to close"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.origin.label": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " actions this memo follows upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.origin.linkedTo": [
+    {
+      "type": 0,
+      "value": "Follows up action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.origin.raisedFrom": [
+    {
+      "type": 0,
+      "value": "Raised from action "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.report.link": [
+    {
+      "type": 0,
+      "value": "Action taken report (as published on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.report.nothing": [
+    {
+      "type": 0,
+      "value": "Nothing to reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionLinks.report.open": [
+    {
+      "type": 0,
+      "value": "Open the reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.cancel.discarded": [
+    {
+      "type": 0,
+      "value": "discarded draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.cancel.duplicate": [
+    {
+      "type": 0,
+      "value": "a duplicateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.cancel.noLongerNeeded": [
+    {
+      "type": 0,
+      "value": "no longer neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.cancel.riskAccepted": [
+    {
+      "type": 0,
+      "value": "risk acceptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.cancel.superseded": [
+    {
+      "type": 0,
+      "value": "replaced by another actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.confidence.atRisk": [
+    {
+      "type": 0,
+      "value": "At riskSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.confidence.offTrack": [
+    {
+      "type": 0,
+      "value": "Off trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.confidence.onTrack": [
+    {
+      "type": 0,
+      "value": "On trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.crumb.action": [
+    {
+      "type": 0,
+      "value": "ActionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.crumb.report": [
+    {
+      "type": 0,
+      "value": "Action taken reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.askNewDate": [
+    {
+      "type": 0,
+      "value": "Ask for a new dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.changeDate": [
+    {
+      "type": 0,
+      "value": "Change the dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.linkMemo": [
+    {
+      "type": 0,
+      "value": "Link an existing memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.markDone": [
+    {
+      "type": 0,
+      "value": "Mark as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.postUpdate": [
+    {
+      "type": 0,
+      "value": "Post an updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.raiseMemo": [
+    {
+      "type": 0,
+      "value": "Raise a memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.started": [
+    {
+      "type": 0,
+      "value": "I have startedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.do.verify": [
+    {
+      "type": 0,
+      "value": "VerifySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.done.hint": [
+    {
+      "type": 0,
+      "value": "Someone other than you checks it and closes it. Until then it shows as done, to be verified.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.done.send": [
+    {
+      "type": 0,
+      "value": "Mark as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.done.sent": [
+    {
+      "type": 0,
+      "value": "Sent to the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " secretary to verify. You will be told when it is closed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.done.title": [
+    {
+      "type": 0,
+      "value": "Mark as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.done.what": [
+    {
+      "type": 0,
+      "value": "What was doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.draftReference": [
+    {
+      "type": 0,
+      "value": "Draft actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.due": [
+    {
+      "type": 0,
+      "value": "due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueChange.done": [
+    {
+      "type": 0,
+      "value": "The due date was changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueChange.send": [
+    {
+      "type": 0,
+      "value": "Change the dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueChange.title": [
+    {
+      "type": 0,
+      "value": "Change the dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueOriginally": [
+    {
+      "type": 0,
+      "value": "originally "
+    },
+    {
+      "type": 1,
+      "value": "original"
+    },
+    {
+      "type": 0,
+      "value": ", revised "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "once"
+            }
+          ]
+        },
+        "=2": {
+          "value": [
+            {
+              "type": 0,
+              "value": "twice"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " times"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.chairAgrees": [
+    {
+      "type": 0,
+      "value": "The chair will be asked to agree. Until then the date stays "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.newDate": [
+    {
+      "type": 0,
+      "value": "New dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.ownerChanges": [
+    {
+      "type": 0,
+      "value": "The date changes at once, and the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " secretaries are told why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.secretaryAgrees": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " secretary will be asked to agree. Until then the date stays "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.send": [
+    {
+      "type": 0,
+      "value": "Ask for this dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.sent": [
+    {
+      "type": 0,
+      "value": "Your request was sent. The date stays the same until it is agreed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.title": [
+    {
+      "type": 0,
+      "value": "Ask for a new dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRequest.why": [
+    {
+      "type": 0,
+      "value": "WhySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.dueRevised": [
+    {
+      "type": 0,
+      "value": "due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (originally "
+    },
+    {
+      "type": 1,
+      "value": "original"
+    },
+    {
+      "type": 0,
+      "value": ", revised "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "once"
+            }
+          ]
+        },
+        "=2": {
+          "value": [
+            {
+              "type": 0,
+              "value": "twice"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " times"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.cancelled": [
+    {
+      "type": 0,
+      "value": "Cancelled by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.closed": [
+    {
+      "type": 0,
+      "value": "Verified and closed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.discarded": [
+    {
+      "type": 0,
+      "value": "Draft discarded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.done": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " marked it as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.drafted": [
+    {
+      "type": 0,
+      "value": "Drafted by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.dueAgreed": [
+    {
+      "type": 0,
+      "value": "New date "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " agreed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.dueChanged": [
+    {
+      "type": 0,
+      "value": "Due date changed from "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.dueDeclined": [
+    {
+      "type": 0,
+      "value": "New date "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " declined by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.dueRequested": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " asked for a new date: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.dueWithdrawn": [
+    {
+      "type": 0,
+      "value": "The request for a new date was withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.edited": [
+    {
+      "type": 0,
+      "value": "Details changed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.heldBack": [
+    {
+      "type": 0,
+      "value": "Held back from the next action taken report by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.issued": [
+    {
+      "type": 0,
+      "value": "Sent to its owner by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.memoDecided": [
+    {
+      "type": 0,
+      "value": "Follow-up memo "
+    },
+    {
+      "type": 1,
+      "value": "memo"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.memoLinked": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " linked a follow-up memo: "
+    },
+    {
+      "type": 1,
+      "value": "memo"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.memoNamed": [
+    {
+      "type": 0,
+      "value": "memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.memoRaised": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " raised a follow-up memo: "
+    },
+    {
+      "type": 1,
+      "value": "memo"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.memoUnnamed": [
+    {
+      "type": 0,
+      "value": "a memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.notRunning": [
+    {
+      "type": 0,
+      "value": "The system found that the action’s reminders were not running and told the secretariesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.other": [
+    {
+      "type": 0,
+      "value": "Changed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.ownerChanged": [
+    {
+      "type": 0,
+      "value": "Owner changed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.ragCleared": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " took away the colour set by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.ragOverridden": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " set it to "
+    },
+    {
+      "type": 1,
+      "value": "rag"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.reconciled": [
+    {
+      "type": 0,
+      "value": "The system brought the action up to dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.reopened": [
+    {
+      "type": 0,
+      "value": "Reopened by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.sentBack": [
+    {
+      "type": 0,
+      "value": "Sent back to the owner by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.sourceCorrected": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s decision on this item was correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.started": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " started work on itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.update": [
+    {
+      "type": 0,
+      "value": "Update from "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.entry.updateRequested": [
+    {
+      "type": 0,
+      "value": "An update was asked forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.belowTypeDefault": [
+    {
+      "type": 0,
+      "value": "This level is below what this memo type needs.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.confidence": [
+    {
+      "type": 0,
+      "value": "Only the owner says how it is going.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.discarded": [
+    {
+      "type": 0,
+      "value": "This memo was discarded. Choose another.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.dueInPast": [
+    {
+      "type": 0,
+      "value": "Choose today or a later date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.evidenceRequired": [
+    {
+      "type": 0,
+      "value": "This "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " asks for evidence: attach the files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.fileUnknown": [
+    {
+      "type": 0,
+      "value": "A file is not one you attached to this action. Remove it and attach it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.filesTooMany": [
+    {
+      "type": 0,
+      "value": "At most 10 files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.lowerLevel": [
+    {
+      "type": 0,
+      "value": "This level is lower than the action’s. Tick the confirmation to use it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.memosTooMany": [
+    {
+      "type": 0,
+      "value": "An action has at most 10 follow-up memos.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.notReadable": [
+    {
+      "type": 0,
+      "value": "Choose a memo you can open.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.noteLength": [
+    {
+      "type": 0,
+      "value": "This is too long: at most 2,000 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.reasonLength": [
+    {
+      "type": 0,
+      "value": "This is too long: at most 500 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.remarkRequired": [
+    {
+      "type": 0,
+      "value": "Say what is missing to send it back.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.required": [
+    {
+      "type": 0,
+      "value": "This is needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.sameDate": [
+    {
+      "type": 0,
+      "value": "The action is due on that date already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.textLength": [
+    {
+      "type": 0,
+      "value": "This is too long: at most 4,000 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.typeNotAllowed": [
+    {
+      "type": 0,
+      "value": "You may not raise memos of this type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.field.typeUnknown": [
+    {
+      "type": 0,
+      "value": "Choose a memo type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.added": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is attached.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.attach": [
+    {
+      "type": 0,
+      "value": "Attach filesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.attached": [
+    {
+      "type": 0,
+      "value": "AttachedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.evidence": [
+    {
+      "type": 0,
+      "value": "EvidenceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.hint": [
+    {
+      "type": 0,
+      "value": "PDF, pictures, text, Word, Excel or PowerPoint, up to 25 MB each, at most 10.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.removed": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " was removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.files.tooMany": [
+    {
+      "type": 0,
+      "value": "At most 10 files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.how.email": [
+    {
+      "type": 0,
+      "value": "by emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.how.inPerson": [
+    {
+      "type": 0,
+      "value": "in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.how.meeting": [
+    {
+      "type": 0,
+      "value": "at a meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.how.phone": [
+    {
+      "type": 0,
+      "value": "by phoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.emptyInvolved": [
+    {
+      "type": 0,
+      "value": "You are not named on anyone else’s action. Actions you help with will appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.emptyMine": [
+    {
+      "type": 0,
+      "value": "You have no actions. Actions given to you by a "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " will appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.emptyVerify": [
+    {
+      "type": 0,
+      "value": "Nothing is waiting for you to verify. Actions marked as done that you check will appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.involved": [
+    {
+      "type": 0,
+      "value": "I’m involved ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.lists": [
+    {
+      "type": 0,
+      "value": "Which actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.mine": [
+    {
+      "type": 0,
+      "value": "To do ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.rowLine": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "due"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.tab": [
+    {
+      "type": 0,
+      "value": "My actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.tabCount": [
+    {
+      "type": 0,
+      "value": "My actions ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.inbox.verify": [
+    {
+      "type": 0,
+      "value": "To verify ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.amber": [
+    {
+      "type": 0,
+      "value": "Due within "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", at risk, or no recent updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.amberPlain": [
+    {
+      "type": 0,
+      "value": "Due soon, at risk, or no recent updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.blue": [
+    {
+      "type": 0,
+      "value": "Done, to be verifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.green": [
+    {
+      "type": 0,
+      "value": "On trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.red": [
+    {
+      "type": 0,
+      "value": "Overdue or off trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.key.title": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.button": [
+    {
+      "type": 0,
+      "value": "LinkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.choose": [
+    {
+      "type": 0,
+      "value": "Link "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.chosen": [
+    {
+      "type": 0,
+      "value": "The memo is linked to this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.none": [
+    {
+      "type": 0,
+      "value": "No memo you can open matches.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.results": [
+    {
+      "type": 0,
+      "value": "Memos foundSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.search": [
+    {
+      "type": 0,
+      "value": "Find a memo by its number or subjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.searchHint": [
+    {
+      "type": 0,
+      "value": "Only memos you can open are found. Type at least two letters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.searching": [
+    {
+      "type": 0,
+      "value": "Searching…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.link.title": [
+    {
+      "type": 0,
+      "value": "Link an existing memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.loadMore": [
+    {
+      "type": 0,
+      "value": "Show moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.approvedNext": [
+    {
+      "type": 0,
+      "value": "The follow-up memo was approved. You can now mark the action as done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.hidden": [
+    {
+      "type": 0,
+      "value": "A follow-up memo (you do not have access)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.line": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.linked": [
+    {
+      "type": 0,
+      "value": "Linked to this actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.none": [
+    {
+      "type": 0,
+      "value": "No memo follows up this action yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.raised": [
+    {
+      "type": 0,
+      "value": "Raised from this actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.title": [
+    {
+      "type": 0,
+      "value": "Follow-up memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.memos.unnumbered": [
+    {
+      "type": 0,
+      "value": "Draft memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.noDue": [
+    {
+      "type": 0,
+      "value": "no due dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.notFound": [
+    {
+      "type": 0,
+      "value": "This action is not there, or it is not yours to see.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.outcome.approved": [
+    {
+      "type": 0,
+      "value": "approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.outcome.cancelled": [
+    {
+      "type": 0,
+      "value": "cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.outcome.other": [
+    {
+      "type": 0,
+      "value": "decidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "rejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.outcome.withdrawn": [
+    {
+      "type": 0,
+      "value": "withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.also": [
+    {
+      "type": 0,
+      "value": "AlsoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.asked": [
+    {
+      "type": 0,
+      "value": "What the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " askedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.cancelledWhy": [
+    {
+      "type": 0,
+      "value": "Cancelled ("
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": "): "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.closedOn": [
+    {
+      "type": 0,
+      "value": "Closed on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.dueLabel": [
+    {
+      "type": 0,
+      "value": "DueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.fromWithTitle": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.nothingToDo": [
+    {
+      "type": 0,
+      "value": "There is nothing for you to do on this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.openMeeting": [
+    {
+      "type": 0,
+      "value": "Open the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.owner": [
+    {
+      "type": 0,
+      "value": "OwnerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.ownerActingFor": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", acting for "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.ownerPositionHolder": [
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.ownerWaiting": [
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " (no one holds it now)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.pendingRequest": [
+    {
+      "type": 0,
+      "value": "New date requested: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ". Until it is agreed, the action stays due "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.pendingRequestBy": [
+    {
+      "type": 0,
+      "value": "Asked by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.priorityHigh": [
+    {
+      "type": 0,
+      "value": "High prioritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in the item this action comes from. You see the action because you are named on it, but not the item or its papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.reopened": [
+    {
+      "type": 0,
+      "value": "Reopened "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "once"
+            }
+          ]
+        },
+        "=2": {
+          "value": [
+            {
+              "type": 0,
+              "value": "twice"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " times"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.status": [
+    {
+      "type": 0,
+      "value": "Where it standsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.statusStep": [
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.verifyLater": [
+    {
+      "type": 0,
+      "value": "Sent to the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " secretary to verify. You will be told when it is closed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.page.whatNext": [
+    {
+      "type": 0,
+      "value": "What you can doSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.quoted": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.atRisk": [
+    {
+      "type": 0,
+      "value": "At riskSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.dueSoon": [
+    {
+      "type": 0,
+      "value": "Due soonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.noRecentUpdate": [
+    {
+      "type": 0,
+      "value": "No recent updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.offTrack": [
+    {
+      "type": 0,
+      "value": "Off trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.onTrack": [
+    {
+      "type": 0,
+      "value": "On trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideAmber": [
+    {
+      "type": 0,
+      "value": "Amber, set by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideBy": [
+    {
+      "type": 0,
+      "value": "Set by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideGreen": [
+    {
+      "type": 0,
+      "value": "Green, set by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideReason": [
+    {
+      "type": 0,
+      "value": "Set by hand: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideRed": [
+    {
+      "type": 0,
+      "value": "Red, set by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.overrideUntil": [
+    {
+      "type": 0,
+      "value": "until "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.rag.toVerify": [
+    {
+      "type": 0,
+      "value": "Done, to be verifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.lead": [
+    {
+      "type": 0,
+      "value": "The memo opens as your draft, from its type’s template. It says it was raised from this action. Raising it does not close the action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.level": [
+    {
+      "type": 0,
+      "value": "LevelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.levelChange": [
+    {
+      "type": 0,
+      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.levelFromAction": [
+    {
+      "type": 1,
+      "value": "level"
+    },
+    {
+      "type": 0,
+      "value": " (from the action)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.lowerConfirm": [
+    {
+      "type": 0,
+      "value": "This memo will be "
+    },
+    {
+      "type": 1,
+      "value": "memo"
+    },
+    {
+      "type": 0,
+      "value": "; the action is "
+    },
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": ". Tick to confirm the lower level.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.noTypes": [
+    {
+      "type": 0,
+      "value": "There is no memo type you may create. Ask your administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.send": [
+    {
+      "type": 0,
+      "value": "Create the draft memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.subject": [
+    {
+      "type": 0,
+      "value": "SubjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.raise.title": [
+    {
+      "type": 0,
+      "value": "Raise a memo from "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.referenceCommittee": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.alreadyLinked": [
+    {
+      "type": 0,
+      "value": "This memo already follows up the action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.askForIt": [
+    {
+      "type": 0,
+      "value": "This "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " agrees new dates: ask for a new date instead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.claimed": [
+    {
+      "type": 0,
+      "value": "Another verifier is checking this action already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this action meanwhile. It has been reloaded: check it and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.forbidden": [
+    {
+      "type": 0,
+      "value": "You may not do this on this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.notFound": [
+    {
+      "type": 0,
+      "value": "This action is no longer there for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.notHolder": [
+    {
+      "type": 0,
+      "value": "Whoever holds the action now marks it as done. Someone is acting for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.notInvolved": [
+    {
+      "type": 0,
+      "value": "Only the action’s owner and the people involved raise its memos.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.notVerifier": [
+    {
+      "type": 0,
+      "value": "You are not the one to verify this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.ownerChanges": [
+    {
+      "type": 0,
+      "value": "This "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " lets the owner change the date: change it instead of asking.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.pendingRequest": [
+    {
+      "type": 0,
+      "value": "A new date was asked for already. Wait for the answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.rateLimited": [
+    {
+      "type": 0,
+      "value": "Too many tries. Wait a moment and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so another officer does this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.tooLate": [
+    {
+      "type": 0,
+      "value": "It is too late for this. Raise a new action instead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.refused.wrongState": [
+    {
+      "type": 0,
+      "value": "The action has moved on meanwhile, so this cannot be done now. It has been reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.back": [
+    {
+      "type": 0,
+      "value": "Back to the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.built": [
+    {
+      "type": 0,
+      "value": "Built when the agenda was published on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": ". It does not change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.correctionApproved": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " (approved "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.heldBack": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action was held back by the secretary"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions were held back by the secretary"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Only officers see this line.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.more": [
+    {
+      "type": 0,
+      "value": "And "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more open action"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more open actions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": see the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s tracker.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.none": [
+    {
+      "type": 0,
+      "value": "There is no action taken report for this meeting, or it is not for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.of": [
+    {
+      "type": 0,
+      "value": "Action taken report — "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.ofCommittee": [
+    {
+      "type": 0,
+      "value": "Action taken report — "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.print": [
+    {
+      "type": 0,
+      "value": "PrintSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.printHint": [
+    {
+      "type": 0,
+      "value": "Opens your rows as a PDF, to print or keep.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.revision": [
+    {
+      "type": 0,
+      "value": "Agenda revisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.revisionLatest": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 2,
+      "value": "n",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " (latest)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.revisionN": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 2,
+      "value": "n",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.cancelled": [
+    {
+      "type": 0,
+      "value": "Cancelled: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.closed": [
+    {
+      "type": 0,
+      "value": "Closed "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.done": [
+    {
+      "type": 0,
+      "value": "Done "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.latest": [
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.latestUndated": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.owner": [
+    {
+      "type": 0,
+      "value": "Owner: "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.ownerHolder": [
+    {
+      "type": 0,
+      "value": "Owner: "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " (held by "
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.cancelled": [
+    {
+      "type": 0,
+      "value": "Cancelled since the last meeting, for noting ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.closed": [
+    {
+      "type": 0,
+      "value": "Closed since the last meeting, for noting ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.corrections": [
+    {
+      "type": 0,
+      "value": "Corrections to earlier minutes ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.empty": [
+    {
+      "type": 0,
+      "value": "None.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.open": [
+    {
+      "type": 0,
+      "value": "Open ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.overdue": [
+    {
+      "type": 0,
+      "value": "Overdue ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.section.toClose": [
+    {
+      "type": 0,
+      "value": "Proposed to close ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ") — the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " is asked to agreeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.sectionNumbered": [
+    {
+      "type": 2,
+      "value": "number",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "heading"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.since": [
+    {
+      "type": 0,
+      "value": "“Since the last meeting” means since "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " began.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.sinceStart": [
+    {
+      "type": 0,
+      "value": "There was no earlier meeting: every closed and cancelled action is listed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.started.done": [
+    {
+      "type": 0,
+      "value": "The action now shows as in progress.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.donePending": [
+    {
+      "type": 0,
+      "value": "Done, waiting to be verifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.inProgress": [
+    {
+      "type": 0,
+      "value": "In progressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.status.open": [
+    {
+      "type": 0,
+      "value": "Not startedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.correction": [
+    {
+      "type": 0,
+      "value": "Correction to an earlier updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.empty": [
+    {
+      "type": 0,
+      "value": "Nothing has happened on this action yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.forOwner": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "how"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.system": [
+    {
+      "type": 0,
+      "value": "the systemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.title": [
+    {
+      "type": 0,
+      "value": "TimelineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.timeline.withConfidence": [
+    {
+      "type": 1,
+      "value": "headline"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "confidence"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.how": [
+    {
+      "type": 0,
+      "value": "How is it going?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.howHint": [
+    {
+      "type": 0,
+      "value": "Off track shows the action as red, at risk as amber, until the next update.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.posted": [
+    {
+      "type": 0,
+      "value": "Your update was posted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.send": [
+    {
+      "type": 0,
+      "value": "Post the updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.text": [
+    {
+      "type": 0,
+      "value": "What has happened?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.update.title": [
+    {
+      "type": 0,
+      "value": "Post an updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.choice": [
+    {
+      "type": 0,
+      "value": "Is it done?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.close": [
+    {
+      "type": 0,
+      "value": "Yes: close the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.closed": [
+    {
+      "type": 0,
+      "value": "The action is closed. The owner is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.remarkHint": [
+    {
+      "type": 0,
+      "value": "Needed to send it back: say what is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.send": [
+    {
+      "type": 0,
+      "value": "ConfirmSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.sendBack": [
+    {
+      "type": 0,
+      "value": "No: send it back to the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.sentBack": [
+    {
+      "type": 0,
+      "value": "The action went back to its owner.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.verify.title": [
+    {
+      "type": 0,
+      "value": "Verify the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.withNote": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.confidence": [
+    {
+      "type": 0,
+      "value": "How is it going?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.done": [
+    {
+      "type": 0,
+      "value": "The update was recorded for the owner.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.email": [
+    {
+      "type": 0,
+      "value": "By emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.explain": [
+    {
+      "type": 0,
+      "value": "For what the owner told you. The timeline shows that you wrote it for them, and how you heard.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.how": [
+    {
+      "type": 0,
+      "value": "How you heardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.meeting": [
+    {
+      "type": 0,
+      "value": "At a meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.phone": [
+    {
+      "type": 0,
+      "value": "By phoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.send": [
+    {
+      "type": 0,
+      "value": "Record the updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.text": [
+    {
+      "type": 0,
+      "value": "What has happened?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.behalf.title": [
+    {
+      "type": 0,
+      "value": "Record an update for "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.choose": [
+    {
+      "type": 0,
+      "value": "Choose an actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.done": [
+    {
+      "type": 0,
+      "value": "The action was cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.duplicate": [
+    {
+      "type": 0,
+      "value": "A duplicateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.explain": [
+    {
+      "type": 0,
+      "value": "The owner and the people involved are told. It can be reopened within 90 days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.howChair": [
+    {
+      "type": 0,
+      "value": "How the chair told youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.noLongerNeeded": [
+    {
+      "type": 0,
+      "value": "No longer neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.option": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.replacedBy": [
+    {
+      "type": 0,
+      "value": "The action that replaces itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.riskAccepted": [
+    {
+      "type": 0,
+      "value": "Risk accepted by the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.riskForChair": [
+    {
+      "type": 0,
+      "value": "Only the chair accepts the risk. You record it for the chair: say how they told you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.send": [
+    {
+      "type": 0,
+      "value": "Cancel the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.superseded": [
+    {
+      "type": 0,
+      "value": "Replaced by another actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.title": [
+    {
+      "type": 0,
+      "value": "Cancel the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.cancel.why": [
+    {
+      "type": 0,
+      "value": "Why it is cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.all": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action was closed."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions were closed."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.chooseOne": [
+    {
+      "type": 0,
+      "value": "Tick at least one action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.hint": [
+    {
+      "type": 0,
+      "value": "Tick the actions the committee agreed to close at this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.notVerifier": [
+    {
+      "type": 0,
+      "value": "you are its owner or involved in it, so another officer closes itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.remarkHint": [
+    {
+      "type": 0,
+      "value": "Left empty, each action records that it was agreed at this meeting, under its item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.row": [
+    {
+      "type": 0,
+      "value": "Agreed to close "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.send": [
+    {
+      "type": 0,
+      "value": "Close the actions the committee agreed ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.some": [
+    {
+      "type": 2,
+      "value": "closed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " closed. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " was not closed:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " were not closed:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.close.title": [
+    {
+      "type": 0,
+      "value": "Close what the committee agreedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.amber": [
+    {
+      "type": 0,
+      "value": "Amber: at riskSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.choice": [
+    {
+      "type": 0,
+      "value": "ColourSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.cleared": [
+    {
+      "type": 0,
+      "value": "The colour set by hand was taken away.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.done": [
+    {
+      "type": 0,
+      "value": "The colour was set by hand.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.explain": [
+    {
+      "type": 0,
+      "value": "Everyone sees that it was set by hand, by whom and why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.green": [
+    {
+      "type": 0,
+      "value": "Green: on trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.red": [
+    {
+      "type": 0,
+      "value": "Red: off trackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.send": [
+    {
+      "type": 0,
+      "value": "Set the colourSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.title": [
+    {
+      "type": 0,
+      "value": "Set the colour by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.until": [
+    {
+      "type": 0,
+      "value": "UntilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.colour.untilHint": [
+    {
+      "type": 0,
+      "value": "Leave it empty to keep the colour until the next update.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.agree": [
+    {
+      "type": 0,
+      "value": "Agree to the new dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.agreed": [
+    {
+      "type": 0,
+      "value": "The new date was agreed. The owner is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.asked": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " asks for "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " instead of "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.decline": [
+    {
+      "type": 0,
+      "value": "Decline: keep the dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.declined": [
+    {
+      "type": 0,
+      "value": "The request was declined. The owner is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.note": [
+    {
+      "type": 0,
+      "value": "Note for the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.send": [
+    {
+      "type": 0,
+      "value": "AnswerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.decide.title": [
+    {
+      "type": 0,
+      "value": "The owner asks for a new dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.discard.done": [
+    {
+      "type": 0,
+      "value": "The draft was discarded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.discard.explain": [
+    {
+      "type": 0,
+      "value": "A discarded draft is kept in the record, never numbered and never sent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.discard.title": [
+    {
+      "type": 0,
+      "value": "Discard the draft actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.discard.why": [
+    {
+      "type": 0,
+      "value": "WhySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.cancel": [
+    {
+      "type": 0,
+      "value": "Cancel the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.changeOwner": [
+    {
+      "type": 0,
+      "value": "Change the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.clearColour": [
+    {
+      "type": 0,
+      "value": "Take away the colour set by handSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.decideDue": [
+    {
+      "type": 0,
+      "value": "Answer the date requestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.discard": [
+    {
+      "type": 0,
+      "value": "Discard the draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.holdBack": [
+    {
+      "type": 0,
+      "value": "Keep out of the next reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.issue": [
+    {
+      "type": 0,
+      "value": "Send to the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.onBehalf": [
+    {
+      "type": 0,
+      "value": "Record an update for the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.reopen": [
+    {
+      "type": 0,
+      "value": "ReopenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.do.setColour": [
+    {
+      "type": 0,
+      "value": "Set the colourSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.due.officer": [
+    {
+      "type": 0,
+      "value": "The date changes at once. The owner and the people involved are told, and its reminders move with it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.editNamed": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.classification": [
+    {
+      "type": 0,
+      "value": "An action is never below its source’s level, nor above your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.condition": [
+    {
+      "type": 0,
+      "value": "The decision has no such condition.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.contributorsTooMany": [
+    {
+      "type": 0,
+      "value": "At most five people besides the owner.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.decision.required": [
+    {
+      "type": 0,
+      "value": "Agree or decline.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.dueDate.required": [
+    {
+      "type": 0,
+      "value": "Choose when it is due.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.dueInPast": [
+    {
+      "type": 0,
+      "value": "Please enter a date on or after today, for example "
+    },
+    {
+      "type": 1,
+      "value": "example"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.duplicate": [
+    {
+      "type": 0,
+      "value": "Name each person once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.how.chair": [
+    {
+      "type": 0,
+      "value": "Say how the chair told you they accept the risk.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.how.required": [
+    {
+      "type": 0,
+      "value": "Say how you heard from the owner.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.kind.required": [
+    {
+      "type": 0,
+      "value": "Say why the action is cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.length": [
+    {
+      "type": 0,
+      "value": "This is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.notCleared": [
+    {
+      "type": 0,
+      "value": "This person is not cleared for the action’s level, or is not active.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.notEditable": [
+    {
+      "type": 0,
+      "value": "Once the action is sent, this changes with its own button.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.owner.required": [
+    {
+      "type": 0,
+      "value": "Choose who owns the action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.ownerNotCleared": [
+    {
+      "type": 0,
+      "value": "This person is not cleared for the action’s level, or is not active, and cannot own it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.rag.required": [
+    {
+      "type": 0,
+      "value": "Choose red, amber or green.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.reason.required": [
+    {
+      "type": 0,
+      "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.recusedNamed": [
+    {
+      "type": 0,
+      "value": "This person declared an interest in the item and cannot help with this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.sameOwner": [
+    {
+      "type": 0,
+      "value": "This is the action’s owner already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.samePerson": [
+    {
+      "type": 0,
+      "value": "The owner is not also among the people involved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.supersededBy": [
+    {
+      "type": 0,
+      "value": "Choose the issued action of this committee that replaces it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.title.required": [
+    {
+      "type": 0,
+      "value": "Say what is to be done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.field.unknownPerson": [
+    {
+      "type": 0,
+      "value": "Choose someone from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.addPerson": [
+    {
+      "type": 0,
+      "value": "Add this personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.context": [
+    {
+      "type": 0,
+      "value": "What the owner is toldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contextHint": [
+    {
+      "type": 0,
+      "value": "The owner will see this text. They will not see the item’s papers or the discussion.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contributorAdded": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contributorRemoved": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contributors": [
+    {
+      "type": 0,
+      "value": "Also involvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contributorsFull": [
+    {
+      "type": 0,
+      "value": "Five people are involved already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.contributorsHint": [
+    {
+      "type": 0,
+      "value": "Up to 5 people. They can post updates; only the owner marks it as done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.description": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.due": [
+    {
+      "type": 0,
+      "value": "DueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueChosen": [
+    {
+      "type": 0,
+      "value": "Due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueDate": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueHint": [
+    {
+      "type": 0,
+      "value": "Type a date or pick one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueNextMeeting": [
+    {
+      "type": 0,
+      "value": "By the next meeting ("
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueOnDate": [
+    {
+      "type": 0,
+      "value": "On a dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.dueQuick": [
+    {
+      "type": 0,
+      "value": "Quick picksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.editDraft": [
+    {
+      "type": 0,
+      "value": "Edit the draft actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.editIssued": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.findPerson": [
+    {
+      "type": 0,
+      "value": "Find a person to addSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.in1Month": [
+    {
+      "type": 0,
+      "value": "In a monthSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.in2Weeks": [
+    {
+      "type": 0,
+      "value": "In two weeksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.in3Months": [
+    {
+      "type": 0,
+      "value": "In three monthsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.inMeeting": [
+    {
+      "type": 0,
+      "value": "During the meeting, actions are saved as drafts. Send them to their owners once it is held.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.level": [
+    {
+      "type": 0,
+      "value": "LevelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.levelHint": [
+    {
+      "type": 0,
+      "value": "An action is never below its source’s level. A higher level keeps it from people not cleared for it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.levelSource": [
+    {
+      "type": 0,
+      "value": "As its source (the item or the meeting)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.newDirect": [
+    {
+      "type": 0,
+      "value": "New action for the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.newFromCondition": [
+    {
+      "type": 0,
+      "value": "New action — from "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ", condition "
+    },
+    {
+      "type": 2,
+      "value": "number",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.newFromItem": [
+    {
+      "type": 0,
+      "value": "New action — from "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.newFromMeeting": [
+    {
+      "type": 0,
+      "value": "New action — from this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.owner": [
+    {
+      "type": 0,
+      "value": "OwnerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.ownerHint": [
+    {
+      "type": 0,
+      "value": "Anyone in the organisation cleared for the action’s level. A position follows whoever holds it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.ownerNow": [
+    {
+      "type": 0,
+      "value": "Now: "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.ownerPerson": [
+    {
+      "type": 0,
+      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.ownerPosition": [
+    {
+      "type": 0,
+      "value": "A positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.ownerWho": [
+    {
+      "type": 0,
+      "value": "WhoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.priority": [
+    {
+      "type": 0,
+      "value": "PrioritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.priorityHigh": [
+    {
+      "type": 0,
+      "value": "HighSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.priorityNormal": [
+    {
+      "type": 0,
+      "value": "NormalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.reason": [
+    {
+      "type": 0,
+      "value": "Why it changesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.reasonHint": [
+    {
+      "type": 0,
+      "value": "Kept on the action’s timeline. The owner and the people involved see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.removePerson": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.save": [
+    {
+      "type": 0,
+      "value": "Save the changesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.saveDraft": [
+    {
+      "type": 0,
+      "value": "Save as draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.saveSend": [
+    {
+      "type": 0,
+      "value": "Save and send to the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.saved": [
+    {
+      "type": 0,
+      "value": "The action was changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.savedDraft": [
+    {
+      "type": 0,
+      "value": "Saved as a draft: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.savedSent": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was sent to its owner.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.savedSentNot": [
+    {
+      "type": 0,
+      "value": "Saved as a draft, but not sent: "
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.sourceNote": [
+    {
+      "type": 0,
+      "value": "Where it comes fromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.sourceNoteHint": [
+    {
+      "type": 0,
+      "value": "For example: Chair’s instruction of 3 December.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.form.title": [
+    {
+      "type": 0,
+      "value": "What is to be doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.held.notSent": [
+    {
+      "type": 0,
+      "value": "The meeting is held. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft was not sent"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " drafts were not sent"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": review them on the meeting page.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.held.send": [
+    {
+      "type": 0,
+      "value": "Send the "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft action"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft actions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "its owner"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "their owners"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " nowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.held.sent": [
+    {
+      "type": 0,
+      "value": "The meeting is held. "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action was sent to its owner."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions were sent to their owners."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.hold.done": [
+    {
+      "type": 0,
+      "value": "It will be left out of the action taken report of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.hold.explain": [
+    {
+      "type": 0,
+      "value": "It stays open on the tracker. The next meeting’s action taken report leaves it out, and tells the officers that one was held back.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.hold.send": [
+    {
+      "type": 0,
+      "value": "Keep it outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.hold.title": [
+    {
+      "type": 0,
+      "value": "Keep it out of the next reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.hold.why": [
+    {
+      "type": 0,
+      "value": "WhySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.issue.done": [
+    {
+      "type": 0,
+      "value": "Sent to the owner as "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.issue.explain": [
+    {
+      "type": 0,
+      "value": "It gets its reference, and "
+    },
+    {
+      "type": 1,
+      "value": "owner"
+    },
+    {
+      "type": 0,
+      "value": " is told by email, without its title.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.issue.send": [
+    {
+      "type": 0,
+      "value": "SendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.issue.title": [
+    {
+      "type": 0,
+      "value": "Send the action to its ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.add": [
+    {
+      "type": 0,
+      "value": "Add an actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.drafts": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " drafts"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.makeAction": [
+    {
+      "type": 0,
+      "value": "Make this an actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.makeActionNamed": [
+    {
+      "type": 0,
+      "value": "Make condition "
+    },
+    {
+      "type": 2,
+      "value": "number",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " an actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.none": [
+    {
+      "type": 0,
+      "value": "No actions from this item yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.item.title": [
+    {
+      "type": 0,
+      "value": "Actions from this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.add": [
+    {
+      "type": 0,
+      "value": "Add an action for the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.drafts": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft action not sent"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft actions not sent"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.hint": [
+    {
+      "type": 0,
+      "value": "Every action raised at this meeting. Those from an item are also on the Decisions tab.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.none": [
+    {
+      "type": 0,
+      "value": "No actions from this meeting yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.notSent": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.send": [
+    {
+      "type": 0,
+      "value": "Send the "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "draft"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " drafts"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " to their ownersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.sendLater": [
+    {
+      "type": 0,
+      "value": "Drafts are sent to their owners once the meeting is held.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.sent": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action sent to its owner"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions sent to their owners"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.sentAll": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action was sent to its owner."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions were sent to their owners."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.sentNone": [
+    {
+      "type": 0,
+      "value": "There were no drafts you may send.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.sentSome": [
+    {
+      "type": 2,
+      "value": "sent",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " sent. "
+    },
+    {
+      "type": 6,
+      "value": "failed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " draft was not sent:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " drafts were not sent:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.meeting.title": [
+    {
+      "type": 0,
+      "value": "Actions from this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.openNamed": [
+    {
+      "type": 0,
+      "value": "Open "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.owner.done": [
+    {
+      "type": 0,
+      "value": "The owner was changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.owner.explain": [
+    {
+      "type": 0,
+      "value": "The open task moves to the new owner. Both the previous and the new owner are told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.owner.send": [
+    {
+      "type": 0,
+      "value": "Change the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.owner.title": [
+    {
+      "type": 0,
+      "value": "Change the ownerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.page.title": [
+    {
+      "type": 0,
+      "value": "For the committee’s officersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.page.warnings": [
+    {
+      "type": 0,
+      "value": "For the secretariesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.alreadyAsked": [
+    {
+      "type": 0,
+      "value": "The owners were asked today already. You can ask again tomorrow.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.alreadyHeld": [
+    {
+      "type": 0,
+      "value": "This action is kept out of that meeting’s report already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.committee": [
+    {
+      "type": 0,
+      "value": "This action belongs to another committee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.noMeeting": [
+    {
+      "type": 0,
+      "value": "The committee has no next meeting yet, so there is no report to keep it out of.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.noOverride": [
+    {
+      "type": 0,
+      "value": "No colour is set by hand on this action.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.raiseWindow": [
+    {
+      "type": 0,
+      "value": "Actions are raised once the meeting has started, until its minutes are approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.refused.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so you cannot raise or change its actions. Another secretary can.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.done": [
+    {
+      "type": 0,
+      "value": "The action was reopened.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.due": [
+    {
+      "type": 0,
+      "value": "New due dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.explain": [
+    {
+      "type": 0,
+      "value": "It starts again with the owner and the new date. The owner is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.send": [
+    {
+      "type": 0,
+      "value": "ReopenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.title": [
+    {
+      "type": 0,
+      "value": "Reopen the actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.reopen.why": [
+    {
+      "type": 0,
+      "value": "Why it is reopenedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.row.due": [
+    {
+      "type": 0,
+      "value": "by "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.row.noOwner": [
+    {
+      "type": 0,
+      "value": "No owner yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.row.withSource": [
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "facts"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.someone": [
+    {
+      "type": 0,
+      "value": "Someone namedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.ask": [
+    {
+      "type": 0,
+      "value": "Ask owners for an updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.asked": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No owner needed asking."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " owner was asked for an update."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " owners were asked for an update."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.col.action": [
+    {
+      "type": 0,
+      "value": "ActionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.col.due": [
+    {
+      "type": 0,
+      "value": "DueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.col.owner": [
+    {
+      "type": 0,
+      "value": "OwnerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.col.ref": [
+    {
+      "type": 0,
+      "value": "RefSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour": [
+    {
+      "type": 0,
+      "value": "ColourSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.all": [
+    {
+      "type": 0,
+      "value": "AllSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.amber": [
+    {
+      "type": 0,
+      "value": "AmberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.blue": [
+    {
+      "type": 0,
+      "value": "To verifySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.green": [
+    {
+      "type": 0,
+      "value": "GreenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.overdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.colour.red": [
+    {
+      "type": 0,
+      "value": "RedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.empty": [
+    {
+      "type": 0,
+      "value": "This committee has no actions yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.export": [
+    {
+      "type": 0,
+      "value": "ExportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.exportFailed": [
+    {
+      "type": 0,
+      "value": "The export did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.exportLimited": [
+    {
+      "type": 0,
+      "value": "You have exported ten times this hour. Try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.exported": [
+    {
+      "type": 0,
+      "value": "The actions were downloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.filters": [
+    {
+      "type": 0,
+      "value": "FiltersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.keyNoStale": [
+    {
+      "type": 0,
+      "value": "This committee: amber when due within "
+    },
+    {
+      "type": 6,
+      "value": "amber",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", or at risk.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.keyStale": [
+    {
+      "type": 0,
+      "value": "This committee: amber when due within "
+    },
+    {
+      "type": 6,
+      "value": "amber",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", at risk, or with no update for "
+    },
+    {
+      "type": 6,
+      "value": "stale",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.matching": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No actions match."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " action matches."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " actions match."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.meeting.any": [
+    {
+      "type": 0,
+      "value": "AnySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.new": [
+    {
+      "type": 0,
+      "value": "New actionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.noneMatch": [
+    {
+      "type": 0,
+      "value": "No actions match these filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.notYours": [
+    {
+      "type": 0,
+      "value": "There are no actions of this committee for you to see.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.owner": [
+    {
+      "type": 0,
+      "value": "OwnerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.owner.anyone": [
+    {
+      "type": 0,
+      "value": "AnyoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.revised": [
+    {
+      "type": 0,
+      "value": "(rev. "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.search": [
+    {
+      "type": 0,
+      "value": "Search actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.sort": [
+    {
+      "type": 0,
+      "value": "Sort bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.sort.due": [
+    {
+      "type": 0,
+      "value": "Due dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.sort.reference": [
+    {
+      "type": 0,
+      "value": "ReferenceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.sort.updated": [
+    {
+      "type": 0,
+      "value": "Latest updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.all": [
+    {
+      "type": 0,
+      "value": "AllSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.draft": [
+    {
+      "type": 0,
+      "value": "DraftsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.status.toVerify": [
+    {
+      "type": 0,
+      "value": "Done, to be verifiedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.tab": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.title": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.total.amber": [
+    {
+      "type": 0,
+      "value": "Due soon or at risk: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.total.blue": [
+    {
+      "type": 0,
+      "value": "To verify: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.total.green": [
+    {
+      "type": 0,
+      "value": "On track: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.total.red": [
+    {
+      "type": 0,
+      "value": "Overdue or off track: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.totals": [
+    {
+      "type": 0,
+      "value": "TotalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.totalsMore": [
+    {
+      "type": 0,
+      "value": "Closed or cancelled: "
+    },
+    {
+      "type": 2,
+      "value": "closed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Drafts: "
+    },
+    {
+      "type": 2,
+      "value": "drafts",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.verify.doneBy": [
+    {
+      "type": 0,
+      "value": "Done by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ":SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.verify.doneNoNote": [
+    {
+      "type": 0,
+      "value": "Marked as done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.verify.evidence": [
+    {
+      "type": 0,
+      "value": "EvidenceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.verify.memos": [
+    {
+      "type": 0,
+      "value": "Follow-up memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.verify.noEvidence": [
+    {
+      "type": 0,
+      "value": "No files were attached.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.warn.notCleared": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is not cleared for the action’s level, or is no longer active.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.warn.ownerRecused": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " declared an interest in this item. They will see this action, but not the item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.warnings": [
+    {
+      "type": 0,
+      "value": "Before you send itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "admin.audit.action": [
     {
       "type": 0,
@@ -14747,6 +20233,234 @@
     {
       "type": 0,
       "value": "You have unsaved changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.amber": [
+    {
+      "type": 0,
+      "value": "Amber when due withinSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.amberHint": [
+    {
+      "type": 0,
+      "value": "Working days, 1 to 60.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.default.nextMeeting": [
+    {
+      "type": 0,
+      "value": "The next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.default.workingDays": [
+    {
+      "type": 0,
+      "value": "A number of working daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.defaultDays": [
+    {
+      "type": 0,
+      "value": "Working daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.defaultDaysHint": [
+    {
+      "type": 0,
+      "value": "1 to 120. Also used when no next meeting is scheduled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.defaultDue": [
+    {
+      "type": 0,
+      "value": "Default due dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.definition": [
+    {
+      "type": 0,
+      "value": "Reminders and escalation follow the workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.definitionHint": [
+    {
+      "type": 0,
+      "value": "A published workflow for action items. Running actions keep the version they started on.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.definitionMissing": [
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": " (not published)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.due.chair": [
+    {
+      "type": 0,
+      "value": "The chair’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.due.reason": [
+    {
+      "type": 0,
+      "value": "Only a reason: the owner changes it, and the secretaries are toldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.due.secretary": [
+    {
+      "type": 0,
+      "value": "The secretary’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.dueChange": [
+    {
+      "type": 0,
+      "value": "A new due date needsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.dueChangeHint": [
+    {
+      "type": 0,
+      "value": "The original date is always shown beside the new one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.evidence": [
+    {
+      "type": 0,
+      "value": "Evidence is required when an action is marked as doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.lead": [
+    {
+      "type": 0,
+      "value": "How this type’s "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " track their actions. Changes are reviewed by a second administrator, and apply to open actions from their next change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.openBuilder": [
+    {
+      "type": 0,
+      "value": "Open in the builderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.preset": [
+    {
+      "type": 0,
+      "value": "Start from an exampleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.presetChoose": [
+    {
+      "type": 0,
+      "value": "Choose an exampleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.presetHint": [
+    {
+      "type": 0,
+      "value": "Copies only the actions settings of the example. Nothing applies until the version is published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.presetUse": [
+    {
+      "type": 0,
+      "value": "Use these valuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.presetUsed": [
+    {
+      "type": 0,
+      "value": "The example’s values are in the draft. Save to keep them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.stale": [
+    {
+      "type": 0,
+      "value": "“No recent update” afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.staleHint": [
+    {
+      "type": 0,
+      "value": "Working days without an update, 5 to 120, after which an action shows as amber.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.staleUse": [
+    {
+      "type": 0,
+      "value": "Use the “no recent update” ruleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.tab": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.updates": [
+    {
+      "type": 0,
+      "value": "Ask owners for an updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.updatesDays": [
+    {
+      "type": 0,
+      "value": "Working days before the papers are dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.updatesHint": [
+    {
+      "type": 0,
+      "value": "1 to 20. Owners of open actions with no update since the last meeting are asked once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.updatesUse": [
+    {
+      "type": 0,
+      "value": "Ask owners for an update before the papers are dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.verified.chair": [
+    {
+      "type": 0,
+      "value": "The chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.verified.secretary": [
+    {
+      "type": 0,
+      "value": "A secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.verifiedBy": [
+    {
+      "type": 0,
+      "value": "Actions are verified bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.verifiedHint": [
+    {
+      "type": 0,
+      "value": "Never the owner or someone involved in the action: another secretary, or the vice-chair, does it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumActions.workingDays": [
+    {
+      "type": 0,
+      "value": "working daysSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumMinutes.add": [

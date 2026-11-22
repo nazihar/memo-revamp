@@ -71,6 +71,8 @@ const policy: ForumPolicyResponse = {
   termPolicy: { reminderDays: [] },
   quorumBasis: 3,
   quorumNeeded: 2,
+  quorumOverride: 'NEVER',
+  memoResumes: 'AT_MEETING_END',
 }
 
 const levels = [

@@ -86,6 +86,8 @@ class ForumPolicies(
             submissionPolicy = settings.submissionPolicy,
             quorumBasis = quorum.basis,
             quorumNeeded = quorum.needed,
+            quorumOverride = settings.meetings.quorumOverride,
+            memoResumes = settings.minutes.memoResumes,
         )
     }
 

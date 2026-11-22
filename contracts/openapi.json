@@ -5209,6 +5209,10 @@
             },
             "type" : "array"
           },
+          "memoResumes" : {
+            "enum" : [ "AT_MEETING_END", "ON_MINUTES_APPROVAL" ],
+            "type" : "string"
+          },
           "outcomes" : {
             "items" : {
               "$ref" : "#/components/schemas/Outcome"
@@ -5225,6 +5229,10 @@
           "quorumNeeded" : {
             "format" : "int32",
             "type" : "integer"
+          },
+          "quorumOverride" : {
+            "enum" : [ "NEVER", "WITH_REASON" ],
+            "type" : "string"
           },
           "submissionPolicy" : {
             "$ref" : "#/components/schemas/SubmissionPolicy"
@@ -5244,7 +5252,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "memberAttributes", "outcomes", "quorum", "quorumBasis", "quorumNeeded", "submissionPolicy", "termPolicy", "typeId", "typeName", "version" ],
+        "required" : [ "memberAttributes", "memoResumes", "outcomes", "quorum", "quorumBasis", "quorumNeeded", "quorumOverride", "submissionPolicy", "termPolicy", "typeId", "typeName", "version" ],
         "type" : "object"
       },
       "ForumRequest" : {

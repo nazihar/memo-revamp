@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { TriangleAlert } from 'lucide-react'
-import { useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { makeMinutesDraft } from '@/api/generated/sdk.gen'
 import type { MinutesCopySetResponse, StructureProblemResponse } from '@/api/generated/types.gen'
@@ -65,6 +65,7 @@ export function SecretaryPanel({
   const [refused, setRefused] = useState<string>()
   const [busy, setBusy] = useState(false)
   const status = useRef<HTMLParagraphElement>(null)
+  const statusId = useId()
   const close = () => {
     setOpen(undefined)
   }
@@ -74,8 +75,23 @@ export function SecretaryPanel({
     setSaid(text)
     requestAnimationFrame(() => status.current?.focus())
   }
+  /** A job was asked for: the live region follows the job (it says when the draft is ready), not a result of ours. */
+  const requested = () => {
+    setOpen(undefined)
+    setRefused(undefined)
+    setSaid(undefined)
+    requestAnimationFrame(() => status.current?.focus())
+  }
   const byNumber = new Map(items.map((i) => [i.itemId, i]))
   const working = page.work?.state === 'PENDING'
+  // The draft is being made or its current version checked: a step now would check it first and move the minutes on
+  // under the page's version (412), so the steps wait for the check, which the page polls for.
+  const pending = working || page.structure.pending
+  const wasPending = useRef(pending)
+  useEffect(() => {
+    if (wasPending.current && !pending && page.work?.state !== 'FAILED') setSaid(intl.formatMessage(mn.madeReady))
+    wasPending.current = pending
+  }, [pending, page.work?.state, intl])
   const draft = page.draft
 
   const makeDraft = async () => {
@@ -90,7 +106,7 @@ export function SecretaryPanel({
           throwOnError: true,
         }),
       )
-      done(intl.formatMessage(mn.making))
+      requested()
     } catch (problem) {
       setRefused(refusal(intl, problem))
     } finally {
@@ -109,7 +125,7 @@ export function SecretaryPanel({
 
   return (
     <div className="flex flex-col gap-5 text-lg">
-      <p ref={status} role="status" tabIndex={-1} className="outline-none">
+      <p ref={status} id={statusId} role="status" tabIndex={-1} className="outline-none">
         {progress}
       </p>
       {page.viewerRecused ? <p className="rounded-md border p-3">{intl.formatMessage(mn.recusedSecretary)}</p> : null}
@@ -214,6 +230,8 @@ export function SecretaryPanel({
         {page.maySendForReview ? (
           <Button
             className={big}
+            disabled={pending}
+            aria-describedby={pending ? statusId : undefined}
             onClick={() => {
               setOpen({ kind: 'send' })
             }}
@@ -224,6 +242,8 @@ export function SecretaryPanel({
         {page.mayCirculate ? (
           <Button
             className={big}
+            disabled={pending}
+            aria-describedby={pending ? statusId : undefined}
             onClick={() => {
               setOpen({ kind: 'circulate', noReviewer: !page.agreed })
             }}
@@ -293,9 +313,9 @@ export function SecretaryPanel({
         <CommentsPanel page={page} respond={page.state === 'CIRCULATED' && !page.viewerRecused} timeZone={timeZone} />
       ) : null}
 
-      {open?.kind === 'remake' ? <RemakeDialog page={page} onDone={done} onClose={close} /> : null}
+      {open?.kind === 'remake' ? <RemakeDialog page={page} onDone={requested} onClose={close} /> : null}
       {open?.kind === 'fill' ? (
-        <FillDialog page={page} item={open.item} restore={open.restore} onDone={done} onClose={close} />
+        <FillDialog page={page} item={open.item} restore={open.restore} onDone={requested} onClose={close} />
       ) : null}
       {open?.kind === 'send' ? (
         <SendDialog

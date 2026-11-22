@@ -4095,6 +4095,7 @@
   "minutes.items.lead": "An item’s block is filled again from its decision and your notes. Your edits elsewhere stay.",
   "minutes.items.title": "Fill an item again",
   "minutes.linkedReader": "The next meeting is asked to approve these minutes. Read your copy before it.",
+  "minutes.madeReady": "The draft is ready.",
   "minutes.makeDraft": "Make the draft",
   "minutes.making": "Making the draft… This takes a few seconds.",
   "minutes.mine": "Your comments",

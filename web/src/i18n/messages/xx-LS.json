@@ -39156,6 +39156,12 @@
       "value": "The next meeting is asked to approve these minutes. Read your copy before it.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "minutes.madeReady": [
+    {
+      "type": 0,
+      "value": "The draft is ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "minutes.makeDraft": [
     {
       "type": 0,

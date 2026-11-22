@@ -37,6 +37,7 @@ export const mn = defineMessages({
   },
   makeDraft: { id: 'minutes.makeDraft', defaultMessage: 'Make the draft' },
   making: { id: 'minutes.making', defaultMessage: 'Making the draft… This takes a few seconds.' },
+  madeReady: { id: 'minutes.madeReady', defaultMessage: 'The draft is ready.' },
   recusedSecretary: {
     id: 'minutes.recusedSecretary',
     defaultMessage:

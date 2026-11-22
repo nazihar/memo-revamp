@@ -97,7 +97,8 @@ test.describe('drafting, reviewing, circulating and approving the minutes', () =
     await expect(page.getByRole('navigation', { name: 'Steps' })).toContainText('Comment period ended')
     await press(page.getByRole('button', { name: 'Make the draft' }))
     await expect(page.getByText(/^Draft ready \(version 1, /)).toBeVisible({ timeout: 60_000 })
-    await expect(page.getByRole('button', { name: 'Send to the chair' })).toBeVisible({ timeout: 60_000 })
+    // The steps wait until the draft's blocks are checked (the page polls meanwhile).
+    await expect(page.getByRole('button', { name: 'Send to the chair' })).toBeEnabled({ timeout: 60_000 })
     await checkPageA11y(page)
     await press(page.getByRole('button', { name: 'Send to the chair' }))
     await press(

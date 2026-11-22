@@ -269,7 +269,13 @@ describe('Drafting the minutes (flow AD)', () => {
       work: { kind: 'ALL', state: 'PENDING', requestedAt: '2026-12-12T09:19:00Z' },
       version: 5,
     }
-    server.use(...handlers(calls, [{ ...base, undecided: [{ itemId: 'i6', number: '6' }] }, making, drafted]))
+    // The draft is stored and its blocks not checked yet: the steps wait (a step now would check it and move the version).
+    const checking: MinutesResponse = {
+      ...drafted,
+      structure: { ...NO_STRUCTURE, pending: true, ok: null },
+      version: 5,
+    }
+    server.use(...handlers(calls, [{ ...base, undecided: [{ itemId: 'i6', number: '6' }] }, making, checking, drafted]))
     renderRoute('/meetings/m1/minutes')
 
     expect(partsForPath('/meetings/m1/minutes')).toContain('minutes')
@@ -301,10 +307,20 @@ describe('Drafting the minutes (flow AD)', () => {
         'Making the draft… This takes a few seconds.',
       )
     })
-    // The page reads itself again while the job runs, then shows the draft.
+    // The page reads itself again while the job runs, then shows the draft; Send waits for the check of its blocks.
     expect(
       await screen.findByText('Draft ready (version 1, Dec 12, 2026, 3:20 PM, by K. Secretary)', {}, { timeout: 8000 }),
     ).toBeInTheDocument()
+    const send = screen.getByRole('button', { name: 'Send to the chair' })
+    expect(send).toBeDisabled()
+    expect(send).toHaveAccessibleDescription('Checking the draft’s item blocks…')
+    await waitFor(
+      () => {
+        expect(send).toBeEnabled()
+      },
+      { timeout: 8000 },
+    )
+    expect(screen.getAllByRole('status').map((st) => st.textContent)).toContain('The draft is ready.')
     expect(screen.getByRole('link', { name: 'Open in the editor' })).toHaveAttribute(
       'href',
       '/meetings/m1/minutes/edit',

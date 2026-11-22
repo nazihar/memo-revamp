@@ -207,6 +207,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
             // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
             Surface.TRACKER to { p, v -> trackerProbe(p, v) },
+            // E08 T4: analytics and the attendance export (counts only; the differential is AnalyticsLeakIT).
+            Surface.ANALYTICS to { _, v -> analyticsProbe(v) },
             // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
             // the decided item's test.
             Surface.RESOLUTIONS to { _, v -> resolutionReads(brc, v.person()).forEach { clean(v.person(), it, statusBelow = 500) } },

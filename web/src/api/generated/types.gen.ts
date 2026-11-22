@@ -209,6 +209,11 @@ export type ActionWarning = {
     userId: string;
 };
 
+export type ActionsDetail = {
+    owners?: Array<OwnerOverdueResponse>;
+    summary?: ActionsSummary;
+};
+
 export type ActionsPolicy = {
     amberWorkingDays: number;
     defaultDue: 'NEXT_MEETING' | 'WORKING_DAYS';
@@ -219,6 +224,19 @@ export type ActionsPolicy = {
     staleWorkingDays: number;
     updateRequestWorkingDays: number;
     verifiedBy: 'SECRETARY' | 'CHAIR';
+};
+
+export type ActionsSummary = {
+    closed?: number;
+    closedByAgreedDate?: number;
+    closedByAgreedPercent?: number | null;
+    closedByOriginalDate?: number;
+    closedByOriginalPercent?: number | null;
+    overdue?: number;
+    overdue1To30?: number;
+    overdue31To90?: number;
+    overdueOver90?: number;
+    overdueRevised?: number;
 };
 
 export type ActiveRequest = {
@@ -432,6 +450,12 @@ export type AllowedApprovers = {
     roles?: Array<string>;
 };
 
+export type AnalyticsSummaryResponse = {
+    committees?: Array<CommitteeSummaryResponse>;
+    from?: string;
+    to?: string;
+};
+
 export type AppliedResponse = {
     moved: number;
 };
@@ -497,6 +521,13 @@ export type AttendanceCountsResponse = {
     total: number;
 };
 
+export type AttendanceDetail = {
+    members?: Array<MemberAttendanceResponse>;
+    membersOmitted?: boolean;
+    ownRowOnly?: boolean;
+    summary?: AttendanceSummary;
+};
+
 export type AttendanceEventRequest = {
     at?: string | null;
     itemId?: string | null;
@@ -559,6 +590,13 @@ export type AttendanceResponse = {
     people?: Array<AttendancePersonResponse> | null;
     quorum?: LiveQuorumResponse | null;
     status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+};
+
+export type AttendanceSummary = {
+    attended?: number;
+    expected?: number;
+    heldMeetings?: number;
+    ratePercent?: number | null;
 };
 
 /**
@@ -887,6 +925,34 @@ export type CodeRequest = {
     code: string;
 };
 
+export type CommitteeDetailResponse = {
+    access?: 'FULL' | 'MEMBER';
+    actions?: ActionsDetail;
+    attendance?: AttendanceDetail;
+    code?: string;
+    deferrals?: DeferralDetail;
+    forumId?: string;
+    from?: string;
+    name?: string;
+    papers?: PapersDetail;
+    shortName?: string;
+    timeToDecision?: TimingDetail;
+    to?: string;
+};
+
+export type CommitteeSummaryResponse = {
+    access?: 'FULL' | 'MEMBER';
+    actions?: ActionsSummary;
+    attendance?: AttendanceSummary;
+    code?: string;
+    deferrals?: DeferralSummary;
+    forumId?: string;
+    name?: string;
+    papers?: PapersSummary;
+    shortName?: string;
+    timeToDecision?: TimingSummary;
+};
+
 export type ComponentHealth = {
     name: string;
     status: 'UP' | 'DOWN' | 'DISABLED';
@@ -1169,6 +1235,18 @@ export type DeferTarget = {
     date?: string | null;
     meetingId?: string | null;
     next?: boolean;
+};
+
+export type DeferralDetail = {
+    byQuarter?: Array<QuarterDeferralResponse>;
+    overall?: DeferralSummary;
+};
+
+export type DeferralSummary = {
+    decisions?: number;
+    deferred?: number;
+    deferredPercent?: number | null;
+    deferredTwice?: number;
 };
 
 export type DefinitionChoice = {
@@ -2348,6 +2426,17 @@ export type MeetingPageResponse = {
     nextCursor?: string | null;
 };
 
+export type MeetingPapersResponse = {
+    attended?: number;
+    date?: string;
+    expected?: number;
+    label?: string | null;
+    lateItems?: number | null;
+    latePapers?: number | null;
+    meetingId?: string;
+    onTime?: boolean | null;
+};
+
 export type MeetingPolicy = {
     invitationTitle?: 'NAME' | 'NEUTRAL';
     meetingReminder?: boolean;
@@ -2449,6 +2538,25 @@ export type MemberAgendaResponse = {
     whatChanged?: WhatChangedResponse | null;
 };
 
+export type MemberAttendanceResponse = {
+    absent?: number;
+    apologies?: number;
+    attended?: number;
+    byAlternate?: number;
+    expected?: number;
+    inPerson?: number;
+    joinedLate?: number;
+    leftEarly?: number;
+    meetings?: Array<MemberMeetingResponse>;
+    name?: string | null;
+    ratePercent?: number | null;
+    remote?: number;
+    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    seatFrom?: string;
+    seatTo?: string;
+    userId?: string;
+};
+
 export type MemberAttribute = {
     key?: string;
     label?: string;
@@ -2491,6 +2599,15 @@ export type MemberItemResponse = {
     startsAt?: string | null;
     subItems: Array<MemberItemResponse>;
     title?: string | null;
+};
+
+export type MemberMeetingResponse = {
+    attendance?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES' | 'ABSENT';
+    byAlternate?: boolean;
+    date?: string;
+    joinedLate?: boolean;
+    leftEarly?: boolean;
+    meetingId?: string;
 };
 
 export type MemberPaperResponse = {
@@ -2642,6 +2759,11 @@ export type MemoTypeTemplateView = {
     available: Array<TemplateTagHelp>;
     owner: string;
     template?: TemplateFileView | null;
+};
+
+export type MemoTypeTimingResponse = {
+    memoTypeId?: string | null;
+    timing?: TimingSummary;
 };
 
 export type MemoTypeVersionResponse = {
@@ -3432,11 +3554,38 @@ export type OwnerInput = {
     userId?: string | null;
 };
 
+export type OwnerOverdueResponse = {
+    days1To30?: number;
+    days31To90?: number;
+    holderName?: string | null;
+    holderUserId?: string | null;
+    over90?: number;
+    overdue?: number;
+    ownerName?: string | null;
+    ownerPositionId?: string | null;
+    ownerUserId?: string | null;
+    revised?: number;
+};
+
 export type PackFileResponse = {
     classificationId: string;
     fileId: string;
     source: 'MEMO_DOCUMENT' | 'MEMO_ATTACHMENT' | 'MEMO_RECORD' | 'UPLOAD';
     title: string;
+};
+
+export type PapersDetail = {
+    meetings?: Array<MeetingPapersResponse>;
+    summary?: PapersSummary;
+};
+
+export type PapersSummary = {
+    lateItems?: number | null;
+    latePapers?: number | null;
+    meetings?: number;
+    onTime?: number;
+    onTimePercent?: number | null;
+    withDeadline?: number;
 };
 
 export type PasswordResetCompletion = {
@@ -3669,6 +3818,16 @@ export type PublishedRevisionResponse = {
     number: number;
     publishedAt: string;
     publishedBy?: PersonResponse | null;
+};
+
+export type QuarterDeferralResponse = {
+    deferrals?: DeferralSummary;
+    quarter?: string;
+};
+
+export type QuarterTimingResponse = {
+    quarter?: string;
+    timing?: TimingSummary;
 };
 
 export type QueueMemberRequest = {
@@ -4759,6 +4918,21 @@ export type Terms = {
 export type TermsUpdate = {
     locale: string;
     terms: Array<Term>;
+};
+
+export type TimingDetail = {
+    byMemoType?: Array<MemoTypeTimingResponse>;
+    byQuarter?: Array<QuarterTimingResponse>;
+    overall?: TimingSummary;
+};
+
+export type TimingSummary = {
+    decisions?: number;
+    enough?: boolean;
+    medianDays?: number | null;
+    medianWorkingDays?: number | null;
+    p90Days?: number | null;
+    p90WorkingDays?: number | null;
 };
 
 export type ToBeRatifiedResponse = {
@@ -7560,6 +7734,75 @@ export type ReleaseClaimedTaskResponses = {
 };
 
 export type ReleaseClaimedTaskResponse = ReleaseClaimedTaskResponses[keyof ReleaseClaimedTaskResponses];
+
+export type GetCommitteeAnalyticsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+        forumIds?: Array<string>;
+    };
+    url: '/api/v1/analytics/committees';
+};
+
+export type GetCommitteeAnalyticsResponses = {
+    /**
+     * OK
+     */
+    200: AnalyticsSummaryResponse;
+};
+
+export type GetCommitteeAnalyticsResponse = GetCommitteeAnalyticsResponses[keyof GetCommitteeAnalyticsResponses];
+
+export type GetCommitteeAnalyticsDetailData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/api/v1/analytics/committees/{forumId}';
+};
+
+export type GetCommitteeAnalyticsDetailResponses = {
+    /**
+     * OK
+     */
+    200: CommitteeDetailResponse;
+};
+
+export type GetCommitteeAnalyticsDetailResponse = GetCommitteeAnalyticsDetailResponses[keyof GetCommitteeAnalyticsDetailResponses];
+
+export type ExportCommitteeAttendanceData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+    };
+    url: '/api/v1/analytics/committees/{forumId}/attendance/export';
+};
+
+export type ExportCommitteeAttendanceErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportCommitteeAttendanceResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportCommitteeAttendanceResponse = ExportCommitteeAttendanceResponses[keyof ExportCommitteeAttendanceResponses];
 
 export type GetCsrfTokenData = {
     body?: never;

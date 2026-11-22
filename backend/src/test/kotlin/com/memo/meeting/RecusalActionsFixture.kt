@@ -139,6 +139,25 @@ abstract class RecusalActionsFixture : RecusalLeakFixture() {
     }
 
     /**
+     * E08 T4: analytics, counts only: every recused viewer keeps their committee's (in office), with no canary in the answers
+     * or the attendance workbook; members get no export. What a recused viewer counts against the same data without the
+     * item is AnalyticsLeakIT's differential.
+     */
+    protected fun analyticsProbe(v: Viewer) {
+        val base = "/api/v1/analytics/committees"
+        listOf(base, "$base/$brc").forEach { uri -> clean(v.person(), read(uri, v.person().session)) }
+        val export = read("$base/$brc/attendance/export", v.person().session)
+        if (v.officer) {
+            assertThat(export).hasStatusOk()
+            val cells = workbookRows(export).joinToString("\n")
+            canaries(v.person()).forEach { assertThat(cells).doesNotContain(it) }
+        } else {
+            assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+            clean(v.person(), export, statusBelow = 500)
+        }
+    }
+
+    /**
      * E07 T8's surface: the committee's tracker answers none of the item's actions, nor counts them, for a viewer recused
      * from it and not involved (d1 has their own action of the hidden item only); filtered to the item or searched for the
      * canary, nothing and a count of 0; the export is 403 to a recused member, and a recused secretary's or chair's workbook

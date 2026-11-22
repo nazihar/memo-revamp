@@ -606,6 +606,37 @@ class PaperLeakIT : RecusalFixture() {
                     p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
                 }
             },
+            // E08 T4: analytics are counts, never an item: members (d1, d3) have their committee's, forum.read every
+            // committee's and the attendance export (whose workbook names no item); a guest and an alternate standing in hold
+            // no seat, so analytics are not theirs (403). The planted meeting is not held: what a recused or restricted viewer
+            // counts is AnalyticsLeakIT's differential.
+            Surface.ANALYTICS to { p, person ->
+                val base = "/api/v1/analytics/committees"
+                val answers = listOf(read(base, person.session), read("$base/$brc", person.session))
+                val export = read("$base/$brc/attendance/export", person.session)
+                (answers + export).forEach { answer ->
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+                when (person) {
+                    guest, alt -> {
+                        (answers + export).forEach { assertThat(it).hasStatus(HttpStatus.FORBIDDEN) }
+                    }
+
+                    auditor -> {
+                        answers.forEach { clean(p, person, it) }
+                        assertThat(export).hasStatusOk()
+                        val cells = workbookText(export)
+                        p.canaries(person).forEach { assertThat(cells).doesNotContain(it) }
+                    }
+
+                    else -> {
+                        answers.forEach { clean(p, person, it) }
+                        assertThat(answers[1].json()["attendance"]["ownRowOnly"].asBoolean()).isTrue()
+                        assertThat(answers[1].json()["papers"]["summary"].absent("lateItems")).isTrue()
+                        assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+                    }
+                }
+            },
         )
 
     @Test
@@ -686,6 +717,6 @@ class PaperLeakIT : RecusalFixture() {
         val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
 
         /** The modules whose endpoints are all in [PaperSurfaceRegistry.endpoints] or [PaperSurfaceRegistry.officersOnly]. */
-        val MODULES = listOf("com.memo.meeting", "com.memo.minutes", "com.memo.actions")
+        val MODULES = listOf("com.memo.meeting", "com.memo.minutes", "com.memo.actions", "com.memo.analytics")
     }
 }

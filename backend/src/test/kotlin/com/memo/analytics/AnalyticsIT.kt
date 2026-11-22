@@ -84,6 +84,8 @@ class AnalyticsIT : AnalyticsFixture() {
         assertThat(full["actions"]["owners"].items().single()["ownerUserId"].asString()).isEqualTo(director.id.toString())
         assertThat(full["papers"]["meetings"].items()).hasSize(2)
         assertThat(full["deferrals"]["byQuarter"].items()).hasSize(1)
+        // The memo type is named, so the screen can say "Credit proposal 22 days (19)" (flow AW).
+        assertThat(full["timeToDecision"]["byMemoType"].items().single()["memoTypeName"].asString()).isNotBlank()
 
         // A member: the committee's totals, their own row, no late counts, no export.
         val member = analytics(director).committee()

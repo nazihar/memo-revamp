@@ -25,6 +25,7 @@ export type CataloguePart =
   | 'search'
   | 'inbox'
   | 'dashboard'
+  | 'analytics'
   | 'imports'
   | 'legacy'
   | 'decisions'

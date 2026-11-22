@@ -86,6 +86,11 @@
     "routes": ["/dashboards"],
     "prefixes": ["dashboard"]
   },
+  "analytics": {
+    "$comment": "Committee analytics (Phase 4 E08 T7, flows AU–AW): the overview, a committee's detail, attendance per member and a member's meetings.",
+    "routes": ["/analytics"],
+    "prefixes": ["analytics"]
+  },
   "imports": {
     "routes": ["/admin/imports"],
     "prefixes": ["imports"]

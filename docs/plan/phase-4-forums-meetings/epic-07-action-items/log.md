@@ -309,3 +309,4 @@
 - **After merging T8 (#232) from `master`:**
   - Both sides kept in `ActionAccessArchTest` (`ActionTrackerReads` beside `ActionMemoStore`), `PaperSurfaceRegistry` and this log.
   - The same suites as after T5 are green (`BUILD SUCCESSFUL`); ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass. The `memo-types` and `memo-documents` tests timed out while Gradle ran beside them, and passed when run on their own.
+- **After merging E06 T6 (#229) from `master`:** only the generated client conflicted, and it was regenerated. 2,737 tests in 32 classes are green (the same suites as after T5). ktlint, detekt and SpotBugs are clean; the web checks and tests pass.

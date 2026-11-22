@@ -18,6 +18,9 @@ enum class MeetingChange {
 
     /** A guest was added or removed. */
     GUESTS,
+
+    /** Its minutes were confirmed by the chair (E06, ADR-0066): HELD → MINUTES_APPROVED; attendance and declarations freeze. */
+    MINUTES_APPROVED,
 }
 
 /**

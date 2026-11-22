@@ -112,10 +112,15 @@ import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
 import com.memo.jooq.tables.Minutes
+import com.memo.jooq.tables.MinutesApproval
+import com.memo.jooq.tables.MinutesComment
+import com.memo.jooq.tables.MinutesCommentRequest
+import com.memo.jooq.tables.MinutesCopy
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesEvent
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesReminder
 import com.memo.jooq.tables.MinutesResolution
 import com.memo.jooq.tables.MinutesResolutionCounter
 import com.memo.jooq.tables.NotificationItem
@@ -731,6 +736,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MINUTES: Minutes get() = Minutes.MINUTES
 
     /**
+     * The table <code>memo.minutes_approval</code>.
+     */
+    val MINUTES_APPROVAL: MinutesApproval get() = MinutesApproval.MINUTES_APPROVAL
+
+    /**
+     * The table <code>memo.minutes_comment</code>.
+     */
+    val MINUTES_COMMENT: MinutesComment get() = MinutesComment.MINUTES_COMMENT
+
+    /**
+     * The table <code>memo.minutes_comment_request</code>.
+     */
+    val MINUTES_COMMENT_REQUEST: MinutesCommentRequest get() = MinutesCommentRequest.MINUTES_COMMENT_REQUEST
+
+    /**
+     * The table <code>memo.minutes_copy</code>.
+     */
+    val MINUTES_COPY: MinutesCopy get() = MinutesCopy.MINUTES_COPY
+
+    /**
      * The table <code>memo.minutes_decision</code>.
      */
     val MINUTES_DECISION: MinutesDecision get() = MinutesDecision.MINUTES_DECISION
@@ -749,6 +774,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.minutes_item_note</code>.
      */
     val MINUTES_ITEM_NOTE: MinutesItemNote get() = MinutesItemNote.MINUTES_ITEM_NOTE
+
+    /**
+     * The table <code>memo.minutes_reminder</code>.
+     */
+    val MINUTES_REMINDER: MinutesReminder get() = MinutesReminder.MINUTES_REMINDER
 
     /**
      * The table <code>memo.minutes_resolution</code>.
@@ -1306,10 +1336,15 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoWatchEvent.MEMO_WATCH_EVENT,
         MemoWatchSetting.MEMO_WATCH_SETTING,
         Minutes.MINUTES,
+        MinutesApproval.MINUTES_APPROVAL,
+        MinutesComment.MINUTES_COMMENT,
+        MinutesCommentRequest.MINUTES_COMMENT_REQUEST,
+        MinutesCopy.MINUTES_COPY,
         MinutesDecision.MINUTES_DECISION,
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
         MinutesEvent.MINUTES_EVENT,
         MinutesItemNote.MINUTES_ITEM_NOTE,
+        MinutesReminder.MINUTES_REMINDER,
         MinutesResolution.MINUTES_RESOLUTION,
         MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER,
         NotificationItem.NOTIFICATION_ITEM,

@@ -112,9 +112,15 @@ class MeetingSweepIT : MemoIntegrationTest() {
 
     @Autowired lateinit var sweepTask: OneTimeTask<MeetingSweepTenantTask>
 
+    /** The meeting module's own sweep only: the minutes' parts are MinutesCirculationIT's. */
+    private val sweepSteps =
+        org.springframework.beans.factory.support
+            .StaticListableBeanFactory()
+            .getBeanProvider(MeetingSweepStep::class.java)
+
     private val clock = MutableClock()
     private val sweep by lazy {
-        MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, meetingReminders, reminders, auditLog, clock)
+        MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, meetingReminders, reminders, auditLog, clock, sweepSteps)
     }
     private lateinit var secretary: Person
     private lateinit var chair: Person

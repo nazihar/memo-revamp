@@ -68,6 +68,37 @@ describe('meeting reminders (design E05 §9)', () => {
   })
 })
 
+describe('minutes notifications (design E06 §2)', () => {
+  const minutes = { committee: 'Board Risk Committee', date: '2026-12-12' }
+
+  it('name the committee, the date and the deadline, never the minutes', () => {
+    expect(notificationText(english, 'MINUTES_REVIEW_REQUESTED', minutes)).toBe(
+      'The draft minutes of Board Risk Committee on 2026-12-12 are ready for your review',
+    )
+    expect(notificationText(english, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toBe(
+      'The draft minutes of Board Risk Committee on 2026-12-12 are circulated: please send any comments by 2026-12-19',
+    )
+    expect(notificationText(english, 'MINUTES_COMMENT_ADDED', { ...minutes, kind: 'NO_COMMENTS' })).toBe(
+      'A reader has no comments on the draft minutes of Board Risk Committee on 2026-12-12',
+    )
+    expect(notificationText(english, 'MINUTES_COMMENT_ADDED', { ...minutes, kind: 'SUGGESTION' })).toBe(
+      'A correction to the draft minutes of Board Risk Committee on 2026-12-12 was suggested',
+    )
+    expect(notificationText(english, 'DECISIONS_RELEASE_FAILED', { ...minutes, count: '2' })).toBe(
+      '2 decisions of Board Risk Committee on 2026-12-12 were not sent to their memos: open the meeting to try again',
+    )
+    expect(notificationText(english, 'MINUTES_CONFIRMATION_REQUESTED', minutes)).toBe(
+      'The minutes of Board Risk Committee on 2026-12-12 are ready for your approval',
+    )
+    expect(templateLabel(english, 'MINUTES_APPROVED')).toBe('Minutes approved')
+  })
+
+  it('read in Arabic', () => {
+    expect(notificationText(arabic, 'MINUTES_APPROVED', minutes)).toContain('اعتُمد محضر')
+    expect(notificationText(arabic, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toContain('2026-12-19')
+  })
+})
+
 describe('action items (design E07 §2.3)', () => {
   const action = { committee: 'Board Risk Committee', reference: 'BRC A14/2026', date: '2027-03-12' }
 

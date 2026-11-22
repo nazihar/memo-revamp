@@ -70,7 +70,8 @@ class MinutesTemplateDataTest {
         assertThat(data.values["meeting.date"]).isEqualTo("12 December 2026")
         assertThat(data.values["meeting.start"] to data.values["meeting.closedAt"]).isEqualTo("10:00" to "12:30")
         assertThat(data.values["meeting.chair"]).isEqualTo("Dr A. Rahman")
-        assertThat(data.values["minutes.status"]).isEqualTo("DRAFT")
+        // Deprecated in E06 T7: always empty (the copies and the record carry the status).
+        assertThat(data.values["minutes.status"]).isEmpty()
         assertThat(data.values["quorum.opening"]).isEqualTo("The meeting was quorate (4 present, 3 needed).")
         assertThat(data.values.keys).containsExactlyInAnyOrderElementsOf(MinutesTemplateTags.MEETING.keys)
         assertThat(data.rows.keys).containsExactlyInAnyOrderElementsOf(MinutesTemplateTags.LOOPS.keys)

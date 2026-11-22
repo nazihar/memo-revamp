@@ -52,7 +52,7 @@ internal object MinutesTemplateSample {
                 "meeting.mode" to "In person and online",
                 "meeting.chair" to "Dr A. Rahman",
                 "meeting.closedAt" to "12:25",
-                "minutes.status" to "DRAFT",
+                "minutes.status" to "",
                 "minutes.approvedOn" to "",
                 "minutes.approvedBy" to "",
                 "quorum.opening" to "The meeting was quorate (5 of 7 voting members present, 4 needed).",

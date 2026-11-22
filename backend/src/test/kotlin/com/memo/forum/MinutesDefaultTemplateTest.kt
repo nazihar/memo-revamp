@@ -44,6 +44,9 @@ class MinutesDefaultTemplateTest {
         val scan = templates.scan { SeekableInMemoryByteChannel(shipped) }
         assertThat(scan.refusals).isEmpty()
         assertThat(templates.check(scan, MinutesTemplateTags.vocabulary)).isEmpty()
+        // E06 T7: no status or approval line (deprecated: the copies and the record are stamped instead).
+        assertThat(templates.warnings(scan, MinutesTemplateTags.vocabulary)).isEmpty()
+        assertThat(scan.tags.map { it.name }).doesNotContain("minutes.status", "minutes.approvedOn", "minutes.approvedBy")
         assertThat(scan.tags.map { it.name }).contains(MinutesTemplateTags.ITEMS, "item.notes", "present", "meeting.label")
 
         val filled = PoiTlFiller().use { it.fill(shipped.inputStream(), MinutesTemplateSample.data(LocalDate.of(2026, 11, 19))) }
@@ -109,7 +112,6 @@ object MinutesDefaultTemplates {
         val validUntil: String,
         val closed: String,
         val chairSignature: String,
-        val approvedOn: String,
         val headings: List<String>,
         val itemActions: String,
         val actionsArising: String,
@@ -134,7 +136,6 @@ object MinutesDefaultTemplates {
             validUntil = "Valid until {{item.validUntil}}.",
             closed = "There being no other business, the meeting closed at {{meeting.closedAt}}.",
             chairSignature = "Chair",
-            approvedOn = "Approved on {{minutes.approvedOn}} by {{minutes.approvedBy}}",
             headings = listOf("Attendance", "Business of the meeting"),
             itemActions = "Actions agreed:",
             actionsArising = "Other actions arising",
@@ -158,7 +159,6 @@ object MinutesDefaultTemplates {
             validUntil = "ساري حتى {{item.validUntil}}.",
             closed = "ولعدم وجود أعمال أخرى، اختُتم الاجتماع الساعة {{meeting.closedAt}}.",
             chairSignature = "رئيس الاجتماع",
-            approvedOn = "اعتُمد بتاريخ {{minutes.approvedOn}} من قِبل {{minutes.approvedBy}}",
             headings = listOf("الحضور", "أعمال الاجتماع"),
             itemActions = "الإجراءات المتفق عليها:",
             actionsArising = "إجراءات أخرى مترتبة",
@@ -178,7 +178,6 @@ object MinutesDefaultTemplates {
         fun build(w: Words) {
             p("{{meeting.committee}}", bold = true, size = TITLE, center = true)
             p(w.minutesOf, bold = true, size = HEADING, center = true)
-            section("minutes.status") { p("{{minutes.status}}", bold = true, center = true) }
             p(w.heldOn)
             section("meeting.place") { p(w.place) }
             p(w.chair)
@@ -228,7 +227,6 @@ object MinutesDefaultTemplates {
             p("")
             p("________________________________")
             p(w.chairSignature, bold = true)
-            section("minutes.approvedOn") { p(w.approvedOn) }
         }
 
         /** A block shown only when [tag] is not blank, each end alone in its paragraph. */

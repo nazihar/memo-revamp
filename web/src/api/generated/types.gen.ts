@@ -2962,8 +2962,9 @@ export type MinutesTemplatePreviewView = {
 };
 
 export type MinutesTemplateProblemView = {
-    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT' | 'DEPRECATED_TAG';
     excerpt: string;
+    note?: string | null;
     paragraph: number;
     part: string;
     suggestion?: string | null;
@@ -2988,6 +2989,7 @@ export type MinutesTemplateView = {
     refusals: Array<MinutesTemplateRefusalView>;
     tags: Array<string>;
     template?: MinutesTemplateFileView | null;
+    warnings: Array<MinutesTemplateProblemView>;
 };
 
 export type MinutesWorkResponse = {
@@ -4653,7 +4655,7 @@ export type TemplatePreviewView = {
 };
 
 export type TemplateProblemView = {
-    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT' | 'DEPRECATED_TAG';
     excerpt: string;
     paragraph: number;
     part: string;

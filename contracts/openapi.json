@@ -9262,11 +9262,14 @@
       "MinutesTemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {
             "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
           },
           "paragraph" : {
             "format" : "int32",
@@ -9348,9 +9351,15 @@
             }, {
               "type" : "null"
             } ]
+          },
+          "warnings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateProblemView"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "available", "owner", "problems", "refusals", "tags" ],
+        "required" : [ "available", "owner", "problems", "refusals", "tags", "warnings" ],
         "type" : "object"
       },
       "MinutesWorkResponse" : {
@@ -14177,7 +14186,7 @@
       "TemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT", "DEPRECATED_TAG" ],
             "type" : "string"
           },
           "excerpt" : {

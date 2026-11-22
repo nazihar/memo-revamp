@@ -174,7 +174,9 @@ object CopyBlocks {
                 MinutesStructure.tag(r.itemId) to block(item, r.kind, decision, decision?.let { from.resolutions[it.decision.id] })
             }
         val replaced = if (contents.isEmpty()) docx else controls.replace(docx.inputStream(), contents)
-        val cleaned = packages.forCopy(replaced)
+        // The rows of meeting-level loops (the resolutions table) that belong to a redacted item go with it (E06 T7).
+        val dropped = packages.dropRows(replaced, redacted.map { MinutesStructure.rowTag(it.itemId) }.toSet())
+        val cleaned = packages.forCopy(dropped)
         requireNoLeak(from, RedactionSet(redacted), packages.text(cleaned.inputStream()))
         return cleaned
     }

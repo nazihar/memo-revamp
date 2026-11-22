@@ -13,6 +13,7 @@ import { MeetingActions } from '@/features/actions/officer/MeetingActions'
 import { WITH_ACTIONS } from '@/features/actions/officer/shared'
 import { DecisionsPanel } from '@/features/decisions/DecisionsPanel'
 import { dm } from '@/features/decisions/messages'
+import { MinutesCard } from '@/features/minutes/MinutesCard'
 import { AgendaLink } from './agenda/AgendaLink'
 import { AtTheMeeting } from './attendance/AtTheMeeting'
 import { AttendancePanel } from './attendance/AttendancePanel'
@@ -125,6 +126,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       )}
       {officer && live ? <QuorumBanner meeting={m} /> : null}
       {decides ? <LateRequests meeting={m} /> : null}
+      <MinutesCard meeting={m} />
       {replies || declarations ? (
         <MeetingTabs
           live={live && attendance}

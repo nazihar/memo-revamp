@@ -44442,6 +44442,2832 @@
       "value": "YearsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "minutes.approve": [
+    {
+      "type": 0,
+      "value": "Approve the minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.done": [
+    {
+      "type": 0,
+      "value": "The minutes are approved and kept as the record.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.ended": [
+    {
+      "type": 0,
+      "value": "The comment period has ended.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.lead": [
+    {
+      "type": 0,
+      "value": "When you approve, the minutes are locked and kept as the permanent record.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.notYet": [
+    {
+      "type": 0,
+      "value": "Not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.read": [
+    {
+      "type": 0,
+      "value": "Read the final minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.stepUp": [
+    {
+      "type": 0,
+      "value": "You will confirm with your authenticator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.approve.title": [
+    {
+      "type": 0,
+      "value": "Ready for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask": [
+    {
+      "type": 0,
+      "value": "Ask someone else for comments…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.add": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.done": [
+    {
+      "type": 0,
+      "value": "They are asked for comments and get their own copy.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.items": [
+    {
+      "type": 0,
+      "value": "On which items?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.lead": [
+    {
+      "type": 0,
+      "value": "For example the head of a department on the items they know. Their copy shows the items you name and nothing else.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.noItem": [
+    {
+      "type": 0,
+      "value": "Choose at least one item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.nobody": [
+    {
+      "type": 0,
+      "value": "Add at least one person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.notCleared": [
+    {
+      "type": 0,
+      "value": "Someone you named could not read any of these items. Choose other items or other people.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.people": [
+    {
+      "type": 0,
+      "value": "People to askSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.send": [
+    {
+      "type": 0,
+      "value": "Ask for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ask.title": [
+    {
+      "type": 0,
+      "value": "Ask someone else for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.backToMeeting": [
+    {
+      "type": 0,
+      "value": "Back to the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.backToMinutes": [
+    {
+      "type": 0,
+      "value": "Back to the minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.card.open": [
+    {
+      "type": 0,
+      "value": "Open the minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.card.title": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check": [
+    {
+      "type": 0,
+      "value": "CheckSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.documentChanged": [
+    {
+      "type": 0,
+      "value": "The approved document no longer matches its fingerprint.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.documentMissing": [
+    {
+      "type": 0,
+      "value": "The approved document is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.fileChanged": [
+    {
+      "type": 0,
+      "value": "Your copy no longer matches its fingerprint.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.fileMissing": [
+    {
+      "type": 0,
+      "value": "Your copy is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.matches": [
+    {
+      "type": 0,
+      "value": "The record matches its approval: nothing has changed since it was approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.notReady": [
+    {
+      "type": 0,
+      "value": "The record is not made yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.other": [
+    {
+      "type": 0,
+      "value": "The approval’s chain or fingerprint does not match.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.check.problems": [
+    {
+      "type": 0,
+      "value": "The check found a problem. Tell operations:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.checking": [
+    {
+      "type": 0,
+      "value": "Checking the draft’s item blocks…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.circulate": [
+    {
+      "type": 0,
+      "value": "Circulate for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.circulate.lead": [
+    {
+      "type": 0,
+      "value": "Each member gets their own copy and is asked for comments by the deadline. Silence counts as no comments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.circulate.title": [
+    {
+      "type": 0,
+      "value": "Circulate the minutes for comments?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.circulated": [
+    {
+      "type": 0,
+      "value": "The minutes are circulated for comments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.adopt": [
+    {
+      "type": 0,
+      "value": "AdoptSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.adopted": [
+    {
+      "type": 0,
+      "value": "AdoptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.general": [
+    {
+      "type": 0,
+      "value": "The minutes in generalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.none": [
+    {
+      "type": 0,
+      "value": "No suggestions yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.notAdopt": [
+    {
+      "type": 0,
+      "value": "Do not adoptSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.notAdopted": [
+    {
+      "type": 0,
+      "value": "Not adoptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.note": [
+    {
+      "type": 0,
+      "value": "Note to the memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.comments.title": [
+    {
+      "type": 0,
+      "value": "CommentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.choose": [
+    {
+      "type": 0,
+      "value": "Whose copy?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.everyoneElse": [
+    {
+      "type": 0,
+      "value": "Everyone else — the full minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.failed": [
+    {
+      "type": 0,
+      "value": "The copy could not be shown. Try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.loading": [
+    {
+      "type": 0,
+      "value": "Opening the minutes…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.making": [
+    {
+      "type": 0,
+      "value": "The copy is being made. It opens by itself when it is ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.missing": [
+    {
+      "type": 0,
+      "value": "This copy is not available to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.recordMaking": [
+    {
+      "type": 0,
+      "value": "The approved minutes are being made into the record. They open by themselves when ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.copy.show": [
+    {
+      "type": 0,
+      "value": "Show the copySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.approve": [
+    {
+      "type": 0,
+      "value": "Approve the correctionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.approved": [
+    {
+      "type": 0,
+      "value": "The correction is approved. A new version of the record is being made.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.decline": [
+    {
+      "type": 0,
+      "value": "Decline…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.declineConfirm": [
+    {
+      "type": 0,
+      "value": "DeclineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.declineNote": [
+    {
+      "type": 0,
+      "value": "Note to the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.declineTitle": [
+    {
+      "type": 0,
+      "value": "Decline the correction?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.declined": [
+    {
+      "type": 0,
+      "value": "The correction is declined.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.none": [
+    {
+      "type": 0,
+      "value": "Corrections: noneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.propose": [
+    {
+      "type": 0,
+      "value": "Propose a correctionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.proposeLead": [
+    {
+      "type": 0,
+      "value": "Approved minutes are never changed. The chair approves the correction with their authenticator, and the record gains a Corrections page in a new version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.proposed": [
+    {
+      "type": 0,
+      "value": "The correction is sent to the chair for approval.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.reason": [
+    {
+      "type": 0,
+      "value": "Why it is neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.required": [
+    {
+      "type": 0,
+      "value": "Write the correction.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.send": [
+    {
+      "type": 0,
+      "value": "Send to the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.state.declined": [
+    {
+      "type": 0,
+      "value": "DeclinedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.state.proposed": [
+    {
+      "type": 0,
+      "value": "Waiting for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.text": [
+    {
+      "type": 0,
+      "value": "The correctionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.corrections.title": [
+    {
+      "type": 0,
+      "value": "CorrectionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.deadline": [
+    {
+      "type": 0,
+      "value": "Comments bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.deadline.change": [
+    {
+      "type": 0,
+      "value": "Change the deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.deadline.changeTitle": [
+    {
+      "type": 0,
+      "value": "Change the comment deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.deadline.changed": [
+    {
+      "type": 0,
+      "value": "The deadline is changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.deadline.hint": [
+    {
+      "type": 0,
+      "value": "Leave it empty for the committee’s usual number of working days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.editor.failed": [
+    {
+      "type": 0,
+      "value": "The editor could not be opened.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.editor.notSaved": [
+    {
+      "type": 0,
+      "value": "Your changes could not be saved: the minutes can no longer be changed at this stage.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.editor.saving": [
+    {
+      "type": 0,
+      "value": "Saving your changes as a new version…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.editor.unavailable": [
+    {
+      "type": 0,
+      "value": "The draft cannot be opened in the editor now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.editsUpdate": [
+    {
+      "type": 0,
+      "value": "Edits you make now update everyone’s copy a few minutes after you save.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.end": [
+    {
+      "type": 0,
+      "value": "End the comment period now…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.end.confirm": [
+    {
+      "type": 0,
+      "value": "End the comment periodSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.end.lead": [
+    {
+      "type": 0,
+      "value": "The minutes go to the chair for approval. Members who have not answered can no longer comment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.end.title": [
+    {
+      "type": 0,
+      "value": "End the comment period now?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.ended": [
+    {
+      "type": 0,
+      "value": "The comment period has ended. The minutes are with the chair.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.factors.password": [
+    {
+      "type": 0,
+      "value": "passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.factors.totp": [
+    {
+      "type": 0,
+      "value": "password and authenticatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.fill.warning": [
+    {
+      "type": 0,
+      "value": "Your edits to this item will be replaced.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.fillAgain": [
+    {
+      "type": 0,
+      "value": "Fill it againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.how.email": [
+    {
+      "type": 0,
+      "value": "By emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.how.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.how.other": [
+    {
+      "type": 0,
+      "value": "Another waySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.how.phone": [
+    {
+      "type": 0,
+      "value": "By phoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.items.lead": [
+    {
+      "type": 0,
+      "value": "An item’s block is filled again from its decision and your notes. Your edits elsewhere stay.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.items.title": [
+    {
+      "type": 0,
+      "value": "Fill an item againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.linkedReader": [
+    {
+      "type": 0,
+      "value": "The next meeting is asked to approve these minutes. Read your copy before it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.madeReady": [
+    {
+      "type": 0,
+      "value": "The draft is ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.makeDraft": [
+    {
+      "type": 0,
+      "value": "Make the draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.making": [
+    {
+      "type": 0,
+      "value": "Making the draft… This takes a few seconds.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.mine": [
+    {
+      "type": 0,
+      "value": "Your commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.mine.awaiting": [
+    {
+      "type": 0,
+      "value": "No reply yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.mode.atNextMeeting": [
+    {
+      "type": 0,
+      "value": "approved at the next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.mode.byCirculation": [
+    {
+      "type": 0,
+      "value": "approved by circulationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noComments": [
+    {
+      "type": 0,
+      "value": "No commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noComments.later": [
+    {
+      "type": 0,
+      "value": "You can still suggest a correction.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noComments.sent": [
+    {
+      "type": 0,
+      "value": "You told the secretary you have no comments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noComments.title": [
+    {
+      "type": 0,
+      "value": "Tell the secretary you have no comments on these minutes?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noDraft": [
+    {
+      "type": 0,
+      "value": "No draft yet. It will be made from the committee’s template with the attendance, declarations, decisions and your notes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noReviewer": [
+    {
+      "type": 0,
+      "value": "No chair or vice-chair is able to review the draft: they declared an interest, or there is none. You can circulate it for comments now, saying why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.noReviewer.title": [
+    {
+      "type": 0,
+      "value": "Circulate without a review?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf": [
+    {
+      "type": 0,
+      "value": "Record the chair’s agreement…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.how": [
+    {
+      "type": 0,
+      "value": "How did they agree?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.note": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.noteHint": [
+    {
+      "type": 0,
+      "value": "For example “Email of 13 December”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.record": [
+    {
+      "type": 0,
+      "value": "Record the agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.recorded": [
+    {
+      "type": 0,
+      "value": "The chair’s agreement is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.onBehalf.title": [
+    {
+      "type": 0,
+      "value": "Record the chair’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.openEditor": [
+    {
+      "type": 0,
+      "value": "Open in the editorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.previousMeeting": [
+    {
+      "type": 0,
+      "value": "the previous meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.answered": [
+    {
+      "type": 0,
+      "value": "This has been answered already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.beingEdited": [
+    {
+      "type": 0,
+      "value": "Someone has the draft open in the editor. Ask them to close it first, so their changes are kept.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.dateRange": [
+    {
+      "type": 0,
+      "value": "Choose a day from tomorrow to a year ahead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.decided": [
+    {
+      "type": 0,
+      "value": "This correction has been decided already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.draftExists": [
+    {
+      "type": 0,
+      "value": "There is a draft already. Make it again only to replace all your edits.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot do this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.frozen": [
+    {
+      "type": 0,
+      "value": "The minutes are approved and can no longer be changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.generating": [
+    {
+      "type": 0,
+      "value": "The draft is being made. Wait for it to finish.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.noDraft": [
+    {
+      "type": 0,
+      "value": "Make the draft first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.notAgreed": [
+    {
+      "type": 0,
+      "value": "The chair has not agreed the draft yet. Send it to the chair first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.notConfirmer": [
+    {
+      "type": 0,
+      "value": "Only the chair approves these minutes (the vice-chair when the chair declared an interest).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.notReviewer": [
+    {
+      "type": 0,
+      "value": "The draft is not with you for review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in an item, so another secretary does this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.secretary": [
+    {
+      "type": 0,
+      "value": "Secretaries answer comments; they do not send them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.stale": [
+    {
+      "type": 0,
+      "value": "Someone changed the minutes meanwhile. The page now shows the latest: try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "This is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.tooManyCopies": [
+    {
+      "type": 0,
+      "value": "The readers would need more than 50 different copies. Ask your administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.unresolved": [
+    {
+      "type": 0,
+      "value": "Accept or reject the chair’s suggested changes and resolve the comments in the editor first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "The minutes have moved on since this page opened. It now shows where they stand.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.read": [
+    {
+      "type": 0,
+      "value": "Read the minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.readMyCopy": [
+    {
+      "type": 0,
+      "value": "Read my copySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.reason.required": [
+    {
+      "type": 0,
+      "value": "Say why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.current": [
+    {
+      "type": 0,
+      "value": "(current)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.failed": [
+    {
+      "type": 0,
+      "value": "The record could not be made yet. It is tried again; operations have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.notCompliant": [
+    {
+      "type": 0,
+      "value": "not confirmed as PDF/ASSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.pending": [
+    {
+      "type": 0,
+      "value": "The record is being made…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.title": [
+    {
+      "type": 0,
+      "value": "The recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.versions": [
+    {
+      "type": 0,
+      "value": "Versions of the recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.recusedSecretary": [
+    {
+      "type": 0,
+      "value": "You declared an interest in an item of this meeting, so another secretary drafts and edits the minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.redacted.hidden": [
+    {
+      "type": 0,
+      "value": "hiddenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.redacted.recused": [
+    {
+      "type": 0,
+      "value": "declared an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.redacted.restricted": [
+    {
+      "type": 0,
+      "value": "restrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.remakeAll": [
+    {
+      "type": 0,
+      "value": "Make the whole draft again…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.remakeAll.confirm": [
+    {
+      "type": 0,
+      "value": "Make it againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.remakeAll.title": [
+    {
+      "type": 0,
+      "value": "Make the whole draft again?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.remakeAll.warning": [
+    {
+      "type": 0,
+      "value": "All your edits will be replaced.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.agree": [
+    {
+      "type": 0,
+      "value": "Ready to circulateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.agreedChanges": [
+    {
+      "type": 0,
+      "value": "You agreed the draft. The secretary accepts or rejects your suggested changes, then circulates it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.agreedCirculated": [
+    {
+      "type": 0,
+      "value": "You agreed the draft. It is now circulated for comments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.comments": [
+    {
+      "type": 0,
+      "value": "Comments to the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.read": [
+    {
+      "type": 0,
+      "value": "Read the draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.ready": [
+    {
+      "type": 0,
+      "value": "Ready for your reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.sayWhat": [
+    {
+      "type": 0,
+      "value": "Say what should change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.sendBack": [
+    {
+      "type": 0,
+      "value": "Send back with commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.sentBack": [
+    {
+      "type": 0,
+      "value": "The draft is back with the secretary with your comments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.suggest": [
+    {
+      "type": 0,
+      "value": "Suggest changes in the documentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.review.suggestHint": [
+    {
+      "type": 0,
+      "value": "Your changes show as suggestions the secretary accepts or rejects.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.role.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.role.viceChair": [
+    {
+      "type": 0,
+      "value": "Vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.seeCopyFor": [
+    {
+      "type": 0,
+      "value": "See the copy for…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.send": [
+    {
+      "type": 0,
+      "value": "SendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.send.lead": [
+    {
+      "type": 0,
+      "value": "The chair will be asked to review the draft. If the chair declared an interest in an item, the vice-chair reviews it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.send.title": [
+    {
+      "type": 0,
+      "value": "Send the draft to the chair?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.sendToChair": [
+    {
+      "type": 0,
+      "value": "Send to the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.sent": [
+    {
+      "type": 0,
+      "value": "The draft is with the chair for review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.stage.approved": [
+    {
+      "type": 0,
+      "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.stage.awaitingChair": [
+    {
+      "type": 0,
+      "value": "Waiting for the chair’s approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.stage.chairReview": [
+    {
+      "type": 0,
+      "value": "With the chair for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.stage.circulated": [
+    {
+      "type": 0,
+      "value": "Circulated for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.stage.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.approved": [
+    {
+      "type": 0,
+      "value": "Approved by the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.circulated": [
+    {
+      "type": 0,
+      "value": "Circulated for commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.done": [
+    {
+      "type": 0,
+      "value": "(done)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.ended": [
+    {
+      "type": 0,
+      "value": "Comment period endedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.nextMeeting": [
+    {
+      "type": 0,
+      "value": "Approved at the next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.now": [
+    {
+      "type": 0,
+      "value": "(now)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.step.review": [
+    {
+      "type": 0,
+      "value": "Chair’s reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.steps": [
+    {
+      "type": 0,
+      "value": "StepsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.structure.copies": [
+    {
+      "type": 0,
+      "value": "Copies for people who declared an interest cannot be made until it is put right.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.structure.remake": [
+    {
+      "type": 0,
+      "value": "Put the block right in the editor, or make the whole draft again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.structure.title": [
+    {
+      "type": 0,
+      "value": "Something is wrong with the draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest": [
+    {
+      "type": 0,
+      "value": "Suggest a correctionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.hint": [
+    {
+      "type": 0,
+      "value": "The secretary and the chair will see this; other members will not.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.itemUnknown": [
+    {
+      "type": 0,
+      "value": "Choose an item you can read, or the minutes in general.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.part": [
+    {
+      "type": 0,
+      "value": "Which part?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.required": [
+    {
+      "type": 0,
+      "value": "Write your suggestion.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.send": [
+    {
+      "type": 0,
+      "value": "SendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.sent": [
+    {
+      "type": 0,
+      "value": "Your suggestion is sent. The secretary will reply here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.suggest.text": [
+    {
+      "type": 0,
+      "value": "Your suggestionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.title": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.agreed": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " agreed the draft on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.agreedBehalf": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " agreed the draft on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "how"
+    },
+    {
+      "type": 0,
+      "value": ", recorded by "
+    },
+    {
+      "type": 1,
+      "value": "by"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.agreedNext": [
+    {
+      "type": 0,
+      "value": "Accept or reject "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s suggested changes in the editor, then circulate the minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.amend": [
+    {
+      "type": 0,
+      "value": "Apply any amendments in the editor, then "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " approves the minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.answers": [
+    {
+      "type": 6,
+      "value": "readers",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " reader"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " readers"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "noComments"
+    },
+    {
+      "type": 0,
+      "value": " no comments · "
+    },
+    {
+      "type": 6,
+      "value": "suggestions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestion"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "notYet"
+    },
+    {
+      "type": 0,
+      "value": " not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.approveOf": [
+    {
+      "type": 0,
+      "value": "Approve the minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.approvedAt": [
+    {
+      "type": 0,
+      "value": "Approved at "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.approvedBy": [
+    {
+      "type": 0,
+      "value": "Approved by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " — authenticated with "
+    },
+    {
+      "type": 1,
+      "value": "factors"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.approvedByAge": [
+    {
+      "type": 0,
+      "value": "Approved by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " — authenticated with "
+    },
+    {
+      "type": 1,
+      "value": "factors"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "less than a minute"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.approvedOn": [
+    {
+      "type": 0,
+      "value": "Approved on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.cardStage": [
+    {
+      "type": 0,
+      "value": "The minutes: "
+    },
+    {
+      "type": 1,
+      "value": "stage"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.circulatedOn": [
+    {
+      "type": 0,
+      "value": "Circulated on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ". Comments by "
+    },
+    {
+      "type": 1,
+      "value": "until"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.commentLine": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.commentsBy": [
+    {
+      "type": 0,
+      "value": "Please send any comments by "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.copyFor": [
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "items"
+    },
+    {
+      "type": 0,
+      "value": " left outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.copyOf": [
+    {
+      "type": 0,
+      "value": "The copy for "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctedOn": [
+    {
+      "type": 0,
+      "value": "Corrected on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionApprovedBy": [
+    {
+      "type": 0,
+      "value": "Correction approved by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " — authenticated with "
+    },
+    {
+      "type": 1,
+      "value": "factors"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionDecided": [
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionDecidedNote": [
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": " by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionLine": [
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": " — proposed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionReasonLine": [
+    {
+      "type": 0,
+      "value": "Why: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.correctionWithheld": [
+    {
+      "type": 0,
+      "value": "A correction to item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", which your copy leaves out.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.draftLine": [
+    {
+      "type": 0,
+      "value": "Draft ready (version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.draftLineBy": [
+    {
+      "type": 0,
+      "value": "Draft ready (version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ", by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.draftOf": [
+    {
+      "type": 0,
+      "value": "Draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.editing": [
+    {
+      "type": 0,
+      "value": "Editing the draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.fillAgainNamed": [
+    {
+      "type": 0,
+      "value": "Fill item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.fillTitle": [
+    {
+      "type": 0,
+      "value": "Fill item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " again from the decision and notes?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.filling": [
+    {
+      "type": 0,
+      "value": "Filling item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " again…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.item": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.itemTitle": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.lead": [
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "mode"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.linkedTo": [
+    {
+      "type": 0,
+      "value": "On the agenda of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " as “Minutes of the previous meeting”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.marks": [
+    {
+      "type": 0,
+      "value": "The draft has "
+    },
+    {
+      "type": 6,
+      "value": "changes",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no suggested changes"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggested change"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggested changes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 6,
+      "value": "comments",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no comments"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " comment"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " comments"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " left. Accept or reject them in the editor before the minutes are circulated.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.meetingOn": [
+    {
+      "type": 0,
+      "value": "the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.noCommentsFrom": [
+    {
+      "type": 0,
+      "value": "No comments: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.paren": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.partSent": [
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": " · sent on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.periodEnded": [
+    {
+      "type": 0,
+      "value": "The comment period has ended: "
+    },
+    {
+      "type": 1,
+      "value": "noComments"
+    },
+    {
+      "type": 0,
+      "value": " no comments, "
+    },
+    {
+      "type": 6,
+      "value": "suggestions",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestion"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "notYet"
+    },
+    {
+      "type": 0,
+      "value": " no answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.previousMinutes": [
+    {
+      "type": 0,
+      "value": "Minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 5,
+      "value": "stage",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "approved"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "draft"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ") — read your copySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.previousMinutesNoted": [
+    {
+      "type": 0,
+      "value": "Minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": ", approved by circulation on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", for noting — read your copySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.readVersion": [
+    {
+      "type": 0,
+      "value": "Read version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.recordLine": [
+    {
+      "type": 0,
+      "value": "Record version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ": PDF/A, fingerprint "
+    },
+    {
+      "type": 1,
+      "value": "fingerprint"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.redactedItem": [
+    {
+      "type": 0,
+      "value": "item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.removePerson": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.respondNamed": [
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.responseLine": [
+    {
+      "type": 1,
+      "value": "response"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.responseLineNote": [
+    {
+      "type": 1,
+      "value": "response"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.restore": [
+    {
+      "type": 0,
+      "value": "Restore item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.returned": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " sent the draft back on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.reviewComment": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "comment"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.reviewTitle": [
+    {
+      "type": 0,
+      "value": "Draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": " — ready for your reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.reviewing": [
+    {
+      "type": 0,
+      "value": "Suggesting changes to the draft minutes of "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.stepApprovedAt": [
+    {
+      "type": 0,
+      "value": "Approved at "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.structureDuplicated": [
+    {
+      "type": 0,
+      "value": "The block for item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " is there twice.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.structureItem": [
+    {
+      "type": 0,
+      "value": "The block for item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.structureNested": [
+    {
+      "type": 0,
+      "value": "The block for item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " is inside another item’s block.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.structureUnknown": [
+    {
+      "type": 0,
+      "value": "The draft has a block that belongs to no item ("
+    },
+    {
+      "type": 1,
+      "value": "tag"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.structureUnlocked": [
+    {
+      "type": 0,
+      "value": "The block for item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " has lost its lock.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.title": [
+    {
+      "type": 0,
+      "value": "Minutes — "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.undecided": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Item "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " has no decision"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Items "
+            },
+            {
+              "type": 1,
+              "value": "items"
+            },
+            {
+              "type": 0,
+              "value": " have no decision"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Record one before you send the minutes to the chair.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.versionLine": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ", made "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.waitingFor": [
+    {
+      "type": 0,
+      "value": "Waiting for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " to approve.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.withReviewer": [
+    {
+      "type": 0,
+      "value": "The draft is with "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " for review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.v.yourCopyLeavesOut": [
+    {
+      "type": 0,
+      "value": "Your copy leaves out "
+    },
+    {
+      "type": 1,
+      "value": "items"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.whyNoReview": [
+    {
+      "type": 0,
+      "value": "Why is nobody reviewing the draft?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.withdraw": [
+    {
+      "type": 0,
+      "value": "Take back to draft…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.withdraw.confirm": [
+    {
+      "type": 0,
+      "value": "Take back to draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.withdraw.lead": [
+    {
+      "type": 0,
+      "value": "Members can no longer read or comment on them. Their comments so far are kept. You circulate them again when ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.withdraw.title": [
+    {
+      "type": 0,
+      "value": "Take the minutes back to the draft?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.withdrawn": [
+    {
+      "type": 0,
+      "value": "The minutes are back in the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.work.controls": [
+    {
+      "type": 0,
+      "value": "The item’s block could not be found or copied. Make the whole draft again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.work.failed": [
+    {
+      "type": 0,
+      "value": "The draft could not be made. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.work.invalidTemplate": [
+    {
+      "type": 0,
+      "value": "The committee’s minutes template has a problem. Ask your administrator to check it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.work.missingValue": [
+    {
+      "type": 0,
+      "value": "The template asks for something this meeting does not have. Ask your administrator to check it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.comment": [
+    {
+      "type": 0,
+      "value": "Draft minutes: your comments are askedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.confirm": [
+    {
+      "type": 0,
+      "value": "Minutes ready for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.open": [
+    {
+      "type": 0,
+      "value": "Open the minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.openNamed": [
+    {
+      "type": 0,
+      "value": "Open the minutes of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.read": [
+    {
+      "type": 0,
+      "value": "Draft minutes to readSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.review": [
+    {
+      "type": 0,
+      "value": "Draft minutes ready for your reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutesToRead.title": [
+    {
+      "type": 0,
+      "value": "Minutes to readSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.admin": [
     {
       "type": 0,
@@ -44668,6 +47494,18 @@
     {
       "type": 0,
       "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.minutes": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.minutesEditor": [
+    {
+      "type": 0,
+      "value": "EditorSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.myForums": [

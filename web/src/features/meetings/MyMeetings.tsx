@@ -5,6 +5,7 @@ import type { MeetingSummaryResponse } from '@/api/generated/types.gen'
 import { PageHeader } from '@/components/page/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
+import { MinutesToRead } from '@/features/minutes/MinutesToRead'
 import { useTerms } from '@/features/terms/terms'
 import { mm, mmt, mmv } from './messages'
 import { upcoming, useMyMeetings } from './mine'
@@ -123,6 +124,7 @@ export function MyMeetingsPage() {
         <ErrorState onRetry={() => void mine.refetch()} />
       ) : (
         <>
+          <MinutesToRead meetings={mine.data} />
           <section aria-labelledby="my-meetings-upcoming" className="flex flex-col gap-3">
             <h2 id="my-meetings-upcoming" className="text-lg font-semibold">
               {intl.formatMessage(mm.myUpcoming)}

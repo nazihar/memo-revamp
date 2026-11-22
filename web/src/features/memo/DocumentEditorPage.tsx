@@ -7,6 +7,7 @@ import { getMemoOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { getEditSession, openEditor } from '@/api/generated/sdk.gen'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
+import { loadEditorScript, withoutInlineHandlers } from '@/lib/docs-api'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { referenceOf } from './memo-fields'
 
@@ -26,52 +27,8 @@ const titles = defineMessages<{ editing: { reference: string }; viewing: { refer
   viewing: { id: 'editor.viewing', defaultMessage: 'Reading {reference}' },
 })
 
-/** The editor's global, defined by the script the document server serves (ADR-0037). */
-interface DocsApi {
-  DocEditor: new (element: string, config: object) => { destroyEditor: () => void }
-}
-declare global {
-  interface Window {
-    DocsAPI?: DocsApi
-  }
-}
-
 const SAVE_WAIT_MS = 30_000
 const POLL_MS = 1_500
-
-function loadScript(src: string): Promise<void> {
-  const existing = document.querySelector<HTMLScriptElement>(`script[data-editor="${src}"]`)
-  if (existing && window.DocsAPI) return Promise.resolve()
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = src
-    script.dataset.editor = src
-    script.onload = () => {
-      resolve()
-    }
-    script.onerror = () => {
-      reject(new Error('editor script'))
-    }
-    document.head.append(script)
-  })
-}
-
-/**
- * Runs [create] without inline event-handler attributes: the editor script sets an empty `onmousewheel` on its frame (a
- * Safari workaround) that our CSP refuses anyway. Skipping it keeps the CSP free of `unsafe-hashes` and the console clean.
- */
-function withoutInlineHandlers<T>(create: () => T): T {
-  // eslint-disable-next-line @typescript-eslint/unbound-method -- restored below and only ever called with an element
-  const setAttribute = Element.prototype.setAttribute
-  Element.prototype.setAttribute = function (this: Element, name: string, value: string) {
-    if (!/^on/i.test(name)) setAttribute.call(this, name, value)
-  }
-  try {
-    return create()
-  } finally {
-    Element.prototype.setAttribute = setAttribute
-  }
-}
 
 /**
  * `/memos/$memoId/document` (design E02 §9): the memo's document in the browser editor, editable by the initiator
@@ -98,7 +55,7 @@ export function DocumentEditorPage({ memoId, mode }: { memoId: string; mode: 'ed
           body: { mode: mode === 'edit' ? 'EDIT' : 'VIEW', language: intl.locale.startsWith('ar') ? 'ar' : 'en' },
           throwOnError: true,
         })
-        await loadScript(opened.data.scriptUrl)
+        await loadEditorScript(opened.data.scriptUrl)
         if (run.cancelled || !window.DocsAPI) return
         const api = window.DocsAPI
         editor.current = withoutInlineHandlers(() => new api.DocEditor('memo-document-editor', opened.data.config))

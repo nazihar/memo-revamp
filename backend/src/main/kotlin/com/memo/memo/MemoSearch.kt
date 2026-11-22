@@ -84,6 +84,9 @@ interface MemoSearchSource {
 
     /** The names of the memo types of [typeIds] that exist. */
     fun typeNames(typeIds: Collection<UUID>): Map<UUID, String>
+
+    /** Every memo type of the tenant (active or not) with its name, for a filter (the decision register's scope, E08 T2). */
+    fun allTypeNames(): Map<UUID, String>
 }
 
 /**

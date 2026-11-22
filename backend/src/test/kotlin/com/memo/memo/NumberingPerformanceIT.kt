@@ -13,6 +13,7 @@ import com.memo.memo.internal.NumberKey
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.Latency
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aPassword
 import com.memo.testsupport.aTestTenant
@@ -136,17 +137,7 @@ class NumberingPerformanceIT : IntegrationTest() {
                 .joinToString("\n") { it.get(0, String::class.java) }
         }
 
-    private fun p95(call: () -> Unit): Long {
-        repeat(WARM_UP) { call() }
-        val times =
-            (1..RUNS)
-                .map {
-                    val start = System.nanoTime()
-                    call()
-                    (System.nanoTime() - start) / NANOS_PER_MILLI
-                }.sorted()
-        return times[(RUNS * 95 / 100) - 1]
-    }
+    private fun p95(call: () -> Unit): Long = Latency.p95(WARM_UP, RUNS, call = call)
 
     private fun <T> asReader(block: () -> T): T =
         ActorContext.call(ActorScope(Actor.User(reader), null)) {
@@ -163,7 +154,6 @@ class NumberingPerformanceIT : IntegrationTest() {
         const val REFERENCE_DIGITS = 6
         const val WARM_UP = 5
         const val RUNS = 20
-        const val NANOS_PER_MILLI = 1_000_000L
         const val REGISTER_BUDGET_MS = 300L
         const val LOOKUP_BUDGET_MS = 50L
     }

@@ -59,10 +59,11 @@ class ActionAccessArchTest {
     }
 
     private companion object {
-        /** The rule, the services and listeners that write (they read what they lock), the subject and its slots. */
+        /** The rule, the services and listeners that write (they read what they lock), the minutes' port, the subject. */
         val WRITERS =
             listOf(
-                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionWorkflowListener|ActionSourceListener)""",
+                """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionMinutes)""",
+                """internal\.(ActionWorkflowListener|ActionSourceListener)""",
                 """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")

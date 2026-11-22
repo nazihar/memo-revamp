@@ -12,9 +12,9 @@ package com.memo.meeting
  * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
  * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E06 T5
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
- * again (officers, with recusal columns); the readers' copies stay a placeholder for T6.
- * E07 T3 made its actions placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing,
- * discarding and issuing (officers, with recusal columns or an officer probe).
+ * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E07 T3 made its actions placeholder
+ * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
+ * with recusal columns or an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(

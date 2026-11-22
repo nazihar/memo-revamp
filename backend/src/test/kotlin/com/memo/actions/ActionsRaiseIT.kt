@@ -37,6 +37,8 @@ class ActionsRaiseIT : ActionFixture() {
 
     @Autowired lateinit var resolutions: com.memo.minutes.Resolutions
 
+    @Autowired lateinit var actionMinutes: com.memo.actions.internal.ActionMinutes
+
     override fun label() = "actions"
 
     private val year get() = Year.now(ZoneOffset.UTC).value
@@ -261,6 +263,10 @@ class ActionsRaiseIT : ActionFixture() {
                 }.map { it.reference },
         ).containsExactlyInAnyOrderElementsOf(results.filter { it.issued }.map { it.reference })
         assertThat(drafts.map { row(it).status }).containsOnly(ActionStatus.OPEN)
+        // The minutes list the issued actions (E06 T5's port), in reference order, the draft without an owner not.
+        val lines = transactions.readInTenant(tenant.id) { actionMinutes.of(d.meeting.id) }
+        assertThat(lines.map { it.reference }).containsExactly(*(1..4).map { "BRC A$it/$year" }.toTypedArray())
+        assertThat(lines.first().let { Triple(it.itemId, it.owner, it.action) }).isEqualTo(Triple(d.credit, "Head of Treasury", "Action 1"))
 
         // Four at once, each in its own transaction: 5 to 8, no duplicates.
         val more = (1..4).map { raise(d.meeting.id, d.appetite, fields(title = "Concurrent $it")) }

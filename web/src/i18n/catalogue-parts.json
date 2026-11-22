@@ -98,5 +98,15 @@
   "legacy": {
     "routes": ["/memos"],
     "prefixes": ["legacy"]
+  },
+  "actions": {
+    "$comment": "Committee actions, the owner's and members' side (Phase 4 E07 T11, flows AK, AL, AO, AP): My actions in the inbox, the action page with its dialogs, timeline and follow-up memos, and the action taken report page.",
+    "routes": ["/inbox", "/actions", "/meetings/$/action-report"],
+    "prefixes": ["actions"]
+  },
+  "actionLinks": {
+    "$comment": "The few action texts other pages show (Phase 4 E07 T11): the Matters arising item's link to its action taken report on the agenda, and Raised from action on the memo.",
+    "routes": ["/meetings", "/memos"],
+    "prefixes": ["actionLinks"]
   }
 }

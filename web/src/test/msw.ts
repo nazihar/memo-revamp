@@ -4,6 +4,7 @@ import type {
   Health,
   LateRequestsResponse,
   MyAccess,
+  MyActionsResponse,
   MeetingSummaryResponse,
   MyForumResponse,
   Session,
@@ -119,6 +120,18 @@ export const lateRequestsHandler = (requests: LateRequestsResponse['requests'] =
     HttpResponse.json<LateRequestsResponse>({ meetingId: String(params.meetingId), requests, version }),
   )
 
+/** "My actions" (Phase 4 E07 T11): none, unless a test says so; the inbox asks for the counts of its tab. */
+export const myActionsHandler = (body: Partial<MyActionsResponse> = {}) =>
+  http.get(`${API_ORIGIN}/api/v1/me/actions`, ({ request }) =>
+    HttpResponse.json<MyActionsResponse>({
+      tab: (new URL(request.url).searchParams.get('tab') ?? 'MINE') as MyActionsResponse['tab'],
+      items: [],
+      counts: { mine: 0, toVerify: 0, contributing: 0 },
+      nextCursor: null,
+      ...body,
+    }),
+  )
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -135,4 +148,5 @@ export const server = setupServer(
   memoPapersHandler(),
   myMeetingsHandler(),
   lateRequestsHandler(),
+  myActionsHandler(),
 )

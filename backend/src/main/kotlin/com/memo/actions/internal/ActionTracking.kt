@@ -31,6 +31,7 @@ class ActionTracking(
         doneAt: Instant? = null,
         closedAt: Instant? = null,
         cancelKind: CancelKind? = null,
+        closedBy: UUID? = null,
     ) {
         val a = ACTIONS_ITEM
         var update =
@@ -45,6 +46,7 @@ class ActionTracking(
         doneAt?.let { update = update.set(a.DONE_AT, it.atOffset(ZoneOffset.UTC)) }
         closedAt?.let { update = update.set(a.CLOSED_AT, it.atOffset(ZoneOffset.UTC)) }
         cancelKind?.let { update = update.set(a.CANCEL_KIND, it.name) }
+        closedBy?.let { update = update.set(a.CLOSED_BY, it) }
         update.where(a.ID.eq(id)).execute()
     }
 

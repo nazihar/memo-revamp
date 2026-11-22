@@ -425,6 +425,36 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
     - in the app and by email: `ACTION_OWNER_CHANGED` and `ACTION_RISK_ACCEPTED`;
     - in the app only, with their emails waiting for T5's digest: `ACTION_CANCELLED`, `ACTION_REOPENED`, `ACTION_DUE_REQUESTED`, `ACTION_DUE_DECIDED` (with `decision`) and `ACTION_DUE_CHANGED`.
 
+- **As built in T5, reminders, escalation, closure and the digest** (§1.8, §1.9, §9, 2026-11-22):
+  - **No migration.** The digest uses T4's `actions_digest`; the notification module gains code only.
+  - **The timers' reactions** (`ActionTimerListener`), for the action's current run only:
+    - on the owner's step: `REMIND_BEFORE` → the holder, `ACTION_DUE_SOON`; `DUE` → the holder and the secretaries not recused, `ACTION_OVERDUE` (`stage` DUE); `REMIND_AFTER` → the holder, `ACTION_OVERDUE` (REMINDER); `ESCALATE` → the secretaries, `ACTION_OVERDUE` (ESCALATED);
+    - on a later step (DONE_PENDING): each reminder and the due time → the task's holder, `ACTION_TO_VERIFY`;
+    - `WorkflowEscalated` → the recipient (the holder's supervisor by the reporting line, or the definition's target such as the chair), `ACTION_ESCALATED` in the app and by email at once, with the holder's name and the position's title and the working days overdue. **The supervisor is told, not given access:** the link opens the action only for someone with a seat on the committee, and the inbox for the others (who would get 404).
+    - When there is no supervisor the engine escalates to nobody; the secretaries are still told.
+  - **Marking done** (`POST /actions/{id}/done`, `ActionClosure`): whoever holds the owner's task (403 `NOT_HOLDER` for an owner who does not, such as a position's holder with a substitute acting), from OPEN or IN_PROGRESS. Evidence files are checked as an update's; `EVIDENCE_REQUIRED` asks for files on this call. The DONE entry is written, a pending request withdrawn (cause `DONE`), and RECOMMEND runs with the note. The engine's next task makes the action DONE_PENDING and tells each candidate of the pool (`ACTION_TO_VERIFY`).
+  - **Verifying** (`POST /actions/{id}/verify`): the actor's open task on the action, never the owner or a contributor (403 `NOT_VERIFIER`), not recused (403 `RECUSED`). The shared step is claimed first; 409 `CLAIMED` when another verifier has it. CLOSE approves, so the instance ends APPROVED and the listener writes CLOSED with `closedBy`; the owner and contributors get `ACTION_CLOSED`. SEND_BACK goes to the owner's step (the holder's), and the holder gets `ACTION_SENT_BACK` by email at once, without the remark. Remarks are 1–2,000 characters, required to send back.
+  - **The verifier slot's CHAIR fallback** now goes to the vice-chair when the chair is excluded (for example the chair owns the action), as §1.9 says. T3 had stopped at the chair.
+  - **Close the actions the committee agreed** (`POST /meetings/{id}/actions/close-agreed`, `{actionIds ≤ 100, remark?}`): the meeting must be seen by the actor and running, held or with its minutes approved (409 `WRONG_STATE`). The remark defaults to "Agreed at {meeting}, item {n}" (the published MATTERS_ARISING item, when there is one). Each action is verified in its own transaction as above, with results per action (`COMMITTEE` for another committee's) replayed by the key. `actions.closed` carries `closeAgreedAt`.
+  - **"My actions"** has MINE, TO_VERIFY (DONE_PENDING actions whose open task the person holds or may claim) and CONTRIBUTING (open actions with a current contributor row), each counted from its own predicate. `ActionResponse.can` gained `markDone` and `verify`.
+  - **The digest** (`ActionsDaily`, the `actions-daily` task):
+    - An hourly platform task fans out one `actions-daily` per tenant and hour. Each run acts from 09:00 in the tenant's zone on its working days, until the day's digest is done.
+    - The emails that wait are those of the in-app items of 11 kinds (`DIGEST_KINDS`), read through the notification module's new published `NotificationLog`.
+    - A person's digest covers the items from their last digest day's 09:00 (at most 14 days back) to today's 09:00. Items written after 09:00 wait for the next working day.
+    - One `ACTIONS_DIGEST` email per person and day (`actions_digest (user, day)`), the lines in the recipient's language (`actions/digest*.properties`), references only. At most 5,000 people a run; the rest go on the next hourly run.
+    - The nil person keys mark the tenant's day: `COMPLETE` (nothing more to do that day) and `STARTED` (the first run, which runs the safety net). `ACTIONS_DIGEST` is email only: `NotificationKind.inApp` false.
+    - **A person who has switched off in-app workflow items gets no digest**, since the digest is built from those items.
+  - **The safety net** (`ActionSafetyNet`, the day's first run), on every issued action not finished:
+    - no instance → its secretaries not recused get `ACTION_NOT_RUNNING`, once per run of the action (an entry `NOT_RUNNING` keyed by the instance), audited `actions.action.not_running`;
+    - the engine's newest run ended, or is not the action's → the action follows it (CLOSED or CANCELLED as the listener would, or the newer run's id), with an entry `RECONCILED`, audited `actions.action.reconciled`;
+    - the owner's open step is due at another time than the action's date → `Workflows.redue`, audited `actions.timers.replanned`. A step without a due time is left alone, so a past due time is not fired again daily.
+  - **Audit:** `actions.done`, `actions.sent_back`, `actions.closed`, `actions.digest.sent` (people, complete), `actions.action.not_running`, `actions.action.reconciled`, `actions.timers.replanned`.
+  - **Notification kinds** (en/ar):
+    - in the app only, their emails in the digest: `ACTION_DUE_SOON`, `ACTION_OVERDUE` (`stage`), `ACTION_TO_VERIFY`, `ACTION_CLOSED`, `ACTION_NOT_RUNNING`;
+    - in the app and by email at once: `ACTION_ESCALATED` and `ACTION_SENT_BACK`;
+    - email only: `ACTIONS_DIGEST`.
+    - `ACTIONS_NOT_SENT` (drafts at the meeting's end), `ACTION_MEMO_DECIDED` (T6) and `ACTION_UPDATE_REQUESTED` (T7) are not built here.
+
 ### 1.15 ERD
 ```mermaid
 erDiagram

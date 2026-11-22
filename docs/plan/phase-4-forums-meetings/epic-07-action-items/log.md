@@ -187,6 +187,53 @@
   - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged; the texts are in `notificationKinds`) and the notification texts' tests pass.
 - **Left for later tasks:** T5 reacts to the timers, marks actions done (it withdraws a pending request with the cause `DONE`) and verifies them, and sends the digest that `actions_digest` keys. T8 builds the tracker on `RagRule.shows`. T10 and T11 build the screens on the abilities in `ActionResponse.can`.
 
+## 2026-11-22 — T5: reminders, escalation, closure and the daily digest
+- **Built:**
+  - **No migration:** the digest keys on T4's `actions_digest`. The notification module gains code only.
+  - **The timers' reactions** (`ActionTimerListener`, in the timer's transaction, for the action's current run):
+    - 5 working days before the date the holder gets `ACTION_DUE_SOON`;
+    - at its end the holder and the committee's secretaries not recused get `ACTION_OVERDUE`;
+    - each reminder after tells the holder again;
+    - at the escalation the secretaries hear it was escalated. The engine's `WorkflowEscalated` gives the holder's supervisor by the reporting line (or the definition's target, the chair on verification) `ACTION_ESCALATED` by email at once, with the holder and the days overdue;
+    - the verification step's timers remind the verifiers (`ACTION_TO_VERIFY`).
+    - Reminders and overdue notices are in the app at once, and their emails wait for the digest. Nothing fires once an action is closed or cancelled (its timers are the closed tasks').
+  - **Closure** (`ActionClosure`):
+    - "Mark as done" (`POST /actions/{id}/done`) by whoever holds the owner's task, with what was done and evidence (`EVIDENCE_REQUIRED` when the committee type says so). It withdraws a pending date request and runs RECOMMEND. The engine's verify task makes the action DONE_PENDING and tells the pool.
+    - "Verify" (`POST /actions/{id}/verify`): CLOSE, or SEND_BACK with a remark, by a member of the pool. Never the owner or a contributor (403 `NOT_VERIFIER`), never the recused; the shared step is claimed first (409 `CLAIMED`). The owner and contributors hear it was closed; the holder hears at once by email that it was sent back, without the remark.
+    - "Close the actions the committee agreed" (`POST /meetings/{id}/actions/close-agreed`): one transaction per action, the remark "Agreed at {meeting}, item {n}", per-action results replayed by the key.
+  - **"My actions"** has TO_VERIFY and CONTRIBUTING tabs beside MINE, each with its count from its own predicate. `can.markDone` and `can.verify` are on the action.
+  - **The `actions-daily` task:** an hourly fan-out per tenant, acting from 09:00 in the tenant's zone on its working days.
+    - (a) **The digest:** one `ACTIONS_DIGEST` email per person and day with their references by kind since their last digest (the day's in-app action notices, read through the new published `NotificationLog`), in their language, at most 5,000 people a run.
+    - (c) **The safety net**, on the day's first run:
+      - an issued action without a workflow is reported to the secretaries once (`ACTION_NOT_RUNNING`);
+      - an action whose workflow ended or moved to a newer run without it takes the engine's state;
+      - an owner's step due at another time than the action's date is planned again (`Workflows.redue`).
+    - (b), the update requests, is T7's.
+  - **Audit:** `actions.done`, `actions.sent_back`, `actions.closed` (with `closeAgreedAt`), `actions.digest.sent`, `actions.action.not_running`, `actions.action.reconciled`, `actions.timers.replanned`.
+  - **Notification kinds** (en/ar):
+    - in the app only: `ACTION_DUE_SOON`, `ACTION_OVERDUE` (with `stage`), `ACTION_TO_VERIFY`, `ACTION_CLOSED`, `ACTION_NOT_RUNNING`;
+    - in the app and by email: `ACTION_ESCALATED` and `ACTION_SENT_BACK`;
+    - email only: `ACTIONS_DIGEST` (`NotificationKind.inApp`).
+    - Three email templates; the web texts are in `notificationKinds` and the template labels in `admin`, so the Arabic core is unchanged.
+  - Matrix rows in `p4-e07-actions.yaml`. Leak suite: `done` and `verify` in the recusal columns, close-agreed as an officer probe, and the TO_VERIFY and CONTRIBUTING tabs in `RecusalActionsFixture`'s probe.
+- **Choices made while building** (design §1.14 "As built in T5"):
+  - **The digest reads the in-app items** of the kinds whose emails wait (no queue table of its own). So a person who switched off in-app workflow items gets no digest. A person's window runs from their last digest day's 09:00 (at most 14 days back) to today's 09:00. The tenant's day is keyed by two nil-person rows of `actions_digest`: `STARTED` (the safety net runs once) and `COMPLETE` (the later hourly runs read nothing).
+  - **The supervisor is told, not given access.** The escalation's link opens the action for someone with a seat on the committee and the inbox for others.
+  - **The verifier slot's CHAIR mode now falls back to the vice-chair** when the chair is excluded (for example the chair owns the action), as §1.9 says. T3 stopped at the chair.
+  - **Evidence is asked for on the "done" call itself** when the committee requires it. Files posted with earlier updates do not count.
+  - New stable codes: 403 `NOT_VERIFIER` and `NOT_HOLDER`; 409 `CLAIMED` and `COMMITTEE` (close-agreed for another committee's action); 422 `EVIDENCE_REQUIRED`.
+  - **Not built here:** `ACTIONS_NOT_SENT` (drafts at the meeting's end, design §2.1), `ACTION_MEMO_DECIDED` (T6) and `ACTION_UPDATE_REQUESTED` (T7).
+- **Tests:**
+  - **`ActionWorkflowIT`** on a hand-moved clock with the built-in definition: the reminder before, the overdue notice to the holder and the secretaries, the reminder after, the escalation to the supervisor by the reporting line by email at once (no title), none without a supervisor (the secretaries still told), the verifier's reminders and the chair's escalation, nothing after closing or cancelling, a substitute reminded and marking it done, and the colour red past the date.
+  - **`ActionClosureIT`:** T5's acceptance criteria (the owner who is a secretary is left out of the pool, the other secretary closes it, the owner is told; sending back without a remark is 422), evidence required, the pending request withdrawn, a recused secretary left out, CHAIR mode with the vice-chair, the "My actions" tabs and counts, close-agreed with per-action results and its replay.
+  - **`ActionsDigestIT`:** one digest per person the next working morning with the references only, none on a holiday or before 09:00, none twice; the safety net's three cases, once.
+  - `ActionAccessArchTest`, the leak suites (`RecusalLeakIT` with the new probes, `PaperLeakIT`), the matrix and `MailTemplatesTest`; the web notification texts' tests.
+- **Results (local):**
+  - 2,862 tests over `com.memo.actions.*`, `com.memo.workflow.*` (the engine's property tests included), `com.memo.notification.*`, `PaperLeakIT`, `RecusalLeakIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `RlsMetaTest`, `MigrationDmlRlsTest` and `MemoReminderIT`: all green.
+  - After detekt's fixes, 2,609 tests over `com.memo.actions.*`, `com.memo.notification.*`, the leak suites, the matrix, endpoint, audit, architecture, modularity and contract tests: all green.
+  - ktlint, detekt and SpotBugs are clean.
+  - On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core is unchanged at 13.5 KiB; the texts are in `notificationKinds` and `admin`) and the notification texts' tests pass.
+
 ## 2026-11-22 — T6: follow-up memos
 - **Built:**
   - **The memo module's published additions** (no dependency on actions):
@@ -219,3 +266,7 @@
   - 2,762 tests in 77 classes ran: `com.memo.actions.*`, `com.memo.memo.*`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
   - All green but `NumberingConcurrencyIT` (no free JDBC connection) and one `MemoPerformanceIT` budget (495 ms against 300). Both are load effects of the hour-long run on the dev machine, and both pass when run alone.
   - ktlint, detekt and SpotBugs are clean; web typecheck, lint, Prettier and `i18n` pass.
+- **After merging T5 (#231) from `master`:**
+  - Both sides kept in `ActionAccessArchTest` (the digest store, closure and timers beside the memo links and readers), `ar.json` (in key order) and this log; everything generated was regenerated.
+  - 2,627 tests in 30 classes green: `com.memo.actions.*` with `FollowUpMemoIT`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
+  - ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass, and the notification, memo, memo-type and action tests pass. Two of them timed out while Gradle ran beside them, and passed when run again on their own.

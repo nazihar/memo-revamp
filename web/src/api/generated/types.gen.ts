@@ -19,6 +19,7 @@ export type ActionAbilities = {
     edit: boolean;
     issue: boolean;
     linkMemo: boolean;
+    markDone: boolean;
     overrideRag: boolean;
     raiseMemo: boolean;
     reopen: boolean;
@@ -26,6 +27,12 @@ export type ActionAbilities = {
     start: boolean;
     update: boolean;
     updateOnBehalf: boolean;
+    verify: boolean;
+};
+
+export type ActionDoneRequest = {
+    fileIds?: Array<string>;
+    note?: string | null;
 };
 
 export type ActionDueRequest = {
@@ -842,11 +849,27 @@ export type CloneRequest = {
     withMembers?: boolean;
 };
 
+export type CloseAgreedRequest = {
+    actionIds?: Array<string>;
+    remark?: string | null;
+};
+
 export type CloseRequest = {
     /**
      * First day it no longer exists
      */
     validTo: string;
+};
+
+export type CloseResult = {
+    actionId: string;
+    closed: boolean;
+    reason?: string | null;
+    reference?: string | null;
+};
+
+export type CloseResultsResponse = {
+    results: Array<CloseResult>;
 };
 
 export type CoauthorsRequest = {
@@ -2840,14 +2863,16 @@ export type MyAccess = {
 };
 
 export type MyActionCounts = {
+    contributing: number;
     mine: number;
+    toVerify: number;
 };
 
 export type MyActionsResponse = {
     counts: MyActionCounts;
     items: Array<ActionSummary>;
     nextCursor?: string | null;
-    tab: 'MINE';
+    tab: 'MINE' | 'TO_VERIFY' | 'CONTRIBUTING';
 };
 
 export type MyClearance = {
@@ -4623,6 +4648,11 @@ export type ValidationResponse = {
     valid: boolean;
 };
 
+export type VerifyActionRequest = {
+    decision?: 'CLOSE' | 'SEND_BACK';
+    remark?: string | null;
+};
+
 export type VersionComparison = {
     from: VersionText;
     to: VersionText;
@@ -4811,6 +4841,28 @@ export type DiscardActionResponses = {
 };
 
 export type DiscardActionResponse = DiscardActionResponses[keyof DiscardActionResponses];
+
+export type MarkActionDoneData = {
+    body: ActionDoneRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/done';
+};
+
+export type MarkActionDoneResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type MarkActionDoneResponse = MarkActionDoneResponses[keyof MarkActionDoneResponses];
 
 export type ChangeActionDueData = {
     body: ActionDueRequest;
@@ -5091,6 +5143,28 @@ export type PostActionUpdateResponses = {
 };
 
 export type PostActionUpdateResponse = PostActionUpdateResponses[keyof PostActionUpdateResponses];
+
+export type VerifyActionData = {
+    body: VerifyActionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/verify';
+};
+
+export type VerifyActionResponses = {
+    /**
+     * OK
+     */
+    200: ActionResponse;
+};
+
+export type VerifyActionResponse = VerifyActionResponses[keyof VerifyActionResponses];
 
 export type QueryAuditData = {
     body?: never;
@@ -9065,7 +9139,7 @@ export type GetMyActionsData = {
     body?: never;
     path?: never;
     query?: {
-        tab?: 'MINE';
+        tab?: 'MINE' | 'TO_VERIFY' | 'CONTRIBUTING';
         forumId?: string;
         cursor?: string;
         limit?: number;
@@ -9411,6 +9485,27 @@ export type RaiseMeetingActionResponses = {
 };
 
 export type RaiseMeetingActionResponse = RaiseMeetingActionResponses[keyof RaiseMeetingActionResponses];
+
+export type CloseAgreedActionsData = {
+    body: CloseAgreedRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/actions/close-agreed';
+};
+
+export type CloseAgreedActionsResponses = {
+    /**
+     * OK
+     */
+    200: CloseResultsResponse;
+};
+
+export type CloseAgreedActionsResponse = CloseAgreedActionsResponses[keyof CloseAgreedActionsResponses];
 
 export type IssueMeetingActionsData = {
     body?: never;

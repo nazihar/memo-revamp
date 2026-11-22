@@ -1,5 +1,6 @@
 package com.memo.notification
 
+import java.time.Instant
 import java.util.UUID
 
 /** A group of notifications that users switch on or off per channel; [mandatory] ones cannot be switched off. */
@@ -26,12 +27,14 @@ enum class NotificationCategory(
 enum class NotificationChannel { IN_APP, EMAIL, PUSH }
 
 /**
- * Every kind of notification (ADR-0030): its category, the email it sends (null: in-app only) and, implicitly, the web
- * message `notification.kind.<NAME>` that renders it in-app. Parameters are display data only, never secrets.
+ * Every kind of notification (ADR-0030): its category, the email it sends (null: in-app only), whether it leaves an
+ * in-app item ([inApp]; false for an email only, such as a digest) and, implicitly, the web message
+ * `notification.kind.<NAME>` that renders it in-app. Parameters are display data only, never secrets.
  */
 enum class NotificationKind(
     val category: NotificationCategory,
     val email: MailTemplate?,
+    val inApp: Boolean = true,
 ) {
     SIGN_IN_ALERT(NotificationCategory.SECURITY, MailTemplate.SIGN_IN_ALERT),
     PASSWORD_CHANGED(NotificationCategory.SECURITY, MailTemplate.PASSWORD_CHANGED),
@@ -182,6 +185,28 @@ enum class NotificationKind(
     ACTION_DUE_REQUESTED(NotificationCategory.WORKFLOW, null),
     ACTION_DUE_DECIDED(NotificationCategory.WORKFLOW, null),
     ACTION_DUE_CHANGED(NotificationCategory.WORKFLOW, null),
+
+    // Reminders, escalation and closure (E07 T5, design E07 §1.8, §1.9). In the app only, their emails in the daily
+    // digest: due soon (the holder, 5 working days before by default); overdue (`stage` DUE: the holder and the
+    // secretaries; REMINDER: the holder again; ESCALATED: the secretaries, when the escalation was sent); to verify (the
+    // verifiers, when the owner marks it done, and their reminders); closed (the owner and contributors); no running
+    // workflow (the secretaries, found by the daily check). Parameters `committee`, `reference`, `organisation`, `link`,
+    // `date` (the due date, ISO) and, for the overdue notice, `stage`.
+    ACTION_DUE_SOON(NotificationCategory.WORKFLOW, null),
+    ACTION_OVERDUE(NotificationCategory.WORKFLOW, null),
+    ACTION_TO_VERIFY(NotificationCategory.WORKFLOW, null),
+    ACTION_CLOSED(NotificationCategory.WORKFLOW, null),
+    ACTION_NOT_RUNNING(NotificationCategory.WORKFLOW, null),
+
+    // In the app and by email at once: an overdue action escalated (to the holder's supervisor by the reporting line, or
+    // the definition's target such as the chair; `holder` the holder's name with the owner position's title, `days` the
+    // working days overdue); the owner's work sent back by the verifier (to the holder; never the remark).
+    ACTION_ESCALATED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ESCALATED),
+    ACTION_SENT_BACK(NotificationCategory.WORKFLOW, MailTemplate.ACTION_SENT_BACK),
+
+    // The daily digest (E07 T5, design E07 §9): one email a day at most with the references of the action notices since the
+    // last one, by kind (`lines`, sentences in the recipient's language); email only.
+    ACTIONS_DIGEST(NotificationCategory.WORKFLOW, MailTemplate.ACTIONS_DIGEST, inApp = false),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */
@@ -206,6 +231,28 @@ interface Notifications {
         link: String? = null,
         calendar: CalendarPart? = null,
     ): NotificationResult
+}
+
+/** One in-app notification as it was written, for a module that sums up its own kinds (a digest). */
+data class SentNotification(
+    val userId: UUID,
+    val kind: NotificationKind,
+    val params: Map<String, String>,
+    val createdAt: Instant,
+)
+
+/**
+ * The in-app notifications written in the tenant (ADR-0030), read by a module that sends a digest of its own kinds (E07
+ * T5's daily digest of action notices). Inside a tenant transaction; ids and display parameters only.
+ */
+fun interface NotificationLog {
+    /** The items of [kinds] written in [from, to), oldest first, at most [limit]. */
+    fun written(
+        kinds: Set<NotificationKind>,
+        from: Instant,
+        to: Instant,
+        limit: Int,
+    ): List<SentNotification>
 }
 
 /** Finds a user as a recipient; implemented by `identity`, which depends on this module (no cycle). */

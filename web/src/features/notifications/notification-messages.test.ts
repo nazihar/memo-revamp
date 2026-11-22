@@ -115,3 +115,33 @@ describe('action progress, dates and endings (design E07 §2.3)', () => {
     expect(notificationText(arabic, 'ACTION_OWNER_CHANGED', action)).toContain('BRC A14/2026')
   })
 })
+
+describe('action reminders, escalation and closure (design E07 §1.8, §1.9)', () => {
+  const action = { committee: 'Board Risk Committee', reference: 'BRC A9/2026', date: '2026-11-28' }
+
+  it('name the committee, the reference and the date, never the action', () => {
+    expect(notificationText(english, 'ACTION_DUE_SOON', action)).toBe(
+      'Action BRC A9/2026 of Board Risk Committee is due soon, on 2026-11-28',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'DUE' })).toBe(
+      'Action BRC A9/2026 of Board Risk Committee, due 2026-11-28, is overdue',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'ESCALATED' })).toContain(
+      'is overdue and was escalated',
+    )
+    expect(notificationText(english, 'ACTION_OVERDUE', { ...action, stage: 'REMINDER' })).toContain('is still overdue')
+    expect(notificationText(english, 'ACTION_ESCALATED', { ...action, holder: 'A. Karim (Head of Treasury)' })).toBe(
+      'Action BRC A9/2026 of Board Risk Committee, held by A. Karim (Head of Treasury), is overdue since 2026-11-28',
+    )
+    expect(notificationText(english, 'ACTION_TO_VERIFY', action)).toBe(
+      'Action BRC A9/2026 of Board Risk Committee was marked as done: please verify it',
+    )
+    expect(notificationText(english, 'ACTION_SENT_BACK', action)).toContain('was sent back to you')
+    expect(notificationText(english, 'ACTION_CLOSED', action)).toContain('was verified and closed')
+    expect(notificationText(english, 'ACTION_NOT_RUNNING', action)).toContain('has no running workflow')
+    expect(templateLabel(english, 'ACTIONS_DIGEST')).toBe('Daily digest of committee actions')
+    expect(templateLabel(english, 'ACTION_ESCALATED')).toBe('Committee action escalated')
+    expect(notificationText(arabic, 'ACTION_OVERDUE', { ...action, stage: 'ESCALATED' })).toContain('صُعّد')
+    expect(notificationText(arabic, 'ACTION_TO_VERIFY', action)).toContain('BRC A9/2026')
+  })
+})

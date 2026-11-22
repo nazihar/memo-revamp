@@ -68,6 +68,12 @@ abstract class ActionFixture : DecisionFixture() {
 
     @Autowired lateinit var forumPolicies: com.memo.forum.ForumPolicies
 
+    @Autowired lateinit var closure: com.memo.actions.internal.ActionClosure
+
+    @Autowired lateinit var daily: com.memo.actions.internal.ActionsDaily
+
+    @Autowired lateinit var workingDays: com.memo.workflow.WorkingDays
+
     /** Publishes the next version of the committee's type with [policy] as its actions policy (a second administrator approves). */
     fun actionsPolicy(policy: com.memo.forum.ActionsPolicy) {
         val checker = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)

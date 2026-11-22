@@ -53,6 +53,8 @@ class ActionAbilityRules(
             cancel = open && officer,
             acceptRisk = open && officer && viewer.chairs(forum),
             reopen = ended && recent && manages,
+            markDone = row.status in ActionChecks.UNDERWAY && viewer.userId == row.holderUserId,
+            verify = row.status == ActionStatus.DONE_PENDING && !owner && !contributor && !recused && row.id in viewer.tasks(),
         )
     }
 }

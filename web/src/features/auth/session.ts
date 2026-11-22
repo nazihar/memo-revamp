@@ -5,7 +5,7 @@ import {
   getSessionOptions,
   getSessionQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
-import type { MyAccess, Session } from '@/api/generated/types.gen'
+import type { MyAccess, MyForumResponse, Session } from '@/api/generated/types.gen'
 import { problemType, PROBLEM } from '@/api/http'
 import type { Viewer } from '@/app/navigation'
 
@@ -50,8 +50,20 @@ export function pathForState(state: Session['state'], next?: string): string | u
 /** Seconds from a 429 problem's detail is not available; the hint is generic but honest. */
 export const isRateLimited = (error: unknown) => problemType(error) === PROBLEM.rateLimited
 
-/** What the menus may show for [session] and [access] (the server enforces access regardless). */
-export function viewerOf(session: Session | undefined, access?: MyAccess): Viewer {
+/** The seats that give committee analytics (design E08 §2.3): officers and members in office, not invitees or observers. */
+const ANALYTICS_SEATS = new Set<MyForumResponse['role']>(['SECRETARY', 'CHAIR', 'VICE_CHAIR', 'MEMBER'])
+
+/** Whether [forums] (`GET /me/forums`) hold a seat in office that gives committee analytics. */
+export function holdsCommitteeSeat(forums: readonly MyForumResponse[] | undefined): boolean {
+  return (forums ?? []).some((f) => f.state === 'IN_OFFICE' && ANALYTICS_SEATS.has(f.role))
+}
+
+/** What the menus may show for [session], [access] and the user's committees (the server enforces access regardless). */
+export function viewerOf(session: Session | undefined, access?: MyAccess, forums?: readonly MyForumResponse[]): Viewer {
   const signedIn = session?.state === 'AUTHENTICATED'
-  return { signedIn, permissions: signedIn ? (access?.permissions.map((p) => p.key) ?? []) : [] }
+  return {
+    signedIn,
+    permissions: signedIn ? (access?.permissions.map((p) => p.key) ?? []) : [],
+    committeeSeat: signedIn && holdsCommitteeSeat(forums),
+  }
 }

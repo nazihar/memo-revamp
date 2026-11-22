@@ -13,6 +13,7 @@ import com.memo.meeting.HeldMeetingAttendance
 import com.memo.search.DecisionFact
 import com.memo.workflow.WorkingDayCounter
 import java.time.ZoneId
+import java.util.UUID
 
 /** The measures as the API answers them (design E08 §3): one mapping per measure, used by the overview and the detail. */
 internal fun attendanceOf(a: CommitteeAttendance) = AttendanceSummary(a.heldMeetings, a.expected, a.attended, a.ratePercent)
@@ -37,15 +38,19 @@ internal fun deferralsOf(d: Deferrals) = DeferralSummary(d.decisions, d.deferred
 
 internal fun papersOf(p: CommitteePapers) = PapersSummary(p.meetings, p.withDeadline, p.onTime, p.onTimePercent, p.lateItems, p.latePapers)
 
-/** M3 in detail: overall, by quarter and by memo type. */
+/** M3 in detail: overall, by quarter and by memo type ([typeNames] names the types). */
 internal fun timingDetail(
     facts: List<DecisionFact>,
     zone: ZoneId,
     counter: WorkingDayCounter,
+    typeNames: Map<UUID, String>,
 ) = TimingDetail(
     overall = timingOf(DecisionMeasure.timing(facts, zone, counter)),
     byQuarter = DecisionMeasure.timingByQuarter(facts, zone, counter).map { QuarterTimingResponse(it.quarter, timingOf(it.timing)) },
-    byMemoType = DecisionMeasure.timingByMemoType(facts, zone, counter).map { MemoTypeTimingResponse(it.memoTypeId, timingOf(it.timing)) },
+    byMemoType =
+        DecisionMeasure.timingByMemoType(facts, zone, counter).map {
+            MemoTypeTimingResponse(it.memoTypeId, it.memoTypeId?.let(typeNames::get), timingOf(it.timing))
+        },
 )
 
 /** M4 in detail: overall and by quarter. */

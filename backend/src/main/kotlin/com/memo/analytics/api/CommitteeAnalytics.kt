@@ -18,6 +18,7 @@ import com.memo.forum.ForumRef
 import com.memo.meeting.AgendaTimeliness
 import com.memo.meeting.AttendanceStats
 import com.memo.meeting.HeldMeetingAttendance
+import com.memo.memo.MemoSearchSource
 import com.memo.org.OrgDirectory
 import com.memo.search.DecisionFact
 import com.memo.search.DecisionStats
@@ -45,6 +46,7 @@ class CommitteeAnalytics(
     private val decisions: DecisionStats,
     private val workingDays: WorkingDays,
     private val org: OrgDirectory,
+    private val memos: MemoSearchSource,
     private val names: ActorNames,
     private val audit: AuditLog,
     private val clock: Clock,
@@ -119,6 +121,7 @@ class CommitteeAnalytics(
             }
         val papers = data.papers(held, access)
         val committeeActions = data.actions.getValue(forumId)
+        val typeNames = memos.typeNames(facts.mapNotNull { it.memoTypeId }.toSet())
         return CommitteeDetailResponse(
             forumId = forum.id,
             code = forum.code,
@@ -135,7 +138,7 @@ class CommitteeAnalytics(
                     membersOmitted = !withMembers,
                 ),
             actions = ActionsDetail(actionsOf(committeeActions), owners(ActionMeasure.owners(forumId, data.overdue))),
-            timeToDecision = timingDetail(facts, data.zone, data.counter),
+            timeToDecision = timingDetail(facts, data.zone, data.counter, typeNames),
             deferrals = deferralDetail(facts),
             papers = papersDetail(held, papers, access == AnalyticsAccess.FULL),
         )

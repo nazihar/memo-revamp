@@ -2960,6 +2960,34 @@ export type MinutesReasonRequest = {
     reason?: string | null;
 };
 
+export type MinutesRecordCheckResponse = {
+    matches: boolean;
+    problems: Array<MinutesCheckProblem>;
+    version: number;
+};
+
+export type MinutesRecordFile = {
+    compliant: boolean;
+    full: boolean;
+    sha256: string;
+};
+
+export type MinutesRecordResponse = {
+    approvalId: string;
+    builtAt?: string | null;
+    createdAt: string;
+    current: boolean;
+    file?: MinutesRecordFile | null;
+    redacted: Array<MinutesRedactedItem>;
+    state: string;
+    version: number;
+};
+
+export type MinutesRedactedItem = {
+    itemNumber: string;
+    kind: 'RECUSED' | 'RESTRICTED' | 'HIDDEN';
+};
+
 export type MinutesRedactionResponse = {
     itemId: string;
     kind: 'RECUSED' | 'RESTRICTED' | 'HIDDEN';
@@ -3034,8 +3062,9 @@ export type MinutesTemplatePreviewView = {
 };
 
 export type MinutesTemplateProblemView = {
-    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT' | 'DEPRECATED_TAG';
     excerpt: string;
+    note?: string | null;
     paragraph: number;
     part: string;
     suggestion?: string | null;
@@ -3060,6 +3089,7 @@ export type MinutesTemplateView = {
     refusals: Array<MinutesTemplateRefusalView>;
     tags: Array<string>;
     template?: MinutesTemplateFileView | null;
+    warnings: Array<MinutesTemplateProblemView>;
 };
 
 export type MinutesWorkResponse = {
@@ -4756,7 +4786,7 @@ export type TemplatePreviewView = {
 };
 
 export type TemplateProblemView = {
-    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT' | 'DEPRECATED_TAG';
     excerpt: string;
     paragraph: number;
     part: string;
@@ -11138,6 +11168,61 @@ export type PreviewMinutesCopyResponses = {
      */
     200: unknown;
 };
+
+export type GetMinutesRecordData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: {
+        version?: number;
+    };
+    url: '/api/v1/meetings/{meetingId}/minutes/record';
+};
+
+export type GetMinutesRecordResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ListMinutesRecordsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/records';
+};
+
+export type ListMinutesRecordsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MinutesRecordResponse>;
+};
+
+export type ListMinutesRecordsResponse = ListMinutesRecordsResponses[keyof ListMinutesRecordsResponses];
+
+export type CheckMinutesRecordData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        version: number;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/records/{version}/check';
+};
+
+export type CheckMinutesRecordResponses = {
+    /**
+     * OK
+     */
+    200: MinutesRecordCheckResponse;
+};
+
+export type CheckMinutesRecordResponse = CheckMinutesRecordResponses[keyof CheckMinutesRecordResponses];
 
 export type ReviewMinutesData = {
     body: MinutesReviewRequest;

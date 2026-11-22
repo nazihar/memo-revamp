@@ -14,9 +14,9 @@ package com.memo.meeting
  * made the drafting part of its minutes placeholder real: the minutes page (MINUTES), making the draft and filling an item
  * again (officers, with recusal columns); the readers' copies stay a placeholder for T6. E06 T6 made the copies real
  * (MINUTES_COPIES: the reader's copy, the comments), opened the minutes page to the reviewer and the readers, and added the
- * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E07 T3
- * made its actions placeholder
- * real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
+ * review, the confirmation and the stamps to MINUTES and the circulation's steps and the preview "as" to the officers'. E06
+ * T7 made its record placeholder real: the record, its versions and its check (MINUTES_COPIES). E07 T3 made its actions
+ * placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing, discarding and issuing (officers,
  * with recusal columns or an officer probe). E07 T8 made its tracker placeholder real: the committee's tracker with its
  * totals and its export (TRACKER). E08 T2 made the register part of its placeholder real: the decision register's scope and
  * search (REGISTER), probed in both suites; its [modules] are the real ones (`com.memo.search` with the memo search endpoints
@@ -68,7 +68,8 @@ object PaperSurfaceRegistry {
         MINUTES_COPIES(
             "A reader's copy of the draft minutes and the comments (E06 T6): the copy of their redaction set (ADR-0066: the recused " +
                 "line for an item they declared an interest in, the heading or \"restricted\" for one they may not read); their own " +
-                "comments, the officers everyone's but on items they are recused from",
+                "comments, the officers everyone's but on items they are recused from; once approved (E06 T7), the record or the " +
+                "reader's approved copy (a PDF/A record of the same set), its versions and its check",
         ),
         REGISTER(
             "The decision register across committees (E08 T2): its scope, and the search's rows, totals, facets and order; a decision " +
@@ -133,6 +134,10 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/minutes/document" to Surface.MINUTES_COPIES,
             "GET /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
             "POST /api/v1/meetings/{meetingId}/minutes/comments" to Surface.MINUTES_COPIES,
+            // E06 T7: the approved minutes' record (the reader's approved copy), its versions and its check.
+            "GET /api/v1/meetings/{meetingId}/minutes/record" to Surface.MINUTES_COPIES,
+            "GET /api/v1/meetings/{meetingId}/minutes/records" to Surface.MINUTES_COPIES,
+            "POST /api/v1/meetings/{meetingId}/minutes/records/{version}/check" to Surface.MINUTES_COPIES,
             // E07 T4: the timeline, by the same rule.
             "GET /api/v1/actions/{actionId}/entries" to Surface.ACTIONS,
             // E07 T8: the committee's tracker and its export, by the same rule (the totals from the same predicate).
@@ -378,12 +383,6 @@ object PaperSurfaceRegistry {
      */
     val pending: List<Pending> =
         listOf(
-            Pending(
-                "E06",
-                "The approved minutes' record and its copies (T7): the recused version (heading, own declaration and decision; no " +
-                    "discussion; ADR-0062)",
-                listOf("/api/v1/meetings/{meetingId}/minutes/record", "/api/v1/minutes"),
-            ),
             Pending(
                 "E08",
                 "Meeting analytics and the attendance export (T4): measures over the rows the viewer sees in full, with live recusals " +

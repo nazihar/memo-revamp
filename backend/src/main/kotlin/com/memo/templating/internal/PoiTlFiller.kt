@@ -92,6 +92,37 @@ internal class PoiTlFiller(
 
     private fun fillNow(
         bytes: ByteArray,
+        given: TemplateData,
+    ): ByteArray {
+        // Row-level controls (E06 T7): each value of a tagged row starts with a marker that names its tag.
+        val rowToken = if (given.rowTags.values.any { tags -> tags.any { it != null } }) "r${UUID.randomUUID()}" else null
+        val data = rowToken?.let { marked(given, it) } ?: given
+        val filled = fillMarked(bytes, data)
+        return rowToken?.let { RowControls.wrap(filled, it) } ?: filled
+    }
+
+    /** [data] with each value of each tagged row prefixed with its marker ([RowControls.marker]). */
+    private fun marked(
+        data: TemplateData,
+        token: String,
+    ): TemplateData {
+        val rows =
+            data.rows.mapValues { (loop, rows) ->
+                val tags = data.rowTags[loop].orEmpty()
+                rows.mapIndexed { i, row ->
+                    val tag =
+                        tags
+                            .getOrNull(
+                                i,
+                            )?.also { require(RowControls.ROW_TAG.matches(it)) { "a row tag is 1 to 64 of A-Z a-z 0-9 :._-" } }
+                    if (tag == null) row else row.mapValues { (_, value) -> RowControls.marker(token, tag) + value }
+                }
+            }
+        return data.copy(rows = rows)
+    }
+
+    private fun fillMarked(
+        bytes: ByteArray,
         data: TemplateData,
     ): ByteArray {
         val controlled = data.blocks.filterValues { elements -> elements.any { it.control != null } }.keys

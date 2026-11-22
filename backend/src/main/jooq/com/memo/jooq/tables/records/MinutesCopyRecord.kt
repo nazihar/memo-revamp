@@ -80,6 +80,18 @@ open class MinutesCopyRecord private constructor() : UpdatableRecordImpl<Minutes
         set(value): Unit = set(14, value)
         get(): Long? = get(14) as Long?
 
+    open var recordVersion: Int?
+        set(value): Unit = set(15, value)
+        get(): Int? = get(15) as Int?
+
+    open var compliant: Boolean?
+        set(value): Unit = set(16, value)
+        get(): Boolean? = get(16) as Boolean?
+
+    open var validation: JSONB?
+        set(value): Unit = set(17, value)
+        get(): JSONB? = get(17) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -89,7 +101,7 @@ open class MinutesCopyRecord private constructor() : UpdatableRecordImpl<Minutes
     /**
      * Create a detached, initialised MinutesCopyRecord
      */
-    constructor(id: UUID, tenantId: UUID, meetingId: UUID, stage: String, redacted: JSONB, setKey: String, sourceVersionId: UUID, state: String? = null, error: String? = null, fileId: UUID? = null, fileVersionId: UUID? = null, sha256: String? = null, createdAt: OffsetDateTime, builtAt: OffsetDateTime? = null, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, meetingId: UUID, stage: String, redacted: JSONB, setKey: String, sourceVersionId: UUID, state: String? = null, error: String? = null, fileId: UUID? = null, fileVersionId: UUID? = null, sha256: String? = null, createdAt: OffsetDateTime, builtAt: OffsetDateTime? = null, version: Long? = null, recordVersion: Int? = null, compliant: Boolean? = null, validation: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.meetingId = meetingId
@@ -105,6 +117,9 @@ open class MinutesCopyRecord private constructor() : UpdatableRecordImpl<Minutes
         this.createdAt = createdAt
         this.builtAt = builtAt
         this.version = version
+        this.recordVersion = recordVersion
+        this.compliant = compliant
+        this.validation = validation
         resetTouchedOnNotNull()
     }
 }

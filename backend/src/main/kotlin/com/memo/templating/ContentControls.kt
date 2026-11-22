@@ -94,6 +94,16 @@ interface DocxCopies {
     fun forCopy(docx: ByteArray): ByteArray
 
     /**
+     * [docx] without the row-level controls of its tables whose tag is in [tags], the rows inside them and all (E06 T7: a
+     * reader's copy drops the rows of a meeting-level loop, such as the resolutions table, that belong to items it redacts;
+     * see [TemplateData.rowTags]). Streams `word/document.xml`; everything else is copied as it is.
+     */
+    fun dropRows(
+        docx: ByteArray,
+        tags: Set<String>,
+    ): ByteArray
+
+    /**
      * Every text of [docx]'s parts (body, headers, footers, notes and comments, deleted text included), a paragraph a line:
      * what a copy's leak check reads.
      */

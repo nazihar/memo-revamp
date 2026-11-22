@@ -70,7 +70,8 @@ class MinutesTemplateDataTest {
         assertThat(data.values["meeting.date"]).isEqualTo("12 December 2026")
         assertThat(data.values["meeting.start"] to data.values["meeting.closedAt"]).isEqualTo("10:00" to "12:30")
         assertThat(data.values["meeting.chair"]).isEqualTo("Dr A. Rahman")
-        assertThat(data.values["minutes.status"]).isEqualTo("DRAFT")
+        // Deprecated in E06 T7: always empty (the copies and the record carry the status).
+        assertThat(data.values["minutes.status"]).isEmpty()
         assertThat(data.values["quorum.opening"]).isEqualTo("The meeting was quorate (4 present, 3 needed).")
         assertThat(data.values.keys).containsExactlyInAnyOrderElementsOf(MinutesTemplateTags.MEETING.keys)
         assertThat(data.rows.keys).containsExactlyInAnyOrderElementsOf(MinutesTemplateTags.LOOPS.keys)
@@ -79,7 +80,9 @@ class MinutesTemplateDataTest {
         assertThat(data.rows.getValue("apologies").single()).isEqualTo(mapOf("name" to "Mr K. Islam", "alternate" to "Mr J. Ahmed"))
         assertThat(data.rows.getValue("alternates").single()["forMember"]).isEqualTo("Mr K. Islam")
         assertThat(data.rows.getValue("resolutions").single()["number"]).isEqualTo("BRC/2026/001")
-        assertThat(data.rows.getValue("actions").single()["item"]).isEqualTo("1")
+        // The meeting's table lists its own actions only; the loan's is in the loan's block (E06 T7: copies redact it with the item).
+        assertThat(data.rows.getValue("actions").map { it["reference"] to it["item"] }).containsExactly("ACT/2026/002" to "")
+        assertThat(data.values["actions.count"]).isEqualTo("1")
 
         // The item waiting for the chair was never taken: no block.
         val items = data.blocks.getValue(MinutesTemplateTags.ITEMS)
@@ -222,7 +225,11 @@ class MinutesTemplateDataTest {
         snapshots = emptyMap(),
         ratified = emptyMap(),
         notes = mapOf(loan.id to notes),
-        actions = listOf(MinutesActionLine(loan.id, "ACT/2026/001", "Perfect the security", "Head of Credit", "31 January 2027")),
+        actions =
+            listOf(
+                MinutesActionLine(loan.id, "ACT/2026/001", "Perfect the security", "Head of Credit", "31 January 2027"),
+                MinutesActionLine(null, "ACT/2026/002", "Review the terms of reference", "Company Secretary", "28 February 2027"),
+            ),
         names =
             mapOf(chair to "Dr A. Rahman", member to name, recused to "Mr T. Hossain", absent to "Mr K. Islam", alternate to "Mr J. Ahmed"),
     )

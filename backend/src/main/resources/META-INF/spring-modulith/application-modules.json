@@ -539,6 +539,9 @@
       "target" : "meeting",
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     }, {
+      "target" : "memo",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
       "target" : "minutes",
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     }, {

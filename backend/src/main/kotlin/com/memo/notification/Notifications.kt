@@ -164,6 +164,11 @@ enum class NotificationKind(
     // ISO) for the new action. Never the action's title, text or the item (ADR-0067).
     ACTION_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.ACTION_ASSIGNED),
     ACTION_SOURCE_CORRECTED(NotificationCategory.WORKFLOW, null),
+
+    // A follow-up memo of an action was decided (Phase 4 E07 T6, design E07 §1.11): to the holder of the owner's task, in
+    // the app (the email comes in the daily digest, T5). Parameters `committee`, `reference`, `organisation`, `link` and
+    // `outcome` (APPROVED, REJECTED, WITHDRAWN or CANCELLED). Never the memo's or the action's text.
+    ACTION_MEMO_DECIDED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

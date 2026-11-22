@@ -55,6 +55,7 @@ class ActionAccess(
     private val items: MeetingItems,
     private val recusals: Recusals,
     private val clearances: Clearances,
+    private val memoViews: ActionMemoViews,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {
@@ -265,7 +266,15 @@ class ActionAccess(
             createdAt = row.createdAt,
             viewerRecused = recused,
             warnings = if (manages) warnings(row, contributors) else emptyList(),
-            can = ActionAbilities(edit = manages && draft, issue = manages && draft, discard = manages && draft),
+            can =
+                ActionAbilities(
+                    edit = manages && draft,
+                    issue = manages && draft,
+                    discard = manages && draft,
+                    raiseMemo = memoViews.mayRaise(viewer, row, contributors),
+                    linkMemo = memoViews.mayLink(viewer, row, contributors, manages),
+                ),
+            memos = memoViews.of(viewer, row, manages),
         )
     }
 

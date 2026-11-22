@@ -14,6 +14,7 @@ import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const memo: MemoView = {
   origin: 'NATIVE',
+  followsUp: [],
   id: 'm1',
   reference: null,
   numberedWhen: 'ON_SUBMIT',

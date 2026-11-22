@@ -2,6 +2,7 @@ package com.memo.actions
 
 import com.memo.actions.internal.ActionAccess
 import com.memo.actions.internal.ActionLines
+import com.memo.actions.internal.ActionMemoStore
 import com.memo.actions.internal.ActionStore
 import com.memo.actions.internal.ActionTracking
 import com.tngtech.archunit.core.domain.JavaClass
@@ -27,7 +28,7 @@ class ActionAccessArchTest {
             .areAnnotatedWith(RestController::class.java)
             .should()
             .dependOnClassesThat()
-            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java)
+            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java, ActionMemoStore::class.java)
             .check(classes)
     }
 
@@ -38,7 +39,7 @@ class ActionAccessArchTest {
             .haveNameNotMatching(WRITERS)
             .should()
             .dependOnClassesThat()
-            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java)
+            .belongToAnyOf(ActionStore::class.java, ActionLines::class.java, ActionTracking::class.java, ActionMemoStore::class.java)
             .check(classes)
     }
 
@@ -47,7 +48,8 @@ class ActionAccessArchTest {
         noClasses()
             .that()
             .haveNameNotMatching(
-                """com\.memo\.actions\.internal\.(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking)(\$.*)?""",
+                """com\.memo\.actions\.internal\.(ActionAccess|ActionStore|ActionStoreKt|ActionLines|ActionTracking""" +
+                    """|ActionMemoStore)(\$.*)?""",
             ).and()
             .resideOutsideOfPackage("com.memo.jooq..")
             .should()
@@ -59,11 +61,16 @@ class ActionAccessArchTest {
     }
 
     private companion object {
-        /** The rule, the services and listeners that write (they read what they lock), the subject and its slots. */
+        /**
+         * The rule, the services and listeners that write (they read what they lock), the subject and its slots, and the
+         * follow-up memos' own reads: the action page's memos (by the memo's rule) and the memo's "Raised from action" (an
+         * action's id only through the rule's `sees`).
+         */
         val WRITERS =
             listOf(
                 """internal\.(ActionAccess|ActionRaising|ActionIssuing|ActionScenes|ActionWorkflowListener|ActionSourceListener)""",
-                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking)""",
+                """internal\.(ActionFollowUps|ActionMemoListener|ActionMemoOrigins|ActionMemoViews)""",
+                """internal\.(ActionStore|ActionStoreKt|ActionLines|ActionTracking|ActionMemoStore)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }

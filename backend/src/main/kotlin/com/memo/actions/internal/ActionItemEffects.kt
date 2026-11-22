@@ -124,7 +124,7 @@ class ActionItemEffects(
         kind: ActionChange,
     ) = events.publishEvent(ActionChanged(TenantContext.current().value, row.id, row.forumId, kind))
 
-    private fun notify(
+    internal fun notify(
         user: UUID,
         kind: NotificationKind,
         row: ActionRow,

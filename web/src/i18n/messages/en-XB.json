@@ -61929,6 +61929,118 @@
       "value": "‬"
     }
   ],
+  "notificationKinds.actionMemoDecided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɟoʅʅoʍ-nd ɯǝɯo oɟ ɐɔʇıou "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ʍɐs ɐddɹoʌǝp. ⅄on ɔɐu uoʍ ɯɐɹʞ ʇɥǝ ɐɔʇıou ɐs pouǝ."
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɟoʅʅoʍ-nd ɯǝɯo oɟ ɐɔʇıou "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ʍɐs ɹǝɾǝɔʇǝp"
+            }
+          ]
+        },
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɟoʅʅoʍ-nd ɯǝɯo oɟ ɐɔʇıou "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ʍɐs ʍıʇɥpɹɐʍu"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɟoʅʅoʍ-nd ɯǝɯo oɟ ɐɔʇıou "
+            },
+            {
+              "type": 1,
+              "value": "reference"
+            },
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": ") ʍɐs sʇoddǝp"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notificationKinds.actionSourceCorrected": [
     {
       "type": 0,
@@ -66208,6 +66320,20 @@
           ]
         }
       }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.note.system": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɹpǝp qʎ ʇɥǝ sʎsʇǝɯ"
     },
     {
       "type": 0,

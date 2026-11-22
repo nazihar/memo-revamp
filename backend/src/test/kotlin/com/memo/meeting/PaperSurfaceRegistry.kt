@@ -12,7 +12,8 @@ package com.memo.meeting
  * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
  * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E07
  * T3 made its actions placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing,
- * discarding and issuing (officers, with recusal columns or an officer probe).
+ * discarding and issuing (officers, with recusal columns or an officer probe). E07 T6 added raising and linking an action's
+ * follow-up memos (recusal columns).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -175,6 +176,11 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/actions/{actionId}/issue" to "issuing a draft (E07 T3): secretaries not recused (recusal columns)",
                 "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
                     "the starting resolution number (E06 T4): forums.manage with a step-up; no item at all (officer probe)",
+                "POST /api/v1/actions/{actionId}/memos" to
+                    "raising a follow-up memo (E07 T6): the action's owner and contributors; 404 to anyone recused who is not " +
+                    "involved (recusal columns)",
+                "POST /api/v1/actions/{actionId}/memos/link" to
+                    "linking a follow-up memo (E07 T6): the owner, contributors and secretaries not recused (recusal columns)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */

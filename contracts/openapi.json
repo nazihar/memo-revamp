@@ -20,9 +20,15 @@
           },
           "issue" : {
             "type" : "boolean"
+          },
+          "linkMemo" : {
+            "type" : "boolean"
+          },
+          "raiseMemo" : {
+            "type" : "boolean"
           }
         },
-        "required" : [ "discard", "edit", "issue" ],
+        "required" : [ "discard", "edit", "issue", "linkMemo", "raiseMemo" ],
         "type" : "object"
       },
       "ActionFieldsRequest" : {
@@ -66,6 +72,36 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "ActionMemoResponse" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "RAISED", "LINKED" ],
+            "type" : "string"
+          },
+          "linkedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "readable" : {
+            "type" : "boolean"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "status" : {
+            "type" : [ "string", "null" ]
+          },
+          "subject" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind", "linkedAt", "memoId", "readable" ],
         "type" : "object"
       },
       "ActionOwnerResponse" : {
@@ -173,6 +209,12 @@
             "format" : "date-time",
             "type" : [ "string", "null" ]
           },
+          "memos" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ActionMemoResponse"
+            },
+            "type" : "array"
+          },
           "originalDueDate" : {
             "format" : "date",
             "type" : [ "string", "null" ]
@@ -218,7 +260,7 @@
             "type" : "array"
           }
         },
-        "required" : [ "can", "classificationId", "committee", "contributors", "createdAt", "dueRevisions", "forumId", "id", "priority", "source", "status", "title", "version", "viewerRecused", "warnings" ],
+        "required" : [ "can", "classificationId", "committee", "contributors", "createdAt", "dueRevisions", "forumId", "id", "memos", "priority", "source", "status", "title", "version", "viewerRecused", "warnings" ],
         "type" : "object"
       },
       "ActionSourceResponse" : {
@@ -6273,6 +6315,16 @@
         "required" : [ "name" ],
         "type" : "object"
       },
+      "LinkMemoRequest" : {
+        "properties" : {
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "memoId" ],
+        "type" : "object"
+      },
       "LinkRequest" : {
         "properties" : {
           "kind" : {
@@ -7459,6 +7511,29 @@
         "required" : [ "id", "kind", "memoId", "removable", "status", "subject" ],
         "type" : "object"
       },
+      "MemoOriginLabel" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "RAISED_FROM", "LINKED_TO" ],
+            "type" : "string"
+          },
+          "owner" : {
+            "type" : "string"
+          },
+          "recordId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "recordType" : {
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "kind", "owner", "recordType", "reference" ],
+        "type" : "object"
+      },
       "MemoRequest" : {
         "properties" : {
           "classificationId" : {
@@ -7840,6 +7915,12 @@
             "format" : "date-time",
             "type" : [ "string", "null" ]
           },
+          "followsUp" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoOriginLabel"
+            },
+            "type" : "array"
+          },
           "holders" : {
             "items" : {
               "$ref" : "#/components/schemas/Named"
@@ -7963,7 +8044,7 @@
             "type" : [ "string", "null" ]
           }
         },
-        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "interests", "linkedFrom", "links", "origin", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "followsUp", "holders", "id", "interests", "linkedFrom", "links", "origin", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -10408,6 +10489,26 @@
         "required" : [ "source" ],
         "type" : "object"
       },
+      "RaiseMemoRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "confirmLowerLevel" : {
+            "type" : "boolean"
+          },
+          "subject" : {
+            "type" : [ "string", "null" ]
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "typeId" ],
+        "type" : "object"
+      },
       "RaiseScope" : {
         "properties" : {
           "roles" : {
@@ -10424,6 +10525,22 @@
             "type" : "array"
           }
         },
+        "type" : "object"
+      },
+      "RaisedMemoResponse" : {
+        "properties" : {
+          "action" : {
+            "$ref" : "#/components/schemas/ActionResponse"
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "templateFilled" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "action", "memoId", "templateFilled" ],
         "type" : "object"
       },
       "ReassignRequest" : {
@@ -13733,6 +13850,96 @@
           }
         },
         "summary" : "Issue a draft action: its reference, its workflow and its owner told (secretaries)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/memos" : {
+      "post" : {
+        "operationId" : "raiseActionMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RaiseMemoRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RaisedMemoResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Raise a draft follow-up memo from an action (its owner and contributors)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/actions/{actionId}/memos/link" : {
+      "post" : {
+        "operationId" : "linkActionMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "actionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LinkMemoRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ActionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Link a memo the actor may read to an action as its follow-up",
         "tags" : [ "actions" ]
       }
     },

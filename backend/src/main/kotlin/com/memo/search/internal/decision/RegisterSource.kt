@@ -184,9 +184,14 @@ private class TransactionReads {
         private val KEY = Any()
 
         /** This transaction's reads, bound on first use; a fresh, unbound one outside a transaction. */
-        fun current(): TransactionReads {
-            if (!TransactionSynchronizationManager.isSynchronizationActive()) return TransactionReads()
-            (TransactionSynchronizationManager.getResource(KEY) as TransactionReads?)?.let { return it }
+        fun current(): TransactionReads =
+            when {
+                !TransactionSynchronizationManager.isSynchronizationActive() -> TransactionReads()
+                else -> TransactionSynchronizationManager.getResource(KEY) as TransactionReads? ?: bound()
+            }
+
+        /** A new one bound to this transaction, dropped when it completes. */
+        private fun bound(): TransactionReads {
             val reads = TransactionReads()
             TransactionSynchronizationManager.bindResource(KEY, reads)
             TransactionSynchronizationManager.registerSynchronization(

@@ -111,7 +111,8 @@ class NotificationsIT : IntegrationTest() {
             tenant,
             "/api/v1/me/notification-preferences",
             session(optedOut, password),
-            """[{"category":"ADMINISTRATION","channel":"EMAIL","enabled":false},{"category":"ADMINISTRATION","channel":"IN_APP","enabled":false}]""",
+            """[{"category":"ADMINISTRATION","channel":"EMAIL","enabled":false},""" +
+                """{"category":"ADMINISTRATION","channel":"IN_APP","enabled":false}]""",
         )
         val (other, _) = aUser()
         val granted = mapOf("organisation" to "Bank", "role" to "Auditor")

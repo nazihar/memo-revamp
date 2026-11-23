@@ -58,10 +58,11 @@ internal class NotificationPreferences(
                     .from(p)
                     .where(if (chunk.size == 1) p.USER_ID.eq(chunk.single()) else p.USER_ID.`in`(chunk))
                     .fetch()
-                    .mapNotNull { (user, category, channel, enabled) ->
-                        val c = NotificationCategory.entries.firstOrNull { it.name == category }
-                        val ch = NotificationChannel.entries.firstOrNull { it.name == channel }
-                        if (user == null || c == null || ch == null) null else Triple(user, c to ch, enabled!!)
+                    .mapNotNull { row ->
+                        val user = row.value1()
+                        val c = NotificationCategory.entries.firstOrNull { it.name == row.value2() }
+                        val ch = NotificationChannel.entries.firstOrNull { it.name == row.value3() }
+                        if (user == null || c == null || ch == null) null else Triple(user, c to ch, row.value4()!!)
                     }
             }.groupBy({ it.first }, { it.second to it.third })
             .mapValues { (_, choices) -> choices.toMap() }
@@ -152,7 +153,7 @@ internal class NotificationService(
 
     override fun notifyAll(requests: List<NotificationRequest>): List<NotificationResult> {
         requests.forEach { r ->
-            require(r.link == null || LINK.matches(r.link)) { "notification links are app routes" }
+            require(r.link?.let { LINK.matches(it) } ?: true) { "notification links are app routes" }
             require(r.calendar == null || r.kind.email != null) { "a calendar part needs a kind that sends email" }
         }
         if (requests.isEmpty()) return emptyList()

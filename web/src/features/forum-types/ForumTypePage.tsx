@@ -37,10 +37,14 @@ import { useTerms } from '@/features/terms/terms'
 import { TemplateTab } from '@/features/meetings/agenda/TemplateTab'
 import { tm } from '@/features/meetings/agenda/template-messages'
 import { stateLabels } from '@/features/workflows/workflow-messages'
+import { fam } from './actions-messages'
+import { ActionsTab } from './ActionsTab'
 import { changesBetween } from './changes'
 import { ChangesTab } from './ChangesTab'
 import { ft, ftt, ftv } from './messages'
 import { MeetingsTab } from './MeetingsTab'
+import { fmm } from './minutes-messages'
+import { MinutesTab } from './MinutesTab'
 import { OutcomesTab } from './OutcomesTab'
 import { PolicyTab } from './PolicyTab'
 import { QuorumTab } from './QuorumTab'
@@ -370,6 +374,8 @@ function VersionEditor({
           <TabsTrigger value="terms">{intl.formatMessage(ft.tabTerms)}</TabsTrigger>
           <TabsTrigger value="agenda">{intl.formatMessage(tm.tab)}</TabsTrigger>
           <TabsTrigger value="meetings">{intl.formatMessage(ft.tabMeetings)}</TabsTrigger>
+          <TabsTrigger value="minutes">{intl.formatMessage(fmm.tab)}</TabsTrigger>
+          <TabsTrigger value="actions">{intl.formatMessage(fam.tab)}</TabsTrigger>
           <TabsTrigger value="changes">{intl.formatMessage(ftv.tabChanges, { count: changes.length })}</TabsTrigger>
         </TabsList>
         <TabsContent value="policy" className="pt-4">
@@ -420,6 +426,35 @@ function VersionEditor({
         </TabsContent>
         <TabsContent value="meetings" className="pt-4">
           <MeetingsTab settings={settings} onChange={change} errors={problems} />
+        </TabsContent>
+        <TabsContent value="minutes" className="pt-4">
+          <MinutesTab
+            minutes={settings.minutes}
+            {...(change
+              ? {
+                  onChange: (minutes: TypeSettings['minutes']) => {
+                    change({ minutes })
+                  },
+                }
+              : {})}
+            errors={problems}
+            typeId={typeId}
+            number={v.number}
+            unsaved={Boolean(edited)}
+          />
+        </TabsContent>
+        <TabsContent value="actions" className="pt-4">
+          <ActionsTab
+            actions={settings.actions}
+            onChange={
+              change
+                ? (actions) => {
+                    change({ actions })
+                  }
+                : undefined
+            }
+            errors={problems}
+          />
         </TabsContent>
         <TabsContent value="changes" className="pt-4">
           <ChangesTab changes={changes} first={!published} />

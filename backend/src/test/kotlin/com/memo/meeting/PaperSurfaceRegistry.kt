@@ -25,8 +25,8 @@ package com.memo.meeting
  * files (XLSX and PDF, every cell and the PDF's text) to the EXPORTS channel. E06 T8 added the corrections after approval
  * (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with recusal columns) and the
  * certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an officer's, with an
- * officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action back
- * from it (recusal columns) and "Ask owners for an update" (an officer probe).
+ * officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action
+ * back from it (recusal columns) and "Ask owners for an update" (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(

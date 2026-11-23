@@ -82060,12 +82060,38 @@
       "value": ": "
     },
     {
-      "type": 1,
-      "value": "noComments"
+      "type": 6,
+      "value": "noComments",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sɐıp uo ɔoɯɯǝuʇs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sɐıp uo ɔoɯɯǝuʇs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " uo ɔoɯɯǝuʇs · "
+      "value": " · "
     },
     {
       "type": 6,
@@ -82102,12 +82128,34 @@
       "value": " · "
     },
     {
-      "type": 1,
-      "value": "notYet"
-    },
-    {
-      "type": 0,
-      "value": " uoʇ ʎǝʇ"
+      "type": 6,
+      "value": "notYet",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥɐs uoʇ ɐusʍǝɹǝp ʎǝʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥɐʌǝ uoʇ ɐusʍǝɹǝp ʎǝʇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
@@ -83090,12 +83138,38 @@
       "value": "⊥ɥǝ ɔoɯɯǝuʇ dǝɹıop ɥɐs ǝupǝp: "
     },
     {
-      "type": 1,
-      "value": "noComments"
+      "type": 6,
+      "value": "noComments",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sɐıp uo ɔoɯɯǝuʇs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sɐıp uo ɔoɯɯǝuʇs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " uo ɔoɯɯǝuʇs, "
+      "value": ", "
     },
     {
       "type": 6,
@@ -83132,12 +83206,38 @@
       "value": ", "
     },
     {
-      "type": 1,
-      "value": "notYet"
+      "type": 6,
+      "value": "notYet",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pıp uoʇ ɐusʍǝɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pıp uoʇ ɐusʍǝɹ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " uo ɐusʍǝɹ."
+      "value": "."
     },
     {
       "type": 0,

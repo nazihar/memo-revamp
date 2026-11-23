@@ -522,7 +522,7 @@ export const mnv = defineMessages<{
   answers: {
     id: 'minutes.v.answers',
     defaultMessage:
-      '{readers, plural, one {# reader} other {# readers}}: {noComments} no comments · {suggestions, plural, one {# suggestion} other {# suggestions}} · {notYet} not yet',
+      '{readers, plural, one {# reader} other {# readers}}: {noComments, plural, one {# said no comments} other {# said no comments}} · {suggestions, plural, one {# suggestion} other {# suggestions}} · {notYet, plural, one {# has not answered yet} other {# have not answered yet}}',
   },
   noCommentsFrom: { id: 'minutes.v.noCommentsFrom', defaultMessage: 'No comments: {names}' },
   commentLine: { id: 'minutes.v.commentLine', defaultMessage: '{name} · {part} · {date}' },
@@ -545,7 +545,7 @@ export const mnv = defineMessages<{
   periodEnded: {
     id: 'minutes.v.periodEnded',
     defaultMessage:
-      'The comment period has ended: {noComments} no comments, {suggestions, plural, one {# suggestion} other {# suggestions}}, {notYet} no answer.',
+      'The comment period has ended: {noComments, plural, one {# said no comments} other {# said no comments}}, {suggestions, plural, one {# suggestion} other {# suggestions}}, {notYet, plural, one {# did not answer} other {# did not answer}}.',
   },
   approveOf: { id: 'minutes.v.approveOf', defaultMessage: 'Approve the minutes of {meeting} ({date})' },
   approvedOn: { id: 'minutes.v.approvedOn', defaultMessage: 'Approved on {date}' },

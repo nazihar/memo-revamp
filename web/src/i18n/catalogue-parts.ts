@@ -28,6 +28,8 @@ export type CataloguePart =
   | 'inbox'
   | 'dashboard'
   | 'analytics'
+  | 'decisionRegister'
+  | 'registerLinks'
   | 'imports'
   | 'legacy'
   | 'actions'

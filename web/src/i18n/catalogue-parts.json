@@ -101,6 +101,16 @@
     "routes": ["/analytics"],
     "prefixes": ["analytics"]
   },
+  "decisionRegister": {
+    "$comment": "The decision register (Phase 4 E08 T6, flows AS and AT): search, filters, the number check and the export.",
+    "routes": ["/decisions"],
+    "prefixes": ["decisionRegister"]
+  },
+  "registerLinks": {
+    "$comment": "The register's entry points on other pages (E08 T6, design §1.6): Decisions of this committee on the committee page, and In the register on a resolution's page (a page that places it adds its route here).",
+    "routes": ["/committees", "/resolutions"],
+    "prefixes": ["registerLinks"]
+  },
   "imports": {
     "routes": ["/admin/imports"],
     "prefixes": ["imports"]

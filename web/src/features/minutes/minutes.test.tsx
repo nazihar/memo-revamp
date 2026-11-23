@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { createIntl } from 'react-intl'
 import { describe, expect, it, vi } from 'vitest'
 import type {
   ItemLink,
@@ -16,6 +17,7 @@ import type {
   MinutesResponse,
 } from '@/api/generated/types.gen'
 import { partsForPath } from '@/i18n/catalogue-parts'
+import ar from '@/i18n/messages/ar.json'
 import {
   accessHandler,
   API_ORIGIN,
@@ -26,6 +28,7 @@ import {
   signedInSession,
 } from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
+import { mnv } from './messages'
 
 const API = `${API_ORIGIN}/api/v1`
 const ME = signedInSession().user?.id ?? ''
@@ -643,7 +646,7 @@ describe('Circulation (flow AF)', () => {
       await screen.findByText('Circulated on December 14, 2026. Comments by Saturday, December 19.'),
     ).toBeInTheDocument()
     const panel = screen.getByRole('region', { name: 'Comments' })
-    expect(panel).toHaveTextContent('7 readers: 4 no comments · 1 suggestion · 2 not yet')
+    expect(panel).toHaveTextContent('7 readers: 4 said no comments · 1 suggestion · 2 have not answered yet')
     expect(await within(panel).findByText('No comments: R. Das')).toBeInTheDocument()
     await user.type(within(panel).getByRole('textbox', { name: /Note to the member/ }), 'Added to item 5')
     await user.click(within(panel).getByRole('button', { name: 'Adopt: S. Ali, Item 5' }))
@@ -1030,4 +1033,39 @@ describe('Minutes elsewhere', () => {
       expect(opened).toEqual([{ mode: 'EDIT', language: 'en' }])
     })
   }, 20_000)
+})
+
+describe('How the readers answered, in words', () => {
+  const en = createIntl({ locale: 'en' })
+  const arabic = createIntl({ locale: 'ar', messages: ar })
+
+  it('says each count in the singular or the plural (English)', () => {
+    expect(en.formatMessage(mnv.answers, { readers: 1, noComments: 1, suggestions: 1, notYet: 1 })).toBe(
+      '1 reader: 1 said no comments · 1 suggestion · 1 has not answered yet',
+    )
+    expect(en.formatMessage(mnv.answers, { readers: 7, noComments: 4, suggestions: 2, notYet: 0 })).toBe(
+      '7 readers: 4 said no comments · 2 suggestions · 0 have not answered yet',
+    )
+    expect(en.formatMessage(mnv.periodEnded, { noComments: 1, suggestions: 0, notYet: 2 })).toBe(
+      'The comment period has ended: 1 said no comments, 0 suggestions, 2 did not answer.',
+    )
+  })
+
+  it('uses Arabic’s own plural forms: one, two, few and many', () => {
+    expect(arabic.formatMessage(mnv.answers, { readers: 1, noComments: 1, suggestions: 1, notYet: 1 })).toBe(
+      'قارئ واحد: واحد قال إنه بلا ملاحظات · اقتراح واحد · واحد لم يردّ بعد',
+    )
+    expect(arabic.formatMessage(mnv.answers, { readers: 2, noComments: 2, suggestions: 2, notYet: 2 })).toBe(
+      'قارئان: اثنان قالا إنهما بلا ملاحظات · اقتراحان · اثنان لم يردّا بعد',
+    )
+    const few = arabic.formatMessage(mnv.answers, { readers: 5, noComments: 3, suggestions: 4, notYet: 3 })
+    expect(few).toContain('قرّاء')
+    expect(few).toContain('قالوا إنهم بلا ملاحظات')
+    expect(few).toContain('اقتراحات')
+    expect(few).toContain('لم يردّوا بعد')
+    expect(arabic.formatMessage(mnv.answers, { readers: 11, noComments: 11, suggestions: 11, notYet: 11 })).toContain(
+      'قارئًا',
+    )
+    expect(few).not.toMatch(/[A-Za-z]/)
+  })
 })

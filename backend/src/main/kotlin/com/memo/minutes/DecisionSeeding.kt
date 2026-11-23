@@ -6,7 +6,6 @@ import com.memo.forum.OutcomeKind
 import com.memo.meeting.MeetingItems
 import com.memo.minutes.internal.ConsentDecisions
 import com.memo.minutes.internal.DecisionInput
-import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.DecisionRecorder
 import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.DeferTarget
@@ -54,7 +53,7 @@ class DecisionSeeding(
     private val recorder: DecisionRecorder,
     private val consent: ConsentDecisions,
     private val decisions: DecisionStore,
-    private val reads: DecisionReads,
+    private val published: Decisions,
     private val notes: ItemNotes,
     private val extracts: ResolutionExtracts,
     private val resolutions: Resolutions,
@@ -122,7 +121,7 @@ class DecisionSeeding(
 
     /** [itemId]'s resolution number in force and its id; null when it has none. */
     fun resolution(itemId: UUID): Pair<String, UUID>? =
-        tx { reads.current(itemId)?.let { resolutions.inForce(it.decision.id) }?.let { it.number to it.id } }
+        tx { published.ofItem(itemId)?.let { resolutions.inForce(it.id) }?.let { it.number to it.id } }
 
     /** Whether [resolutionId] has an extract. */
     fun extracted(resolutionId: UUID): Boolean = tx { extracts.list(resolutionId).isNotEmpty() }

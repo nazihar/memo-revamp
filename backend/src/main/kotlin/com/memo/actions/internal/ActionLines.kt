@@ -111,6 +111,23 @@ class ActionLines(
         return seq
     }
 
+    /** Those of [actionIds] with an entry of [kind] whose detail [key] is [value] (a marker, such as an update asked for a meeting). */
+    fun marked(
+        actionIds: Collection<UUID>,
+        kind: String,
+        key: String,
+        value: String,
+    ): Set<UUID> {
+        if (actionIds.isEmpty()) return emptySet()
+        val e = ACTIONS_ENTRY
+        return tenantDsl
+            .current()
+            .selectDistinct(e.ACTION_ID)
+            .from(e)
+            .where(e.ACTION_ID.`in`(actionIds), e.KIND.eq(kind), DSL.jsonbGetAttributeAsText(e.DETAILS, key).eq(value))
+            .fetchSet { checkNotNull(it.value1()) }
+    }
+
     /** Entry [seq] of [actionId]; null when there is none. */
     fun entryOf(
         actionId: UUID,

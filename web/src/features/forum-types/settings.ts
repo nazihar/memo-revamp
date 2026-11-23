@@ -69,7 +69,7 @@ export interface TypeSettings {
   meetings: Meetings
   /** Minutes approval, memos moving on, resolution numbers, the template (Phase 4 E06); as loaded until E06 T10. */
   minutes: MinutesPolicy
-  /** Action items: RAG, due dates, verification, evidence, update requests, the workflow (Phase 4 E07); as loaded until T10. */
+  /** Action items: RAG, due dates, verification, evidence, update requests, the workflow (Phase 4 E07), on the Actions tab (T10). */
   actions: ActionsPolicy
 }
 

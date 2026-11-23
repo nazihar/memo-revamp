@@ -270,6 +270,12 @@
   - Both sides kept in `ActionAccessArchTest` (the digest store, closure and timers beside the memo links and readers), `ar.json` (in key order) and this log; everything generated was regenerated.
   - 2,627 tests in 30 classes green: `com.memo.actions.*` with `FollowUpMemoIT`, both leak suites, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`.
   - ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass, and the notification, memo, memo-type and action tests pass. Two of them timed out while Gradle ran beside them, and passed when run again on their own.
+- **After merging T8 (#232) from `master`:**
+  - Both sides kept in `ActionAccessArchTest` (`ActionTrackerReads` beside `ActionMemoStore`), `PaperSurfaceRegistry` and this log.
+  - The same suites as after T5 are green (`BUILD SUCCESSFUL`); ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass. The `memo-types` and `memo-documents` tests timed out while Gradle ran beside them, and passed when run on their own.
+- **After merging E06 T6 (#229) from `master`:** only the generated client conflicted, and it was regenerated. 2,737 tests in 32 classes are green (the same suites as after T5). ktlint, detekt and SpotBugs are clean; the web checks and tests pass.
+- **After merging E06 T7 (#234) from `master`:** `PaperSurfaceRegistry`'s notes were merged by hand and the generated client was regenerated. 2,755 tests in 32 classes are green. ktlint, detekt and SpotBugs are clean. The web checks pass; one memo inbox test timed out under load and passed when run again on its own.
+- **After merging E08 T4 (#236) from `master`:** only the generated client conflicted, and it was regenerated. 2,773 tests in 32 classes are green; static analysis is clean; the web checks and tests pass.
 
 ## 2026-11-22 — T8: the tracker and its export
 - **Built:**
@@ -306,9 +312,187 @@
   - ktlint, detekt and SpotBugs are clean.
   - Web: typecheck, lint and Prettier on the generated client pass.
 - **Left for later tasks:** T9 measures the tracker (with and without text) and the export at the design's volumes. T10 builds the screen on `ForumActionsResponse`. E08 T4 reads `ActionStats`.
-- **After merging T8 (#232) from `master`:**
-  - Both sides kept in `ActionAccessArchTest` (`ActionTrackerReads` beside `ActionMemoStore`), `PaperSurfaceRegistry` and this log.
-  - The same suites as after T5 are green (`BUILD SUCCESSFUL`); ktlint, detekt and SpotBugs are clean. Web typecheck, lint, Prettier and `i18n` pass. The `memo-types` and `memo-documents` tests timed out while Gradle ran beside them, and passed when run on their own.
-- **After merging E06 T6 (#229) from `master`:** only the generated client conflicted, and it was regenerated. 2,737 tests in 32 classes are green (the same suites as after T5). ktlint, detekt and SpotBugs are clean; the web checks and tests pass.
-- **After merging E06 T7 (#234) from `master`:** `PaperSurfaceRegistry`'s notes were merged by hand and the generated client was regenerated. 2,755 tests in 32 classes are green. ktlint, detekt and SpotBugs are clean. The web checks pass; one memo inbox test timed out under load and passed when run again on its own.
-- **After merging E08 T4 (#236) from `master`:** only the generated client conflicted, and it was regenerated. 2,773 tests in 32 classes are green; static analysis is clean; the web checks and tests pass.
+
+## 2026-11-22 — T7: the action taken report under matters arising
+- **Built:**
+  - **`actions/V4__reports.sql`:** `actions_report`, `actions_report_row`, `actions_report_hold` and `actions_update_ask`, all insert only. **T6 (#230) holds `actions/V3`, so T6 merges before T7** (Flyway applies V3 before V4).
+  - **The report** (`ActionReports`), built in the publishing transaction of every revision with a MATTERS_ARISING item, once per revision and frozen: (1) proposed to close, (2) overdue, (3) open by due date, (4) closed and (5) cancelled since the previous meeting's start, (6) corrections to earlier minutes (empty until E06 T8). At most 500 rows shown; the latest-due open actions are left out first and counted. Audited `actions.report.built` with the rows per section and the content's SHA-256.
+  - **Held back** (`POST /actions/{id}/report-hold`): a secretary or `forums.manage` not recused, with a reason, for the next meeting (or one named still to come); absent from that meeting's later reports, counted for officers. Timeline `HELD_BACK`; audit `actions.report.held` (the reason's hash).
+  - **Reading** (`GET /meetings/{id}/action-report`, `?revision=`, and `…/pdf`): officers, members today and `forum.read` holders who see the MATTERS_ARISING item's line; 404 to guests, attendees, outsiders and former members. Each reader's rows and counts by `ActionAccess.reportRows` (the one rule on the row's copied columns, or involvement). The PDF through `ReportPages`, on demand. Every open audited `actions.report.opened` (SCREEN or PDF).
+  - **The item link:** through E06 T6's `ItemLinks` port (#229). T7 carried the port word for word while #229 was open and dropped its copy when #229 merged; `ActionReportLinks` links the MATTERS_ARISING item to the report with the reader's counts.
+  - **Section 6** through the `ReportCorrections` port (empty while no module provides it; E06 T8's `MinutesCorrections.since` is to back it).
+  - **Update requests** (`ActionUpdateRequests`): the `actions-daily` task's part (b) on the day's first run, from `updateRequestWorkingDays` before the next meeting's agenda deadline (`AgendaDeadlines.of`, published by meeting) to the deadline, once per meeting and action; "Ask owners for an update" (`POST /forums/{fid}/actions/ask-for-updates`), at once, once a day per committee (409 `ALREADY_ASKED`), for the actions the asker sees by the rule. `ACTION_UPDATE_REQUESTED` in the app and by email (en/ar), the reference and dates only. Audit `actions.update_requests.sent`.
+  - Matrix rows in `p4-e07-actions.yaml`; leak suites: the ACTION_REPORT surface (screen and PDF text) in `RecusalLeakIT` (`RecusalActionsFixture.actionReportProbe`) and `PaperLeakIT`, report-hold with recusal columns, ask-for-updates as an officer probe. The E07 tracker placeholder now watches `/forums/{forumId}/actions/export` only (ask-for-updates sits under the old prefix).
+- **Choices made while building** (design §1.12 "As built in T7"):
+  - The report is built for an empty committee too: the frozen record says nothing was open.
+  - Held-back and left-out actions are stored as rows without a snapshot, so their counts follow the same rule as the rows and reveal nothing to a recused reader.
+  - With no previous meeting, every closed or cancelled action is listed (sections 4 and 5).
+  - The daily window runs from the request day to the deadline, so a missed run catches up; the button asks whatever was asked before.
+  - **Not built here:** follow-up memos in the snapshot (T6's `actions_memo`; joined when T6 and T7 meet), and the adapter from E06 T8's `MinutesCorrections` to `ReportCorrections`.
+- **Tests:** `ActionReportIT` (T7's acceptance criteria: the sections in order with 2 to close, 3 overdue, 9 open, 4 closed and 1 cancelled since the last meeting; the item's link; a later revision's own report with the first unchanged; none without a MATTERS_ARISING item; held back and counted for officers only; a recused member's rows, PDF and link without the item's; who reads it; the 500-row cap), `UpdateRequestsIT` (asked within the window before the deadline, once per meeting, only those with no update since the last meeting, by email without the title; the button once a day, a recused secretary's without the item's), `ActionsCrossTenantIT` (the report tables), the leak suites (ACTION_REPORT in `RecusalLeakIT` and `PaperLeakIT`, screen and PDF text), `ActionAccessArchTest`, the matrix, `MailTemplatesTest`; the web notification texts' tests.
+- **Results (local, after merging `master` with T5, T8 and E06 T6):** 3,226 tests over `com.memo.actions.*`, `com.memo.meeting.*` (both leak suites), `com.memo.minutes.*`, `ReportPagesTest`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `MailTemplatesTest`, `JooqCodegenTest`, `MigrationDmlRlsTest` and `RlsMetaTest`: all green (10 volume tests skipped as usual). An earlier run's one `RecusalMailIT` failure was a Mailpit read timeout under load; it passed in the final run. ktlint, detekt and SpotBugs are clean. On the web: typecheck, lint, Prettier, `i18n:verify` (the Arabic core unchanged; the texts in `notificationKinds` and `mail.template`) and the notification texts' tests pass.
+- **After review (2026-11-23):**
+  - **A date-boundary defect in the test, not the report.** `ActionReportIT` set due dates with the database's `current_date`, which follows the session's zone. pgjdbc sends the JVM's default zone, Asia/Dhaka on the dev machine, while a test tenant without `default.timezone` has UTC's day. From 18:00 to 24:00 UTC the database was a day ahead, so "due yesterday" was the tenant's today and an overdue action counted as open. The report code only ever uses the tenant's day (`OrgDirectory.today()`); no `current_date`, zone-less `LocalDate.now()` or UTC date is in the report, its sections, the candidates or the rule's conditions. The test now gives the tenant its meetings' zone (Asia/Dhaka, as #247 does for analytics) and passes dates computed from the tenant's today.
+  - The sections moved into `ReportSections.of(rows, today)`, with overdue as the colour rule's own past-due test. `ReportSectionsDayBoundaryTest` pins the clock at 23:30 and 00:30 in Dhaka, at 18:30 and 23:30 UTC, and for a tenant without a zone.
+  - **Section 6 is wired:** E06 T8's `MinutesCorrections` is on master, and `ActionReportCorrections` provides `ReportCorrections` from it.
+
+## 2026-11-22 — T11: the web, the owner's and members' side (flows AK, AL, AO, AP, AR)
+- **Built** (`web/src/features/actions/`; no backend change):
+  - **"My actions" in the inbox** (flow AK): a tab beside My tasks, "My actions (5)" (to do and to verify), with To do, To verify and I'm involved, each counted by the server's own predicate. Rows come in the server's order (by due date, so the overdue first). Each row shows its colour as a word with an icon, the reference and title, the committee, and the due date with where it started ("due Nov 28, 2026 (originally Nov 14, 2026, revised once)"). The key is below the list. Each list has its own empty state. The address keeps the list (`/inbox?tab=actions&list=verify`); `/inbox?tab=actions` is the digest's link (T5).
+  - **The action page** `/actions/{id}` (flow AL), which every in-app item already links to (T4–T7): the reference and committee, the colour in words with who set it by hand, the owner ("Head of Treasury (A. Karim)", "…, acting for …"), the people also involved, the due date with its original date and revisions, a pending request ("New date requested: …; until it is agreed the action stays due …"), the source, what the committee asked and where the action stands. The buttons are exactly those the server's `can` grants: "Post an update" ("What has happened?", "How is it going?" for the owner, files), "I have started", "Ask for a new date" (or "Change the date" under OWNER_WITH_REASON), "Raise a memo", "Link an existing memo", "Mark as done" ("What was done", evidence) and "Verify" (close, or send back with a remark). Then the follow-up memos, and the timeline (`GET /actions/{id}/entries`) in words with its evidence files.
+  - **Follow-up memos** (flow AP): "Raise a memo from BRC A9/2026" uses the memo's own type chooser (`MemoTypeChooser`), the action's title as the subject and the action's level ("Confidential (from the action) [Change]"). A lower level needs a ticked confirmation (`confirmLowerLevel`). The new draft memo opens next. "Link an existing memo" searches the memos the person can read (the search suggestions, which apply the memo's read rule), with a 44 px "Link" per result. On the memo page, "Raised from action BRC A9/2026 (Board Risk Committee)" (`followsUp`, T6) links to the action only when the server gives its id. A memo the viewer cannot read shows as "A follow-up memo (you do not have access)". Once a follow-up memo is approved, the owner is told they can mark the action as done.
+  - **The action taken report** (flow AO): on the next meeting's agenda, the "Matters arising" item shows "Action taken report (as published on 28 November)", the reader's counts in their language ("2 proposed to close · 3 overdue · 9 open · 4 closed since the last meeting") and "Open the report". The report page `/meetings/{id}/action-report` shows sections 1–6 in order, each reader's rows (reference linking to the action, title, colour in words, owner and holder, due date or when it was done, closed or cancelled with "risk accepted", the latest update), "and n more open actions" and, for officers, the held-back line. A chooser opens an earlier agenda revision's report, which never changes. "Print" opens the reader's rows as the server's PDF.
+  - **Flow AR:** the notification texts and their links were built in T4–T7. This task makes both links work: `/actions/{id}` and `/inbox?tab=actions`.
+  - **Strings:** en and real Arabic, in two new catalogue parts. `actions` (279 messages; Arabic 5.4 KiB gzip) loads with `/inbox`, `/actions` and `/meetings/$/action-report`. `actionLinks` (12 messages) loads with `/meetings` and `/memos`, so the meeting and memo pages do not load all of `actions`. The Arabic core is unchanged at 13.6 KiB.
+  - **Shared files, kept small:** the route tree (two routes), the inbox's tab and parameters, one line each on `MemoPage` (the origins) and `AgendaView` (the report link on a MATTERS_ARISING item), the catalogue registration, and a default "no actions" mock in `test/msw.ts`. The meeting tests that list the parts of `/meetings/m1` exactly now include `actionLinks`.
+- **Decisions under the delegated gate:**
+  - **A person with no actions sees no new tab** (principle 6, "a director with no actions sees nothing new"). The tab appears once they have one, or when the tab is opened by its address. The count on the tab is what waits for them (to do and to verify), not the actions they help with.
+  - **The lists are toggle buttons** (`aria-pressed`) inside the inbox's tab panel, not a second tab list.
+  - **The action page offers the owner's, contributor's and verifier's actions only.** The officer's actions (edit, owner, override, agree a date, cancel, reopen, on-behalf updates, hold back) are T10's (flows AM and AN). "Verify" is here because the To verify list opens this page; T10 adds closing at the meeting.
+  - **After each change**, the page says what happened in a live region (`role=status`) and focus moves there. A dialog's field problem goes to its field, which takes focus. A refusal is shown in words above the dialog's buttons (`role=alert`). A lost race (412 or `WRONG_STATE`) reloads the action. Every change sends the action's version as `If-Match` and one idempotency key per dialog.
+  - **The colour is never alone:** a word, an icon (▲ ● ✓ ◐ ⨯) and the token colour, and the key on every list and on the report.
+  - **The agenda's counts are read back from the link's fixed English words** (`ReportWords.summary`, the reader's own counts) and shown in the reader's language. Any other label is shown as it is. A structured counts field on `ItemLink` would be cleaner. The meeting module's `ItemLink` is also being changed by E06 T11 (#243), so T11 did not touch it.
+- **Deviations from the drawings:**
+  - **"Required by this committee" before marking as done:** `ActionResponse` does not carry the committee type's `evidenceRequired`. The page shows the server's 422 `EVIDENCE_REQUIRED` at the evidence field instead.
+  - **The key's numbers** ("due within 10 working days"): `/me/actions` and the report do not carry the type's `amberWorkingDays`, so the key reads "Due soon, at risk, or no recent update". `RagKey` takes the number when an answer gives it (the tracker's does, for T10).
+  - **"Overdue by 3 working days"** in the page's header: not in the API. The page says "Overdue" with the due date.
+  - **The report's rows show no follow-up memos** ("Memo MEMO/2026/0412 approved"): T7's snapshot has none yet (design §1.12 "As built in T7").
+- **Tests:**
+  - `actions.test.tsx` (30 tests):
+    - My actions: the tab beside My tasks with its counts, the rows' words and dates, the list in the address, the empty states, no tab for a person with no actions, and the parts per path.
+    - The owner's page: its facts, buttons and timeline.
+    - Posting an update: the required field with focus; "How is it going?"; a file with purpose `action.evidence` and the action as owner; the live region with focus; `If-Match` and the key.
+    - Asking for a new date: 409 `PENDING_REQUEST` in words, then success, with the same key on retry.
+    - Mark as done: 422 `EVIDENCE_REQUIRED` at the field, then done with evidence.
+    - 403 `NOT_HOLDER` and 409 `WRONG_STATE` (which reloads the action).
+    - A contributor (no confidence, no Mark as done), a member (nothing to do), the recused owner (ADR-0062: the item's number only, no link, why), 404 as "not there", and the verifier's send-back needing a remark.
+    - Raising a memo (the type chooser, the title, a lower level only when confirmed, then the new memo), linking one found by search (`ALREADY_LINKED` in words), and unreadable and approved memos.
+    - Arabic right to left with axe on the action page and on My actions.
+    - Every refusal code of design §3 in words, and the field problems.
+  - `report.test.tsx` (9 tests): the report's sections in order, its rows, held back, more and Print; an earlier revision by its address; 404; Arabic with axe; the Matters arising link with its counts in words, and none for a reader the report is not for; reading the counts back; "Raised from action" linked or in words on the memo page.
+  - axe runs in the main paths of both files.
+  - The upload control is mocked in these tests: jsdom's fetch cannot send a file to a relative address.
+  - **Playwright:** `e2e/smoke/committee-actions.spec.ts`. The secretary raises and issues a direct BRC action for Demo Director through the API. The director finds it under My actions, posts an update "At risk", and reads it on the timeline. Focus and axe are checked on each page. It needs the stack, so it was not run locally; CI runs it.
+- **Results (local, after merging T6 #230 and `master`):**
+  - `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes) and `build` pass.
+  - `pnpm test`: 496 of 499 green on the first run. The three that failed (`forum-types`, `meetings`, `doa`) waited past their timeouts while 75 files ran at once; run again on their own, all 29 of their tests pass.
+  - The backend was not changed. The contract and the client were regenerated after the merges, and were unchanged.
+
+## 2026-11-23 — T10: the web, the secretary's side (flows AJ, AM, AN, AQ)
+- **Built** (`web/src/features/actions/officer/`, `web/src/features/forum-types/ActionsTab.tsx`; no backend change):
+  - **Raising from the decision panel** (flow AJ1): under each item, "Actions from this item (1 draft)" lists the item's actions: the colour or "Draft" in words, the reference, what is to be done, the owner and the date. A draft has "Edit", a sent action "Open". "Add an action" raises from the decision when there is one, else from the item. Each condition of a decision has "Make this an action", which opens the form with the condition as the title and as what the owner is told. Shown while the meeting runs, is held or has its minutes approved, to its secretaries and `forums.manage` (`canManage`), never on an item they declared an interest in.
+  - **The action form** (flow AJ2), a modal dialog:
+    - what is to be done, details, and what the owner is told ("They will not see the item's papers or the discussion"); the source note for a direct action;
+    - the owner: "A person" or "A position", then the directory's picker; a position shows who holds it now;
+    - up to five people also involved, each with "Remove {name}", announced as they come and go;
+    - the due date: "By the next meeting (date)" when one is planned, else "On a date" with "In two weeks", "In a month" and "In three months";
+    - priority and level.
+    - "Save as draft". Once the meeting is held (and always for a direct action) also "Save and send to the owner", which raises and then issues, with its own key and If-Match. A refused send leaves the saved draft and keeps the form open on it, with the field's problem and "Saved as a draft, but not sent: …".
+    - Editing a sent action changes only what may change, with a reason.
+    - The server's warnings (`OWNER_RECUSED`, `NOT_CLEARED`) are said in words with the person's name, in the form and on the action page.
+  - **The meeting page** (flow AJ3), for the officers from the start of the meeting: "Actions from this meeting" with "n actions sent to their owners" and "n draft actions not sent", every action of the meeting with its source, and "Add an action for the meeting". After the meeting is held, "Send the n drafts to their owners" gives the results per draft in words ("1 sent. 1 draft was not sent: …: Choose who owns the action.").
+  - **"Mark as held"** (E03's End dialog, also from the committee page's menu) gains "Send the n draft actions to their owners now", ticked by default. The drafts go once the meeting is held, and the toast says how many were sent, or that some were not.
+  - **The officers' buttons on the action page** (flow AN), each only when the server's `can` allows it:
+    - "Send to the owner", "Edit", "Discard the draft";
+    - "Answer the date request" (agree or decline, with a note);
+    - "Record an update for the owner" (how they heard, how it is going);
+    - "Change the owner" (a person or a position, with a reason);
+    - "Set the colour" (red, amber or green, a reason, until a date) and "Take away the colour set by hand";
+    - "Keep out of the next report";
+    - "Cancel the action": no longer needed, replaced by another action of the committee, a duplicate, or risk accepted by the chair (recorded for the chair, with how they said so, when the viewer is not the chair);
+    - "Reopen".
+    - T11's "Change the date" serves the secretary too, with the officer's sentence. A recused officer gets none of them: the server's `can` is false (ADR-0062).
+  - **Verification** (flow AM1): T11's Verify dialog now shows who marked the action done and when, what they wrote, the evidence files and the follow-up memos with their status, before "Close" or "Send back".
+  - **Closing at the meeting** (flow AM2): on the action taken report of a meeting that runs, is held or has its minutes approved, its officers tick the actions proposed to close and press "Close the actions the committee agreed (n)", with an optional remark (the server's default names the meeting and item). The results come back per action in words, for example "you are its owner or involved in it, so another officer closes it" for `NOT_VERIFIER`.
+  - **The committee's tracker** (flow AN): a new "Actions" tab on the committee page (`?tab=actions`) for its officers, members, `forum.read` and `forums.manage`.
+    - "New action" (a direct draft) and "Export" when the server's `can` allows them; "Ask owners for an update".
+    - Filters: status (open by default), colour (overdue, red, amber, green, to verify), owner (a person or a position), meeting, words, and the sort.
+    - The totals per colour in words with their icons, each a toggle for its colour.
+    - The rows in one table, which becomes a card per action on a phone with the status first; "Show more".
+    - The key, with this committee type's numbers (amber and "no recent update").
+    - Members get the rows without the buttons. Someone without a tracker (404) is told there is nothing for them.
+  - **The committee type's Actions tab** (flow AQ): amber within n working days; the "no recent update" rule (a tick, 0 when off); who agrees a new date; who verifies; evidence on "Mark as done"; the default due date; asking owners for an update before the papers (a tick, 0 when off); and the workflow (the definitions bound to action items, with "Open in the builder").
+    - "Start from an example" copies a preset's actions settings into the draft.
+    - It is edited on a draft and read-only in review and once published, so a second administrator reviews it like the rest of the type. T2's changes view words it.
+  - **Strings:** en and real Arabic in two new catalogue parts.
+    - `actionsOfficer` (Arabic 5.6 KiB gzip) loads with `/meetings`, `/committees` and `/actions`.
+    - `forumActions` (1.1 KiB) loads with `/admin/committee-types`.
+    - The `actions` part now also loads with `/meetings` and `/committees`, whose lists and tracker use its words (colours, statuses, owners, dates).
+    - The Arabic core is unchanged at 13.6 KiB.
+  - **Shared files, kept small:**
+    - `DecisionText` takes an optional `conditionAction`; `DecisionsPanel` renders the item's actions; `MeetingPage` the meeting's.
+    - `MeetingDialogs`' End step has the drafts line; `useChange` also takes the toast text as a function.
+    - `ForumPage` and `forum-tabs` have the new tab; `ForumTypePage` the Actions tab.
+    - T11's `ActionPage`, `ActionDialogs` and `ActionReportPage` have the officer parts.
+    - `test/msw.ts` has a default "no actions" answer for a meeting.
+    - The meeting tests that list the parts of `/meetings/m1` exactly now include `actions` and `actionsOfficer`.
+- **Decisions under the delegated gate:**
+  - **The tracker is a tab of the committee page,** like the resolution register, not a page of its own.
+  - **After each change** the list or page says what happened in a live region (`role=status`), and focus moves there. A dialog's field problem goes to its field, which takes focus. A refusal is said above the dialog's buttons (`role=alert`). A lost race reloads the action. Each dialog has one idempotency key, so a retry acts once; sending after saving uses a key of its own.
+  - **The colour is never alone:** the badge's word and icon on every row, the totals in words with their icons, and the key under the tracker.
+  - **"Keep out of the next report"** is offered to whoever may edit a sent open action (`can.edit`: the secretaries and `forums.manage` not recused, the same people the server lets hold back), because `ActionAbilities` has no flag of its own. "Ask owners for an update" goes to those who may raise on the tracker (`can.raise`: the same people). The server decides, and its refusals come back in words.
+  - **Closing at the meeting** is offered to the report's officers (the report gives `heldBack` to officers only). The server verifies each action and says which ones the viewer may not close.
+  - **The level** offers the source's level by default when raising, since the client does not know the item's level, and only the action's level or higher when editing. A lower one is the server's 422 `CLASSIFICATION`, in words.
+- **Deviations from the drawings:**
+  - **The committee type's default due date is not a quick pick.** `defaultDue` WORKING_DAYS needs the business calendar, which the client does not have. The server stores and checks the policy but does not apply it: no endpoint suggests a date, and issuing needs one. The form offers the next meeting and three calendar quick picks instead. A suggested date on the meeting's or the committee's action answer would let a later task add it.
+  - **"Now held by S. Chowdhury"** reads the directory's line for the position ("Credit Risk · S. Chowdhury").
+  - **The due date is a date field,** as on T11's dialogs, so a typed date follows the browser's form rather than the tenant's. `DUE_IN_PAST` says "Please enter a date on or after today, for example 12/03/2027".
+  - **Warnings come after saving:** the server works them out when the draft is saved. So the form shows them when the draft is opened again, and the action page shows them to the secretaries.
+  - **Closing at the meeting is on the report page,** which the Matters arising item links to, not on the agenda item itself.
+- **Tests** (`officer.test.tsx`, 23 tests, vitest and Testing Library, with axe in the main paths):
+  - **Flow AJ:**
+    - A condition made an action: prefilled, a position owner with its holder, due by the next meeting, sent at once with If-Match and its own key, the result announced with focus, 44 px buttons.
+    - During the meeting only "Save as draft": the title asked for at its field, `DUE_IN_PAST` and 403 `RECUSED` in words with one key for every try, and an edited draft's `OWNER_RECUSED` warning by name.
+    - The meeting's drafts sent, one not sent and why.
+    - "Mark as held" with the drafts line ticked, ending then issuing.
+    - A recused secretary with no buttons on their item (ADR-0062); a member with no officer lists.
+  - **Flow AN:**
+    - The officer buttons exactly as `can` allows.
+    - Changing the owner: missing fields, the picker, If-Match.
+    - Cancelling with the risk accepted, recorded for the chair (`how` required), then Reopen offered.
+    - Setting the colour, 409 `NO_MEETING` on holding back, and agreeing a date request.
+    - An update recorded for the owner.
+    - A recused secretary or a member with no officer buttons.
+    - The tracker's rows, colours in words, totals as toggles and the key's numbers, with the filters sent to the server.
+    - Asking twice (409 `ALREADY_ASKED`) and an export over the limit (429), in words.
+    - "New action" from the tracker with a source note, a quick-pick date and a person involved.
+    - Members without the buttons, and 404 as "nothing for you".
+    - Arabic, right to left, with axe.
+  - **Flow AM:** the verifier's dialog with what was done, the evidence and the memo; closing the actions the committee agreed, with one refused as `NOT_VERIFIER` and an empty choice refused at the first box; not offered to members.
+  - **Flow AQ:** a draft's rules changed, a range problem at its field, a preset copied, the changes view, the save with If-Match and the actions body. Maker-checker: the version in review is read-only for the approver, with Approve and no preset.
+  - The catalogue parts per path, and every officer refusal and field problem of design §3 in words.
+  - **Playwright:** a second test in `e2e/smoke/committee-actions.spec.ts`. The company secretary raises a direct BRC action for Demo Director from the tracker's "New action" and sends it. It is on the tracker with its colour in words, and its page has the officers' buttons. axe runs on both pages. It needs the stack, so it was not run locally; CI runs it.
+- **Results (local, after merging #244 and `master`):**
+  - `pnpm typecheck`, `lint`, `format:check`, `i18n` (verify and sizes) and `build` pass.
+  - `pnpm test`: 541 of 541 green in one run of 78 files.
+  - The backend was not changed. The contract and the client were regenerated after the merges.
+
+## 2026-11-22 — T9: volumes, plans and performance budgets
+- **Built:**
+  - **`ActionsVolume`** (test side), written over `MeetingVolume` at `ACTIONS_VOLUME` meetings (3,600 at the design's volume) in a tenant of its own, as the schema owner, one stage at a time: each stage commits and analyses what it wrote before the next joins or checks keys against it (the lesson of #225); then everything is vacuumed. `MeetingVolume` gained an opt-in "Matters arising" item on every agenda (MeetingVolumeIT and InvitationVolumeIT leave it off).
+    - 29,162 actions (9 per held meeting: seven from items of "For decision", "Consent items" and "In camera" with their columns copied, one from the meeting, one direct; about 970 per committee), one in ten owned through a position, 16,226 contributors.
+    - 3,414 open, each with a running workflow copied from two actions issued through the services (the owner's step; verification by the secretaries), ids renewed and due times and timers moved with the action's date. The director holds 202 open actions (a quarter through their position) and contributes to 50; the secretary has 386 to verify.
+    - 154,522 timeline entries, 3,451 date requests, 30,120 digest keys of the last 60 days, and 22,541 action notices of 5,000 people for the next digest.
+    - 3,240 action taken reports with 219,240 rows; the focal meeting's report is built at 284 rows with 2 held back.
+    - 988 follow-up memo links (`actions_memo`; T6, #230, merged into the base before the last run), the memos themselves not written.
+  - **`ActionsVolumeIT`** (gated on `ACTIONS_VOLUME`; weekly in `load`, job `actions-volume`): every §8 budget through the services the endpoints and the job call, with 2x headroom; p95s by `Latency` (#241: the best of three rounds of 20 calls). Writes and the report build run rolled back, so each call makes the same change; the daily task once a round, rolled back. Every statement of "My actions" (each tab with its counts), the tracker (all, overdue, with text, by a secretary and a member) and its export, an action with its timeline, the report (built, read, PDF) and the daily task (each kind of statement once) is `EXPLAIN ANALYZE`d: no sequential scan of an action table (nor of the meeting volume's large tables).
+  - `MeetingVolumeSupport` (shared): the meeting count can come from the subclass's variable; the plan check is its own function; measured reads use `Latency`.
+- **What the plans and budgets found, and the fixes:**
+  - The daily task scanned `actions_item` twice (the safety net's open actions; the committees with actions under way) and `actions_digest` once (each person's last digest), and took 40 s at a fifth of the volume: about 17,000 statements a run in the safety net alone (`viewOf` and `dueOf` per open action).
+  - **`actions/V5__daily_indexes.sql`** (V3 is #230 and V4 #238, so V5): `actions_item_open_idx (tenant_id, created_at, id) INCLUDE (forum_id, status, reference) WHERE status IN (OPEN, IN_PROGRESS, DONE_PENDING)` and `actions_digest_day_idx (tenant_id, day, user_id)`. Expand only.
+  - **The safety net** reads the open actions 500 at a time by keyset (`ActionStore.openAfter`) and each batch's workflows in one query through the new published **`WorkflowRuns.of`** (each subject's newest run, its status and its current step's due time); only the actions out of step are then read and locked one by one, as before.
+  - **The digest** reads a person's last digest within the 14-day lookback only (an earlier one changes nothing), writes the digest keys 1,000 a statement (`ActionDigestStore.recordAll`), reads the recipients 1,000 a query (`RecipientLookup.recipients`, a default method; `identity` answers it in one query per 1,000), and the organisation once a run.
+  - The run went from 31,900 statements to 16,900; what remains per person is the notification module's preference read and the outbox insert.
+- **Measured at 3,600 meetings** (dev machine: Windows, PostgreSQL in Docker, shared with other sessions' containers; p95, the best of three rounds; budget in brackets; two quiet runs, the second after the last refactor, as "first / second"):
+  - "My actions": to do (director, 202) 36 / 41 ms, contributing (50) 38 / 44 ms, to verify (secretary, 386) 40 / 46 ms [150].
+  - Tracker of the first committee (974 actions): secretary 49 / 62 ms, member 41 / 47 ms, overdue 44 / 60 ms [200]; with text 101 / 112 ms and 94 / 136 ms [300]; export with the workbook 123 / 159 ms [3,000].
+  - An action with its 100-entry timeline: 68 / 79 ms [120].
+  - Report: build (284 rows) 91 / 106 ms [400]; read by a member 88 / 114 ms and by the secretary 96 / 92 ms [150]; PDF 1,901 / 1,153 ms [2,000].
+  - **Daily task** (5,000 digests, 3,414 open actions checked, about 660 owners asked for updates, 16,900 statements): 27.6 / 31.9 s [30 s], at the budget on this machine and well inside the CI limit (60 s); what remains is a round trip per person in the notification module (the preference read and the outbox insert), which the Linux runner's local database makes cheaper.
+  - Writes: raise a draft 45 / 41 ms [150]; issue one 127 / 115 ms [300]; post an update 32 / 30 ms, mark as done 130 / 99 ms, verify 86 / 65 ms [250]; issue a meeting's 30 drafts 3.6 / 2.8 s [3 s] (72 statements an issue: the workflow start, its timers, the notice, the audit).
+  - Under load from other sessions the same machine measured the daily task at 60–160 s and the PDF at up to 7 s in earlier runs; the numbers above are from a quiet run, as are the CI runner's.
+- **Tests:**
+  - `ActionsVolumeIT` at 3,600 meetings: green (7 tests). `MeetingVolumeIT` at 3,600 after the shared-support change: green. (At 1,800 its agenda draft's plan scans the small attendee table and the forum list has fewer than a page, as before this task; it is meant for 3,600.) `MeetingVolumeIT` and `ActionsVolumeIT` cannot run in one database: the meeting volume's ids are global keys; they run in separate `load` jobs.
+  - After merging `master` (E08 T2 and T4, #241): 493 tests over `com.memo.actions.*` (`ActionsDigestIT` and the safety net's cases included), `com.memo.workflow.*`, `com.memo.identity.*`, `com.memo.notification.*`, `com.memo.analytics.*`, `PaperLeakIT`, `RecusalLeakIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `JooqCodegenTest`, `OpenApiContractTest`, `RlsMetaTest`, `MigrationDmlRlsTest` and `AuditActionCoverageTest`: all green (8 volume tests skipped), but `MeetingVolumeIT` run at 600 meetings in the same run, below its page of 50 (run again at 3,600 above).
+  - After detekt's findings (the batch read moved to its own published `WorkflowRuns`, the recipients query into `identity`'s `AccountRecipients`, the safety net's loop split, the generator's stages split): ktlint, detekt and SpotBugs clean; 487 tests over the same packages and suites run again, green but two known, unrelated failures: `DefinitionSimulationIT`'s rate-limit timing (the flake T1 reported; green when run again) and three `AnalyticsIT` tests (E08 T4), which fail the same way when run alone between 18:00 and 24:00 UTC (the day in Dhaka is ahead of the day the period ends on); this task touches no analytics, meeting or attendance code. `ActionsVolumeIT` at 3,600 run again: green (the second numbers above).
+  - **After merging the updated T7 branch (with T6, #230) and `master` (E06 T8, E08 T3):** the volume adds 988 follow-up memo links. `ActionsVolumeIT` at 3,600: green, with every p95 within its CI limit (daily task 30.6 s, a meeting's 30 drafts 4.0 s on this machine; the rest as above). 469 tests over `com.memo.actions.*`, `com.memo.workflow.*`, `com.memo.identity.*`, `com.memo.notification.*`, both leak suites, the architecture, modularity, metadata, contract, jOOQ, RLS and audit-coverage tests: green but `DefinitionSimulationIT`'s known timing flake and `ActionReportIT`'s first test, which fails the same way without this task's changes while the day in Dhaka (the test database's) is ahead of the tenant's UTC day (18:00–24:00 UTC: an overdue row dated `current_date - 1` reads as open); it is T7's test and is reported with this PR. ktlint, detekt and SpotBugs clean.

@@ -150,7 +150,7 @@ export function changesBetween(
 
 /**
  * The actions policy's lines (Phase 4 E07, design E07 §1.13): amber and "no recent update" in working days, who agrees a
- * new date, who verifies, evidence, the default due date, update requests and the workflow. Its tab comes with E07 T10.
+ * new date, who verifies, evidence, the default due date, update requests and the workflow; edited on the Actions tab (T10).
  */
 function actionsChanges(
   intl: IntlShape,

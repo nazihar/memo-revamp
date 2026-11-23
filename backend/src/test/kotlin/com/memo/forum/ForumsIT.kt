@@ -292,6 +292,8 @@ class ForumsIT : IntegrationTest() {
         assertThat(policy.typeName).isEqualTo("Board committee")
         assertThat(policy.memberAttributes.map { it.key }).containsExactly("independent", "nonExecutive")
         assertThat(policy.quorumBasis to policy.quorumNeeded).isEqualTo(1 to 2)
+        // What the decision screen needs (E06 T10): the override and when memos move on, as the type says.
+        assertThat(policy.quorumOverride to policy.memoResumes).isEqualTo(QuorumOverride.NEVER to MemoResumes.AT_MEETING_END)
         assertThat(asUser(member) { policies.policy(forums.get(forum.id), today.minusDays(1)) }.quorumBasis).isZero()
 
         // A former member keeps only their card under "My committees".

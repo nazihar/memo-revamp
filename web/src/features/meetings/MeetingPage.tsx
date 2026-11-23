@@ -9,6 +9,10 @@ import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { MeetingActions } from '@/features/actions/officer/MeetingActions'
+import { WITH_ACTIONS } from '@/features/actions/officer/shared'
+import { DecisionsPanel } from '@/features/decisions/DecisionsPanel'
+import { dm } from '@/features/decisions/messages'
 import { AgendaLink } from './agenda/AgendaLink'
 import { AtTheMeeting } from './attendance/AtTheMeeting'
 import { AttendancePanel } from './attendance/AttendancePanel'
@@ -39,7 +43,8 @@ import { cityOf, viewerZone, whenIn, yourTimes } from './time'
  * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs; and for the officers and the
  * committee's chair or vice-chair, "Declarations" (E04 T7, flow T). From the start of the meeting (E05 T8): for the
  * officers the live quorum above the tabs and the "Attendance" register (flows X and Y), the tab they land on while it
- * runs; for the audience, "At the meeting" with how they are recorded and, for members, whether it is quorate.
+ * runs; for the audience, "At the meeting" with how they are recorded and, for members, whether it is quorate. From the
+ * start of the meeting, its officers see "Actions from this meeting" with its drafts and "Send the drafts" (E07 T10, AJ3).
  */
 export function MeetingPage({ meetingId }: { meetingId: string }) {
   const intl = useIntl()
@@ -69,6 +74,8 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
   // The register (E05 T8, flow X) from the start of the meeting, for the officers; the tab they land on while it runs.
   const attendance = officer && ATTENDANCE_STATUSES.includes(m.status)
   const live = m.status === 'IN_PROGRESS'
+  // Decisions (E06 T10, flow AA): the officers record them from the start of the meeting; read-only once approved.
+  const decisionsTab = attendance
   // The audience during the meeting sees how they are recorded and, as members, whether it is quorate (flow Y1).
   const atTheMeeting = live && !officer && m.relation !== 'READER'
   return (
@@ -124,6 +131,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
           tabs={[
             'agenda',
             ...(attendance ? (['attendance'] as const) : []),
+            ...(decisionsTab ? (['decisions'] as const) : []),
             ...(replies ? (['replies'] as const) : []),
             ...(declarations ? (['declarations'] as const) : []),
           ]}
@@ -135,6 +143,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
             {attendance ? (
               <TabsTrigger value="attendance" className="min-h-11">
                 {intl.formatMessage(am.tab)}
+              </TabsTrigger>
+            ) : null}
+            {decisionsTab ? (
+              <TabsTrigger value="decisions" className="min-h-11">
+                {intl.formatMessage(dm.tab)}
               </TabsTrigger>
             ) : null}
             {replies ? (
@@ -156,6 +169,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
               <AttendancePanel meeting={m} />
             </TabsContent>
           ) : null}
+          {decisionsTab ? (
+            <TabsContent value="decisions" className="pt-4 print:hidden">
+              <DecisionsPanel meeting={m} />
+            </TabsContent>
+          ) : null}
           {replies ? (
             <TabsContent value="replies" className="pt-4 print:hidden">
               <InvitationsPanel meeting={m} />
@@ -170,6 +188,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       ) : (
         <MeetingAgenda meetingId={m.id} relation={m.relation} />
       )}
+      {officer && WITH_ACTIONS.includes(m.status) ? <MeetingActions meeting={m} /> : null}
       <Facts meeting={m} />
       {officer || m.canManage ? <Guests meeting={m} /> : null}
       {officer ? <AgendaLink meetingId={m.id} /> : null}

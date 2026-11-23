@@ -107,10 +107,14 @@ class RevisionStore(
         changedOnly: Boolean = false,
     ): Snapshot = snapshots(listOf(revisionId), changedOnly).getValue(revisionId)
 
-    /** [snapshot] of each of [revisionIds], three queries for them all (two with [changedOnly]). */
+    /**
+     * [snapshot] of each of [revisionIds], three queries for them all (two with [changedOnly]); without [withPapers], no
+     * papers (the agenda's items for other modules, E06 T9).
+     */
     fun snapshots(
         revisionIds: Collection<UUID>,
         changedOnly: Boolean = false,
+        withPapers: Boolean = true,
     ): Map<UUID, Snapshot> {
         if (revisionIds.isEmpty()) return emptyMap()
         val dsl = tenantDsl.current()
@@ -130,11 +134,15 @@ class RevisionStore(
                     }
             }
         val paperRows =
-            dsl
-                .selectFrom(p)
-                .where(p.REVISION_ID.`in`(revisionIds), if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition())
-                .orderBy(p.REVISION_ID, p.REMOVED, p.ITEM_ID, p.POSITION)
-                .fetch()
+            if (!withPapers && !changedOnly) {
+                emptyList<MeetingRevisionPaperRecord>()
+            } else {
+                dsl
+                    .selectFrom(p)
+                    .where(p.REVISION_ID.`in`(revisionIds), if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition())
+                    .orderBy(p.REVISION_ID, p.REMOVED, p.ITEM_ID, p.POSITION)
+                    .fetch()
+            }
         // Changed only: an item that is flagged or carries a flagged paper.
         val changed =
             if (changedOnly) {

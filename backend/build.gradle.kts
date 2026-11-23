@@ -157,6 +157,11 @@ tasks.withType<Test>().configureEach {
     // (about 3,800 tests; CI ran out of heap on #218), so 3 GiB, with a heap dump kept for the next time.
     maxHeapSize = "3g"
     jvmArgs("-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=build/test-heap")
+    // Tests run in UTC on every machine, as on CI. On a developer machine in Asia/Dhaka, the JVM's zone also set the
+    // database session's zone (pgjdbc), so a fixture's `current_date` or `LocalDate.now()` was a day ahead of a test
+    // tenant's today (UTC without `default.timezone`) from 18:00 to 24:00 UTC (ActionReportIT, DecisionRegisterIT, #247).
+    // Tests about a zone set it explicitly (a tenant's `default.timezone`, a pinned clock); none rely on the machine's.
+    systemProperty("user.timezone", "UTC")
     val repoRoot = rootProject.layout.projectDirectory
     // Tests read the committed contract and the same deploy scripts (DB roles, bucket bootstrap) that real installs use.
     systemProperty("repo.root", repoRoot.asFile.absolutePath)

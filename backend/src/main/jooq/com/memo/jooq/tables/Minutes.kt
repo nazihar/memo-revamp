@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MINUTES_APPROVING_DECISION_IDX
 import com.memo.jooq.indexes.MINUTES_DEADLINE_IDX
 import com.memo.jooq.indexes.MINUTES_FILE_UK
 import com.memo.jooq.indexes.MINUTES_FORUM_IDX
@@ -300,7 +301,7 @@ open class Minutes(
         override fun `as`(alias: Table<*>): MinutesPath = MinutesPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_DEADLINE_IDX, MINUTES_FILE_UK, MINUTES_FORUM_IDX, MINUTES_LINKED_IDX, MINUTES_STATE_IDX)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_APPROVING_DECISION_IDX, MINUTES_DEADLINE_IDX, MINUTES_FILE_UK, MINUTES_FORUM_IDX, MINUTES_LINKED_IDX, MINUTES_STATE_IDX)
     override fun getPrimaryKey(): UniqueKey<MinutesRecord> = MINUTES_PKEY
 
     private lateinit var _minutesApproval: MinutesApprovalPath

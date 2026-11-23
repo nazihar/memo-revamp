@@ -208,13 +208,13 @@ class MinutesPages(
         val stored = store.find(meetingId)
         val row = (stored ?: meeting?.let(drafts::unsaved))?.takeIf { stored != null || view.manages }
         val readers = row?.let(people::readers).orEmpty()
-        val reader = row?.let { reading.readerOf(view, it, readers) }
+        val reader = row?.let { reading.readerOf(view, it, lazyOf(readers)) }
         if (meeting == null || row == null || reader == null) throw MinutesNotFoundException("minutes")
         val scene = scene(reader, meeting, stored != null, readers)
         return base(scene)
             .copy(
                 viewerAccess = reader.access,
-                myAction = reading.action(reader, readers),
+                myAction = reading.action(reader, lazyOf(readers)),
                 reviewer = row.reviewerId?.takeIf { row.state != MinutesStage.DRAFT || scene.manager }?.let(scene.person),
                 confirmer = scene.confirmer?.userId?.let(scene.person),
                 commentsUntil = row.commentsUntil.takeIf { row.state in MinutesReading.READ_STAGES || scene.manager },

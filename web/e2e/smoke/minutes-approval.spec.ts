@@ -38,7 +38,15 @@ async function until(page: Page, path: string, text: string | RegExp) {
     .poll(
       async () => {
         await page.goto(path)
-        return page.getByText(text).first().isVisible()
+        // isVisible() does not wait: right after goto the page has not read the minutes yet (it failed locally every time).
+        return page
+          .getByText(text)
+          .first()
+          .waitFor({ timeout: 5_000 })
+          .then(
+            () => true,
+            () => false,
+          )
       },
       { timeout: 60_000, intervals: [2_000] },
     )

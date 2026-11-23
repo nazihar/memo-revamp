@@ -157,7 +157,9 @@ function MyComment({ comment: c, timeZone }: { comment: MinutesCommentResponse; 
         <MessageSquareText aria-hidden="true" className="me-1 inline size-4" />
         {intl.formatMessage(mnv.partSent, { part, date: moment(intl, c.at, timeZone) })}
       </p>
-      <p className="whitespace-pre-line">{c.text}</p>
+      <p dir="auto" className="whitespace-pre-line">
+        {c.text}
+      </p>
       <p className="text-base">
         {c.response && c.respondedBy
           ? c.responseNote

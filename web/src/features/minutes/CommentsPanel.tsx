@@ -97,7 +97,9 @@ function Suggestion({
       <p className="text-base text-muted-foreground">
         {intl.formatMessage(mnv.commentLine, { name: c.by.name, part, date: moment(intl, c.at, timeZone) })}
       </p>
-      <p className="whitespace-pre-line text-lg">{c.text}</p>
+      <p dir="auto" className="whitespace-pre-line text-lg">
+        {c.text}
+      </p>
       {c.response && c.respondedBy ? (
         <p className="text-base">
           {c.responseNote

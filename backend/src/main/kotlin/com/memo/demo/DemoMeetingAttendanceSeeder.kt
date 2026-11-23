@@ -138,7 +138,7 @@ class DemoMeetingAttendanceSeeder(
         asUser(credit) { replies.answer(meeting, SeedReply.ONLINE) }
         val item = { title: String -> checkNotNull(asUser(secretary) { declarations.item(meeting, title) }) { "item $title" } }
         val meghnaItem = item(MEGHNA)
-        // With the memo, the interest the head of credit declared at the desk is already carried to the item (E04).
+        // Not twice: an interest declared on the memo at the desk would already be carried to the item (E04).
         if (!asUser(secretary) { declarations.held(meeting, meghnaItem, credit) }) {
             asUser(credit) { declarations.declare(meeting, meghnaItem, MEGHNA_INTEREST, DeclarationIntent.LEAVE) }
         }

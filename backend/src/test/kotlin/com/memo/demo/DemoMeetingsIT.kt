@@ -445,7 +445,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
         val finance = id(DemoMeetingSeeder.HEAD_FINANCE)
         val read = asUser(secretary) { reads.get(meeting) }
-        assertThat(read.status).isEqualTo(MeetingStatus.HELD)
+        // Held, and since E06 T12 its minutes are approved too.
+        assertThat(read.status).isEqualTo(MeetingStatus.MINUTES_APPROVED)
         assertThat(read.startsAt).isBefore(clock.instant())
         assertThat(read.label).matches("MCC \\d+/\\d{4}")
         val meghna = checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, DemoMeetingSeeder.MEGHNA) })

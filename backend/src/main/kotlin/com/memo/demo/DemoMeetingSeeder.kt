@@ -57,8 +57,9 @@ import java.util.UUID
  * Phase 4 E06 T12 ([DemoMinutesSeeder]) adds the Board Risk Committee's held "Risk review, third quarter" (seeded before the
  * quarterly review, so it has the earlier number) and the two held meetings' decisions, resolutions and minutes. On a new
  * seed, "Working capital limit, Meghna Foods" is Demo User's credit memo of BDT 80 million, sent to the credit committee
- * through the credit desk (where Demo Head of Credit stood aside: their interest is carried to the item), so the
- * committee's decision moves the memo on with its resolution number.
+ * through the credit desk (recommended by Demo Head of Credit, who declares their interest at the meeting, as before), so
+ * the committee's decision moves the memo on with its resolution number to the delegation of authority (Demo Director
+ * and the head of finance's seat, neither of whom acted on it at the desk).
  *
  * Dates are relative to the day of seeding, so on a long-lived environment the meetings drift into the past. Fills gaps
  * only: a meeting already there (by its title, in any state) is left as it is. Needs the files service (scanner) and the
@@ -288,7 +289,10 @@ class DemoMeetingSeeder(
         }
     }
 
-    /** A credit memo of Demo User's as [spec] says, submitted, stood aside by the head of credit and recommended; once. */
+    /**
+     * A credit memo of Demo User's as [spec] says, submitted and recommended at the credit desk (by the director when the
+     * head of credit stands aside for an interest, else by the head of credit); once.
+     */
     private fun creditMemo(
         ids: Map<String, UUID>,
         spec: CreditMemo,
@@ -315,9 +319,14 @@ class DemoMeetingSeeder(
                 memos.submit(id, "For the committee's decision.")
                 id
             }
-        // E04 T9: the head of credit has an interest and stands aside at the desk; the director, its other member, recommends.
-        asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.STAND_ASIDE, spec.interest) }
-        asUser(ids.getValue(DIRECTOR)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        val interest = spec.interest
+        if (interest != null) {
+            // E04 T9: the head of credit has an interest and stands aside at the desk; the director, its other member, recommends.
+            asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.STAND_ASIDE, interest) }
+            asUser(ids.getValue(DIRECTOR)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        } else {
+            asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        }
         return memo
     }
 
@@ -358,8 +367,8 @@ class DemoMeetingSeeder(
         val tenor: Int,
         val file: String,
         val lines: List<String>,
-        /** Demo Head of Credit's interest, for which they stand aside at the credit desk. */
-        val interest: String,
+        /** Demo Head of Credit's interest, for which they stand aside at the credit desk; null: they recommend it. */
+        val interest: String?,
     )
 
     companion object {
@@ -440,7 +449,9 @@ class DemoMeetingSeeder(
                     "Renewal of the BDT 80 million working capital limit for a year.",
                     "Security: a charge over stock and receivables, and the directors' personal guarantees.",
                 ),
-                DemoMeetingAttendanceSeeder.MEGHNA_INTEREST,
+                // The head of credit recommends it at the desk and declares their interest at the meeting (E05): the director
+                // stays free to decide it under the delegation of authority after the committee (SOD-2).
+                null,
             )
 
         /** [from], or the first Monday to Thursday after it: no weekend meetings, whether the weekend is Fri–Sat or Sat–Sun. */

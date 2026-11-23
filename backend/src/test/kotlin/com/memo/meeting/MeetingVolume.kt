@@ -40,6 +40,15 @@ class MeetingVolume(
     private val e05: Boolean = false,
     /** Each agenda opens with a "Matters arising" standing item, as E07's action taken report needs (`ActionsVolumeIT`). */
     private val mattersArising: Boolean = false,
+    /**
+     * With [e05], the attendance histories of design E08 §8 (analytics' volume, E08 T5): every committee seated ([SEATED]
+     * people: a chair, a vice-chair and members, one term ended two years ago and its successor's begun), members sending
+     * apologies to [APOLOGIES_PCT] % of the meetings and missing [ABSENT_PCT] % without a word (so they attend about 90 %),
+     * [LATE_PCT] % arriving late, [LEAVES_PCT] % leaving early and [RETURNS_PCT] % stepping out and back, and the alternates
+     * of three seats standing in when their member sent apologies. The held focal meeting keeps E05's rows, which the E05
+     * and E06 volume tests measure.
+     */
+    private val histories: Boolean = false,
 ) {
     /** The meeting levels: [low] for most rows, [high] above the director's clearance. */
     data class Levels(
@@ -49,6 +58,7 @@ class MeetingVolume(
 
     init {
         require(perForum > FUTURE) { "perForum must be more than $FUTURE" }
+        require(!histories || e05) { "the attendance histories are written over E05's rows" }
     }
 
     /** Meetings already past per committee: k ≤ [past]; the [FUTURE] after them are still to come. */
@@ -444,7 +454,9 @@ class MeetingVolume(
                    'MEMBER', true, '["independent"]'::jsonb, date '2010-01-01', 1, now(), 0
             from generate_series(1, $FOCAL_MEMBERS) u
             """,
-            """
+        ) + seats() +
+            listOf(
+                """
             create temp table mv_invitee on commit drop as
             select m.id as meeting_id, m.f, m.k, m.status, m.starts_at, u, md5('mvu' || m.f || '-' || u)::uuid as user_id, $sent as sent_at
             from mv_meeting m, generate_series(1, $INVITEES) u
@@ -455,9 +467,9 @@ class MeetingVolume(
                  (values (1, '${people.secretary}'::uuid), (2, '${people.director}'::uuid), (3, '${people.chair}'::uuid)) p(r, user_id)
             where m.status <> 'DRAFT' and m.f = 1
             """,
-            "create index on mv_invitee (meeting_id)",
-            "analyze mv_invitee",
-            """
+                "create index on mv_invitee (meeting_id)",
+                "analyze mv_invitee",
+                """
             insert into meeting_invitation (tenant_id, meeting_id, ical_uid, sequence, sent_sequence, pending_changes, cancelled_at,
                                             due_at, reconciled_at, created_at, version)
             select '$tenant'::uuid, m.id, md5('mvical' || m.id)::uuid, case when m.$cancelled then 2 else 1 end,
@@ -465,7 +477,7 @@ class MeetingVolume(
                    null, $sent + interval '1 day', $sent - interval '1 hour', 2
             from mv_meeting m where m.status <> 'DRAFT'
             """,
-            """
+                """
             insert into meeting_invitee (tenant_id, meeting_id, user_id, state, last_sequence, held_sequence, last_method, last_kind,
                                          last_outbox_id, first_sent_at, last_sent_at, version)
             select '$tenant'::uuid, meeting_id, user_id, case when $cancelled then 'CANCELLED' else 'INVITED' end,
@@ -474,7 +486,7 @@ class MeetingVolume(
                    case when $focal then md5('mvob' || meeting_id || user_id)::uuid end, sent_at, sent_at + interval '1 day', 2
             from mv_invitee
             """,
-            """
+                """
             insert into meeting_invitation_message (id, tenant_id, meeting_id, user_id, sequence, method, kind, changes, outbox_id,
                                                     notification_id, queued_by, queued_at)
             select md5('mvim' || i.meeting_id || i.user_id || n)::uuid, '$tenant'::uuid, i.meeting_id, i.user_id,
@@ -483,15 +495,62 @@ class MeetingVolume(
                    case when n = 2 then '${people.secretary}'::uuid end, i.sent_at + n * interval '12 hours'
             from mv_invitee i, generate_series(0, 2) n
             """,
-            """
+                """
             insert into notification_mail_outbox (id, tenant_id, template, to_address, status, attempts, created_at, sent_at, relay,
                                                   last_attempt_at)
             select md5('mvob' || meeting_id || user_id)::uuid, '$tenant'::uuid, 'MEETING_UPDATED', 'member' || u || '@volume.example',
                    'SENT', 1, sent_at + interval '1 day', sent_at + interval '1 day', 'PLATFORM', sent_at + interval '1 day'
             from mv_invitee where $focal
             """,
-        )
+            )
     }
+
+    /**
+     * With [histories], the other committees' seats (design E08 §8): their first [SEATED] invitees, the first the chair and
+     * the second a vice-chair, seated since 2010; the twelfth's term ended two years ago and the thirteenth took the seat
+     * the next day; seats 3 to 5 have an alternate ([alternate]).
+     */
+    private fun seats(): List<String> =
+        if (!histories) {
+            emptyList()
+        } else {
+            listOf(
+                """
+                insert into forum_member (id, tenant_id, forum_id, kind, user_id, role, voting, attributes, alternate_user_id, starts_on,
+                                          ended_on, end_reason, term_number, created_at, version)
+                select md5('mvfm' || f.f || '-' || u)::uuid, '$tenant'::uuid, f.id, 'PERSON', md5('mvu' || f.f || '-' || u)::uuid,
+                       case u when 1 then 'CHAIR' when 2 then 'VICE_CHAIR' else 'MEMBER' end, true, '[]'::jsonb,
+                       case when u between $ALTERNATE_SEATS then ${alternate("f.f", "u")} end,
+                       case when u = $SEATED then current_date - 729 else date '2010-01-01' end,
+                       case when u = ${SEATED - 1} then current_date - 730 end,
+                       case when u = ${SEATED - 1} then 'TERM_COMPLETED' end, 1, now(), 0
+                from mv_forum f, generate_series(1, $SEATED) u
+                where f.f > 1
+                """,
+            )
+        }
+
+    /** Seat [u]'s alternate on committee [f]. */
+    private fun alternate(
+        f: String,
+        u: String,
+    ) = "md5('mvalt' || $f || '-' || $u)::uuid"
+
+    /** Invitee [u] sends apologies to meeting [meeting]: one in five (E05's volume), or with [histories] as design E08 §8. */
+    private fun apologies(
+        meeting: String,
+        u: String,
+        focal: String,
+    ) = if (histories) "case when $focal then $u % 5 = 3 else ${chance(meeting, u)} < $APOLOGIES_PCT end" else "$u % 5 = 3"
+
+    /** A number from 0 to 99 fixed for invitee [u] at meeting [meeting]: what happens to them there, with [histories]. */
+    private fun chance(
+        meeting: String,
+        u: String,
+    ) = "abs(hashtext($meeting::text || '-' || $u)) % 100"
+
+    /** With [histories], the member of seat 3, 4 or 5 of another committee who sends apologies asks the alternate to attend. */
+    private fun standsIn() = if (histories) "answer = 'APOLOGIES' and f > 1 and u between $ALTERNATE_SEATS" else "false"
 
     /**
      * Replies (design E05 §8): every invitee answered (one in five with apologies, one in seven online), but one in ten of
@@ -503,7 +562,8 @@ class MeetingVolume(
         return listOf(
             """
             create temp table mv_rsvp on commit drop as
-            select i.*, case when i.u % 5 = 3 then 'APOLOGIES' when i.u % 7 = 2 then 'REMOTE' else 'IN_PERSON' end as answer,
+            select i.*, case when ${apologies("i.meeting_id", "i.u", "(i.f = 1 and i.k in ($focalK, $heldK))")} then 'APOLOGIES'
+                             when i.u % 7 = 2 then 'REMOTE' else 'IN_PERSON' end as answer,
                    ($focal and i.u % 9 = 4) as stale
             from mv_invitee i
             where not ($focal and i.u % 10 = 0)
@@ -511,7 +571,8 @@ class MeetingVolume(
             """
             insert into meeting_rsvp (tenant_id, meeting_id, user_id, answer, alternate_attends, note, for_starts_at, for_ends_at,
                                       recorded_by, how, how_note, answered_at, version)
-            select '$tenant'::uuid, meeting_id, user_id, answer, false, case when u % 8 = 1 then 'I will join after the first item' end,
+            select '$tenant'::uuid, meeting_id, user_id, answer, ${standsIn()},
+                   case when u % 8 = 1 then 'I will join after the first item' end,
                    starts_at - case when stale then interval '1 day' else interval '0' end,
                    starts_at + interval '3 hours' - case when stale then interval '1 day' else interval '0' end,
                    user_id, 'IN_APP', null, sent_at + interval '2 days', case when u % 3 = 0 then 2 else 1 end
@@ -539,29 +600,46 @@ class MeetingVolume(
      * back, a third went online, a quarter left early (about 90 events a meeting, 290,000). The held focal meeting has its
      * 36 members and three officers on its register with 9 events each (about 300): three departures and returns and
      * stepping out of an item; ten items in progress. A quorum reached per held meeting, and a snapshot for each of its
-     * first items (60,000; the held focal meeting's are taken through [QuorumSnapshots] by the test).
+     * first items (60,000; the held focal meeting's are taken through [QuorumSnapshots] by the test). With [histories] the
+     * other meetings follow design E08 §8's rates instead, some members are absent without apologies, and the alternates of
+     * seats 3 to 5 attend for their members ([alternates]).
      */
     private fun attendance(): List<String> {
         val held = "f = 1 and k = $heldK"
         val minute = "* interval '1 minute'"
-        val general = "not apologies and not focal"
+        val general = "arrives and not focal"
         val cycles = "mv_attendee, generate_series(1, 3) c where focal and not apologies"
+        val chance = chance("meeting_id", "u")
+        // What happens to each invitee: E05's pattern by seat number, or with the histories by chance (the focal meeting kept).
+        val absent = if (histories) "not ($held) and $chance between $APOLOGIES_PCT and ${APOLOGIES_PCT + ABSENT_PCT - 1}" else "false"
+        val returns = if (histories) "$chance between $RETURNS_FROM and ${RETURNS_FROM + RETURNS_PCT - 1}" else "u % 2 = 0"
+        val leaves = if (histories) "$chance between $LEAVES_FROM and ${LEAVES_FROM + LEAVES_PCT - 1}" else "u % 4 = 1"
+        val late =
+            if (histories) {
+                "case when $chance between $LATE_FROM and ${LATE_FROM + LATE_PCT - 1} then 15 + $chance % 30 else u % 10 end"
+            } else {
+                "u % 12"
+            }
         return listOf(
             """
             create temp table mv_attendee on commit drop as
-            select meeting_id, f, k, u, user_id, starts_at, ($held) as focal, u % 5 = 3 as apologies
-            from mv_invitee where status = 'HELD'
+            select a.*, not a.apologies and not a.absent as arrives
+            from (
+                select meeting_id, f, k, u, user_id, starts_at, ($held) as focal, ${apologies("meeting_id", "u", "($held)")} as apologies,
+                       $absent as absent, $returns as returns, $leaves as leaves, $late as late
+                from mv_invitee where status = 'HELD'
+            ) a
             """,
             """
             insert into meeting_attendance (tenant_id, meeting_id, user_id, capacity, state, mode, first_arrived_at, last_left_at,
                                             opened_at, updated_at, version)
             select '$tenant'::uuid, meeting_id, user_id, 'MEMBER',
-                   case when apologies then 'APOLOGIES' when not focal and u % 4 = 1 then 'LEFT' else 'PRESENT' end,
-                   case when apologies or (not focal and u % 4 = 1) then null when not focal and u % 3 = 0 then 'REMOTE'
+                   case when apologies then 'APOLOGIES' when absent then 'ABSENT' when not focal and leaves then 'LEFT' else 'PRESENT' end,
+                   case when not arrives or (not focal and leaves) then null when not focal and u % 3 = 0 then 'REMOTE'
                         else 'IN_PERSON' end,
-                   case when not apologies then starts_at + (u % 12) $minute end,
-                   case when apologies then null when focal or u % 2 = 0 then starts_at + interval '90 minutes'
-                        when u % 4 = 1 then starts_at + interval '170 minutes' end,
+                   case when arrives then starts_at + late $minute end,
+                   case when not arrives then null when focal or returns then starts_at + interval '90 minutes'
+                        when leaves then starts_at + interval '170 minutes' end,
                    starts_at, starts_at + interval '3 hours', 0
             from mv_attendee
             """,
@@ -570,16 +648,18 @@ class MeetingVolume(
             select meeting_id, user_id, 0 as n, 'APOLOGIES' as kind, null::text as mode, starts_at - interval '1 hour' as at,
                    false as stepped, 'RSVP' as source
             from mv_attendee where apologies
-            union all select meeting_id, user_id, 0, 'ARRIVED', 'IN_PERSON', starts_at + (u % 12) $minute, false, 'RECORDED'
-            from mv_attendee where not apologies
+            union all select meeting_id, user_id, 0, 'ABSENT', null, starts_at + interval '30 minutes', false, 'RECORDED'
+            from mv_attendee where absent
+            union all select meeting_id, user_id, 0, 'ARRIVED', 'IN_PERSON', starts_at + late $minute, false, 'RECORDED'
+            from mv_attendee where arrives
             union all select meeting_id, user_id, 1, 'LEFT', null, starts_at + interval '90 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 2 = 0
+            from mv_attendee where $general and returns
             union all select meeting_id, user_id, 2, 'ARRIVED', 'IN_PERSON', starts_at + interval '100 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 2 = 0
+            from mv_attendee where $general and returns
             union all select meeting_id, user_id, 3, 'MODE_CHANGED', 'REMOTE', starts_at + interval '120 minutes', false, 'RECORDED'
             from mv_attendee where $general and u % 3 = 0
             union all select meeting_id, user_id, 4, 'LEFT', null, starts_at + interval '170 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 4 = 1
+            from mv_attendee where $general and leaves
             union all select meeting_id, user_id, 2 * c - 1, 'LEFT', null, starts_at + 30 * c $minute, false, 'RECORDED' from $cycles
             union all select meeting_id, user_id, 2 * c, 'ARRIVED', 'IN_PERSON', starts_at + (30 * c + 5) $minute, false, 'RECORDED'
             from $cycles
@@ -594,6 +674,37 @@ class MeetingVolume(
             select md5('mvae' || meeting_id || user_id || n)::uuid, '$tenant'::uuid, meeting_id, user_id, kind, mode, at,
                    case when stepped then md5('mvi' || meeting_id || '-1-0')::uuid end, source, false, '${people.secretary}', at
             from mv_attendance_event
+            """,
+        ) + alternates()
+    }
+
+    /**
+     * With [histories], the alternate of seat 3, 4 or 5 of another committee attends when its member sent apologies (the
+     * reply asked them to): in the audience for that seat, on the register as ALTERNATE, arrived at the start.
+     */
+    private fun alternates(): List<String> {
+        if (!histories) return emptyList()
+        val standing = "from mv_attendee where apologies and f > 1 and u between $ALTERNATE_SEATS"
+        return listOf(
+            """
+            insert into meeting_audience (tenant_id, meeting_id, user_id, source, members_only, for_member_id, for_user_id)
+            select '$tenant'::uuid, meeting_id, ${alternate("f", "u")}, 'ALTERNATE', true, md5('mvfm' || f || '-' || u)::uuid, user_id
+            $standing
+            """,
+            """
+            insert into meeting_attendance (tenant_id, meeting_id, user_id, capacity, for_member_id, for_user_id, state, mode,
+                                            first_arrived_at, last_left_at, opened_at, updated_at, version)
+            select '$tenant'::uuid, meeting_id, ${alternate("f", "u")}, 'ALTERNATE', md5('mvfm' || f || '-' || u)::uuid, user_id,
+                   'PRESENT', 'IN_PERSON', starts_at + interval '2 minutes', null, starts_at, starts_at + interval '3 hours', 0
+            $standing
+            """,
+            """
+            insert into meeting_attendance_event (id, tenant_id, meeting_id, user_id, kind, mode, at, item_id, source, correction,
+                                                  recorded_by, recorded_at)
+            select md5('mvaealt' || meeting_id || user_id)::uuid, '$tenant'::uuid, meeting_id, ${alternate("f", "u")}, 'ARRIVED',
+                   'IN_PERSON', starts_at + interval '2 minutes', null, 'RECORDED', false, '${people.secretary}',
+                   starts_at + interval '2 minutes'
+            $standing
             """,
         )
     }
@@ -654,6 +765,24 @@ class MeetingVolume(
 
         /** Snapshots on the items numbered up to this in agenda order (about 18 a held meeting). */
         const val SNAPSHOTS_UP_TO = 19
+
+        /** With the histories: the seats of the other committees, the last one a successor's (design E08 §8). */
+        const val SEATED = 13
+
+        /** The seats whose alternate attends when their member sends apologies. */
+        const val ALTERNATE_SEATS = "3 and 5"
+
+        /** With the histories, the share of invitations (in %) answered with apologies, and missed without a word. */
+        const val APOLOGIES_PCT = 7
+        const val ABSENT_PCT = 3
+
+        /** With the histories, the shares (in %) that step out and come back, leave early, or arrive late, by chance. */
+        const val RETURNS_FROM = 10
+        const val RETURNS_PCT = 20
+        const val LEAVES_FROM = 30
+        const val LEAVES_PCT = 8
+        const val LATE_FROM = 40
+        const val LATE_PCT = 10
 
         /** An item's purpose: none on a break, else in turn. */
         private const val PURPOSE =

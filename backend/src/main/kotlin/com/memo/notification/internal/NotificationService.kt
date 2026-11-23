@@ -6,10 +6,12 @@ import com.memo.jooq.tables.references.NOTIFICATION_ITEM
 import com.memo.jooq.tables.references.NOTIFICATION_PREFERENCE
 import com.memo.notification.CalendarPart
 import com.memo.notification.Mail
+import com.memo.notification.MailMessage
 import com.memo.notification.NotificationCategory
 import com.memo.notification.NotificationChannel
 import com.memo.notification.NotificationKind
 import com.memo.notification.NotificationLog
+import com.memo.notification.NotificationRequest
 import com.memo.notification.NotificationResult
 import com.memo.notification.Notifications
 import com.memo.notification.Recipient
@@ -42,18 +44,28 @@ internal class NotificationPreferences(
     ): Boolean = category.mandatory || stored(user)[category to channel] ?: true
 
     /** The user's explicit choices; everything absent is enabled. */
-    fun stored(user: UUID): Map<Pair<NotificationCategory, NotificationChannel>, Boolean> =
-        tenantDsl
-            .current()
-            .select(NOTIFICATION_PREFERENCE.CATEGORY, NOTIFICATION_PREFERENCE.CHANNEL, NOTIFICATION_PREFERENCE.ENABLED)
-            .from(NOTIFICATION_PREFERENCE)
-            .where(NOTIFICATION_PREFERENCE.USER_ID.eq(user))
-            .fetch()
-            .mapNotNull { (category, channel, enabled) ->
-                val c = NotificationCategory.entries.firstOrNull { it.name == category }
-                val ch = NotificationChannel.entries.firstOrNull { it.name == channel }
-                if (c == null || ch == null) null else (c to ch) to enabled!!
-            }.toMap()
+    fun stored(user: UUID): Map<Pair<NotificationCategory, NotificationChannel>, Boolean> = storedAll(setOf(user))[user].orEmpty()
+
+    /** [stored] for each of [users] (those with no choice left out), read [CHUNK] people a query. */
+    fun storedAll(users: Set<UUID>): Map<UUID, Map<Pair<NotificationCategory, NotificationChannel>, Boolean>> {
+        val p = NOTIFICATION_PREFERENCE
+        return users
+            .chunked(CHUNK)
+            .flatMap { chunk ->
+                tenantDsl
+                    .current()
+                    .select(p.USER_ID, p.CATEGORY, p.CHANNEL, p.ENABLED)
+                    .from(p)
+                    .where(if (chunk.size == 1) p.USER_ID.eq(chunk.single()) else p.USER_ID.`in`(chunk))
+                    .fetch()
+                    .mapNotNull { (user, category, channel, enabled) ->
+                        val c = NotificationCategory.entries.firstOrNull { it.name == category }
+                        val ch = NotificationChannel.entries.firstOrNull { it.name == channel }
+                        if (user == null || c == null || ch == null) null else Triple(user, c to ch, enabled!!)
+                    }
+            }.groupBy({ it.first }, { it.second to it.third })
+            .mapValues { (_, choices) -> choices.toMap() }
+    }
 
     /** Sets one choice; refuses to turn off a mandatory category. */
     fun set(
@@ -85,6 +97,8 @@ internal class NotificationPreferences(
     }
 }
 
+private const val CHUNK = 1000
+
 /** A mandatory category (security) cannot be switched off: 409 `MANDATORY`. */
 internal class MandatoryCategoryException : RuntimeException("mandatory notification category")
 
@@ -109,8 +123,10 @@ internal class NotificationService(
         val template = kind.email
         require(calendar == null || template != null) { "a calendar part needs a kind that sends email" }
         val category = kind.category
-        val itemId =
-            ids.next().takeIf { kind.inApp && preferences.enabled(recipient.userId, category, NotificationChannel.IN_APP) }
+        // The recipient's choices read once for both channels, and not at all for a mandatory category.
+        val stored by lazy { preferences.stored(recipient.userId) }
+        val enabled = { channel: NotificationChannel -> category.mandatory || stored[category to channel] ?: true }
+        val itemId = ids.next().takeIf { kind.inApp && enabled(NotificationChannel.IN_APP) }
         if (itemId != null) {
             tenantDsl
                 .current()
@@ -126,12 +142,54 @@ internal class NotificationService(
                 .execute()
         }
         val outboxId =
-            if (template != null && preferences.enabled(recipient.userId, category, NotificationChannel.EMAIL)) {
+            if (template != null && enabled(NotificationChannel.EMAIL)) {
                 mail.enqueue(template, recipient.email, params + ("name" to recipient.displayName), recipient.locale, calendar)
             } else {
                 null
             }
         return NotificationResult(itemId, outboxId)
+    }
+
+    override fun notifyAll(requests: List<NotificationRequest>): List<NotificationResult> {
+        requests.forEach { r ->
+            require(r.link == null || LINK.matches(r.link)) { "notification links are app routes" }
+            require(r.calendar == null || r.kind.email != null) { "a calendar part needs a kind that sends email" }
+        }
+        if (requests.isEmpty()) return emptyList()
+        val stored = preferences.storedAll(requests.map { it.recipient.userId }.toSet())
+        val enabled = { r: NotificationRequest, channel: NotificationChannel ->
+            r.kind.category.mandatory || stored[r.recipient.userId]?.get(r.kind.category to channel) ?: true
+        }
+        val itemIds = requests.map { r -> ids.next().takeIf { r.kind.inApp && enabled(r, NotificationChannel.IN_APP) } }
+        val now = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
+        val n = NOTIFICATION_ITEM
+        requests.zip(itemIds).filter { it.second != null }.chunked(Mail.CHUNK).forEach { chunk ->
+            val insert = tenantDsl.current().insertInto(n, n.ID, n.TENANT_ID, n.USER_ID, n.KIND, n.CATEGORY, n.PARAMS, n.LINK, n.CREATED_AT)
+            chunk
+                .fold(insert) { step, (r, id) ->
+                    step.values(
+                        id,
+                        tenantDsl.tenant().value,
+                        r.recipient.userId,
+                        r.kind.name,
+                        r.kind.category.name,
+                        JSONB.valueOf(json.writeValueAsString(r.params)),
+                        r.link,
+                        now,
+                    )
+                }.execute()
+        }
+        val mailed = requests.indices.filter { i -> requests[i].kind.email != null && enabled(requests[i], NotificationChannel.EMAIL) }
+        val outbox =
+            mail.enqueueAll(
+                mailed.map { i ->
+                    val r = requests[i]
+                    val params = r.params + ("name" to r.recipient.displayName)
+                    MailMessage(checkNotNull(r.kind.email), r.recipient.email, params, r.recipient.locale, r.calendar)
+                },
+            )
+        val outboxOf = mailed.zip(outbox).toMap()
+        return requests.indices.map { i -> NotificationResult(itemIds[i], outboxOf[i]) }
     }
 
     private companion object {

@@ -47,6 +47,26 @@ class AgendaLateness(
     /** The last day papers are on time; null when the calendar has no working day to count. */
     fun deadline(meeting: MeetingRow): LocalDate? = workingDays.before(meeting.date, policy(meeting).submission.deadlineWorkingDays)
 
+    /**
+     * [deadline] of each of [meetings] (a year of a committee's held meetings, for analytics), the forums, the pinned type
+     * versions and the calendar read once for them all instead of once a meeting.
+     */
+    fun deadlines(meetings: List<MeetingRow>): Map<UUID, LocalDate?> {
+        if (meetings.isEmpty()) return emptyMap()
+        val forums = directory.forums(meetings.map { it.forumId }.toSet())
+        val versions = HashMap<Pair<UUID, Int>, ForumTypePolicy>()
+        val days =
+            meetings.map { meeting ->
+                val forum = checkNotNull(forums[meeting.forumId]) { "forum ${meeting.forumId}" }
+                val policy =
+                    versions.getOrPut(forum.typeId to meeting.typeVersion) {
+                        checkNotNull(policies.version(forum.typeId, meeting.typeVersion)) { "type version ${meeting.typeVersion}" }
+                    }
+                meeting.date to policy.submission.deadlineWorkingDays
+            }
+        return meetings.map { it.id }.zip(workingDays.beforeEach(days)).toMap()
+    }
+
     /** Whether today, in the meeting's zone, is past [deadline]. */
     fun passed(
         meeting: MeetingRow,

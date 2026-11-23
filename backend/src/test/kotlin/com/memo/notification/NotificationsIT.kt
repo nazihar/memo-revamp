@@ -104,6 +104,46 @@ class NotificationsIT : IntegrationTest() {
     }
 
     @Test
+    fun `notifying many at once follows each recipient's preferences, as notifying them one by one does`() {
+        val (optedOut, password) = aUser()
+        mvc.sendJson(
+            HttpMethod.PUT,
+            tenant,
+            "/api/v1/me/notification-preferences",
+            session(optedOut, password),
+            """[{"category":"ADMINISTRATION","channel":"EMAIL","enabled":false},{"category":"ADMINISTRATION","channel":"IN_APP","enabled":false}]""",
+        )
+        val (other, _) = aUser()
+        val granted = mapOf("organisation" to "Bank", "role" to "Auditor")
+        val alert = mapOf("organisation" to "Bank", "device" to "Firefox", "time" to "now")
+
+        val results =
+            transactions.inTenant(tenant.id) {
+                ActorContext.asSystem("test") {
+                    notifications.notifyAll(
+                        listOf(
+                            NotificationRequest(optedOut.recipient(), NotificationKind.ROLE_GRANTED, granted),
+                            NotificationRequest(other.recipient(), NotificationKind.ROLE_GRANTED, granted, link = "/settings"),
+                            NotificationRequest(optedOut.recipient(), NotificationKind.SIGN_IN_ALERT, alert),
+                        ),
+                    )
+                }
+            }
+
+        // The opted-out category reaches neither channel; the security notice reaches both; the other user gets everything.
+        assertThat(results.map { it.itemId != null }).containsExactly(false, true, true)
+        assertThat(results.map { it.outboxId != null }).containsExactly(false, true, true)
+        assertThat(items(optedOut)).isEqualTo(1)
+        assertThat(mails(optedOut)).isEqualTo(1)
+        assertThat(items(other)).isEqualTo(1)
+        assertThat(mails(other)).isEqualTo(1)
+        assertThat(count("select count(*) from notification_item where user_id = '${other.id.value}' and link = '/settings'")).isEqualTo(1)
+        assertThat(
+            count("select count(*) from notification_mail_outbox where to_address = '${other.email}' and template = 'ROLE_GRANTED'"),
+        ).isEqualTo(1)
+    }
+
+    @Test
     fun `a rolled-back producer notifies nobody`() {
         val (user, _) = aUser()
 

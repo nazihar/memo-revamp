@@ -5,7 +5,8 @@ name: load
 # against it: the inbox (NFR P1: p95 < 300 ms), and search, the inbox by due time, the team view and the dashboards
 # (Phase 3 E05 T8); search at volume V1 (E05 T8), the legacy import at 10,000 memos (Phase 3 E06 T10) and meetings at
 # 3,600 meetings, 180,000 items and 600,000 papers (Phase 4 E03 T5), with their decisions, resolutions and minutes (E06 T9),
-# and action items at 29,000 actions over those meetings (Phase 4 E07 T9).
+# action items at 29,000 actions over those meetings (Phase 4 E07 T9), and the decision register at 54,000 and 108,000
+# decisions with meeting analytics and the committee load simulation at 50 people (Phase 4 E08 T5).
 on:
   schedule:
     - cron: '0 3 * * 0'
@@ -267,4 +268,90 @@ jobs:
         with:
           name: actions-volume-report
           path: backend/build/test-results/test/TEST-com.memo.actions.ActionsVolumeIT.xml
+          retention-days: 30
+
+  committee-volume:
+    # The decision register and meeting analytics at the design's volume (Phase 4 E08 T5, design E08 §8): the committee
+    # volume (MeetingVolume with E05's rows and the attendance histories, ActionsVolume, MinutesVolume, the register filled
+    # by its backfill, the five reader profiles) in a tenant of its own, written in stages that commit and are analysed
+    # before the next. RegisterVolumeIT measures the backfill, every profile's searches (newest first, one committee,
+    # number order, words, a resolution number), the indexing a decision adds, an agenda's refresh and the exports at
+    # their row limits, and explains the definer function's statement with each profile's own parameters (no sequential
+    # scan of search_decision); AnalyticsVolumeIT the overview, a committee's detail and the attendance export. At 3,600
+    # meetings (about 54,000 decisions) both, sharing one volume; at 7,200 (about 108,000) the register again, in a JVM of
+    # its own (the volume's ids are global keys). Budgets have 2x headroom; the values and plans are in the test reports.
+    name: Register and analytics at volume (RegisterVolumeIT, AnalyticsVolumeIT)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: RegisterVolumeIT and AnalyticsVolumeIT at 3,600 meetings (54,000 decisions)
+        env:
+          COMMITTEE_VOLUME: '3600'
+        run: ./gradlew :backend:test --tests com.memo.search.RegisterVolumeIT --tests com.memo.analytics.AnalyticsVolumeIT --rerun --console=plain
+      # The next Gradle run starts its test results afresh: keep this one's reports.
+      - if: always()
+        run: mkdir -p build/committee-volume && cp backend/build/test-results/test/TEST-com.memo.*VolumeIT.xml build/committee-volume/ || true
+      - name: RegisterVolumeIT at 7,200 meetings (108,000 decisions)
+        if: ${{ !cancelled() }}
+        env:
+          COMMITTEE_VOLUME: '7200'
+        run: ./gradlew :backend:test --tests com.memo.search.RegisterVolumeIT --rerun --console=plain
+      - if: always()
+        run: mkdir -p build/committee-volume/7200 && cp backend/build/test-results/test/TEST-com.memo.search.RegisterVolumeIT.xml build/committee-volume/7200/ || true
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: committee-volume-report
+          path: build/committee-volume/
+          retention-days: 30
+
+  committee-load:
+    # The committee load (Phase 4 E08 T5, NFR P1, design E08 §8): CommitteeLoadSimulation at 50 people, ten in each of the
+    # register's five reader profiles, searching the decision register, reading "My actions", their committee's action
+    # tracker and the analytics, against the budgets (register 150 ms newest first and 300 ms with words for every profile,
+    # "My actions" 150 ms, the tracker 200 ms, the overview 800 ms, a committee's detail 500 ms; under 1 % errors). The
+    # committee volume is written by the backend's test-side generators, so the host is the backend test
+    # CommitteeLoadHostIT (the application on port 18200 over the volume at 3,600 meetings), run in the same Gradle
+    # invocation as the simulation (--parallel): the simulation waits for the host's ready file and tells it when it is
+    # done. The people's password and TOTP secret are generated here and never printed.
+    name: Committee load (CommitteeLoadSimulation)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: Committee volume and the load simulation
+        env:
+          COMMITTEE_LOAD: 'true'
+          COMMITTEE_VOLUME: '3600'
+        run: |
+          MEMO_LOAD_PASSWORD="load-$(openssl rand -hex 16)"
+          MEMO_LOAD_TOTP_SECRET=$(openssl rand 20 | base32 | tr -d '=')
+          echo "::add-mask::$MEMO_LOAD_PASSWORD"
+          echo "::add-mask::$MEMO_LOAD_TOTP_SECRET"
+          export MEMO_LOAD_PASSWORD MEMO_LOAD_TOTP_SECRET
+          export COMMITTEE_LOAD_DIR="$GITHUB_WORKSPACE/build/committee-load"
+          ./gradlew :backend:test --tests com.memo.analytics.CommitteeLoadHostIT --rerun \
+            :perf:gatlingRun --simulation com.memo.perf.CommitteeLoadSimulation --parallel --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: committee-load-reports
+          path: |
+            perf/build/reports/gatling/
+            backend/build/test-results/test/TEST-com.memo.analytics.CommitteeLoadHostIT.xml
           retention-days: 30

@@ -78,11 +78,15 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
     /** The class's name in what it prints. */
     private val label: String get() = javaClass.simpleName
 
-    /** Writes the volume in a new tenant [slug]; with [e05], E05's rows as well; with [mattersArising], that standing item. */
+    /**
+     * Writes the volume in a new tenant [slug]; with [e05], E05's rows as well; with [mattersArising], that standing item;
+     * with [histories], every committee's seats and attendance at design E08 §8's rates.
+     */
     protected fun generate(
         slug: String,
         e05: Boolean,
         mattersArising: Boolean = false,
+        histories: Boolean = false,
     ) {
         tenant = registry.aTestTenant(transactions, settings, slug)
 
@@ -106,12 +110,14 @@ abstract class MeetingVolumeSupport : IntegrationTest() {
                 forum.id to "C$f"
             }
         focalForum = committees.first().first
-        volume = MeetingVolume(tenant.id.value, committees, meetings / FORUMS, people, levels, e05, mattersArising)
+        volume = MeetingVolume(tenant.id.value, committees, meetings / FORUMS, people, levels, e05, mattersArising, histories)
         val started = System.nanoTime()
         transactions.inTenant(tenant.id) {
             volume.generate(tenantDsl)
-            // The volume seats forum 1's members by SQL: its cached roster is stale.
-            invalidation.invalidate(ROSTER_CACHE, tenant.id, focalForum.toString())
+            // The volume seats forum 1's members (with the histories, every committee's) by SQL: their cached rosters are stale.
+            (if (histories) committees.map { it.first } else listOf(focalForum)).forEach {
+                invalidation.invalidate(ROSTER_CACHE, tenant.id, it.toString())
+            }
         }
         volume.analyse()
         println("$label generated $meetings meetings in ${(System.nanoTime() - started) / NANOS_PER_MILLI} ms")

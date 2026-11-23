@@ -78,6 +78,22 @@ class WorkingDays(
     }
 
     /**
+     * [before] for each of [requests] (a date and its count of working days), the calendar read once for them all (the
+     * papers deadlines of a year of meetings, design E08 §8); the answers in order.
+     */
+    fun beforeEach(requests: List<Pair<LocalDate, Int>>): List<LocalDate?> {
+        if (requests.isEmpty()) return emptyList()
+        val week = calendars.week().week
+        val exceptions =
+            calendars
+                .days(requests.minOf { it.first }.minusDays(WorkingDayRules.MAX_DAYS.toLong()), requests.maxOf { it.first }.minusDays(1))
+                .associate { it.day to it.periods.isNotEmpty() }
+        return requests.map { (date, n) ->
+            WorkingDayRules.before(date, n) { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
+        }
+    }
+
+    /**
      * The [n]-th working day after [date] on the tenant's calendar, [date] not counted (design E06 §1.6.3: the minutes'
      * comment deadline; design E07 §1.5); [date] itself when [n] is 0, and null when the calendar has no working day in the
      * next two years.

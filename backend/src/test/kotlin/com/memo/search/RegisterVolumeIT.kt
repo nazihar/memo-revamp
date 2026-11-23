@@ -111,7 +111,10 @@ class RegisterVolumeIT : CommitteeVolumeSupport() {
         val first = { p: Profile -> p.inScope.firstOrNull() ?: committees.first().first }
         val sample = numberIn(committees.first().first)
         val norm = SearchReferences.keys(sample)?.first ?: sample
-        val shapes = RegisterPlans.shapes(RARE, COMMON, norm, "14", "CP-2020-00001", first)
+        // The words of the plan gate are in some rows (conditions, deferrals). A word in nearly every row ("proposal", in
+        // the latency checks) is planned as a read of the table in order that stops at the 2,000 candidates: cheaper than
+        // the index there, and bounded (E08 T5 log).
+        val shapes = RegisterPlans.shapes(RARE, PLANNED_COMMON, norm, "14", "CP-2020-00001", first)
         owner { c ->
             val scans = RegisterPlans.searchScans(c, tenant.id.value, params, shapes, AUDITOR, label)
             assertThat(scans).describedAs("sequential scans of search_decision").isEmpty()
@@ -194,6 +197,7 @@ class RegisterVolumeIT : CommitteeVolumeSupport() {
         const val MIN_DECISIONS_PER_MEETING = 13
         const val RARE = "covenants"
         const val COMMON = "proposal"
+        const val PLANNED_COMMON = "deferred next meeting"
         const val DETAIL_YEARS = 5L
         const val EXPORT_RUNS = 3
         const val XLSX_ROWS = 20_000

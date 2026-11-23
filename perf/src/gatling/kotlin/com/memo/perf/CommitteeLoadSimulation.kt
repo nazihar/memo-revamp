@@ -96,9 +96,11 @@ class CommitteeLoadSimulation : Simulation() {
                     headerRegex("Set-Cookie", "$SESSION_COOKIE=([^;]+)").saveAs("session"),
                     jsonPath("\$.state").saveAs("state"),
                 ),
-        ).doIf { session -> session.getString("state") == "MFA_REQUIRED" }
+        ).exec(csrf("GET /auth/csrf (signed in)"))
+            .doIf { session -> session.getString("state") == "MFA_REQUIRED" }
             .then(
-                // A forums.manage holder holds a privileged permission, so a second factor (the host enrols everyone).
+                // Holders of privileged permissions (forums.manage, forum.read) need a second factor (the host enrols everyone),
+                // sent with the token of the signed-in session; the session is renewed, and with it the token.
                 exec(
                     http("POST /auth/mfa")
                         .post("/api/v1/auth/mfa")
@@ -106,14 +108,15 @@ class CommitteeLoadSimulation : Simulation() {
                         .header("X-XSRF-TOKEN", "#{xsrf}")
                         .body(StringBody { _ -> """{"code":"${Totp.code(totpSecret, clock.instant().epochSecond)}"}""" })
                         .check(status().shouldBe(OK), headerRegex("Set-Cookie", "$SESSION_COOKIE=([^;]+)").optional().saveAs("session")),
-                ),
-            ).exec(
-                // Signing in may rotate the CSRF token: searches (POST) take a fresh one.
-                http("GET /auth/csrf (signed in)")
-                    .get("/api/v1/auth/csrf")
-                    .header("Cookie", "$SESSION_COOKIE=#{session}")
-                    .check(status().shouldBe(NO_CONTENT), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf")),
+                ).exec(csrf("GET /auth/csrf (after MFA)")),
             )
+
+    /** A fresh CSRF token for the signed-in session (signing in rotates it): POSTs send it. */
+    private fun csrf(name: String) =
+        http(name)
+            .get("/api/v1/auth/csrf")
+            .header("Cookie", "$SESSION_COOKIE=#{session}")
+            .check(status().shouldBe(NO_CONTENT), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf"))
 
     /** Even rounds search newest first (no words); odd ones search words in turn. */
     private fun body(round: Int): String = if (round % 2 == 0) "{}" else """{"text":"${WORDS[(round / 2) % WORDS.size]}"}"""

@@ -30,7 +30,8 @@ import java.util.UUID
 @EnabledIfEnvironmentVariable(named = "COMMITTEE_LOAD", matches = "true")
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-    properties = ["server.port=\${COMMITTEE_LOAD_PORT:18200}"],
+    // The management port is random: a fixed one may be taken on the machine (8081 was, on the dev machine).
+    properties = ["server.port=\${COMMITTEE_LOAD_PORT:18200}", "management.server.port=0"],
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommitteeLoadHostIT : CommitteeVolumeSupport() {

@@ -77,6 +77,7 @@ data class TrackerCounts(
 class ActionTrackerReads(
     private val tenantDsl: TenantDsl,
     private val access: ActionAccess,
+    private val rule: ActionRuleConditions,
 ) {
     /** One page of [forumId]'s tracker for [viewer] under [filter], after [after], at most [limit] rows, with its colour. */
     fun page(
@@ -140,7 +141,7 @@ class ActionTrackerReads(
             a.FORUM_ID
                 .eq(forumId)
                 .and(a.STATUS.ne(ActionStatus.DRAFT.name))
-                .and(access.involved(viewer)),
+                .and(rule.involved(viewer)),
         )
     }
 

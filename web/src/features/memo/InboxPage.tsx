@@ -9,6 +9,8 @@ import { EmptyState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/form-controls'
+import { myActionsTabLabel, useMyActionCounts } from '@/features/actions/my-actions'
+import { MyActions } from '@/features/actions/MyActions'
 import { useBulk, useSelection, type BulkAction } from '@/features/inbox/bulk'
 import { BulkBar, BulkResults, BulkSpacer, SelectAll } from '@/features/inbox/BulkBar'
 import { im } from '@/features/inbox/inbox-messages'
@@ -42,7 +44,17 @@ export function InboxPage({ search }: { search: InboxSearch }) {
   const navigate = useNavigate()
   const tab = search.tab ?? 'tasks'
   const team = useTeamAccess()
-  const tabs: InboxTab[] = ['tasks', 'drafts', 'sent', 'closed', 'watching', ...(team.visible ? ['team' as const] : [])]
+  // My actions beside My tasks (Phase 4 E07 flow AK), for people with actions or who open it by its address.
+  const actions = useMyActionCounts()
+  const tabs: InboxTab[] = [
+    'tasks',
+    ...(actions.visible || tab === 'actions' ? ['actions' as const] : []),
+    'drafts',
+    'sent',
+    'closed',
+    'watching',
+    ...(team.visible ? ['team' as const] : []),
+  ]
   const go = (next: InboxSearch) => void navigate({ to: '/inbox', search: next })
 
   return (
@@ -79,7 +91,7 @@ export function InboxPage({ search }: { search: InboxSearch }) {
                 : 'border-transparent text-muted-foreground hover:text-foreground',
             )}
           >
-            {intl.formatMessage(tabLabel[t])}
+            {t === 'actions' ? myActionsTabLabel(intl, actions.counts) : intl.formatMessage(tabLabel[t])}
           </button>
         ))}
       </div>
@@ -94,6 +106,13 @@ export function InboxPage({ search }: { search: InboxSearch }) {
             sort={search.sort}
             onSort={(sort) => {
               go({ tab: 'tasks', ...(sort === 'due' ? { sort } : {}) })
+            }}
+          />
+        ) : tab === 'actions' ? (
+          <MyActions
+            list={search.list ?? 'mine'}
+            onList={(list) => {
+              go({ tab: 'actions', ...(list === 'mine' ? {} : { list }) })
             }}
           />
         ) : tab === 'watching' ? (

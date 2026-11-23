@@ -274,3 +274,12 @@
   - New York: 1 November 2026 at 06:00Z and 05:30Z, and 8 March 2026 at 07:00Z;
   - Lord Howe (the 30-minute shift): 4 April 2026 at 15:00Z and 15:15Z, and 3 October 2026 at 15:30Z.
 - The property tests passed six more times with fresh seeds. The golden files are unchanged.
+
+## 2026-11-23 (fix: the item quorum's "back in the room" property)
+- **`ItemQuorumProperties.someoneOutOfTheRoomForTheItemNeverCountsForIt` failed now and then on CI** (seeds `-1377197321439722442` in run 45039708200, after #235, and `-6432056359280594802` in run 45053133177, #244). The first seed was reproduced locally, and both seeds pass with the fix.
+  - Both shrunk samples have the same shape. The rule has `composition: independent, majority: true`. All the voting members are online, two of them independent, and a member who is not independent has stepped out of the item.
+  - Without that member, 2 of the 3 present are independent, so the item is quorate. When they come back, 2 of 4 are independent, which is not a majority, so the composition condition is unmet.
+- **Not a defect in the quorum.** ADR-0057 defines the majority as "of those counted present", and so do the research (§3.3), the rule builder ("Of those present…") and `QuorumTest` ("a majority of independents among those present"). Nobody out of the room was counted: the first half of the property held in every sample.
+  - The property's expectation was overstated. A composition majority is not monotonic, and `QuorumProperties` already leaves it out of its own arrival check (`…WithoutAMajorityCondition`).
+  - The "back in the room" check now evaluates the rule without its majority conditions. The shrunk sample is a fixed example (`aMemberWithoutTheAttributeBackInTheRoomCanBreakACompositionMajority`).
+  - The Confirmation sections of ADR-0057 and ADR-0064 now name this exception.

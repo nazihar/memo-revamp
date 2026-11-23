@@ -133,3 +133,18 @@ endpoints:
     rule: signedIn
     body: { actionIds: ["{random}"] }
     headers: { Idempotency-Key: "{random}" }
+  # Phase 4 E07 T7: the action taken report under "Matters arising", holding an action back from it, and asking owners for
+  # an update. Who reads which rows of a real report (officers, members, forum.read; not a guest, an outsider or a former
+  # member) and who holds back or asks is ActionReportIT and UpdateRequestsIT; another tenant ActionsCrossTenantIT. The
+  # report's recusal probe is RecusalLeakIT's ACTION_REPORT surface; the draft of the item ({actionId} in the recusal
+  # columns) is invisible to every recused viewer, so holding it back answers 404.
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/action-report", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/action-report/pdf", rule: signedIn }
+  - endpoint: "POST /api/v1/actions/{actionId}/report-hold"
+    rule: signedIn
+    body: { reason: "Discussed in camera" }
+    headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/forums/{forumId}/actions/ask-for-updates"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }

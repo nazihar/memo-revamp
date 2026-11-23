@@ -108,5 +108,40 @@
   "legacy": {
     "routes": ["/memos"],
     "prefixes": ["legacy"]
+  },
+  "actions": {
+    "$comment": "Committee actions, the owner's and members' side (Phase 4 E07 T11, flows AK, AL, AO, AP): My actions in the inbox, the action page with its dialogs, timeline and follow-up memos, and the action taken report page. Also on the meeting and committee pages (E07 T10), whose action lists, tracker and forms use its words (colours, statuses, owners, dates).",
+    "routes": ["/inbox", "/actions", "/meetings", "/committees"],
+    "prefixes": ["actions"]
+  },
+  "actionLinks": {
+    "$comment": "The few action texts other pages show (Phase 4 E07 T11): the Matters arising item's link to its action taken report on the agenda, and Raised from action on the memo.",
+    "routes": ["/meetings", "/memos"],
+    "prefixes": ["actionLinks"]
+  },
+  "decisions": {
+    "$comment": "Recording decisions (Phase 4 E06 T10, flows AA and AB): the officers’ Decisions tab on the meeting page, notes, consent sections and corrections, what Mark the meeting as held says will happen (also from the committee page’s meeting menu), and the decisions on the members’ agenda.",
+    "routes": ["/meetings", "/committees"],
+    "prefixes": ["decisions"]
+  },
+  "resolutions": {
+    "$comment": "Resolutions (Phase 4 E06 T10, flow AC): the committee’s register, one resolution, certified extracts and the starting number.",
+    "routes": ["/committees", "/resolutions"],
+    "prefixes": ["resolutions"]
+  },
+  "forumMinutes": {
+    "$comment": "The committee type’s Minutes tab (Phase 4 E06 T10, flow AI): how minutes are approved, when memos move on, resolution numbers and the minutes template.",
+    "routes": ["/admin/committee-types"],
+    "prefixes": ["forumMinutes"]
+  },
+  "actionsOfficer": {
+    "$comment": "Committee actions, the secretary's side (Phase 4 E07 T10, flows AJ, AM, AN): raising actions from the decision panel and the meeting page, the action form, drafts and Send the drafts, the line in Mark as held (also from the committee page's meeting menu), the officers' buttons and verification on the action page, closing at the meeting on the report, and the committee's tracker.",
+    "routes": ["/meetings", "/committees", "/actions"],
+    "prefixes": ["actionsOfficer"]
+  },
+  "forumActions": {
+    "$comment": "The committee type's Actions tab (Phase 4 E07 T10, flow AQ): red, amber and green, new dates, verification, evidence, the default due date, update requests and the workflow.",
+    "routes": ["/admin/committee-types"],
+    "prefixes": ["forumActions"]
   }
 }

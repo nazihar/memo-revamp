@@ -119,6 +119,57 @@ export type ActionRagResponse = {
     word: 'DRAFT' | 'CLOSED' | 'CANCELLED' | 'TO_VERIFY' | 'OVERRIDE_RED' | 'OVERRIDE_AMBER' | 'OVERRIDE_GREEN' | 'OVERDUE' | 'OFF_TRACK' | 'DUE_SOON' | 'AT_RISK' | 'NO_RECENT_UPDATE' | 'ON_TRACK';
 };
 
+export type ActionReportCorrectionResponse = {
+    approvedAt?: string | null;
+    label: string;
+};
+
+export type ActionReportResponse = {
+    builtAt: string;
+    committee: string;
+    forumId: string;
+    heldBack?: number | null;
+    itemId: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    more: number;
+    previousMeetingLabel?: string | null;
+    reportId: string;
+    revision: number;
+    revisions: Array<number>;
+    sections: Array<ActionReportSectionResponse>;
+    since?: string | null;
+    summary: string;
+};
+
+export type ActionReportRowResponse = {
+    actionId: string;
+    cancelKind?: 'NO_LONGER_NEEDED' | 'SUPERSEDED' | 'RISK_ACCEPTED' | 'DISCARDED' | 'DUPLICATE';
+    cancelReason?: string | null;
+    closedAt?: string | null;
+    confidence?: 'ON_TRACK' | 'AT_RISK' | 'OFF_TRACK';
+    doneAt?: string | null;
+    dueDate?: string | null;
+    dueRevisions: number;
+    holder?: string | null;
+    latestUpdate?: string | null;
+    latestUpdateAt?: string | null;
+    originalDueDate?: string | null;
+    owner: string;
+    rag: ActionRagResponse;
+    reference: string;
+    sourceLabel: string;
+    status: 'DRAFT' | 'OPEN' | 'IN_PROGRESS' | 'DONE_PENDING' | 'CLOSED' | 'CANCELLED';
+    title: string;
+};
+
+export type ActionReportSectionResponse = {
+    corrections: Array<ActionReportCorrectionResponse>;
+    count: number;
+    rows: Array<ActionReportRowResponse>;
+    section: 'TO_CLOSE' | 'OVERDUE' | 'OPEN' | 'CLOSED' | 'CANCELLED' | 'CORRECTIONS' | 'HELD_BACK' | 'MORE';
+};
+
 export type ActionResponse = {
     can: ActionAbilities;
     cancelKind?: 'NO_LONGER_NEEDED' | 'SUPERSEDED' | 'RISK_ACCEPTED' | 'DISCARDED' | 'DUPLICATE';
@@ -489,6 +540,10 @@ export type ArrivalsRequest = {
     at?: string | null;
     mode?: 'IN_PERSON' | 'REMOTE';
     userIds?: Array<string>;
+};
+
+export type AskForUpdatesResponse = {
+    asked: number;
 };
 
 export type AssignRequest = {
@@ -1669,10 +1724,12 @@ export type ForumPolicyResponse = {
     defaultClassificationId?: string | null;
     description?: string | null;
     memberAttributes: Array<MemberAttribute>;
+    memoResumes: 'AT_MEETING_END' | 'ON_MINUTES_APPROVAL';
     outcomes: Array<Outcome>;
     quorum: QuorumRule;
     quorumBasis: number;
     quorumNeeded: number;
+    quorumOverride: 'NEVER' | 'WITH_REASON';
     submissionPolicy: SubmissionPolicy;
     termPolicy: TermPolicy;
     typeId: string;
@@ -4368,6 +4425,18 @@ export type ReplyResponse = {
     version?: number | null;
 };
 
+export type ReportHoldRequest = {
+    meetingId?: string | null;
+    reason?: string | null;
+};
+
+export type ReportHoldResponse = {
+    actionId: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    meetingStartsAt: string;
+};
+
 export type ReportTotals = {
     files: FileRowTotals;
     fixity: FixityTotals;
@@ -5657,6 +5726,27 @@ export type ReopenActionResponses = {
 };
 
 export type ReopenActionResponse = ReopenActionResponses[keyof ReopenActionResponses];
+
+export type HoldActionFromReportData = {
+    body: ReportHoldRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        actionId: string;
+    };
+    query?: never;
+    url: '/api/v1/actions/{actionId}/report-hold';
+};
+
+export type HoldActionFromReportResponses = {
+    /**
+     * OK
+     */
+    200: ReportHoldResponse;
+};
+
+export type HoldActionFromReportResponse = HoldActionFromReportResponses[keyof HoldActionFromReportResponses];
 
 export type StartActionData = {
     body?: ActionStartedRequest;
@@ -9198,6 +9288,27 @@ export type RaiseDirectActionResponses = {
 
 export type RaiseDirectActionResponse = RaiseDirectActionResponses[keyof RaiseDirectActionResponses];
 
+export type AskForActionUpdatesData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/actions/ask-for-updates';
+};
+
+export type AskForActionUpdatesResponses = {
+    /**
+     * OK
+     */
+    200: AskForUpdatesResponse;
+};
+
+export type AskForActionUpdatesResponse = AskForActionUpdatesResponses[keyof AskForActionUpdatesResponses];
+
 export type ExportForumActionsData = {
     body?: never;
     path: {
@@ -10201,6 +10312,46 @@ export type UpdateMeetingResponses = {
 };
 
 export type UpdateMeetingResponse = UpdateMeetingResponses[keyof UpdateMeetingResponses];
+
+export type GetActionReportData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: {
+        revision?: number;
+    };
+    url: '/api/v1/meetings/{meetingId}/action-report';
+};
+
+export type GetActionReportResponses = {
+    /**
+     * OK
+     */
+    200: ActionReportResponse;
+};
+
+export type GetActionReportResponse = GetActionReportResponses[keyof GetActionReportResponses];
+
+export type GetActionReportPdfData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: {
+        revision?: number;
+    };
+    url: '/api/v1/meetings/{meetingId}/action-report/pdf';
+};
+
+export type GetActionReportPdfResponses = {
+    /**
+     * OK
+     */
+    200: string;
+};
+
+export type GetActionReportPdfResponse = GetActionReportPdfResponses[keyof GetActionReportPdfResponses];
 
 export type GetMeetingActionsData = {
     body?: never;

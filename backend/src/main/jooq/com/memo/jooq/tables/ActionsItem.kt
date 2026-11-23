@@ -21,10 +21,14 @@ import com.memo.jooq.keys.ACTIONS_ITEM_PKEY
 import com.memo.jooq.keys.ACTIONS_ITEM_REFERENCE_UK
 import com.memo.jooq.keys.ACTIONS_ITEM__ACTIONS_ITEM_TENANT_ID_SUPERSEDED_BY_FKEY
 import com.memo.jooq.keys.ACTIONS_MEMO__ACTIONS_MEMO_TENANT_ID_ACTION_ID_FKEY
+import com.memo.jooq.keys.ACTIONS_REPORT_HOLD__ACTIONS_REPORT_HOLD_TENANT_ID_ACTION_ID_FKEY
+import com.memo.jooq.keys.ACTIONS_REPORT_ROW__ACTIONS_REPORT_ROW_TENANT_ID_ACTION_ID_FKEY
 import com.memo.jooq.tables.ActionsContributor.ActionsContributorPath
 import com.memo.jooq.tables.ActionsDueRequest.ActionsDueRequestPath
 import com.memo.jooq.tables.ActionsEntry.ActionsEntryPath
 import com.memo.jooq.tables.ActionsMemo.ActionsMemoPath
+import com.memo.jooq.tables.ActionsReportHold.ActionsReportHoldPath
+import com.memo.jooq.tables.ActionsReportRow.ActionsReportRowPath
 import com.memo.jooq.tables.records.ActionsItemRecord
 
 import java.time.LocalDate
@@ -477,6 +481,38 @@ open class ActionsItem(
 
     val actionsMemo: ActionsMemoPath
         get(): ActionsMemoPath = actionsMemo()
+
+    private lateinit var _actionsReportHold: ActionsReportHoldPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.actions_report_hold</code> table
+     */
+    fun actionsReportHold(): ActionsReportHoldPath {
+        if (!this::_actionsReportHold.isInitialized)
+            _actionsReportHold = ActionsReportHoldPath(this, null, ACTIONS_REPORT_HOLD__ACTIONS_REPORT_HOLD_TENANT_ID_ACTION_ID_FKEY.inverseKey)
+
+        return _actionsReportHold;
+    }
+
+    val actionsReportHold: ActionsReportHoldPath
+        get(): ActionsReportHoldPath = actionsReportHold()
+
+    private lateinit var _actionsReportRow: ActionsReportRowPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.actions_report_row</code> table
+     */
+    fun actionsReportRow(): ActionsReportRowPath {
+        if (!this::_actionsReportRow.isInitialized)
+            _actionsReportRow = ActionsReportRowPath(this, null, ACTIONS_REPORT_ROW__ACTIONS_REPORT_ROW_TENANT_ID_ACTION_ID_FKEY.inverseKey)
+
+        return _actionsReportRow;
+    }
+
+    val actionsReportRow: ActionsReportRowPath
+        get(): ActionsReportRowPath = actionsReportRow()
     override fun getChecks(): List<Check<ActionsItemRecord>> = listOf(
         Internal.createCheck(this, DSL.name("actions_item_cancel_kind_check"), "((cancel_kind = ANY (ARRAY['NO_LONGER_NEEDED'::text, 'SUPERSEDED'::text, 'RISK_ACCEPTED'::text, 'DISCARDED'::text, 'DUPLICATE'::text])))", true),
         Internal.createCheck(this, DSL.name("actions_item_cancel_reason_check"), "(((char_length(cancel_reason) >= 1) AND (char_length(cancel_reason) <= 500)))", true),

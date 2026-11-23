@@ -151,6 +151,8 @@ const policy: ForumPolicyResponse = {
   submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
   quorumBasis: 3,
   quorumNeeded: 2,
+  quorumOverride: 'NEVER',
+  memoResumes: 'AT_MEETING_END',
 }
 
 interface Seen {

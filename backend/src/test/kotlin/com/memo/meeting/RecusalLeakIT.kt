@@ -206,6 +206,8 @@ class RecusalLeakIT : RecusalActionsFixture() {
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
+            // E07 T7: the next meeting's action taken report and its PDF (RecusalActionsFixture).
+            Surface.ACTION_REPORT to { p, v -> actionReportProbe(p, v) },
             // E07 T8: the committee's tracker, its totals and its export (the workbook's cells checked for canaries).
             Surface.TRACKER to { p, v -> trackerProbe(p, v) },
             // E08 T4: analytics and the attendance export (counts only; the differential is AnalyticsLeakIT).

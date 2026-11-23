@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { useIntl } from 'react-intl'
-import { listMemoForumSubmissionsOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { listMemoForumSubmissionsOptions, listMemoNotesOptions } from '@/api/generated/@tanstack/react-query.gen'
+import type { NoteEntryView, SubmissionResponse } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
+import { pdmv } from '@/features/forums/papers-decision-messages'
 import { isOpen, paperTone } from '@/features/forums/papers'
 import { PaperTimeline } from '@/features/forums/PaperTimeline'
 import { pm, pmv } from '@/features/forums/papers-messages'
@@ -17,6 +19,8 @@ export function MemoCommittees({ memoId }: { memoId: string }) {
   const intl = useIntl()
   const terms = useTerms()
   const papers = useQuery(listMemoForumSubmissionsOptions({ path: { memoId } }))
+  // The note sheet's committee decisions (E06 T10, flow AH): the meeting and the resolution number of a decided paper.
+  const notes = useQuery(listMemoNotesOptions({ path: { id: memoId } }))
   const rows = papers.data ?? []
   if (rows.length === 0) return null
   return (
@@ -38,11 +42,31 @@ export function MemoCommittees({ memoId }: { memoId: string }) {
               </Link>
               <Badge tone={paperTone[s.status]}>{intl.formatMessage(pm[s.status])}</Badge>
             </div>
+            <DecidedAt submission={s} notes={notes.data?.entries ?? []} />
             {s.waits ? null : <p className="text-xs text-muted-foreground">{intl.formatMessage(pm.forInformation)}</p>}
             <PaperTimeline submission={s} />
           </li>
         ))}
       </ul>
     </section>
+  )
+}
+
+/**
+ * "Decided at MCC 4/2026 — Approved with conditions — MCC/2026/001" (flow AH) for a decided paper, from the note sheet's
+ * FORUM_DECIDED entry of the same committee (the latest one); nothing when the decision came without a meeting.
+ */
+function DecidedAt({ submission: s, notes }: { submission: SubmissionResponse; notes: NoteEntryView[] }) {
+  const intl = useIntl()
+  if (s.status !== 'DECIDED') return null
+  const note = notes.findLast((n) => n.actionKind === 'FORUM_DECIDED' && n.committee === s.forumName && n.meetingLabel)
+  if (!note?.meetingLabel) return null
+  const outcome = s.outcome ?? note.committeeOutcome ?? 'other'
+  return (
+    <p className="text-sm font-medium">
+      {note.resolution
+        ? intl.formatMessage(pdmv.decidedAt, { meeting: note.meetingLabel, outcome, number: note.resolution })
+        : intl.formatMessage(pdmv.decidedAtNoNumber, { meeting: note.meetingLabel, outcome })}
+    </p>
   )
 }

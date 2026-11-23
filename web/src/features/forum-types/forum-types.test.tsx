@@ -530,3 +530,87 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(approved).toHaveLength(1)
   }, 20_000)
 })
+
+describe('the committee type’s Minutes tab (Phase 4 E06 T10, flow AI)', () => {
+  it('edits how minutes are approved and resolution numbers with a live example, and says the template’s problems in words', async () => {
+    const user = userEvent.setup()
+    const previews: unknown[] = []
+    const saved: unknown[] = []
+    server.use(
+      ...handlers([draft, published], ['forum.types.manage']),
+      http.post(`${BASE}/resolution-numbering/preview`, async ({ request }) => {
+        previews.push(await request.json())
+        return HttpResponse.json({ samples: ['BRC/2026/014', 'BRC/2027/001'], problems: [] })
+      }),
+      http.get(`${BASE}/t1/versions/3/minutes-template`, () =>
+        HttpResponse.json({
+          owner: 'v3',
+          template: {
+            fileId: 'f9',
+            versionId: 'fv9',
+            name: 'brc-minutes.docx',
+            sizeBytes: 40960,
+            uploadedAt: '2026-11-19T08:00:00Z',
+          },
+          tags: ['meeting.label', 'item.discusion', 'item.outcomeLabel'],
+          problems: [
+            {
+              code: 'UNKNOWN_TAG',
+              tag: 'item.discusion',
+              suggestion: 'item.notes',
+              part: 'word/document.xml',
+              paragraph: 12,
+              excerpt: '{{item.discusion}}',
+            },
+          ],
+          warnings: [
+            {
+              code: 'DEPRECATED_TAG',
+              tag: 'item.outcomeLabel',
+              suggestion: 'item.outcome',
+              part: 'word/document.xml',
+              paragraph: 14,
+              excerpt: '{{item.outcomeLabel}}',
+            },
+          ],
+          refusals: [],
+          available: [{ tag: 'item.notes', label: 'Key points discussed', kind: 'VALUE' }],
+        }),
+      ),
+      http.put(`${BASE}/t1/versions/3`, async ({ request }) => {
+        saved.push(await request.json())
+        return HttpResponse.json(draft)
+      }),
+    )
+    const { container } = renderRoute('/admin/committee-types/t1?version=3')
+    expect(partsForPath('/admin/committee-types/t1')).toContain('forumMinutes')
+    await user.click(await screen.findByRole('tab', { name: 'Minutes' }, { timeout: 5000 }))
+    expect(
+      screen.getByRole('radio', { name: 'At the next meeting (as “Minutes of the previous meeting”)' }),
+    ).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'When the meeting is marked as held' })).toBeChecked()
+    expect(await screen.findByText('BRC/2026/014 — the first of the next period: BRC/2027/001')).toBeInTheDocument()
+    expect(screen.getByText('{{item.discusion}} is not a known tag')).toBeInTheDocument()
+    expect(screen.getByText(/Did you mean \{\{item\.notes\}\}\?/)).toBeInTheDocument()
+    expect(screen.getByText('{{item.outcomeLabel}} still works but has a newer name')).toBeInTheDocument()
+    // A template with problems cannot be previewed.
+    expect(screen.getByRole('button', { name: 'Preview with a sample meeting' })).toBeDisabled()
+    await expectNoA11yViolations(container)
+
+    await user.click(screen.getByRole('radio', { name: 'By circulation, then noted at the next meeting' }))
+    await user.click(screen.getByRole('radio', { name: 'When the minutes are approved' }))
+    await user.click(screen.getByRole('button', { name: 'Add Meeting number' }))
+    expect(await screen.findAllByText('Meeting number')).toHaveLength(2)
+    expect(screen.getByText('Save your other changes before uploading.')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await screen.findByText('Done.', {}, { timeout: 5000 }).catch(() => undefined)
+    expect(saved[0]).toMatchObject({
+      minutes: {
+        approval: 'BY_CIRCULATION',
+        memoResumes: 'ON_MINUTES_APPROVAL',
+        resolutionNumbering: { parts: expect.arrayContaining([{ kind: 'MEETING_NUMBER' }]) as unknown },
+      },
+    })
+    expect(previews.length).toBeGreaterThan(1)
+  }, 30_000)
+})

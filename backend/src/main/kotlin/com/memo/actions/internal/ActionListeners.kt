@@ -102,10 +102,20 @@ class ActionSourceListener(
     private val viewers: ActionViewers,
     private val decisions: DecisionSource,
     private val effects: ActionItemEffects,
+    private val reports: ActionReports,
     private val clock: Clock,
 ) {
+    /**
+     * A revision published: the item columns of the meeting's actions refreshed, then, for a revision with a MATTERS_ARISING
+     * item, its action taken report built (design E07 §1.12), in the publishing transaction.
+     */
     @EventListener
     fun onPublished(event: AgendaPublished) {
+        refresh(event)
+        reports.build(event.meetingId, event.revision)
+    }
+
+    private fun refresh(event: AgendaPublished) {
         val actions = store.ofMeeting(event.meetingId).filter { it.itemId != null }
         val meeting = meetings.find(event.meetingId)?.takeIf { actions.isNotEmpty() } ?: return
         val committee = directory.forum(meeting.forumId)?.name.orEmpty()

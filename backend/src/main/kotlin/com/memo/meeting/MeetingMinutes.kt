@@ -41,6 +41,12 @@ data class ItemLink(
     val state: String?,
     /** For minutes approved by circulation: when ("approved by circulation on …, for noting"). */
     val at: Instant? = null,
+    /** The linked meeting's number ("BRC 3/2026"), for the client's own words in the reader's language; null before it has one. */
+    val meetingLabel: String? = null,
+    /** When the linked meeting started, for the client's words when it has no number. */
+    val meetingStartsAt: Instant? = null,
+    /** The linked meeting's time zone, to say its date on its own calendar. */
+    val meetingTimeZone: String? = null,
 )
 
 /**

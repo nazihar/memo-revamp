@@ -77,11 +77,13 @@ import { Route as ShellSignedInAnalyticsCommitteesIndexRouteImport } from './rou
 import { Route as ShellSignedInAnalyticsCommitteesForumIdRouteImport } from './routes/_shell/_signedIn/analytics.committees.$forumId'
 import { Route as ShellSignedInMeetingsMeetingIdActionReportRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId_.action-report'
 import { Route as ShellSignedInMeetingsMeetingIdAgendaRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId_.agenda'
+import { Route as ShellSignedInMeetingsMeetingIdMinutesRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId_.minutes'
 import { Route as ShellSignedInMemosMemoIdDocumentRouteImport } from './routes/_shell/_signedIn/memos.$memoId_.document'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
 import { Route as ShellSignedInAnalyticsCommitteesForumIdIndexRouteImport } from './routes/_shell/_signedIn/analytics.committees.$forumId.index'
 import { Route as ShellSignedInAnalyticsCommitteesForumIdAttendanceRouteImport } from './routes/_shell/_signedIn/analytics.committees.$forumId.attendance'
 import { Route as ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport } from './routes/_shell/_signedIn/committees.$forumId_.submissions.$submissionId'
+import { Route as ShellSignedInMeetingsMeetingIdMinutesEditRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId_.minutes_.edit'
 import { Route as ShellSignedInAnalyticsCommitteesForumIdAttendanceIndexRouteImport } from './routes/_shell/_signedIn/analytics.committees.$forumId.attendance.index'
 import { Route as ShellSignedInAnalyticsCommitteesForumIdAttendanceUserIdRouteImport } from './routes/_shell/_signedIn/analytics.committees.$forumId.attendance.$userId'
 
@@ -461,6 +463,12 @@ const ShellSignedInMeetingsMeetingIdAgendaRoute =
     path: '/meetings/$meetingId/agenda',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInMeetingsMeetingIdMinutesRoute =
+  ShellSignedInMeetingsMeetingIdMinutesRouteImport.update({
+    id: '/meetings/$meetingId_/minutes',
+    path: '/meetings/$meetingId/minutes',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInMemosMemoIdDocumentRoute =
   ShellSignedInMemosMemoIdDocumentRouteImport.update({
     id: '/memos/$memoId_/document',
@@ -489,6 +497,12 @@ const ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute =
   ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport.update({
     id: '/committees/$forumId_/submissions/$submissionId',
     path: '/committees/$forumId/submissions/$submissionId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInMeetingsMeetingIdMinutesEditRoute =
+  ShellSignedInMeetingsMeetingIdMinutesEditRouteImport.update({
+    id: '/meetings/$meetingId_/minutes_/edit',
+    path: '/meetings/$meetingId/minutes/edit',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
 const ShellSignedInAnalyticsCommitteesForumIdAttendanceIndexRoute =
@@ -566,6 +580,7 @@ export interface FileRoutesByFullPath {
   '/analytics/committees/$forumId': typeof ShellSignedInAnalyticsCommitteesForumIdRouteWithChildren
   '/meetings/$meetingId/action-report': typeof ShellSignedInMeetingsMeetingIdActionReportRoute
   '/meetings/$meetingId/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
+  '/meetings/$meetingId/minutes': typeof ShellSignedInMeetingsMeetingIdMinutesRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -575,6 +590,7 @@ export interface FileRoutesByFullPath {
   '/analytics/committees/': typeof ShellSignedInAnalyticsCommitteesIndexRoute
   '/analytics/committees/$forumId/attendance': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceRouteWithChildren
   '/committees/$forumId/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
+  '/meetings/$meetingId/minutes/edit': typeof ShellSignedInMeetingsMeetingIdMinutesEditRoute
   '/analytics/committees/$forumId/': typeof ShellSignedInAnalyticsCommitteesForumIdIndexRoute
   '/analytics/committees/$forumId/attendance/$userId': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceUserIdRoute
   '/analytics/committees/$forumId/attendance/': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceIndexRoute
@@ -636,6 +652,7 @@ export interface FileRoutesByTo {
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/meetings/$meetingId/action-report': typeof ShellSignedInMeetingsMeetingIdActionReportRoute
   '/meetings/$meetingId/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
+  '/meetings/$meetingId/minutes': typeof ShellSignedInMeetingsMeetingIdMinutesRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/admin/committee-types': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -644,6 +661,7 @@ export interface FileRoutesByTo {
   '/admin/workflows': typeof ShellSignedInAdminWorkflowsIndexRoute
   '/analytics/committees': typeof ShellSignedInAnalyticsCommitteesIndexRoute
   '/committees/$forumId/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
+  '/meetings/$meetingId/minutes/edit': typeof ShellSignedInMeetingsMeetingIdMinutesEditRoute
   '/analytics/committees/$forumId': typeof ShellSignedInAnalyticsCommitteesForumIdIndexRoute
   '/analytics/committees/$forumId/attendance/$userId': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceUserIdRoute
   '/analytics/committees/$forumId/attendance': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceIndexRoute
@@ -713,6 +731,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/analytics/committees/$forumId': typeof ShellSignedInAnalyticsCommitteesForumIdRouteWithChildren
   '/_shell/_signedIn/meetings/$meetingId_/action-report': typeof ShellSignedInMeetingsMeetingIdActionReportRoute
   '/_shell/_signedIn/meetings/$meetingId_/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
+  '/_shell/_signedIn/meetings/$meetingId_/minutes': typeof ShellSignedInMeetingsMeetingIdMinutesRoute
   '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/_shell/_signedIn/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -722,6 +741,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/analytics/committees/': typeof ShellSignedInAnalyticsCommitteesIndexRoute
   '/_shell/_signedIn/analytics/committees/$forumId/attendance': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceRouteWithChildren
   '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
+  '/_shell/_signedIn/meetings/$meetingId_/minutes_/edit': typeof ShellSignedInMeetingsMeetingIdMinutesEditRoute
   '/_shell/_signedIn/analytics/committees/$forumId/': typeof ShellSignedInAnalyticsCommitteesForumIdIndexRoute
   '/_shell/_signedIn/analytics/committees/$forumId/attendance/$userId': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceUserIdRoute
   '/_shell/_signedIn/analytics/committees/$forumId/attendance/': typeof ShellSignedInAnalyticsCommitteesForumIdAttendanceIndexRoute
@@ -788,6 +808,7 @@ export interface FileRouteTypes {
     | '/analytics/committees/$forumId'
     | '/meetings/$meetingId/action-report'
     | '/meetings/$meetingId/agenda'
+    | '/meetings/$meetingId/minutes'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
     | '/admin/committee-types/'
@@ -797,6 +818,7 @@ export interface FileRouteTypes {
     | '/analytics/committees/'
     | '/analytics/committees/$forumId/attendance'
     | '/committees/$forumId/submissions/$submissionId'
+    | '/meetings/$meetingId/minutes/edit'
     | '/analytics/committees/$forumId/'
     | '/analytics/committees/$forumId/attendance/$userId'
     | '/analytics/committees/$forumId/attendance/'
@@ -858,6 +880,7 @@ export interface FileRouteTypes {
     | '/admin/workflows/$key'
     | '/meetings/$meetingId/action-report'
     | '/meetings/$meetingId/agenda'
+    | '/meetings/$meetingId/minutes'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
     | '/admin/committee-types'
@@ -866,6 +889,7 @@ export interface FileRouteTypes {
     | '/admin/workflows'
     | '/analytics/committees'
     | '/committees/$forumId/submissions/$submissionId'
+    | '/meetings/$meetingId/minutes/edit'
     | '/analytics/committees/$forumId'
     | '/analytics/committees/$forumId/attendance/$userId'
     | '/analytics/committees/$forumId/attendance'
@@ -934,6 +958,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/analytics/committees/$forumId'
     | '/_shell/_signedIn/meetings/$meetingId_/action-report'
     | '/_shell/_signedIn/meetings/$meetingId_/agenda'
+    | '/_shell/_signedIn/meetings/$meetingId_/minutes'
     | '/_shell/_signedIn/memos/$memoId_/document'
     | '/_shell/_signedIn/org_/positions/$positionId'
     | '/_shell/_signedIn/admin/committee-types/'
@@ -943,6 +968,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/analytics/committees/'
     | '/_shell/_signedIn/analytics/committees/$forumId/attendance'
     | '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId'
+    | '/_shell/_signedIn/meetings/$meetingId_/minutes_/edit'
     | '/_shell/_signedIn/analytics/committees/$forumId/'
     | '/_shell/_signedIn/analytics/committees/$forumId/attendance/$userId'
     | '/_shell/_signedIn/analytics/committees/$forumId/attendance/'
@@ -1432,6 +1458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInMeetingsMeetingIdAgendaRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/meetings/$meetingId_/minutes': {
+      id: '/_shell/_signedIn/meetings/$meetingId_/minutes'
+      path: '/meetings/$meetingId/minutes'
+      fullPath: '/meetings/$meetingId/minutes'
+      preLoaderRoute: typeof ShellSignedInMeetingsMeetingIdMinutesRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/memos/$memoId_/document': {
       id: '/_shell/_signedIn/memos/$memoId_/document'
       path: '/memos/$memoId/document'
@@ -1465,6 +1498,13 @@ declare module '@tanstack/react-router' {
       path: '/committees/$forumId/submissions/$submissionId'
       fullPath: '/committees/$forumId/submissions/$submissionId'
       preLoaderRoute: typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/meetings/$meetingId_/minutes_/edit': {
+      id: '/_shell/_signedIn/meetings/$meetingId_/minutes_/edit'
+      path: '/meetings/$meetingId/minutes/edit'
+      fullPath: '/meetings/$meetingId/minutes/edit'
+      preLoaderRoute: typeof ShellSignedInMeetingsMeetingIdMinutesEditRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/analytics/committees/$forumId/attendance/': {
@@ -1600,6 +1640,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminWorkflowsKeyRoute: typeof ShellSignedInAdminWorkflowsKeyRoute
   ShellSignedInMeetingsMeetingIdActionReportRoute: typeof ShellSignedInMeetingsMeetingIdActionReportRoute
   ShellSignedInMeetingsMeetingIdAgendaRoute: typeof ShellSignedInMeetingsMeetingIdAgendaRoute
+  ShellSignedInMeetingsMeetingIdMinutesRoute: typeof ShellSignedInMeetingsMeetingIdMinutesRoute
   ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
   ShellSignedInAdminCommitteeTypesIndexRoute: typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -1607,6 +1648,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminMemoTypesIndexRoute: typeof ShellSignedInAdminMemoTypesIndexRoute
   ShellSignedInAdminWorkflowsIndexRoute: typeof ShellSignedInAdminWorkflowsIndexRoute
   ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute: typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
+  ShellSignedInMeetingsMeetingIdMinutesEditRoute: typeof ShellSignedInMeetingsMeetingIdMinutesEditRoute
 }
 
 const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
@@ -1665,6 +1707,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
     ShellSignedInMeetingsMeetingIdActionReportRoute,
   ShellSignedInMeetingsMeetingIdAgendaRoute:
     ShellSignedInMeetingsMeetingIdAgendaRoute,
+  ShellSignedInMeetingsMeetingIdMinutesRoute:
+    ShellSignedInMeetingsMeetingIdMinutesRoute,
   ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,
@@ -1675,6 +1719,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminWorkflowsIndexRoute: ShellSignedInAdminWorkflowsIndexRoute,
   ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute:
     ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute,
+  ShellSignedInMeetingsMeetingIdMinutesEditRoute:
+    ShellSignedInMeetingsMeetingIdMinutesEditRoute,
 }
 
 const ShellSignedInRouteWithChildren = ShellSignedInRoute._addFileChildren(

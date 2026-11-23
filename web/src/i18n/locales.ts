@@ -67,6 +67,11 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
     query: { part: 'declarations' },
     import: 'default',
   }),
+  minutes: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'minutes' }, import: 'default' }),
+  minutesToRead: import.meta.glob<Messages>('./messages/*.json', {
+    query: { part: 'minutesToRead' },
+    import: 'default',
+  }),
   mySecurity: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'mySecurity' }, import: 'default' }),
   notificationKinds: import.meta.glob<Messages>('./messages/*.json', {
     query: { part: 'notificationKinds' },

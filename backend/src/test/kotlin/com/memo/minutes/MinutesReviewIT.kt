@@ -54,11 +54,17 @@ class MinutesReviewIT : MinutesFixture() {
         assertThat(events(m).last().let { it.kind to it.note }).isEqualTo(MinutesEventKind.RETURNED to "Add the sector outlook CANARY-RV")
         assertThat(read("/api/v1/me/notifications", secretary.session).json()["items"].first()["kind"].asString())
             .isEqualTo("MINUTES_RETURNED")
+        // The secretaries read the chair's comments on their page (flow AE1, E06 T11).
+        val back = read("/api/v1/meetings/$m/minutes", secretary.session).json()["lastReview"]
+        assertThat(listOf(back["decision"].asString(), back["by"]["id"].asString(), back["comment"].asString()))
+            .containsExactly("RETURN", chair.id.toString(), "Add the sector outlook CANARY-RV")
         // Circulating before the chair agreed is refused.
         assertThat(step(m, "circulate", secretary).response.contentAsString).contains("NOT_AGREED")
 
         // Sent again and agreed: circulated at once, with the deadline.
         assertThat(step(m, "send-for-review", secretary)).hasStatusOk()
+        val again = read("/api/v1/meetings/$m/minutes", secretary.session).json()["lastReview"]
+        assertThat(again == null || again.isNull).describedAs("no last review while the draft is with the chair again").isTrue()
         assertThat(step(m, "review", chair, """{"decision":"AGREE"}""")).hasStatusOk()
         val agreed = row(m)
         assertThat(agreed.state).isEqualTo(MinutesStage.CIRCULATED)
@@ -117,6 +123,10 @@ class MinutesReviewIT : MinutesFixture() {
         assertThat(asUser(chair.account) { purpose.mayRead(file) }).describedAs("not before the review").isFalse()
         assertThat(step(m, "send-for-review", secretary)).hasStatusOk()
         assertThat(mode(chair, file)).containsExactly(true, true, true)
+        // The page names the file the chair opens in review mode (E06 T11), without the draft's details.
+        val page = read("/api/v1/meetings/$m/minutes", chair.session).json()
+        val editable = page["mayEdit"].asBoolean()
+        assertThat(page["editFileId"]?.takeUnless { it.isNull }?.asString()).isEqualTo(file.id.toString().takeIf { editable })
         // The secretary may read it but not change it while it is with the chair; a member nothing.
         assertThat(mode(secretary, file)).containsExactly(true, false, false)
         assertThat(mode(director, file)).containsExactly(false, false, false)

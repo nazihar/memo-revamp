@@ -98,6 +98,19 @@ data class MinutesMeetingResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val startsAt: Instant,
 )
 
+/**
+ * The reviewer's last answer while the draft is back with the secretaries (flow AE1, E06 T11): agreed or sent back, with
+ * their comments to the secretary, and who recorded it on their behalf.
+ */
+data class MinutesReviewNoteResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val decision: ReviewDecision,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val by: MinutesPerson,
+    val onBehalfBy: MinutesPerson?,
+    val how: AgreedHow?,
+    val comment: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val at: Instant,
+)
+
 /** How the readers answered the circulation (flow AF4): for the officers. */
 data class MinutesAnswersResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val readers: Int,
@@ -143,6 +156,11 @@ data class MinutesResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayGenerate: Boolean,
     /** May open the draft in the editor now (the reviewer: in review mode, their changes tracked). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayEdit: Boolean,
+    /**
+     * The file to open in the editor (`POST /files/{fileId}/edit-sessions`) while [mayEdit]: the draft, for the reviewer in
+     * review mode too, who gets no [draft] (E06 T11).
+     */
+    val editFileId: UUID? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
     /** How the viewer reads the minutes. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val viewerAccess: MinutesAccessKind = MinutesAccessKind.MANAGER,
@@ -177,6 +195,11 @@ data class MinutesResponse(
     val correctedAt: Instant? = null,
     /** May propose a correction to the approved minutes (a secretary or `forums.manage`; per item, not recused from it). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayProposeCorrection: Boolean = false,
+    /**
+     * The secretaries not recused from any item, while the minutes are a draft: the reviewer's last answer (agreed or sent
+     * back) with their comments; null before a review and once the draft is sent again or circulated.
+     */
+    val lastReview: MinutesReviewNoteResponse? = null,
 )
 
 /**
@@ -227,7 +250,31 @@ class MinutesPages(
                 answered = view.userId in scene.answered,
                 answers = answers(scene),
                 copies = if (scene.manager && row.state in MinutesCopies.COPYING) copySets(row, view.agenda.items) else emptyList(),
+                lastReview = lastReview(scene),
             ).let { mays(scene, it) }
+    }
+
+    /** The reviewer's last answer, for the secretaries drafting (not one recused from an item: comments may name it). */
+    private fun lastReview(s: Scene): MinutesReviewNoteResponse? {
+        val step =
+            if (s.manager && !s.recused && s.row.state == MinutesStage.DRAFT) {
+                store.events(s.row.meetingId).lastOrNull { it.kind in MinutesSteps.REVIEW_STEPS }
+            } else {
+                null
+            }
+        val decision = step?.let { REVIEW_DECISIONS[it.kind] }
+        val by = step?.actor
+        if (step == null || decision == null || by == null) return null
+        val names = users.names(setOfNotNull(by, step.onBehalfBy))
+        val person = { id: UUID -> MinutesPerson(id, names[id].orEmpty()) }
+        return MinutesReviewNoteResponse(
+            decision = decision,
+            by = person(by),
+            onBehalfBy = step.onBehalfBy?.let(person),
+            how = step.how?.let { how -> AgreedHow.entries.firstOrNull { it.name == how } },
+            comment = step.note,
+            at = step.at,
+        )
     }
 
     /** What the page is built from, read once. */
@@ -288,6 +335,9 @@ class MinutesPages(
     private fun base(s: Scene): MinutesResponse {
         val row = s.row
         val manager = s.manager
+        val mayEdit =
+            editing.enabled && s.current != null && s.held &&
+                ((manager && s.idle && row.state in MinutesDraftPurpose.EDITABLE) || s.reviewing)
         return MinutesResponse(
             meetingId = row.meetingId,
             forumId = row.forumId,
@@ -301,9 +351,8 @@ class MinutesPages(
             undecided = if (manager) source.undecided(row.meetingId).map { MinutesItemResponse(it.id, it.number) } else emptyList(),
             viewerRecused = s.recused,
             mayGenerate = manager && s.idle && row.state == MinutesStage.DRAFT,
-            mayEdit =
-                editing.enabled && s.current != null && s.held &&
-                    ((manager && s.idle && row.state in MinutesDraftPurpose.EDITABLE) || s.reviewing),
+            mayEdit = mayEdit,
+            editFileId = row.fileId.takeIf { mayEdit },
             version = row.version,
         )
     }
@@ -403,6 +452,10 @@ class MinutesPages(
     )
 
     private companion object {
+        /** The chair's answer each review step records. */
+        val REVIEW_DECISIONS =
+            mapOf(MinutesEventKind.AGREED to ReviewDecision.AGREE, MinutesEventKind.RETURNED to ReviewDecision.RETURN)
+
         /** The structure banner as anyone but the secretaries gets it: nothing. */
         val EMPTY_STRUCTURE = MinutesStructureResponse(null, false, null, emptyList(), 0, 0, null)
     }

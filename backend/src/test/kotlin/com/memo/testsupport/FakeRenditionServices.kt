@@ -27,6 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger
  * whichever scheduler thread runs a rendition gets the same answer: `final-…` fails for good, `retry-once-…` fails once
  * then works, `always-retry-…` keeps failing; anything else becomes a one-page PDF and a line of text. In every test
  * context, because the scheduler of any context may run a rendition task scheduled by another (they share the database).
+ * While a test sets [documentServer], the files it names are converted by that converter instead (the real ONLYOFFICE
+ * client against a [CachingDocumentServer]).
  */
 @Component
 @Primary
@@ -42,17 +44,19 @@ class FakeRenditionServices :
         input: RenditionInput,
         key: String,
         out: OutputStream,
-    ): RenditionOutcome = scripted(input, "pdf") { out.write(if (input.name.startsWith(MINUTES_COPY)) textPdf(input) else PDF) }
+    ): RenditionOutcome =
+        routed(input)?.toPdf(input, key, out)
+            ?: scripted(input, "pdf") { out.write(if (input.name.startsWith(MINUTES_COPY)) textPdf(input) else PDF) }
+
+    /** The converter a test routes [input] to ([documentServer]), if any. */
+    private fun routed(input: RenditionInput): RenditionConverter? =
+        documentServer?.takeIf { route -> route.names.any { input.name.startsWith(it) } }?.converter
 
     /**
      * A reader's copy of the minutes (E06 T6) as a PDF whose text layer holds every paragraph of the document, as the document
      * server's conversion would: the leak suites look for canaries in it.
      */
-    private fun textPdf(input: RenditionInput): ByteArray {
-        val text = input.open().use { PoiDocxCopies().text(it) }
-        val blocks = text.lines().filter { it.isNotBlank() }.map { Block.Paragraph(it) }
-        return ByteArrayOutputStream().also { PdfBoxPageRenderer().render(PageDocument(input.name, "Converted", blocks), it) }.toByteArray()
-    }
+    private fun textPdf(input: RenditionInput): ByteArray = input.open().use { textPdf(it.readAllBytes(), input.name) }
 
     /** The final record's conversion (ADR-0053): a one-page PDF/A-2u naming the file, scripted like [toPdf]. */
     override fun toPdfA(
@@ -60,7 +64,7 @@ class FakeRenditionServices :
         key: String,
         out: OutputStream,
     ): RenditionOutcome =
-        scripted(input, "pdfa") {
+        routed(input)?.toPdfA(input, key, out) ?: scripted(input, "pdfa") {
             // The minutes' record and approved copies (E06 T7): the document's text in the PDF/A, for the leak suites.
             out.write(if (input.name.startsWith(MINUTES_RECORD)) pdfa(textPdf(input), input.name) else pdfa(input.name))
         }
@@ -103,6 +107,12 @@ class FakeRenditionServices :
         }
     }
 
+    /** Where the conversions of files whose names start with one of [names] go while a test sets [documentServer]. */
+    class Route(
+        val names: Set<String>,
+        val converter: RenditionConverter,
+    )
+
     companion object {
         private const val LARGE_LINES = 18_000
 
@@ -114,6 +124,25 @@ class FakeRenditionServices :
 
         /** While true, the record's document cannot be converted now (a test of the record job's retries). */
         @Volatile var minutesRecordDown: Boolean = false
+
+        @Volatile var documentServer: Route? = null
+
+        /** What this fake writes for a .docx, as [CachingDocumentServer] converts it: [textPdf], as PDF/A for `pdfa`. */
+        fun converted(
+            docx: ByteArray,
+            outputType: String,
+            name: String,
+        ): ByteArray = textPdf(docx, name).let { if (outputType == "pdfa") pdfa(it, name) else it }
+
+        /** A PDF whose text layer holds every paragraph of [docx]. */
+        fun textPdf(
+            docx: ByteArray,
+            name: String,
+        ): ByteArray {
+            val text = PoiDocxCopies().text(docx.inputStream())
+            val blocks = text.lines().filter { it.isNotBlank() }.map { Block.Paragraph(it) }
+            return ByteArrayOutputStream().also { PdfBoxPageRenderer().render(PageDocument(name, "Converted", blocks), it) }.toByteArray()
+        }
 
         /** "Converted <name>" on one page, with the PDF/A metadata, so the record's text check and veraPDF see a real part. */
         fun pdfa(name: String): ByteArray {

@@ -143,6 +143,14 @@ function TimingFigure({ data }: { data: Detail }) {
       title={title}
       summary={summary}
       basis={intl.formatMessage(amv.basis, { count: t.overall.decisions })}
+      link={
+        t.overall.decisions > 0 ? (
+          <Link to="/decisions" search={{ committee: data.forumId, from: data.from, to: data.to }} className={LINK}>
+            {intl.formatMessage(am.linkDecisions)}
+            <Arrow />
+          </Link>
+        ) : undefined
+      }
       controls={
         t.overall.decisions > 0 ? (
           <div className="flex flex-wrap items-center gap-3">
@@ -212,6 +220,18 @@ function DeferralsFigure({ data }: { data: Detail }) {
       title={title}
       summary={summary}
       basis={intl.formatMessage(amv.basis, { count: d.overall.decisions })}
+      link={
+        d.overall.deferred > 0 ? (
+          <Link
+            to="/decisions"
+            search={{ committee: data.forumId, from: data.from, to: data.to, outcome: 'DEFERRED' }}
+            className={LINK}
+          >
+            {intl.formatMessage(am.linkDeferred)}
+            <Arrow />
+          </Link>
+        ) : undefined
+      }
       table={
         d.byQuarter.length > 0 ? (
           <DataTableOf

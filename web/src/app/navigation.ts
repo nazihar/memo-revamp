@@ -5,6 +5,7 @@ import {
   ChartColumn,
   ChartNoAxesColumn,
   FileClock,
+  Gavel,
   House,
   Inbox,
   ListChecks,
@@ -76,6 +77,7 @@ const messages = defineMessages({
   // Takes the organisation's terms (ADR-0032): the menu, breadcrumbs and overview pass them to every label.
   forumTypes: { id: 'nav.forumTypes', defaultMessage: '{Forum} types' },
   forums: { id: 'nav.forums', defaultMessage: '{Forums}' },
+  decisions: { id: 'nav.decisions', defaultMessage: 'Decisions' },
   declarations: { id: 'nav.declarations', defaultMessage: 'Declarations of interest' },
   workflows: { id: 'nav.workflows', defaultMessage: 'Workflows' },
   doa: { id: 'nav.doa', defaultMessage: 'Delegation of authority' },
@@ -157,6 +159,16 @@ export const navigation: NavItem[] = [
     icon: UsersRound,
     group: 'work',
     audience: 'signedIn',
+    enabled: true,
+  },
+  {
+    // The decision register (Phase 4 E08 T6): members and officers in office, and oversight (design E08 §1.3).
+    id: 'decisions',
+    to: '/decisions',
+    label: messages.decisions,
+    icon: Gavel,
+    group: 'work',
+    audience: { seatOrAnyOf: ['forum.read', 'forums.manage'] },
     enabled: true,
   },
   {

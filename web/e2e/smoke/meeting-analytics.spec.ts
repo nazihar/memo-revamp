@@ -10,6 +10,9 @@ import { expect, test } from '../fixtures'
  *   member follow the figures' links; axe in English and Arabic;
  * - Demo Head of Finance, a member of the Management Credit Committee, reads their own attendance row and the
  *   committee's total, with no export.
+ * - the decision register (E08 T6, flow AS): the secretary opens Decisions from the menu, searches with a filter, sees
+ *   it as a chip, opens the export dialog (flow AT) when there is anything to export; axe in English and Arabic. The
+ *   member searches the register too, without an export.
  * The numbers depend on the seed, so the journey checks the structure, not the figures (the component tests check them).
  */
 async function toArabic(page: Page) {
@@ -94,8 +97,61 @@ test.describe('as the company secretary', () => {
   })
 })
 
+const COUNT = /^(Showing (more than )?[\d,]+ decisions?|No decisions)$/
+
+test.describe('the decision register, as the company secretary', () => {
+  test.use({ role: 'secretary' })
+
+  test('searches the register with a filter shown as a chip, and opens the export dialog', async ({ app, page }) => {
+    await app.visit('/')
+    await page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .first()
+      .getByRole('link', { name: 'Decisions', exact: true })
+      .click()
+    await expect(page.getByRole('heading', { level: 1, name: 'Decisions' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 2, name: COUNT })).toBeVisible()
+    await app.checkA11y()
+
+    const register = page.getByRole('search', { name: 'Decisions' })
+    await register.getByRole('combobox', { name: 'Committee' }).selectOption({ label: 'Management Credit Committee' })
+    await register.getByRole('button', { name: 'Search' }).click()
+    await expect(page.getByRole('heading', { level: 2, name: COUNT })).toBeFocused()
+    await expect(
+      page.getByRole('list', { name: 'Active filters' }).getByRole('button', {
+        name: 'Remove filter Committee: Management Credit Committee',
+      }),
+    ).toBeVisible()
+    await expect(page).toHaveURL(/committee=/)
+
+    const exportButton = page.getByRole('button', { name: 'Export…' })
+    await expect(exportButton).toBeVisible()
+    if (await exportButton.isEnabled()) {
+      await exportButton.click()
+      const dialog = page.getByRole('dialog', { name: 'Export decisions' })
+      await expect(dialog.getByRole('radio', { name: 'Spreadsheet (.xlsx)' })).toBeChecked()
+      await expect(dialog.getByRole('radio', { name: 'PDF' })).toBeVisible()
+      await app.checkA11y()
+      await dialog.getByRole('button', { name: 'Cancel' }).click()
+      await expect(dialog).toBeHidden()
+    }
+
+    await toArabic(page)
+    await expect(page.getByRole('heading', { level: 1, name: 'القرارات' })).toBeVisible()
+    await app.checkA11y()
+    await toEnglish(page)
+  })
+})
+
 test.describe('as a member', () => {
   test.use({ role: 'headFinance' })
+
+  test('a member searches the register of their committee, without an export', async ({ app, page }) => {
+    await app.visit('/decisions')
+    await expect(page.getByRole('heading', { level: 2, name: COUNT })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Export…' })).toHaveCount(0)
+    await app.checkA11y()
+  })
 
   test('a member reads their own attendance row and the committee total, without an export', async ({ app, page }) => {
     await app.visit('/analytics/committees')

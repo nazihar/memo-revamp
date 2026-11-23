@@ -234,13 +234,17 @@ function Row({ row }: { row: ActionReportRowResponse }) {
       </div>
       <p className="text-muted-foreground">{facts.join(' · ')}</p>
       {row.status === 'CANCELLED' && row.cancelReason ? (
-        <p>{intl.formatMessage(am.quoted, { text: row.cancelReason })}</p>
+        <p dir="auto">{intl.formatMessage(am.quoted, { text: row.cancelReason })}</p>
       ) : null}
       {row.latestUpdate ? (
         <p>
           {row.latestUpdateAt
-            ? intl.formatMessage(am.rowLatest, { date: dayOf(intl, row.latestUpdateAt), text: row.latestUpdate })
-            : intl.formatMessage(am.rowLatestUndated, { text: row.latestUpdate })}
+            ? intl.formatMessage(am.rowLatest, {
+                date: dayOf(intl, row.latestUpdateAt),
+                // The person's words in their own direction inside the reader's sentence (E07 T12).
+                text: <bdi>{row.latestUpdate}</bdi>,
+              })
+            : intl.formatMessage(am.rowLatestUndated, { text: <bdi>{row.latestUpdate}</bdi> })}
         </p>
       ) : null}
       {row.memos.length ? <RowMemos memos={row.memos} /> : null}

@@ -3,6 +3,7 @@ import {
   markHeldSendingDrafts,
   meetingWithCondition,
   openFromMyActions,
+  resolutionNumber,
   said,
 } from '../actions'
 import { expect, test } from '../fixtures'
@@ -21,7 +22,8 @@ import { pageAs } from '../roles'
  *   secretary prepares through the API (an item approved with a condition, not yet numbered); from then on everything is
  *   done on the screens: the condition made an action for Demo Director on the decision panel, sent when the meeting is
  *   marked as held (the resolution then takes its number), the director's follow-up memo raised from the action, the
- *   action marked as done, and the secretary's verification, which shows the memo, closing it.
+ *   action marked as done, and the secretary's verification, which shows the memo (that it exists and its status:
+ *   the director's draft is not the secretary's to read), closing it.
  * - **E08 T8** joins the legs into one test from the memo's creation and adds the decision register's leg (the resolution
  *   found in the register and opened on to its actions and follow-up memos). Until then the legs run on their own.
  */
@@ -42,13 +44,7 @@ test.describe('the committee cycle', () => {
     // Resolution → action: the condition becomes an action, sent when the meeting is held; the resolution is numbered.
     await conditionAsDraftAction(page, meeting)
     await markHeldSendingDrafts(page)
-    const agendaItem = page.getByRole('navigation', { name: 'Agenda' }).getByRole('button', { name: meeting.item })
-    let number = ''
-    await expect(async () => {
-      await page.reload()
-      number = /MCC\/\d{4}\/\d{3}/.exec((await agendaItem.textContent()) ?? '')?.[0] ?? ''
-      expect(number).not.toBe('')
-    }).toPass({ timeout: 60_000 })
+    const number = await resolutionNumber(page, meeting.item)
 
     // Action → follow-up memo: the director raises a General memo from the action.
     const director = await pageAs(browser, 'director')
@@ -86,7 +82,9 @@ test.describe('the committee cycle', () => {
     await page.getByRole('button', { name: 'Verify' }).click()
     const verify = page.getByRole('dialog', { name: 'Verify the action' })
     await expect(verify.getByText('Follow-up memos')).toBeVisible()
-    await expect(verify).toContainText(condition)
+    // The director's draft memo is theirs to read: the secretary sees that it exists and where it stands, not its subject.
+    await expect(verify).toContainText('A follow-up memo (you do not have access)')
+    await expect(verify).toContainText('Draft')
     await verify.getByRole('radio', { name: 'Yes: close the action' }).check()
     await checkPageA11y(page)
     await verify.getByRole('button', { name: 'Confirm' }).click()

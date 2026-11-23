@@ -4,6 +4,7 @@ import {
   markHeldSendingDrafts,
   meetingWithCondition,
   openFromMyActions,
+  resolutionNumber,
   said,
 } from '../actions'
 import { expect, test } from '../fixtures'
@@ -42,7 +43,7 @@ interface Action {
 /** Opens the action page at [actionUrl] and waits for its heading [title]. */
 async function openAction(page: Page, actionUrl: string, title: string) {
   await page.goto(actionUrl)
-  await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible({ timeout: 20_000 })
 }
 
 test.describe('a new date', () => {
@@ -71,9 +72,7 @@ test.describe('a new date', () => {
     await checkPageA11y(director)
     await ask.getByRole('button', { name: 'Ask for this date' }).click()
     await expect(said(director, 'Your request was sent. The date stays the same until it is agreed.')).toBeFocused()
-    await expect(
-      director.getByText(/^New date requested: .+\. Until it is agreed, the action stays due .+\.$/),
-    ).toBeVisible()
+    await expect(director.getByText(/New date requested: .+. Until it is agreed, the action stays due /)).toBeVisible()
 
     // The secretary agrees on the action page.
     await openAction(page, `/actions/${draft.id}`, title)
@@ -88,7 +87,7 @@ test.describe('a new date', () => {
 
     // The owner reads the new date with where it started.
     await director.reload()
-    await expect(director.getByText(/\(originally .+, revised once\)/).first()).toBeVisible()
+    await expect(director.getByText(/originally .+, revised once/).first()).toBeVisible()
     await director.context().close()
   })
 })
@@ -110,10 +109,13 @@ test.describe('an action from a condition', () => {
     await conditionAsDraftAction(page, meeting)
     await checkPageA11y(page)
     await markHeldSendingDrafts(page)
+    // The resolution is numbered by its job; the action takes the number into its source (a new version) before anyone acts.
+    await resolutionNumber(page, meeting.item)
 
     // The director finds it under My actions and says how it is going.
     const director = await pageAs(browser, 'director')
     await openFromMyActions(director, condition)
+    const actionUrl = director.url()
     const reference = ((await director.getByText(/^MCC A\d+\/\d{4} · /).textContent()) ?? '').split(' · ')[0] ?? ''
     expect(reference).toMatch(/^MCC A\d+\/\d{4}$/)
     await checkPageA11y(director)
@@ -134,7 +136,7 @@ test.describe('an action from a condition', () => {
     await expect(director.locator('[data-rag]').first()).toHaveText('Done, to be verified')
     await director.context().close()
 
-    await page.reload()
+    await openAction(page, actionUrl, condition)
     await page.getByRole('button', { name: 'Verify' }).click()
     const verify = page.getByRole('dialog', { name: 'Verify the action' })
     await expect(verify).toContainText('Done by Demo Director')

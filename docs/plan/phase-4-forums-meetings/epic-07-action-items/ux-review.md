@@ -251,4 +251,39 @@ None about the screens. Two refinements of the overview are reported (ADR-0067):
 | AP the follow-up memo | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AQ the committee type's Actions tab | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AR notifications and emails | 2026-11-21 | Delegated (Phase 4 Q1) |
-| Manual keyboard and screen-reader pass over AN and AL | — | T12 |
+| Manual keyboard and screen-reader pass over AN and AL | 2026-11-24 | The agent's keyboard and structure pass done (T12, below), two defects fixed; the screen-reader pass by a person is carried (checklist below) |
+
+## Keyboard and screen-reader pass (T12, 2026-11-24)
+Done by the agent in Chromium (Playwright, headless) against a local E2E stack with the T12 demo seed: flow AN as the company secretary on the Board Risk Committee's Actions tab, and flow AL on two action pages (the secretary on BRC A2, overdue and escalated; Demo Director on BRC A1, done and waiting for verification). The journeys `action-items.spec` and `committee-cycle.spec` drive the rest of AJ, AK, AL, AM, AO and AP with axe on every page and dialog on the way. A screen reader cannot be driven from there, so the spoken output is for a person (below).
+
+### What the agent checked, and found
+- **axe** (WCAG 2.2 A/AA, serious and critical): nothing on the tracker, the action page (owner, contributor-less owner, secretary), the update, date request, date answer, raise-a-memo, mark-as-done and verify dialogs, the decision panel's action form, and the action taken report. The journeys keep this on every run.
+- **Tab order, the tracker (AN):** after the shell and the committee page's tabs, the Actions tab panel (one stop, the ARIA tab pattern), "New action", "Export", the filters as native selects in reading order (Status, Colour, Owner, Meeting), "Search actions", "Sort by", the totals as toggle buttons read with their words and counts ("Overdue or off track: 1", "Due soon or at risk: 0", "On track: 1", "To verify: 1"), "Ask owners for an update", then each row's reference link ("BRC A2/2026"). Every control is 44 px high; a visible 2 px focus ring on every stop.
+- **Tab order, the action page (AL, AN):** "Open the meeting", then the person's own buttons ("Post an update", "Ask for a new date" or "Change the date", "Link an existing memo", "Mark as done" or "Verify"), then the officers' region ("Edit", "Record an update for the owner", "Change the owner", "Set the colour", "Keep out of the next report", "Cancel the action"). 44 px targets, the 2 px ring.
+- **Dialogs:** each opens as a modal with focus on Close; Escape closes it and focus returns to the button that opened it ("Change the owner"). After a change the page says what happened in a live region that takes focus ("Your update was posted.", "The new date was agreed. The owner is told.", "The action is closed. The owner is told.").
+- **Reflow at 400 %** (320 CSS px): nothing scrolls sideways on the tracker (rows become cards) or the action page.
+- **Colour never alone:** every colour on the tracker, the totals, the action page and the report is a word with an icon ("Overdue ▲", "Done, to be verified ◐", "Cancelled ⨯").
+
+### Defects found and fixed here
+1. **"Post an update" and "I have started" offered to a secretary who is not the owner** (flow AN on BRC A2): the server's abilities counted a secretary as able to update and start, but both endpoints take a secretary only when writing for the owner, so pressing either answered "You may not do this". `ActionAbilities.update` is now the owner or a contributor and `start` the owner (`ActionAbilityRules`); a secretary writes for the owner with "Record an update for the owner" (`updateOnBehalf`), as before.
+2. **The follow-up memo missing on the way back** (flow AP, found by `committee-cycle.spec`): after "Raise a memo", following "Raised from action …" from the new memo back to the action within five seconds showed "No memo follows up this action yet." from the cache. The dialog now stores the action the server answers with and refreshes the timeline before opening the memo (`FollowUpMemos.tsx`).
+
+### Observed, not changed
+- **The owner of an action waiting for verification** still has "Post an update" and "Ask for a new date": the server allows both until the action is verified (a date request is withdrawn when it is marked as done, not refused after).
+- **The committee page's "All committees" link** is 20 px high (E01's breadcrumb, not this epic's screens); it is a text link at the top of the page, well spaced.
+- **After the last row** focus goes to the document and then the skip link, as on every page.
+- **After moving to another page** focus starts at the top of the document, as everywhere in the app; the skip link is the first stop.
+
+### For a person with a screen reader (still to do)
+Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and Arabic. Use the demo seed: the company secretary on the Board Risk Committee's Actions tab (BRC A1–A4) and on the quarterly risk review's action taken report; Demo Director on BRC A1 (done, to be verified) and in "My actions"; Laila Arjumand (Head of Credit Risk) on MCC A1 (closed with evidence and an approved follow-up memo) and BRC A2 (overdue, escalated).
+1. **The tracker's totals** read as toggle buttons with their state ("pressed") and their words and counts; choosing one is announced by the list changing size.
+2. **The rows** read the reference, the title, the colour in words, the owner ("Head of Credit Risk (Laila Arjumand)"), and the date with "(rev. 1)" where it was moved.
+3. **The key** under the tracker and the report reads the committee's numbers ("due within 10 working days").
+4. **The action page's header** reads the reference and committee, the colour in words, "Overdue by n working days", the owner and the date with where it started.
+5. **Each dialog** reads its name, its fields' labels and hints ("What has happened?", "How is it going?" as a radio group, "New date", "Why"), and its refusal in words where focus lands.
+6. **After each change** the live region's sentence is read once.
+7. **The timeline** reads each entry in words with who wrote it and when, evidence files by name, and corrections under what they correct.
+8. **The action taken report** reads its sections in order with their counts, each row's facts, the follow-up memos "as they stand now", and "held back" to officers only.
+9. **The follow-up memo:** "Raise a memo from MCC A1/2026" reads the type chooser and the level with its confirmation; the memo page reads "Raised from action …" as a link.
+10. **Arabic:** right to left; references ("BRC A2/2026"), names and English titles keep their own direction inside Arabic sentences; the icons sit at the right end of the colour words.
+11. **Zoom and contrast by eye:** 200 % and 400 % in a real window, light and dark: the colour badges, the totals' pressed state, the focus rings.

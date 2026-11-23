@@ -247,7 +247,8 @@ class DemoMeetingSeeder(
                 )
             }
         }
-        asUser(director) { declarations.confirmReview(meeting) }
+        // Once: a later revision (E07 T12's third) leaves the director to confirm it in the app.
+        if (!asUser(director) { declarations.reviewed(meeting) }) asUser(director) { declarations.confirmReview(meeting) }
     }
 
     /** What revision 2 of the risk review changes: the appetite paper, the consent item lifted, the item that gets a late paper. */

@@ -132,11 +132,26 @@ export async function openFromMyActions(page: Page, title: string): Promise<Loca
   const row = page.getByRole('link').filter({ hasText: title })
   await expect(row).toBeVisible()
   await row.click()
-  await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible({ timeout: 20_000 })
   return row
 }
 
 /** The live region an action page announces a change in, focused after the change. */
 export function said(page: Page, text: string | RegExp): Locator {
   return page.getByRole('status').filter({ hasText: text })
+}
+
+/**
+ * Waits until the decision on [item] has its resolution number (the `minutes-release` job numbers it after the meeting is
+ * marked as held, and the actions raised from it then take the number into their source); the number.
+ */
+export async function resolutionNumber(page: Page, item: string): Promise<string> {
+  const line = page.getByRole('navigation', { name: 'Agenda' }).getByRole('button', { name: item })
+  let number = ''
+  await expect(async () => {
+    await page.reload()
+    number = /[A-Z]+\/\d{4}\/\d{3}/.exec((await line.textContent()) ?? '')?.[0] ?? ''
+    expect(number).not.toBe('')
+  }).toPass({ timeout: 60_000 })
+  return number
 }

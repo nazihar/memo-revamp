@@ -47267,12 +47267,38 @@
       "value": ": "
     },
     {
-      "type": 1,
-      "value": "noComments"
+      "type": 6,
+      "value": "noComments",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " said no comments"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " said no comments"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " no comments · "
+      "value": " · "
     },
     {
       "type": 6,
@@ -47309,12 +47335,38 @@
       "value": " · "
     },
     {
-      "type": 1,
-      "value": "notYet"
+      "type": 6,
+      "value": "notYet",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " has not answered yet"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " have not answered yet"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "minutes.v.approveOf": [
@@ -48089,12 +48141,38 @@
       "value": "The comment period has ended: "
     },
     {
-      "type": 1,
-      "value": "noComments"
+      "type": 6,
+      "value": "noComments",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " said no comments"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " said no comments"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " no comments, "
+      "value": ", "
     },
     {
       "type": 6,
@@ -48131,12 +48209,38 @@
       "value": ", "
     },
     {
-      "type": 1,
-      "value": "notYet"
+      "type": 6,
+      "value": "notYet",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " did not answer"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " did not answer"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
-      "value": " no answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "minutes.v.previousMinutes": [

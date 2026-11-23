@@ -10,9 +10,12 @@ import com.memo.workflow.internal.DoaMember
 import com.memo.workflow.internal.DoaRule
 import com.memo.workflow.internal.DoaRuleGroup
 import com.memo.workflow.internal.DoaVersions
+import com.memo.workflow.internal.InstanceStore
 import com.memo.workflow.internal.QueueMember
 import com.memo.workflow.internal.Queues
 import com.memo.workflow.internal.VersionState
+import com.memo.workflow.internal.WorkflowTimers
+import com.memo.workflow.internal.instanceOfSubject
 import org.springframework.stereotype.Service
 import tools.jackson.databind.json.JsonMapper
 import java.util.UUID
@@ -50,7 +53,24 @@ class WorkflowSeeding(
     private val directory: OrgDirectory,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
+    private val instances: InstanceStore,
+    private val timers: WorkflowTimers,
 ) {
+    /**
+     * Brings the timers of the running instance of [subjectType] [subjectId] up to now, as if the engine had run while its
+     * due time passed (Phase 4 E07 T12: an action issued as at a past meeting, its date long gone): the due time fires,
+     * and, with [escalate], the escalation its step names fires at once (the reminders in between are skipped, as they are
+     * for any due time already past). How many timers fired; 0 without a running instance.
+     */
+    fun catchUp(
+        subjectType: String,
+        subjectId: UUID,
+        escalate: Boolean,
+    ): Int {
+        val instance = tx { instances.instanceOfSubject(subjectType, subjectId) } ?: return 0
+        return timers.catchUp(instance, escalate)
+    }
+
     /** Whether the tenant has a definition called [key]. */
     fun exists(key: String): Boolean = tx { versions.definition(key) != null }
 

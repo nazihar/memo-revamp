@@ -87,6 +87,8 @@ class ActionAccessArchTest {
                 // T7: the report's builder (at publication), holding back, and the update requests (the daily task and the button).
                 """internal\.(ActionReports|ActionReportHolds|ActionUpdateRequests)""",
                 """subject\.(ActionItemSubject|ActionSlots)""",
+                // T12: the seeders' facade (the demo tenant), which finds what it made by its title.
+                """ActionSeeding""",
             ).joinToString("|", prefix = """com\.memo\.actions\.(""", postfix = """)(\$.*)?""")
     }
 

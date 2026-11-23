@@ -61,6 +61,10 @@ import java.util.UUID
  * the committee's decision moves the memo on with its resolution number to the delegation of authority (Demo Director
  * and the head of finance's seat, neither of whom acted on it at the desk).
  *
+ * Phase 4 E07 T12 ([DemoActionsSeeder]) adds action items on the two held meetings (from a condition of MCC/…/001, from
+ * the discussion of two BRC items, and directly), a follow-up memo, and a third revision of the quarterly risk review
+ * with its action taken report.
+ *
  * Dates are relative to the day of seeding, so on a long-lived environment the meetings drift into the past. Fills gaps
  * only: a meeting already there (by its title, in any state) is left as it is. Needs the files service (scanner) and the
  * demo password (the people acting must exist with sign-in), like the demo memos.
@@ -73,6 +77,7 @@ class DemoMeetingSeeder(
     private val e05: DemoMeetingAttendanceSeeder,
     private val e06Held: DemoHeldRiskReviewSeeder,
     private val e06: DemoMinutesSeeder,
+    private val e07: DemoActionsSeeder,
     private val memos: MemoSeeding,
     private val memoAccess: MemoAccessSeeding,
     private val forums: ForumSeeding,
@@ -102,6 +107,7 @@ class DemoMeetingSeeder(
             asUser(ids.getValue(SECRETARY)) { meetings.find(credit, HELD_TITLE) }
                 ?: e05.heldCreditReview(ids, credit, today, meghnaSubmission(ids))
         e06.seed(ids, heldRisk, held)
+        e07.seed(ids, risk to credit, heldRisk, held, riskMeeting)
         log.info("Demo meetings seeded")
         return Seeded(riskMeeting, creditMeeting, held, heldRisk)
     }

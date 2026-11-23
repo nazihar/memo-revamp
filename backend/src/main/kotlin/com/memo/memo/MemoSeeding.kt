@@ -52,6 +52,9 @@ class MemoSeeding(
     /** Whether [initiator] has created any memo yet (seeders run once per tenant). */
     fun hasMemos(initiator: UUID): Boolean = tx { lists.anyOf(initiator) }
 
+    /** The built-in General memo type. */
+    fun generalType(): UUID = tx { types.active().first { it.key == MemoTypeStore.GENERAL }.id }
+
     /**
      * A draft of [typeId] (the built-in General type when null), classified at [rank], with the values of its type's fields
      * in [metadata] (as the API takes them; Phase 4 E03 T9).

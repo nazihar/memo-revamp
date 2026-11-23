@@ -69,6 +69,10 @@ export const ao = plain(
     dueDate: { id: 'actionsOfficer.form.dueDate', defaultMessage: 'Date' },
     dueHint: { id: 'actionsOfficer.form.dueHint', defaultMessage: 'Type a date or pick one.' },
     dueQuick: { id: 'actionsOfficer.form.dueQuick', defaultMessage: 'Quick picks' },
+    dueSuggested: {
+      id: 'actionsOfficer.form.dueSuggested',
+      defaultMessage: 'In {days, plural, one {# working day} other {# working days}} (the {forum}’s usual)',
+    },
     in2Weeks: { id: 'actionsOfficer.form.in2Weeks', defaultMessage: 'In two weeks' },
     in1Month: { id: 'actionsOfficer.form.in1Month', defaultMessage: 'In a month' },
     in3Months: { id: 'actionsOfficer.form.in3Months', defaultMessage: 'In three months' },
@@ -454,6 +458,10 @@ export const ao = plain(
     },
     exportFailed: { id: 'actionsOfficer.tracker.exportFailed', defaultMessage: 'The export did not work. Try again.' },
     askUpdates: { id: 'actionsOfficer.tracker.ask', defaultMessage: 'Ask owners for an update' },
+    askedToday: {
+      id: 'actionsOfficer.tracker.askedToday',
+      defaultMessage: 'Owners were asked for an update today. You can ask again tomorrow.',
+    },
     asked: {
       id: 'actionsOfficer.tracker.asked',
       defaultMessage:

@@ -1888,6 +1888,20 @@
       "value": "EvidenceSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "actions.files.evidenceRequired": [
+    {
+      "type": 0,
+      "value": "Evidence is required by this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ": attach at least one file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "actions.files.hint": [
     {
       "type": 0,
@@ -2314,6 +2328,46 @@
     {
       "type": 0,
       "value": "withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.overdueBy": [
+    {
+      "type": 0,
+      "value": "Overdue by "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "actions.page.also": [
@@ -3263,6 +3317,64 @@
     {
       "type": 0,
       "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.memo": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.memoUnnumbered": [
+    {
+      "type": 0,
+      "value": "Memo not yet numbered: "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actions.report.row.memos": [
+    {
+      "type": 0,
+      "value": "Follow-up memos, as they stand nowSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "actions.report.row.owner": [
@@ -4508,6 +4620,54 @@
       "value": "Quick picksSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "actionsOfficer.form.dueSuggested": [
+    {
+      "type": 0,
+      "value": "In "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s usual)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "actionsOfficer.form.editDraft": [
     {
       "type": 0,
@@ -5582,6 +5742,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "actionsOfficer.tracker.askedToday": [
+    {
+      "type": 0,
+      "value": "Owners were asked for an update today. You can ask again tomorrow.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "actionsOfficer.tracker.col.action": [

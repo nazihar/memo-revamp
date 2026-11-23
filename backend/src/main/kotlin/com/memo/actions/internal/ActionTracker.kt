@@ -82,6 +82,7 @@ class ActionTracker(
     private val policies: ForumPolicies,
     private val org: OrgDirectory,
     private val audit: AuditLog,
+    private val reports: ActionReportStore,
 ) {
     fun page(
         forumId: UUID,
@@ -118,7 +119,17 @@ class ActionTracker(
                     all = counts.all,
                 ),
             key = ActionRagKey(policy.amberWorkingDays, policy.staleWorkingDays.takeIf { it != ActionsPolicy.OFF }),
-            can = TrackerAbilities(raise = viewer.manages(forumId), export = exports(viewer, forumId)),
+            can =
+                viewer.manages(forumId).let { manages ->
+                    // "Ask owners for an update": ActionUpdateRequests.askNow's rule, once a day per committee.
+                    val asked = manages && reports.askedOn(forumId, today)
+                    TrackerAbilities(
+                        raise = manages,
+                        export = exports(viewer, forumId),
+                        askForUpdates = manages && !asked,
+                        askedToday = asked,
+                    )
+                },
         )
     }
 

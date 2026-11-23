@@ -26,7 +26,7 @@ export function ActionReportLinks({ links }: { links: ItemLink[] | undefined }) 
               date: l.at ? intl.formatDate(l.at, { day: 'numeric', month: 'long' }) : '',
             })}
           </p>
-          <p>{countsLine(intl, l.label ?? '')}</p>
+          <p>{countsLine(intl, l)}</p>
           <div className="print:hidden">
             <Button asChild variant="outline" className="min-h-11 text-base">
               <Link to="/meetings/$meetingId/action-report" params={{ meetingId: l.meetingId ?? '' }}>

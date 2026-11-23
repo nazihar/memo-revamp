@@ -59,6 +59,29 @@ class ActionMemoViews(
         }
     }
 
+    /**
+     * The follow-up memos of each of [actionIds] that the signed-in reader may read now (the action taken report's rows,
+     * design E07 §1.12): by the memo's own read rule ([MemoReaders.readable]), at read time, so each reader sees only the
+     * memos they may open and nothing of the others, not even that there is one.
+     */
+    fun readableOf(actionIds: Collection<UUID>): Map<UUID, List<ReportMemoResponse>> {
+        val links = memoLinks.ofActions(actionIds)
+        if (links.isEmpty()) return emptyMap()
+        val readable =
+            readers.readable(
+                links.values
+                    .flatten()
+                    .map { it.memoId }
+                    .toSet(),
+            )
+        return links
+            .mapValues { (_, rows) ->
+                rows.mapNotNull { link ->
+                    readable[link.memoId]?.let { ReportMemoResponse(link.memoId, link.kind, it.reference, it.subject, it.status) }
+                }
+            }.filterValues { it.isNotEmpty() }
+    }
+
     /** Whether [viewer] may raise a follow-up memo from [row] now. */
     fun mayRaise(
         viewer: ActionViewer,

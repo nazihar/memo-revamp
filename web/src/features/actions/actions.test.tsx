@@ -75,6 +75,7 @@ const can = (over: Partial<ActionAbilities> = {}): ActionAbilities => ({
   update: false,
   updateOnBehalf: false,
   verify: false,
+  holdBack: false,
   ...over,
 })
 
@@ -109,6 +110,7 @@ const action = (over: Partial<ActionResponse> = {}): ActionResponse => ({
   priority: 'NORMAL',
   rag: { colour: 'RED', word: 'OVERDUE' },
   reopenCount: 0,
+  evidenceRequired: false,
   source: {
     kind: 'DECISION',
     label: 'BRC 3/2026, item 7 — Resolution BRC/2026/011',
@@ -234,10 +236,16 @@ const mine: MyActionsResponse = {
   tab: 'MINE',
   counts: { mine: 3, toVerify: 2, contributing: 1 },
   nextCursor: null,
+  // The two committees count "due soon" differently, so the key says it in words only.
+  keys: [
+    { forumId: 'f1', amberWorkingDays: 10, staleWorkingDays: 20 },
+    { forumId: 'f2', amberWorkingDays: 5, staleWorkingDays: 20 },
+  ],
   items: [
     summary(),
     summary({
       id: 'a2',
+      forumId: 'f2',
       committee: 'Management Credit Committee',
       reference: 'MCC A1/2026',
       title: 'Report covenant compliance quarterly',
@@ -322,6 +330,14 @@ describe('My actions in the inbox (Phase 4 E07 T11, flow AK)', () => {
       await screen.findByText('You have no actions. Actions given to you by a committee will appear here.'),
     ).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'My actions', selected: true })).toBeInTheDocument()
+  })
+
+  it('states the key’s number when every committee listed counts “due soon” alike', async () => {
+    server.use(myActionsHandler({ ...mine, keys: [{ forumId: 'f1', amberWorkingDays: 10, staleWorkingDays: 20 }] }))
+    renderRoute('/inbox?tab=actions')
+    expect(
+      await screen.findByText('Due within 10 working days, at risk, or no recent update', {}, { timeout: 5000 }),
+    ).toBeInTheDocument()
   })
 
   it('loads the actions part with the inbox, the action page and the report, never in core', () => {
@@ -536,6 +552,39 @@ describe('the action page (Phase 4 E07 T11, flow AL)', () => {
     expect(sent[1]?.body).toEqual({ note: 'Plan revised and approved by ALCO.', fileIds: ['f-plan.pdf'] })
     expect(screen.getAllByText('Done, to be verified')[0]?.closest('[data-rag]')).toHaveAttribute('data-rag', 'BLUE')
     expect(screen.queryByRole('button', { name: 'Mark as done' })).toBeNull()
+  })
+
+  it('says before sending that this committee requires evidence, and by how many working days it is overdue', async () => {
+    const { sent, answer } = actionPage(action({ evidenceRequired: true, overdueWorkingDays: 3 }))
+    answer('done', () => action({ version: 5, status: 'DONE_PENDING', rag: { colour: 'BLUE', word: 'TO_VERIFY' } }))
+    const user = userEvent.setup()
+    renderRoute('/actions/a1')
+    expect(await screen.findByText('Overdue by 3 working days', {}, { timeout: 5000 })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Mark as done' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Mark as done' })
+    expect(
+      within(dialog).getByText('Evidence is required by this committee: attach at least one file.'),
+    ).toBeInTheDocument()
+    await user.type(within(dialog).getByRole('textbox', { name: /What was done/ }), 'Plan revised.')
+    await user.click(within(dialog).getByRole('button', { name: 'Mark as done' }))
+    expect(await within(dialog).findByText('This committee asks for evidence: attach the files.')).toBeInTheDocument()
+    expect(sent).toHaveLength(0)
+    await user.upload(
+      within(dialog).getByLabelText('Evidence'),
+      new File(['%PDF'], 'plan.pdf', { type: 'application/pdf' }),
+    )
+    await within(dialog).findByText('plan.pdf is attached.')
+    await user.click(within(dialog).getByRole('button', { name: 'Mark as done' }))
+    await waitFor(() => {
+      expect(sent[0]?.body).toEqual({ note: 'Plan revised.', fileIds: ['f-plan.pdf'] })
+    })
+  })
+
+  it('says “Overdue” without a number when no working day has passed since the due date', async () => {
+    actionPage(action({ overdueWorkingDays: 0 }))
+    renderRoute('/actions/a1')
+    expect(await screen.findByRole('heading', { level: 1 }, { timeout: 5000 })).toBeInTheDocument()
+    expect(screen.queryByText(/^Overdue by/)).toBeNull()
   })
 
   it('words the holder rule (403 NOT_HOLDER) and reloads an action that moved on (409 WRONG_STATE)', async () => {

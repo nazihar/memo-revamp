@@ -33,6 +33,9 @@ export function MyActions({ list = 'mine', onList }: { list?: MyActionsList; onL
   })
   const counts = actions.data?.pages[0]?.counts
   const items = actions.data?.pages.flatMap((p) => p.items) ?? []
+  // The key states the number when every committee listed counts "due soon" alike; else it says it in words only.
+  const ambers = new Set(actions.data?.pages.flatMap((p) => p.keys.map((k) => k.amberWorkingDays)) ?? [])
+  const amberWorkingDays = ambers.size === 1 ? [...ambers][0] : undefined
   const label = (l: MyActionsList) =>
     intl.formatMessage(l === 'mine' ? am.listMine : l === 'verify' ? am.listVerify : am.listInvolved, {
       count: counts ? (l === 'mine' ? counts.mine : l === 'verify' ? counts.toVerify : counts.contributing) : 0,
@@ -86,7 +89,7 @@ export function MyActions({ list = 'mine', onList }: { list?: MyActionsList; onL
           ) : null}
         </>
       )}
-      <RagKey />
+      <RagKey amberWorkingDays={amberWorkingDays} />
     </div>
   )
 }

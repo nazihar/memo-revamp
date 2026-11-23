@@ -20,6 +20,7 @@ import com.memo.meeting.PaperAccess
 import com.memo.meeting.PaperExclusions
 import com.memo.meeting.Recusals
 import com.memo.org.OrgDirectory
+import com.memo.workflow.WorkingDays
 import org.jooq.Condition
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
@@ -67,6 +68,7 @@ class ActionAccess(
     private val files: Files,
     private val memoViews: ActionMemoViews,
     private val rule: ActionRuleConditions,
+    private val workingDays: WorkingDays,
 ) {
     /** The action [actionId] as the actor may see it; 404 when they may not (never 403: its existence is not revealed). */
     fun action(actionId: UUID): ActionResponse {
@@ -158,6 +160,11 @@ class ActionAccess(
         val page = rows.take(size)
         val next = if (rows.size > size) page.last().first.let { Cursors.encode(day(checkNotNull(it.dueDate)), it.id) } else null
         val counts = conditions.mapValues { (_, it) -> tenantDsl.current().fetchCount(a, it) }
+        val keys =
+            page.map { it.first.forumId }.distinct().map { forum ->
+                val policy = policies.current(forum)?.actions ?: ActionsPolicy()
+                CommitteeRagKey(forum, policy.amberWorkingDays, policy.staleWorkingDays.takeIf { it != ActionsPolicy.OFF })
+            }
         return MyActionsResponse(
             tab,
             summaries(page),
@@ -167,6 +174,7 @@ class ActionAccess(
                 counts.getValue(MyActionsTab.TO_VERIFY),
                 counts.getValue(MyActionsTab.CONTRIBUTING),
             ),
+            keys,
         )
     }
 
@@ -176,6 +184,53 @@ class ActionAccess(
         actionId: UUID,
         forumId: UUID,
     ): Boolean = tenantDsl.current().fetchExists(ACTIONS_ITEM, ACTIONS_ITEM.ID.eq(actionId).and(seen(viewer, forumId)))
+
+    /**
+     * Of [actionIds] of [forumId], those [viewer] may verify now, by [ActionClosure.verify]'s rule (the report's "Close the
+     * actions the committee agreed", design E07 §1.9): seen, done and awaiting verification, its verification theirs to
+     * hold or claim, not its owner, holder or a contributor, and not recused from its item. One query.
+     */
+    fun verifiable(
+        viewer: ActionViewer,
+        forumId: UUID,
+        actionIds: Collection<UUID>,
+    ): Set<UUID> {
+        val tasks = viewer.tasks().intersect(actionIds.toSet())
+        if (tasks.isEmpty()) return emptySet()
+        val a = ACTIONS_ITEM
+        val c = ACTIONS_CONTRIBUTOR
+        val contributes =
+            DSL.exists(
+                DSL
+                    .selectOne()
+                    .from(c)
+                    .where(c.TENANT_ID.eq(a.TENANT_ID), c.ACTION_ID.eq(a.ID), c.USER_ID.eq(viewer.userId), c.REMOVED_AT.isNull),
+            )
+        // Null-safe, so that NOT of it holds for an action without a holder or a person owner.
+        val owns =
+            DSL.or(
+                listOfNotNull(
+                    a.HOLDER_USER_ID.isNotDistinctFrom(viewer.userId),
+                    a.OWNER_USER_ID.isNotDistinctFrom(viewer.userId),
+                    viewer.positions.takeIf { it.isNotEmpty() }?.let { a.OWNER_POSITION_ID.isNotNull.and(a.OWNER_POSITION_ID.`in`(it)) },
+                ),
+            )
+        val recused = a.ITEM_ID.isNotNull.and(exclusions.excluded(viewer.userId, a.ITEM_ID, a.ITEM_PARENT_ID))
+        return tenantDsl
+            .current()
+            .select(a.ID)
+            .from(a)
+            .where(
+                a.ID.`in`(tasks),
+                a.STATUS.eq(ActionStatus.DONE_PENDING.name),
+                seen(viewer, forumId),
+                owns.not(),
+                contributes.not(),
+                recused.not(),
+            ).fetchSet(a.ID)
+            .filterNotNull()
+            .toSet()
+    }
 
     /** Whether [viewer] is recused from the source item of the action [actionId] (ADR-0062). */
     fun recused(
@@ -259,6 +314,8 @@ class ActionAccess(
             supersededBy = row.supersededBy,
             closedAt = row.closedAt,
             reopenCount = row.reopenCount,
+            evidenceRequired = policy.evidenceRequired,
+            overdueWorkingDays = overdueWorkingDays(row, today, workingDays, org.zone()),
         )
     }
 
@@ -462,3 +519,18 @@ private fun sourceOf(
     decisionId = row.decisionId,
     conditionIndex = row.conditionIndex,
 )
+
+/**
+ * The working days [row] is overdue by on the tenant's business calendar (the colours' calendar, [workingDays]), counted
+ * from the day after its due date to [today]; null when it is not overdue (design E07 §1.4: open or in progress, past its
+ * date, whatever colour was set by hand).
+ */
+private fun overdueWorkingDays(
+    row: ActionRow,
+    today: LocalDate,
+    workingDays: WorkingDays,
+    zone: java.time.ZoneId,
+): Int? =
+    row.dueDate
+        ?.takeIf { row.status in ActionChecks.UNDERWAY && RagTest.PastDue.holds(row.ragFacts, today) }
+        ?.let { workingDays.since(it.atStartOfDay(zone).toInstant()) }

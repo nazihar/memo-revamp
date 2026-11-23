@@ -32,13 +32,21 @@ async function press(target: Locator) {
   await target.press('Enter')
 }
 
-/** Reads the minutes page again until [text] shows (the draft job and the structure check run in the background). */
+/** Reads the minutes page again until [text] shows, each visit waiting a moment for the page to load what it reads. */
 async function until(page: Page, path: string, text: string | RegExp) {
   await expect
     .poll(
       async () => {
         await page.goto(path)
-        return page.getByText(text).first().isVisible()
+        // isVisible() does not wait: give the page (and its comments) time to load after each visit.
+        return page
+          .getByText(text)
+          .first()
+          .waitFor({ timeout: 5_000 })
+          .then(
+            () => true,
+            () => false,
+          )
       },
       { timeout: 60_000, intervals: [2_000] },
     )

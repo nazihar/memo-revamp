@@ -251,6 +251,7 @@ describe('declaring an interest on the meeting page (Phase 4 E04 T6, flow S)', (
       'meetingReplies',
       'meetingAttendance',
       'declarations',
+      'minutes',
       'actions',
       'actionLinks',
       'decisions',

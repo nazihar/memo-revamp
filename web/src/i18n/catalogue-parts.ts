@@ -18,6 +18,8 @@ export type CataloguePart =
   | 'meetingReplies'
   | 'meetingAttendance'
   | 'declarations'
+  | 'minutes'
+  | 'minutesToRead'
   | 'mySecurity'
   | 'notificationKinds'
   | 'platform'

@@ -47,6 +47,10 @@ class MinutesApprovalIT : MinutesFixture() {
         val link = linksOf(b.meeting.id, item, director).single()
         assertThat(link["kind"].asString() to link["meetingId"].asString()).isEqualTo("MINUTES" to m.toString())
         assertThat(link["label"].asString()).startsWith("Minutes of ")
+        // The meeting's own fields, for the client's words in the reader's language (E06 T11).
+        val earlier = read("/api/v1/meetings/$m", director.session).json()
+        assertThat(listOf("meetingLabel", "meetingStartsAt", "meetingTimeZone").map { link[it]?.asString() })
+            .containsExactly(earlier["label"]?.asString(), earlier["startsAt"].asString(), earlier["timeZone"].asString())
         // Its readers read the minutes from there.
         assertThat(read("/api/v1/meetings/$m/minutes", director.session)).hasStatusOk()
 

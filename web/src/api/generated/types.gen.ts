@@ -2288,6 +2288,9 @@ export type ItemLink = {
     kind?: string;
     label?: string;
     meetingId?: string;
+    meetingLabel?: string | null;
+    meetingStartsAt?: string | null;
+    meetingTimeZone?: string | null;
     state?: string | null;
 };
 
@@ -3283,9 +3286,11 @@ export type MinutesResponse = {
     copies: Array<MinutesCopySetResponse>;
     correctedAt?: string | null;
     draft?: MinutesDraftResponse | null;
+    editFileId?: string | null;
     forumId: string;
     heldAt?: string | null;
     items: Array<MinutesItemResponse>;
+    lastReview?: MinutesReviewNoteResponse | null;
     linkedMeeting?: MinutesMeetingResponse | null;
     mayCirculate: boolean;
     mayComment: boolean;
@@ -3308,6 +3313,15 @@ export type MinutesResponse = {
     viewerAccess: 'MANAGER' | 'REVIEWER' | 'READER' | 'LINKED';
     viewerRecused: boolean;
     work?: MinutesWorkResponse | null;
+};
+
+export type MinutesReviewNoteResponse = {
+    at: string;
+    by: MinutesPerson;
+    comment?: string | null;
+    decision: 'AGREE' | 'RETURN';
+    how?: 'EMAIL' | 'PHONE' | 'IN_PERSON' | 'OTHER';
+    onBehalfBy?: MinutesPerson | null;
 };
 
 export type MinutesReviewRequest = {

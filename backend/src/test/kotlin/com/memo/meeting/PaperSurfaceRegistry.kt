@@ -26,7 +26,9 @@ package com.memo.meeting
  * (the list to MINUTES_COPIES, the approver's answer to MINUTES, a secretary's proposal with recusal columns) and the
  * certified extracts (EXTRACTS: a resolution's extracts and one extract's PDF/A; issuing one is an officer's, with an
  * officer probe). E07 T7 added the action taken report (ACTION_REPORT: on screen and as a PDF), holding an action
- * back from it (recusal columns) and "Ask owners for an update" (an officer probe).
+ * back from it (recusal columns) and "Ask owners for an update" (an officer probe). The E07 follow-up added the follow-up
+ * memos to ACTION_REPORT's rows (joined per reader by the memo's read rule; [PaperLeakIT] plants one nobody probed reads)
+ * and the suggested due date (an officer probe).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -299,6 +301,9 @@ object PaperSurfaceRegistry {
                     "holding an action back from the next report (E07 T7): secretaries not recused (recusal columns)",
                 "POST /api/v1/forums/{forumId}/actions/ask-for-updates" to
                     "asking owners for an update (E07 T7): secretaries; only the actions they see by the rule (officer probe)",
+                "GET /api/v1/forums/{forumId}/actions/suggested-due" to
+                    "the committee type's suggested due date (E07 follow-up): secretaries; a date and a meeting id, no item " +
+                    "(officer probe)",
             ) +
             listOf(
                 "POST /api/v1/meetings/{meetingId}/minutes/send-for-review",

@@ -15,10 +15,12 @@ import com.memo.jooq.tables.references.ACTIONS_DIGEST
 import com.memo.notification.NotificationKind
 import com.memo.notification.NotificationLog
 import com.memo.notification.Notifications
+import com.memo.notification.Recipient
 import com.memo.notification.RecipientLookup
 import com.memo.notification.SentNotification
 import com.memo.org.OrgDirectory
 import com.memo.tenancy.TenancyProperties
+import com.memo.tenancy.Tenant
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.workflow.WorkingDays
@@ -66,13 +68,40 @@ class ActionDigestStore(
             .execute() == 1
     }
 
+    /** Records each of [users]' digest of [day], [RECORD_CHUNK] a statement; those who did not have it already. */
+    fun recordAll(
+        users: Collection<UUID>,
+        day: LocalDate,
+        at: Instant,
+    ): Set<UUID> {
+        val d = ACTIONS_DIGEST
+        val tenant = tenantDsl.tenant().value
+        val sentAt = at.atOffset(ZoneOffset.UTC)
+        return users
+            .distinct()
+            .chunked(RECORD_CHUNK)
+            .flatMap { chunk ->
+                chunk
+                    .fold(tenantDsl.current().insertInto(d, d.TENANT_ID, d.USER_ID, d.DAY, d.SENT_AT)) { insert, user ->
+                        insert.values(tenant, user, day, sentAt)
+                    }.onConflictDoNothing()
+                    .returning(d.USER_ID)
+                    .fetch(d.USER_ID)
+                    .filterNotNull()
+            }.toSet()
+    }
+
     /** Whether the tenant's digest of [day] is done. */
     fun complete(day: LocalDate): Boolean =
         tenantDsl.current().fetchExists(ACTIONS_DIGEST, ACTIONS_DIGEST.USER_ID.eq(COMPLETE), ACTIONS_DIGEST.DAY.eq(day))
 
-    /** Each of [users]' latest digest day before [day]. */
+    /**
+     * Each of [users]' latest digest day before [day], from [from] on (the digest's lookback: an earlier one changes nothing),
+     * read by day (`actions_digest_day_idx`).
+     */
     fun lastDays(
         users: Collection<UUID>,
+        from: LocalDate,
         day: LocalDate,
     ): Map<UUID, LocalDate> {
         if (users.isEmpty()) return emptyMap()
@@ -81,7 +110,7 @@ class ActionDigestStore(
             .current()
             .select(d.USER_ID, DSL.max(d.DAY))
             .from(d)
-            .where(d.USER_ID.`in`(users), d.DAY.lt(day))
+            .where(d.USER_ID.`in`(users), d.DAY.ge(from), d.DAY.lt(day))
             .groupBy(d.USER_ID)
             .fetch { (user, last) -> checkNotNull(user) to checkNotNull(last) }
             .toMap()
@@ -108,6 +137,9 @@ class ActionDigestStore(
 
         /** The key of the day's first run, which runs the safety net. */
         val STARTED: UUID = UUID(0, 1)
+
+        /** Digest keys written in one statement. */
+        private const val RECORD_CHUNK = 1_000
     }
 }
 
@@ -187,28 +219,30 @@ class ActionsDaily(
         val floor = cutoff.minus(LOOKBACK)
         val written = log.written(DIGEST_KINDS, floor, cutoff, ITEMS_MAX).groupBy { it.userId }.toSortedMap()
         val had = digests.had(written.keys, today)
-        val last = digests.lastDays(written.keys, today)
-        var sent = 0
-        var complete = true
-        for ((user, notes) in written.filterKeys { it !in had }) {
-            if (sent >= PEOPLE_MAX) {
-                complete = false
-                break
-            }
-            val since = last[user]?.atTime(DIGEST_TIME)?.atZone(zone)?.toInstant() ?: floor
-            val news = notes.filter { !it.createdAt.isBefore(since) }
-            if (news.isNotEmpty() && digests.record(user, today, now) && send(user, news)) sent++
-        }
-        return sent to complete
+        // A digest before the lookback's first day leaves the window at [floor], as no digest does.
+        val last = digests.lastDays(written.keys, floor.atZone(zone).toLocalDate(), today)
+        val due =
+            written
+                .filterKeys { it !in had }
+                .mapNotNull { (user, notes) ->
+                    val since = last[user]?.atTime(DIGEST_TIME)?.atZone(zone)?.toInstant() ?: floor
+                    notes.filter { !it.createdAt.isBefore(since) }.takeIf { it.isNotEmpty() }?.let { user to it }
+                }
+        // At most PEOPLE_MAX a run; their keys and addresses read and written a chunk at a time, the organisation once.
+        val batch = due.take(PEOPLE_MAX)
+        val recorded = digests.recordAll(batch.map { it.first }, today, now)
+        val found = recipients.recipients(recorded)
+        val tenant = registry.current()
+        val sent = batch.count { (user, news) -> user in recorded && found[user]?.also { send(it, news, tenant) } != null }
+        return sent to (due.size <= PEOPLE_MAX)
     }
 
-    /** One digest to [user] with [news]: their references by kind in their language; false for nobody to send to. */
+    /** One digest to [recipient] with [news] from [tenant]: their references by kind in their language. */
     private fun send(
-        user: UUID,
+        recipient: Recipient,
         news: List<SentNotification>,
-    ): Boolean {
-        val recipient = recipients.recipient(user) ?: return false
-        val tenant = registry.current()
+        tenant: Tenant?,
+    ) {
         val locale = localeOf(recipient.locale)
         val params =
             mapOf(
@@ -217,7 +251,6 @@ class ActionsDaily(
                 "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + MY_ACTIONS),
             )
         notifications.notify(recipient, NotificationKind.ACTIONS_DIGEST, params)
-        return true
     }
 
     /** The recipient's language if the digest has texts for it, else the tenant's default, else English (as the mail's). */

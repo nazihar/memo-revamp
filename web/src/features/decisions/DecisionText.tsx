@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { CircleCheck } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 import type { DecisionResponse } from '@/api/generated/types.gen'
 import { dm, dmv } from './messages'
@@ -11,7 +12,16 @@ import { outcomeLine } from './shared'
  * that their dissent be recorded, who abstained and who took no part. A reader recused from the item (ADR-0062) is told
  * so first and gets no vote or names: the server leaves them out. A numbered decision links to its resolution.
  */
-export function DecisionText({ decision: d, timeZone }: { decision: DecisionResponse; timeZone: string }) {
+export function DecisionText({
+  decision: d,
+  timeZone,
+  conditionAction,
+}: {
+  decision: DecisionResponse
+  timeZone: string
+  /** Beside each condition (E07 T10, flow AJ1): "Make this an action" for the secretaries. */
+  conditionAction?: (index: number) => ReactNode
+}) {
   const intl = useIntl()
   const day = (date: string) => intl.formatDate(`${date}T12:00:00Z`, { dateStyle: 'long', timeZone: 'UTC' })
   const vote = d.vote?.mode === 'VOTE' ? d.vote : undefined
@@ -27,7 +37,10 @@ export function DecisionText({ decision: d, timeZone }: { decision: DecisionResp
       {d.conditions.length ? (
         <ol className="list-decimal ps-8">
           {d.conditions.map((c, i) => (
-            <li key={i}>{c}</li>
+            <li key={i}>
+              {c}
+              {conditionAction?.(i)}
+            </li>
           ))}
         </ol>
       ) : null}

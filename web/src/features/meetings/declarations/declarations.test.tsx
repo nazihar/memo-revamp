@@ -252,7 +252,10 @@ describe('declaring an interest on the meeting page (Phase 4 E04 T6, flow S)', (
       'meetingAttendance',
       'declarations',
       'minutes',
+      'actions',
+      'actionLinks',
       'decisions',
+      'actionsOfficer',
     ])
     const declare = await screen.findByRole('button', { name: 'Declare an interest: 5 Term loan, Delta Textiles' })
     await user.click(declare)

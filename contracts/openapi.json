@@ -36,6 +36,9 @@
           "edit" : {
             "type" : "boolean"
           },
+          "holdBack" : {
+            "type" : "boolean"
+          },
           "issue" : {
             "type" : "boolean"
           },
@@ -70,7 +73,7 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "acceptRisk", "cancel", "changeDue", "changeOwner", "confidence", "decideDue", "discard", "edit", "issue", "linkMemo", "markDone", "overrideRag", "raiseMemo", "reopen", "requestDue", "start", "update", "updateOnBehalf", "verify" ],
+        "required" : [ "acceptRisk", "cancel", "changeDue", "changeOwner", "confidence", "decideDue", "discard", "edit", "holdBack", "issue", "linkMemo", "markDone", "overrideRag", "raiseMemo", "reopen", "requestDue", "start", "update", "updateOnBehalf", "verify" ],
         "type" : "object"
       },
       "ActionDoneRequest" : {
@@ -364,6 +367,15 @@
         "required" : [ "colour", "word" ],
         "type" : "object"
       },
+      "ActionReportAbilities" : {
+        "properties" : {
+          "closeAgreed" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "closeAgreed" ],
+        "type" : "object"
+      },
       "ActionReportCorrectionResponse" : {
         "properties" : {
           "approvedAt" : {
@@ -383,6 +395,9 @@
             "format" : "date-time",
             "type" : "string"
           },
+          "can" : {
+            "$ref" : "#/components/schemas/ActionReportAbilities"
+          },
           "committee" : {
             "type" : "string"
           },
@@ -397,6 +412,9 @@
           "itemId" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "key" : {
+            "$ref" : "#/components/schemas/ActionRagKey"
           },
           "meetingId" : {
             "format" : "uuid",
@@ -441,7 +459,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "builtAt", "committee", "forumId", "itemId", "meetingId", "more", "reportId", "revision", "revisions", "sections", "summary" ],
+        "required" : [ "builtAt", "can", "committee", "forumId", "itemId", "key", "meetingId", "more", "reportId", "revision", "revisions", "sections", "summary" ],
         "type" : "object"
       },
       "ActionReportRowResponse" : {
@@ -449,6 +467,9 @@
           "actionId" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "canClose" : {
+            "type" : "boolean"
           },
           "cancelKind" : {
             "enum" : [ "NO_LONGER_NEEDED", "SUPERSEDED", "RISK_ACCEPTED", "DISCARDED", "DUPLICATE" ],
@@ -487,6 +508,12 @@
             "format" : "date-time",
             "type" : [ "string", "null" ]
           },
+          "memos" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReportMemoResponse"
+            },
+            "type" : "array"
+          },
           "originalDueDate" : {
             "format" : "date",
             "type" : [ "string", "null" ]
@@ -511,7 +538,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "actionId", "dueRevisions", "owner", "rag", "reference", "sourceLabel", "status", "title" ],
+        "required" : [ "actionId", "canClose", "dueRevisions", "memos", "owner", "rag", "reference", "sourceLabel", "status", "title" ],
         "type" : "object"
       },
       "ActionReportSectionResponse" : {
@@ -595,6 +622,9 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "evidenceRequired" : {
+            "type" : "boolean"
+          },
           "forumId" : {
             "format" : "uuid",
             "type" : "string"
@@ -620,6 +650,10 @@
           "originalDueDate" : {
             "format" : "date",
             "type" : [ "string", "null" ]
+          },
+          "overdueWorkingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
           },
           "owner" : {
             "oneOf" : [ {
@@ -680,7 +714,7 @@
             "type" : "array"
           }
         },
-        "required" : [ "can", "classificationId", "committee", "contributors", "createdAt", "dueChange", "dueRevisions", "forumId", "id", "memos", "priority", "rag", "reopenCount", "source", "status", "title", "version", "viewerRecused", "warnings" ],
+        "required" : [ "can", "classificationId", "committee", "contributors", "createdAt", "dueChange", "dueRevisions", "evidenceRequired", "forumId", "id", "memos", "priority", "rag", "reopenCount", "source", "status", "title", "version", "viewerRecused", "warnings" ],
         "type" : "object"
       },
       "ActionSourceResponse" : {
@@ -3122,6 +3156,24 @@
           }
         },
         "required" : [ "access", "actions", "attendance", "code", "deferrals", "forumId", "from", "name", "papers", "shortName", "timeToDecision", "to" ],
+        "type" : "object"
+      },
+      "CommitteeRagKey" : {
+        "properties" : {
+          "amberWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "staleWorkingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "amberWorkingDays", "forumId" ],
         "type" : "object"
       },
       "CommitteeSummaryResponse" : {
@@ -7085,6 +7137,13 @@
             "format" : "date-time",
             "type" : [ "string", "null" ]
           },
+          "counts" : {
+            "additionalProperties" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : [ "object", "null" ]
+          },
           "kind" : {
             "type" : "string"
           },
@@ -10705,6 +10764,12 @@
             },
             "type" : "array"
           },
+          "keys" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CommitteeRagKey"
+            },
+            "type" : "array"
+          },
           "nextCursor" : {
             "type" : [ "string", "null" ]
           },
@@ -10713,7 +10778,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "counts", "items", "tab" ],
+        "required" : [ "counts", "items", "keys", "tab" ],
         "type" : "object"
       },
       "MyClearance" : {
@@ -13713,6 +13778,29 @@
         "required" : [ "actionId", "meetingId", "meetingStartsAt" ],
         "type" : "object"
       },
+      "ReportMemoResponse" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "RAISED", "LINKED" ],
+            "type" : "string"
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "kind", "memoId", "status", "subject" ],
+        "type" : "object"
+      },
       "ReportTotals" : {
         "properties" : {
           "files" : {
@@ -15623,6 +15711,36 @@
         "required" : [ "q" ],
         "type" : "object"
       },
+      "SuggestedDueResponse" : {
+        "properties" : {
+          "basis" : {
+            "enum" : [ "NEXT_MEETING", "WORKING_DAYS" ],
+            "type" : "string"
+          },
+          "date" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "defaultDue" : {
+            "enum" : [ "NEXT_MEETING", "WORKING_DAYS" ],
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "workingDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "basis", "defaultDue", "forumId" ],
+        "type" : "object"
+      },
       "SuggestionView" : {
         "properties" : {
           "memoId" : {
@@ -16022,6 +16140,12 @@
       },
       "TrackerAbilities" : {
         "properties" : {
+          "askForUpdates" : {
+            "type" : "boolean"
+          },
+          "askedToday" : {
+            "type" : "boolean"
+          },
           "export" : {
             "type" : "boolean"
           },
@@ -16029,7 +16153,7 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "export", "raise" ],
+        "required" : [ "askForUpdates", "askedToday", "export", "raise" ],
         "type" : "object"
       },
       "TriageRequest" : {
@@ -23860,6 +23984,34 @@
           }
         },
         "summary" : "The committee's action tracker under the filters as an Excel workbook, at most 5,000 rows (audited; 10 an hour)",
+        "tags" : [ "actions" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/actions/suggested-due" : {
+      "get" : {
+        "operationId" : "getSuggestedActionDue",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SuggestedDueResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The due date the committee type suggests for a new action: the next meeting's, or its working days from today",
         "tags" : [ "actions" ]
       }
     },

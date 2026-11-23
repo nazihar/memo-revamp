@@ -1,8 +1,10 @@
 package com.memo.meeting
 
 import com.memo.actions.ActionPlanting
+import com.memo.actions.internal.ActionMemoStore
 import com.memo.actions.internal.ActionStore
 import com.memo.actions.internal.ItemCopy
+import com.memo.actions.internal.MemoLinkKind
 import com.memo.common.context.ActorContext
 import com.memo.common.crypto.DataKeys
 import com.memo.common.tenant.TenantContext
@@ -81,6 +83,8 @@ class PaperLeakIT : RecusalFixture() {
 
     @Autowired lateinit var actionStore: ActionStore
 
+    @Autowired lateinit var memoLinks: ActionMemoStore
+
     @Autowired lateinit var meetingItems: MeetingItems
 
     @Autowired lateinit var decisionReads: DecisionReads
@@ -139,6 +143,9 @@ class PaperLeakIT : RecusalFixture() {
 
         /** E08 T2: each planted decision, by item (in the register). */
         val decisions = linkedMapOf<UUID, UUID>()
+
+        /** E07 follow-up: the follow-up memo of the restricted and in-camera items' actions, read by its initiator only. */
+        val followUpMemo: UUID
 
         init {
             // d1 sends apologies and their alternate attends: the alternate is in the audience from now on.
@@ -251,6 +258,24 @@ class PaperLeakIT : RecusalFixture() {
                     actionPlanting.action(tenant.id, brc, meeting.id, id, copy, item.classificationId, secretary.id, title, secretary2.id)
                 actions[action] = title
             }
+            // E07 follow-up: a numbered follow-up memo that only the other secretary (its initiator) reads, on the actions d1
+            // and d3 see on the next meeting's report. The report joins it for those who may read it, never for the others.
+            val level = levels().first().id
+            followUpMemo =
+                UUID.fromString(
+                    create(
+                        secretary2.session,
+                        """{"subject":"$CANARY_MEMO","typeId":"${generalType(secretary2.session)}","classificationId":"$level"}""",
+                    ).json()["id"]
+                        .asString(),
+                )
+            transactions.inTenant(tenant.id) {
+                tenantDsl.current().execute("update memo set reference = ? where id = ?", CANARY_MEMO_NUMBER, followUpMemo)
+                val now = Instant.now().truncatedTo(ChronoUnit.MICROS)
+                actions.filterValues { it == CANARY_DESCRIPTION || it == CANARY_CAMERA }.keys.forEach { action ->
+                    check(memoLinks.insert(action, followUpMemo, MemoLinkKind.LINKED, secretary2.id, now))
+                }
+            }
         }
 
         /**
@@ -259,9 +284,9 @@ class PaperLeakIT : RecusalFixture() {
          */
         fun canaries(person: Person): List<String> =
             if (person == d1) {
-                RECUSED_CANARIES
+                RECUSED_CANARIES + MEMO_CANARIES
             } else {
-                listOf(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER) + RECUSED_CANARIES +
+                listOf(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER) + RECUSED_CANARIES + MEMO_CANARIES +
                     (if (person != d3 && person != alt) listOf(CANARY_CAMERA) else emptyList()) +
                     (if (person != guest && person != alt) listOf(CANARY_CONFIDENTIAL) else emptyList())
             }
@@ -682,7 +707,9 @@ class PaperLeakIT : RecusalFixture() {
                 }
             },
             // E07 T7: the next meeting's action taken report, on screen and as a PDF: rows by the one rule, so none of an item
-            // the person does not see in full (or is recused from), and no canary in the PDF's text; 404 to the guest.
+            // the person does not see in full (or is recused from), and no canary in the PDF's text; 404 to the guest. E07
+            // follow-up: the rows' follow-up memos are joined per reader by the memo's read rule, so the planted memo (on the
+            // rows d1 and d3 see) shows to none of them, by number or subject (MEMO_CANARIES).
             Surface.ACTION_REPORT to { p, person ->
                 val uri = "/api/v1/meetings/${p.next.id}/action-report"
                 listOf(uri, "$uri/pdf").forEach { path ->
@@ -697,11 +724,22 @@ class PaperLeakIT : RecusalFixture() {
                     }
                     val text =
                         if (path.endsWith("/pdf") && answer.response.status == HttpStatus.OK.value()) {
-                            Loader.loadPDF(answer.response.contentAsByteArray).use { PDFTextStripper().getText(it) }
+                            pdfText(answer.response.contentAsByteArray)
                         } else {
                             answer.response.contentAsString
                         }
                     p.canaries(person).forEach { assertThat(text).describedAs("a canary in $path").doesNotContain(it) }
+                }
+                // The memo's row is there for d1 (the restricted item's action) and d3 (the in-camera one), without the memo.
+                if (person == d1 || person == d3) {
+                    val title = if (person == d1) CANARY_DESCRIPTION else CANARY_CAMERA
+                    val action =
+                        p.actions.entries
+                            .single { it.value == title }
+                            .key
+                            .toString()
+                    val rows = read(uri, person.session).json()["sections"].list().flatMap { it["rows"].list() }
+                    assertThat(rows.single { it["actionId"].asString() == action }["memos"].list()).isEmpty()
                 }
             },
             // E08 T4: analytics are counts, never an item: members (d1, d3) have their committee's, forum.read every
@@ -762,6 +800,10 @@ class PaperLeakIT : RecusalFixture() {
         // The canaries are really there: d1 reads them.
         val ofD1 = agendaOf(d1, planted.meeting).response.contentAsString
         assertThat(ofD1).contains(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER, CANARY_CAMERA, CANARY_CONFIDENTIAL)
+        // E07 follow-up: the follow-up memo is on the report, number and subject, for the one who reads it (its initiator).
+        val report = "/api/v1/meetings/${planted.next.id}/action-report"
+        assertThat(read(report, secretary2.session).response.contentAsString).contains(CANARY_MEMO, CANARY_MEMO_NUMBER)
+        assertThat(pdfText(read("$report/pdf", secretary2.session).response.contentAsByteArray)).contains(CANARY_MEMO, CANARY_MEMO_NUMBER)
         // Their lines are there as "Restricted item": d3's confidential one, and both for the forum.read holder.
         assertThat(agenda(d3, planted.meeting).access(planted.confidential)).containsExactly("HIDDEN")
         assertThat(agenda(auditor, planted.meeting).access(planted.camera, planted.confidential)).containsExactly("HIDDEN", "HIDDEN")
@@ -796,6 +838,9 @@ class PaperLeakIT : RecusalFixture() {
         assertThat(registered - endpoints).describedAs("registry entries without an endpoint").isEmpty()
         assertThat(probes.keys).describedAs("surfaces without a probe").containsExactlyInAnyOrder(*Surface.entries.toTypedArray())
     }
+
+    /** A PDF's text with one space between words, so a phrase the page wrapped is still found whole (or caught leaking). */
+    private fun pdfText(bytes: ByteArray): String = Loader.loadPDF(bytes).use { PDFTextStripper().getText(it) }.replace(Regex("\\s+"), " ")
 
     /** Every cell of an exported workbook, as one text. */
     private fun workbookText(result: MvcTestResult): String =
@@ -832,6 +877,11 @@ class PaperLeakIT : RecusalFixture() {
         /** The override's reason on the recused item's snapshot: free text, for officers not recused only. */
         const val CANARY_OVERRIDE = "CANARY override reason"
         val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
+
+        /** E07 follow-up: a follow-up memo's subject and number, which only its initiator (the other secretary) reads. */
+        const val CANARY_MEMO = "CANARY-MEMO follow-up subject"
+        const val CANARY_MEMO_NUMBER = "CANARY-MNO/2026/0412"
+        val MEMO_CANARIES = listOf(CANARY_MEMO, CANARY_MEMO_NUMBER)
 
         /** The modules whose endpoints are all in [PaperSurfaceRegistry.endpoints] or [PaperSurfaceRegistry.officersOnly]. */
         val MODULES =

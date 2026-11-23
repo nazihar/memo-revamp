@@ -52,6 +52,10 @@ class ActionMemoStore(
     /** [actionId]'s follow-up memos, the first linked first. */
     fun of(actionId: UUID): List<ActionMemoRow> = where(ACTIONS_MEMO.ACTION_ID.eq(actionId))
 
+    /** The follow-up memos of each of [actionIds], read in one query, the first linked first. */
+    fun ofActions(actionIds: Collection<UUID>): Map<UUID, List<ActionMemoRow>> =
+        if (actionIds.isEmpty()) emptyMap() else where(ACTIONS_MEMO.ACTION_ID.`in`(actionIds)).groupBy { it.actionId }
+
     /** The actions [memoId] follows up, the first linked first. */
     fun ofMemo(memoId: UUID): List<ActionMemoRow> = where(ACTIONS_MEMO.MEMO_ID.eq(memoId))
 

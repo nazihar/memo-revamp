@@ -319,7 +319,10 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
       'meetingAttendance',
       'declarations',
       'minutes',
+      'actions',
+      'actionLinks',
       'decisions',
+      'actionsOfficer',
     ])
     // Times: the meeting's clock and the reader's own, with the city.
     expect(screen.getByText('Saturday, December 12, 2026')).toBeInTheDocument()

@@ -31,6 +31,12 @@ data class ItemLink(
     val meetingId: UUID,
     /** The words to show, without any item's content ("Minutes of BRC 3/2026"). */
     val label: String,
+    /**
+     * The reader's own counts behind [label], by key, for the client's own words in the reader's language (the action
+     * taken report's sections: `TO_CLOSE`, `OVERDUE`, `OPEN`, `CLOSED`, `CANCELLED`, `CORRECTIONS`); null for a link
+     * without counts.
+     */
+    val counts: Map<String, Int>? = null,
     /** Where the linked thing stands, for the client's wording (the minutes' stage, for example `CIRCULATED`). */
     val state: String?,
     /** For minutes approved by circulation: when ("approved by circulation on …, for noting"). */

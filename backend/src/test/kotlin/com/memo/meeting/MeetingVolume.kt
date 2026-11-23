@@ -38,6 +38,8 @@ class MeetingVolume(
     private val levels: Levels,
     /** With E05's rows too ([invitations] and after; design E05 §8): forum 1's seats, invitations, replies, attendance. */
     private val e05: Boolean = false,
+    /** Each agenda opens with a "Matters arising" standing item, as E07's action taken report needs (`ActionsVolumeIT`). */
+    private val mattersArising: Boolean = false,
 ) {
     /** The meeting levels: [low] for most rows, [high] above the director's clearance. */
     data class Levels(
@@ -183,7 +185,8 @@ class MeetingVolume(
             select s.meeting_id, s.f, s.k, s.status, s.starts_at, s.revisions, s.section_id, s.j, s.members_only, i,
                    md5('mvi' || s.meeting_id || '-' || s.j || '-' || i)::uuid as item_id,
                    case when $sub then md5('mvi' || s.meeting_id || '-' || s.j || '-' || (i - 1))::uuid end as parent_id,
-                   case when $brk then 'BREAK' when s.j = 1 and not $sub then 'SUBMISSION' else 'ITEM' end as kind,
+                   case when $brk then 'BREAK' when s.j = 1 and not $sub then 'SUBMISSION'
+                        when $mattersArising and s.j = 0 and i = 0 then 'STANDING' else 'ITEM' end as kind,
                    row_number() over (partition by s.meeting_id order by s.j, i) as n,
                    count(*) filter (where not $sub and not $brk) over (partition by s.meeting_id order by s.j, i) as tn,
                    $sub as sub, $brk as brk
@@ -192,10 +195,11 @@ class MeetingVolume(
             "create index on mv_item (meeting_id)",
             "analyze mv_item",
             """
-            insert into meeting_item (id, tenant_id, meeting_id, section_id, parent_id, position, kind, submission_id, memo_id, title,
-                                      purpose, minutes, restricted_to, title_hidden, classification_id, created_by, created_at,
-                                      updated_at)
+            insert into meeting_item (id, tenant_id, meeting_id, section_id, parent_id, position, kind, standing_kind, submission_id,
+                                      memo_id, title, purpose, minutes, restricted_to, title_hidden, classification_id, created_by,
+                                      created_at, updated_at)
             select item_id, '$tenant'::uuid, meeting_id, section_id, parent_id, case when sub then 0 else i end, kind,
+                   case when kind = 'STANDING' then 'MATTERS_ARISING' end,
                    case when kind = 'SUBMISSION' then md5('mvsub' || item_id)::uuid end,
                    case when kind = 'SUBMISSION' then md5('mvmemo' || item_id)::uuid end,
                    'Item ' || n || ' of the meeting', $PURPOSE, case when not sub then 15 end, ${restriction()},
@@ -257,10 +261,10 @@ class MeetingVolume(
             """,
             """
             insert into meeting_revision_item (tenant_id, revision_id, item_id, section_id, parent_item_id, position, number, kind,
-                                               submission_id, memo_id, title, purpose, minutes, starts_at, presenters, attendees,
-                                               restricted_to, title_hidden, members_only, classification_id, late, changes)
+                                               standing_kind, submission_id, memo_id, title, purpose, minutes, starts_at, presenters,
+                                               attendees, restricted_to, title_hidden, members_only, classification_id, late, changes)
             select '$tenant'::uuid, r.revision_id, it.item_id, it.section_id, it.parent_id, it.n - 1,
-                   case when it.brk then null when it.sub then it.tn || '.1' else it.tn::text end, it.kind,
+                   case when it.brk then null when it.sub then it.tn || '.1' else it.tn::text end, it.kind, mi.standing_kind,
                    mi.submission_id, mi.memo_id, mi.title, mi.purpose, mi.minutes,
                    case when not it.sub then it.starts_at + (it.n - 1) * interval '15 minutes' end, '[]'::jsonb,
                    case when it.n % 10 = 3 and not it.brk then array[md5('mvatt' || it.f)::uuid] else array[]::uuid[] end,

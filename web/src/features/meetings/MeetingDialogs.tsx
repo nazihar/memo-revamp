@@ -24,8 +24,11 @@ import { Input, Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { FormDialog } from '@/features/forums/FormDialog'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
+import { sendHeldDrafts } from '@/features/actions/officer/issue'
+import { HeldDraftsLine } from '@/features/actions/officer/MeetingActions'
 import { HeldConsequences } from '@/features/decisions/HeldConsequences'
 import { useTerms } from '@/features/terms/terms'
+import { newIdempotencyKey } from '@/lib/idempotency'
 import { missingTimes, placeBody, placeOf, timesBody, timesOf } from './form'
 import { ClassificationField, KindField, PlaceFields, TimesFields, TitleField } from './MeetingFields'
 import { mm, mmv } from './messages'
@@ -165,11 +168,11 @@ function useChange(onClose: () => void, setErrors?: (errors: Record<string, stri
   const terms = useTerms()
   const toast = useToast()
   const queryClient = useQueryClient()
-  return async (change: () => Promise<unknown>, done: string): Promise<string | undefined> => {
+  return async (change: () => Promise<unknown>, done: string | (() => string)): Promise<string | undefined> => {
     try {
       await change()
       await refreshMeetings(queryClient)
-      toast.show(done, 'success')
+      toast.show(typeof done === 'function' ? done() : done, 'success')
       onClose()
       return undefined
     } catch (problem) {
@@ -363,9 +366,14 @@ function StepDialog({
   onClose: () => void
 }) {
   const intl = useIntl()
+  const terms = useTerms()
   const change = useChange(onClose)
   const name = meetingName(meeting)
   const options = { path: { meetingId: meeting.id }, headers: ifMatch(meeting), throwOnError: true } as const
+  // "Send the n draft actions to their owners now" (E07 T10, flow AJ3), ticked by default; sent once the meeting is held.
+  const [drafts, setDrafts] = useState({ send: true, count: 0 })
+  const [issueKey] = useState(() => newIdempotencyKey())
+  const heldSaid = { text: '' }
   const texts = {
     schedule: {
       title: mmv.scheduleTitle,
@@ -395,10 +403,29 @@ function StepDialog({
       description={intl.formatMessage(texts.explain)}
       submitLabel={intl.formatMessage(texts.submit)}
       cancelLabel={intl.formatMessage(mm.dismiss)}
-      onSubmit={() => change(texts.run, intl.formatMessage(texts.done))}
+      onSubmit={() =>
+        step === 'end' && drafts.send && drafts.count > 0 && meeting.canManage
+          ? change(
+              async () => {
+                await texts.run()
+                heldSaid.text = await sendHeldDrafts(intl, terms, meeting.id, issueKey)
+              },
+              () => heldSaid.text || intl.formatMessage(texts.done),
+            )
+          : change(texts.run, intl.formatMessage(texts.done))
+      }
       onClose={onClose}
     >
       {step === 'end' ? <HeldConsequences meeting={meeting} /> : null}
+      {step === 'end' && meeting.canManage ? (
+        <HeldDraftsLine
+          meetingId={meeting.id}
+          send={drafts.send}
+          onChange={(send, count) => {
+            setDrafts({ send, count })
+          }}
+        />
+      ) : null}
     </FormDialog>
   )
 }

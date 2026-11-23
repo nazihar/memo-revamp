@@ -92,12 +92,14 @@ class DemoMeetingAttendanceSeeder(
 
     /**
      * The credit committee's monthly review, held on the first Monday to Thursday from ten days before [today], 14:00 to
-     * 16:00, hybrid, recorded as it happened; the meeting's id.
+     * 16:00, hybrid, recorded as it happened; the meeting's id. Its Meghna Foods item is the credit memo's [meghna]
+     * submission placed from the queue (E06 T12: the decision moves the memo on), or an item of its own without one.
      */
     fun heldCreditReview(
         ids: Map<String, UUID>,
         forum: UUID,
         today: LocalDate,
+        meghna: UUID? = null,
     ): UUID {
         val secretary = ids.getValue(SECRETARY)
         val director = ids.getValue(DIRECTOR)
@@ -107,35 +109,44 @@ class DemoMeetingAttendanceSeeder(
         val meeting =
             asUser(secretary) {
                 val id = meetings.create(forum, HELD_TITLE, day.atTime(START), day.atTime(END), ZONE.id, ROOM, MeetingMode.HYBRID, JOIN_URL)
-                agendas.item(
-                    id,
-                    SeedItem(
-                        FOR_DECISION,
-                        MEGHNA,
-                        SubmissionPurpose.DECISION,
-                        minutes = DECISION_MINUTES,
-                        description = "A BDT 80 million working capital limit for Meghna Foods Ltd, renewed for a year.",
-                        resolutionSought = "That the committee renews the limit for twelve months.",
-                    ),
-                )
+                if (meghna != null) {
+                    agendas.place(id, meghna, DECISION_MINUTES)
+                } else {
+                    agendas.item(
+                        id,
+                        SeedItem(
+                            FOR_DECISION,
+                            MEGHNA,
+                            SubmissionPurpose.DECISION,
+                            minutes = DECISION_MINUTES,
+                            description = "A BDT 80 million working capital limit for Meghna Foods Ltd, renewed for a year.",
+                            resolutionSought = "That the committee renews the limit for twelve months.",
+                        ),
+                    )
+                }
                 agendas.item(id, SeedItem(FOR_DECISION, WATCH_LIST, SubmissionPurpose.DECISION, minutes = DECISION_MINUTES))
                 agendas.item(id, SeedItem(FOR_NOTING, PORTFOLIO, minutes = NOTING_MINUTES))
                 agendas.agreedOnBehalf(id, "In person on $day")
                 meetings.schedule(id)
-                agendas.publish(id, null)
                 id
             }
+        // The memo's papers were placed after the paper deadline: the chair agreed them before the agenda went out.
+        asUser(director) { agendas.agreeLatePapers(meeting) }
+        asUser(secretary) { agendas.publish(meeting, null) }
         asUser(director) { replies.answer(meeting, SeedReply.IN_PERSON) }
         asUser(finance) { replies.answer(meeting, SeedReply.IN_PERSON) }
         asUser(credit) { replies.answer(meeting, SeedReply.ONLINE) }
         val item = { title: String -> checkNotNull(asUser(secretary) { declarations.item(meeting, title) }) { "item $title" } }
-        val meghna = item(MEGHNA)
-        asUser(credit) { declarations.declare(meeting, meghna, MEGHNA_INTEREST, DeclarationIntent.LEAVE) }
+        val meghnaItem = item(MEGHNA)
+        // With the memo, the interest the head of credit declared at the desk is already carried to the item (E04).
+        if (!asUser(secretary) { declarations.held(meeting, meghnaItem, credit) }) {
+            asUser(credit) { declarations.declare(meeting, meghnaItem, MEGHNA_INTEREST, DeclarationIntent.LEAVE) }
+        }
         val cro = seatHolder(secretary, forum, "RSK")
         asUser(secretary) {
             attendance.start(meeting)
             register(meeting, day, item, Attendees(secretary, director, credit, finance, cro))
-            attendance.snapshot(meeting, meghna, DemoMeetingSeeder.at(day, SNAPSHOT_AT))
+            attendance.snapshot(meeting, meghnaItem, DemoMeetingSeeder.at(day, SNAPSHOT_AT))
             attendance.end(meeting)
         }
         return meeting

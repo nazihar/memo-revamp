@@ -14,6 +14,7 @@ import com.memo.meeting.internal.MeetingStore
 import com.memo.meeting.internal.MemberAgendas
 import com.memo.meeting.internal.TimesInput
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -42,6 +43,9 @@ class MeetingSeeding(
 
     /** The meeting's status (Phase 4 E04 T9: declarations are seeded only while it is scheduled). */
     fun status(meetingId: UUID): MeetingStatus = tx { meeting(meetingId).status }
+
+    /** The meeting's date: the day it starts, in its zone (Phase 4 E06 T12: decisions are recorded at times on that day). */
+    fun date(meetingId: UUID): LocalDate = tx { meeting(meetingId).date }
 
     /**
      * A draft meeting of [forumId] at [location] (in person, or [MeetingMode.HYBRID] with [joinUrl]: Phase 4 E05 T10), its

@@ -137,12 +137,18 @@ class AgendaSeeding(
         tx { chair.agree(meetingId, version(meetingId), true, note) }
     }
 
-    /** The chair, in the app, agrees every late paper waiting for them; how many. */
+    /**
+     * The chair, in the app, agrees every late item (one placed after the paper deadline, Phase 4 E06 T12) and every late
+     * paper waiting for them; how many.
+     */
     fun agreeLatePapers(meetingId: UUID): Int =
         tx {
+            val rows = checkNotNull(guard.rows(meetingId))
+            val items = rows.items.filter { it.late == Lateness.AWAITING_CHAIR }
+            items.forEach { chair.decideItem(meetingId, it.id, version(meetingId), LateDecision(true)) }
             val waiting = checkNotNull(guard.rows(meetingId)).papers.filter { it.late == Lateness.AWAITING_CHAIR }
             waiting.forEach { chair.decidePaper(meetingId, it.id, version(meetingId), LateDecision(true)) }
-            waiting.size
+            items.size + waiting.size
         }
 
     /** Publishes the next revision, telling the audience; its number. */

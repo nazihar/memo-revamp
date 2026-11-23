@@ -4,16 +4,23 @@ import { Printer } from 'lucide-react'
 import { useId } from 'react'
 import { useIntl } from 'react-intl'
 import { getActionReportOptions } from '@/api/generated/@tanstack/react-query.gen'
-import type { ActionReportRowResponse, ActionReportSectionResponse } from '@/api/generated/types.gen'
+import type {
+  ActionReportRowResponse,
+  ActionReportSectionResponse,
+  ReportMemoResponse,
+} from '@/api/generated/types.gen'
 import type { Problem } from '@/api/http'
 import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/form-controls'
+import { statusLabels } from '@/features/memo/memo-messages'
 import { useTerms } from '@/features/terms/terms'
 import { am } from './messages'
 import { CloseAgreed } from './officer/CloseAgreed'
 import { RagBadge, RagKey } from './RagBadge'
 import { cancelWord, dayOf, dueWords } from './words'
+
+type MemoStatus = keyof typeof statusLabels
 
 type Shown = 'TO_CLOSE' | 'OVERDUE' | 'OPEN' | 'CLOSED' | 'CANCELLED' | 'CORRECTIONS'
 
@@ -129,7 +136,7 @@ export function ActionReportPage({
         <p className="text-muted-foreground">{intl.formatMessage(am.reportHeldBack, { count: r.heldBack })}</p>
       ) : null}
 
-      <RagKey />
+      <RagKey amberWorkingDays={r.key.amberWorkingDays} />
 
       <p className="print:hidden">
         <Link
@@ -236,6 +243,42 @@ function Row({ row }: { row: ActionReportRowResponse }) {
             : intl.formatMessage(am.rowLatestUndated, { text: row.latestUpdate })}
         </p>
       ) : null}
+      {row.memos.length ? <RowMemos memos={row.memos} /> : null}
+    </div>
+  )
+}
+
+/**
+ * The row's follow-up memos the reader may read, as they stand now (the server joins them at read time by the memo's own
+ * rule; a memo the reader may not read is not there at all). Each opens the memo.
+ */
+function RowMemos({ memos }: { memos: ReportMemoResponse[] }) {
+  const intl = useIntl()
+  const labelId = useId()
+  return (
+    <div className="flex flex-col gap-1">
+      <p id={labelId} className="text-sm font-medium text-muted-foreground">
+        {intl.formatMessage(am.rowMemos)}
+      </p>
+      <ul aria-labelledby={labelId} className="flex flex-col gap-1">
+        {memos.map((m) => {
+          const status = m.status in statusLabels ? intl.formatMessage(statusLabels[m.status as MemoStatus]) : m.status
+          const words = m.reference
+            ? intl.formatMessage(am.rowMemo, { reference: m.reference, subject: m.subject, status })
+            : intl.formatMessage(am.rowMemoUnnumbered, { subject: m.subject, status })
+          return (
+            <li key={m.memoId}>
+              <Link
+                to="/memos/$memoId"
+                params={{ memoId: m.memoId }}
+                className="inline-flex min-h-11 items-center underline underline-offset-4"
+              >
+                {words}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }

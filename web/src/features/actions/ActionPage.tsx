@@ -123,6 +123,7 @@ export function ActionPage({ actionId }: { actionId: string }) {
     can.overrideRag,
     can.cancel,
     can.reopen,
+    can.holdBack,
   ].some(Boolean)
   const press = (key: Open | 'start') => {
     if (key === 'start') void start()
@@ -144,6 +145,11 @@ export function ActionPage({ actionId }: { actionId: string }) {
         <h1 id="action-title" className="text-2xl font-semibold md:text-3xl">
           {a.title}
         </h1>
+        {a.overdueWorkingDays ? (
+          <p className="text-lg font-medium text-status-danger-fg">
+            {intl.formatMessage(am.overdueBy, { days: a.overdueWorkingDays })}
+          </p>
+        ) : null}
         {a.rag.override ? <p className="text-muted-foreground">{overrideWords(intl, a.rag.override)}</p> : null}
         {a.priority === 'HIGH' ? <Badge tone="warn">{intl.formatMessage(am.priorityHigh)}</Badge> : null}
       </header>

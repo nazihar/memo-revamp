@@ -31,7 +31,18 @@ class ActionTrackerController(
     private val workbook: ActionTrackerWorkbook,
     private val calls: ActionCalls,
     private val limiter: RateLimiter,
+    private val suggestedDue: ActionSuggestedDue,
 ) {
+    @GetMapping("/api/v1/forums/{forumId}/actions/suggested-due")
+    @SignedIn
+    @Operation(
+        operationId = "getSuggestedActionDue",
+        summary = "The due date the committee type suggests for a new action: the next meeting's, or its working days from today",
+    )
+    fun suggestedDue(
+        @PathVariable forumId: UUID,
+    ): ResponseEntity<SuggestedDueResponse> = noStore(calls.read { suggestedDue.of(forumId) })
+
     @GetMapping("/api/v1/forums/{forumId}/actions")
     @SignedIn
     @Operation(

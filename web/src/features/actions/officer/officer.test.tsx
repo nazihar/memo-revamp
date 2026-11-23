@@ -21,7 +21,15 @@ import type {
   MemberItemResponse,
 } from '@/api/generated/types.gen'
 import { partsForPath } from '@/i18n/catalogue-parts'
-import { accessHandler, API_ORIGIN, csrfHandler, server, sessionHandler, signedInSession } from '@/test/msw'
+import {
+  accessHandler,
+  API_ORIGIN,
+  csrfHandler,
+  server,
+  sessionHandler,
+  signedInSession,
+  suggestedDueHandler,
+} from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 import { officerFieldText, officerRefusal, reasonWords } from './problems'
 
@@ -52,6 +60,7 @@ const NOTHING: ActionAbilities = {
   update: false,
   updateOnBehalf: false,
   verify: false,
+  holdBack: false,
 }
 const can = (over: Partial<ActionAbilities> = {}): ActionAbilities => ({ ...NOTHING, ...over })
 /** A secretary not recused, on an open action. */
@@ -63,6 +72,7 @@ const SECRETARY = can({
   cancel: true,
   updateOnBehalf: true,
   linkMemo: true,
+  holdBack: true,
 })
 
 /** BRC 3/2026, held on 12 December 2026 in Dhaka; the reader is its secretary. */
@@ -226,6 +236,7 @@ const action = (over: Partial<ActionResponse> = {}): ActionResponse => ({
   rag: { colour: 'RED', word: 'OVERDUE' },
   dueChange: 'SECRETARY_AGREES',
   reopenCount: 0,
+  evidenceRequired: false,
   ...over,
 })
 
@@ -670,6 +681,14 @@ function actionPage(view: ActionResponse) {
 }
 
 describe('The officers’ buttons on the action page (flow AN)', () => {
+  it('offers “Keep out of the next report” only when the server’s can.holdBack says so', async () => {
+    actionPage(action({ can: { ...SECRETARY, holdBack: false } }))
+    renderRoute('/actions/a9')
+    const officer = await screen.findByRole('region', { name: 'For the committee’s officers' }, { timeout: 8000 })
+    expect(within(officer).getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+    expect(within(officer).queryByRole('button', { name: 'Keep out of the next report' })).not.toBeInTheDocument()
+  }, 30_000)
+
   it('shows the officer’s buttons the server allows, and changes the owner with a reason and If-Match', async () => {
     const user = userEvent.setup()
     const { sent, answer } = actionPage(action())
@@ -921,7 +940,7 @@ const tracker = (over: Partial<ForumActionsResponse> = {}): ForumActionsResponse
   matching: 2,
   totals: { red: 3, amber: 2, green: 7, toVerify: 2, closed: 4, drafts: 1, all: 19 },
   key: { amberWorkingDays: 10, staleWorkingDays: 20 },
-  can: { raise: true, export: true },
+  can: { raise: true, export: true, askForUpdates: true, askedToday: false },
   ...over,
 })
 
@@ -1009,10 +1028,19 @@ describe('The committee’s action tracker (flow AN)', () => {
       }),
       http.get(`${API}/forums/f1/actions/export`, () => problem(429, { type: 'urn:memo:problem:rate-limited' })),
     )
-    renderRoute('/committees/f1?tab=actions')
-    const region = await screen.findByRole('region', { name: 'Board Risk Committee — Actions' }, { timeout: 8000 })
+    const { unmount } = renderRoute('/committees/f1?tab=actions')
+    let region = await screen.findByRole('region', { name: 'Board Risk Committee — Actions' }, { timeout: 8000 })
     await user.click(within(region).getByRole('button', { name: 'Ask owners for an update' }))
     expect(await within(region).findByText('4 owners were asked for an update.')).toHaveFocus()
+    // Once a day: the button gives way to the words.
+    expect(within(region).queryByRole('button', { name: 'Ask owners for an update' })).not.toBeInTheDocument()
+    expect(
+      within(region).getByText('Owners were asked for an update today. You can ask again tomorrow.'),
+    ).toBeInTheDocument()
+    unmount()
+    // Another secretary asked a moment ago, after this page was read: the refusal in words.
+    renderRoute('/committees/f1?tab=actions')
+    region = await screen.findByRole('region', { name: 'Board Risk Committee — Actions' }, { timeout: 8000 })
     await user.click(within(region).getByRole('button', { name: 'Ask owners for an update' }))
     expect(
       await within(region).findByText('The owners were asked today already. You can ask again tomorrow.'),
@@ -1064,8 +1092,47 @@ describe('The committee’s action tracker (flow AN)', () => {
     expect(String(sent[0]?.body?.dueDate)).toMatch(/^\d{4}-\d{2}-\d{2}$/)
   }, 40_000)
 
+  it('offers the committee type’s default due date first, from the server’s business calendar', async () => {
+    const user = userEvent.setup()
+    const { sent, record } = trackerPage(tracker())
+    server.use(
+      directory,
+      suggestedDueHandler({ defaultDue: 'WORKING_DAYS', basis: 'WORKING_DAYS', date: '2027-01-11', workingDays: 10 }),
+      http.post(`${API}/forums/f1/actions`, async ({ request }) => {
+        const s = await record(request, 'direct')
+        return HttpResponse.json<ActionResponse>(
+          action({ id: 'a21', reference: null, status: 'DRAFT', title: String(s.body?.title) }),
+          { status: 201 },
+        )
+      }),
+    )
+    renderRoute('/committees/f1?tab=actions')
+    const region = await screen.findByRole('region', { name: 'Board Risk Committee — Actions' }, { timeout: 8000 })
+    await user.click(within(region).getByRole('button', { name: 'New action' }))
+    const form = await screen.findByRole('dialog', { name: 'New action for the Board Risk Committee' })
+    await user.type(within(form).getByRole('textbox', { name: 'What is to be done' }), 'Circulate the revised policy')
+    const picks = within(form).getByRole('group', { name: 'Quick picks' })
+    const first = await within(picks).findByRole('button', { name: 'In 10 working days (the committee’s usual)' })
+    expect(within(picks).getAllByRole('button')[0]).toBe(first)
+    await user.click(first)
+    expect(within(form).getByText('Due January 11, 2027.')).toBeInTheDocument()
+    await user.click(within(form).getByRole('button', { name: 'Save as draft' }))
+    expect(await within(region).findByText('Saved as a draft: Circulate the revised policy.')).toHaveFocus()
+    expect(sent[0]?.body).toMatchObject({ dueDate: '2027-01-11' })
+  }, 40_000)
+
+  it('says the owners were asked today instead of offering to ask again', async () => {
+    trackerPage(tracker({ can: { raise: true, export: true, askForUpdates: false, askedToday: true } }))
+    renderRoute('/committees/f1?tab=actions')
+    const region = await screen.findByRole('region', { name: 'Board Risk Committee — Actions' }, { timeout: 8000 })
+    expect(
+      within(region).getByText('Owners were asked for an update today. You can ask again tomorrow.'),
+    ).toBeInTheDocument()
+    expect(within(region).queryByRole('button', { name: 'Ask owners for an update' })).not.toBeInTheDocument()
+  }, 30_000)
+
   it('members see the rows without the officers’ buttons; someone with no rows is told so (404)', async () => {
-    trackerPage(tracker({ can: { raise: false, export: false } }), {
+    trackerPage(tracker({ can: { raise: false, export: false, askForUpdates: false, askedToday: false } }), {
       ...forum,
       myRole: 'MEMBER',
       canManageMembers: false,
@@ -1120,6 +1187,8 @@ const report: ActionReportResponse = {
           dueRevisions: 0,
           rag: { colour: 'BLUE', word: 'TO_VERIFY' },
           status: 'DONE_PENDING',
+          memos: [],
+          canClose: true,
         },
         {
           actionId: 'a10',
@@ -1130,6 +1199,8 @@ const report: ActionReportResponse = {
           dueRevisions: 0,
           rag: { colour: 'BLUE', word: 'TO_VERIFY' },
           status: 'DONE_PENDING',
+          memos: [],
+          canClose: true,
         },
       ],
     },
@@ -1137,6 +1208,8 @@ const report: ActionReportResponse = {
   more: 0,
   heldBack: 0,
   summary: 'Action taken report: 2 to close',
+  key: { amberWorkingDays: 10, staleWorkingDays: 20 },
+  can: { closeAgreed: true },
 }
 
 describe('Closing at the meeting (flow AM2)', () => {
@@ -1174,12 +1247,32 @@ describe('Closing at the meeting (flow AM2)', () => {
     expect(sent[0]?.body).toEqual({ actionIds: ['a9', 'a10'] })
   }, 40_000)
 
+  it('offers only the actions the server says this reader may close', async () => {
+    const rows = report.sections[0]?.rows ?? []
+    const mixed: ActionReportResponse = {
+      ...report,
+      sections: [
+        { ...report.sections[0]!, rows: rows.map((r) => ({ ...r, canClose: r.actionId === 'a9' })) },
+        ...report.sections.slice(1),
+      ],
+    }
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      http.get(`${API}/meetings/m1/action-report`, () => HttpResponse.json<ActionReportResponse>(mixed)),
+    )
+    renderRoute('/meetings/m1/action-report')
+    const region = await screen.findByRole('region', { name: 'Close what the committee agreed' }, { timeout: 8000 })
+    expect(within(region).getByRole('checkbox', { name: 'Agreed to close BRC A9/2026' })).toBeInTheDocument()
+    expect(within(region).queryByRole('checkbox', { name: 'Agreed to close BRC A10/2026' })).not.toBeInTheDocument()
+  }, 30_000)
+
   it('is not offered to members, nor before the meeting starts', async () => {
     server.use(
       sessionHandler(signedInSession()),
       accessHandler([]),
       http.get(`${API}/meetings/m1/action-report`, () =>
-        HttpResponse.json<ActionReportResponse>({ ...report, heldBack: null }),
+        HttpResponse.json<ActionReportResponse>({ ...report, heldBack: null, can: { closeAgreed: false } }),
       ),
     )
     renderRoute('/meetings/m1/action-report')

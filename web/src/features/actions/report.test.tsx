@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { createIntl } from 'react-intl'
 import { describe, expect, it } from 'vitest'
 import type {
   ActionReportResponse,
@@ -22,7 +23,8 @@ import {
   signedInSession,
 } from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
-import { reportCounts } from './report-links'
+import arMessages from '@/i18n/messages/ar.json'
+import { countsLine } from './report-links'
 
 const API = `${API_ORIGIN}/api/v1`
 
@@ -37,6 +39,8 @@ const row = (
     dueRevisions: 0,
     rag: { colour: 'GREEN', word: 'ON_TRACK' },
     status: 'IN_PROGRESS',
+    memos: [],
+    canClose: false,
     ...over,
   }) satisfies ActionReportRowResponse
 
@@ -55,6 +59,8 @@ const report: ActionReportResponse = {
   builtAt: '2026-11-28T10:05:00Z',
   more: 2,
   heldBack: 1,
+  key: { amberWorkingDays: 10, staleWorkingDays: 20 },
+  can: { closeAgreed: false },
   summary:
     'Action taken report: 1 to close, 1 overdue, 1 closed since the last meeting, 1 cancelled since the last meeting',
   sections: [
@@ -73,6 +79,17 @@ const report: ActionReportResponse = {
           doneAt: '2026-12-02T09:00:00Z',
           latestUpdate: 'Plan revised and approved by ALCO on 1 Dec.',
           latestUpdateAt: '2026-12-02T09:00:00Z',
+          // The follow-up memos this reader may read now (the server leaves out the others).
+          memos: [
+            {
+              memoId: 'mm1',
+              kind: 'RAISED',
+              reference: 'MEMO/2026/0412',
+              subject: 'Revised liquidity plan',
+              status: 'APPROVED',
+            },
+            { memoId: 'mm2', kind: 'LINKED', subject: 'Treasury note', status: 'DRAFT' },
+          ],
         }),
       ],
     },
@@ -182,6 +199,14 @@ describe('the action taken report (Phase 4 E07 T11, flow AO)', () => {
       'Owner: Head of Treasury (held by A. Karim) · Done Dec 2, 2026 · BRC 3/2026, item 7',
     )
     expect(toClose).toHaveTextContent('Dec 2, 2026: “Plan revised and approved by ALCO on 1 Dec.”')
+    const memos = within(toClose).getByRole('list', { name: 'Follow-up memos, as they stand now' })
+    expect(
+      within(memos).getByRole('link', { name: 'Memo MEMO/2026/0412: Revised liquidity plan (Approved)' }),
+    ).toHaveAttribute('href', '/memos/mm1')
+    expect(
+      within(memos).getByRole('link', { name: 'Memo not yet numbered: Treasury note (Draft)' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Due within 10 working days, at risk, or no recent update')).toBeInTheDocument()
     const overdue = screen.getByRole('region', { name: '2. Overdue (1)' })
     expect(overdue).toHaveTextContent('due Oct 30, 2026 (originally Oct 15, 2026, revised twice)')
     expect(overdue).toHaveTextContent('Overdue')
@@ -364,7 +389,9 @@ describe('the Matters arising item’s link to its report (Phase 4 E07 T11, flow
           meetingId: 'm4',
           state: 'BUILT',
           at: '2026-11-28T10:05:00Z',
-          label: 'Action taken report: 2 to close, 3 overdue, 9 open, 4 closed since the last meeting',
+          // The English label is never read back: the words come from the counts.
+          label: 'Action taken report: 99 open',
+          counts: { TO_CLOSE: 2, OVERDUE: 3, OPEN: 9, CLOSED: 4, CANCELLED: 0, CORRECTIONS: 0 },
         },
       ]),
     )
@@ -388,21 +415,16 @@ describe('the Matters arising item’s link to its report (Phase 4 E07 T11, flow
     expect(screen.queryByRole('link', { name: 'Open the report' })).toBeNull()
   })
 
-  it('reads the counts back from the server’s fixed words, and gives up on any other form', () => {
-    expect(reportCounts('Action taken report: 2 to close, 3 overdue, 9 open, 4 closed since the last meeting')).toEqual(
-      {
-        TO_CLOSE: 2,
-        OVERDUE: 3,
-        OPEN: 9,
-        CLOSED: 4,
-      },
+  it('words the link’s structured counts in the reader’s language, and shows the label only without counts', () => {
+    const en = createIntl({ locale: 'en' })
+    const label = 'Action taken report: 1 cancelled since the last meeting'
+    expect(countsLine(en, { label, counts: { CANCELLED: 1, CORRECTIONS: 2, OPEN: 0 } })).toBe(
+      '1 cancelled since the last meeting · 2 corrections to earlier minutes',
     )
-    expect(
-      reportCounts('Action taken report: 1 cancelled since the last meeting, 2 corrections to earlier minutes'),
-    ).toEqual({ CANCELLED: 1, CORRECTIONS: 2 })
-    expect(reportCounts('Action taken report: nothing to report')).toEqual({})
-    expect(reportCounts('Something else')).toBeUndefined()
-    expect(reportCounts('Action taken report: 2 to close, a few late')).toBeUndefined()
+    expect(countsLine(en, { label, counts: { TO_CLOSE: 0, OPEN: 0 } })).toBe('Nothing to report')
+    expect(countsLine(en, { label: 'Minutes of BRC 3/2026', counts: null })).toBe('Minutes of BRC 3/2026')
+    const ar = createIntl({ locale: 'ar', messages: arMessages })
+    expect(countsLine(ar, { label, counts: { OVERDUE: 3 } })).not.toContain('overdue')
   })
 })
 

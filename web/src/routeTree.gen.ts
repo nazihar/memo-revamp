@@ -23,6 +23,7 @@ import { Route as PlatformEnrolRouteImport } from './routes/platform/enrol'
 import { Route as PlatformLoginRouteImport } from './routes/platform/login'
 import { Route as AuthLoginEnrolMfaRouteImport } from './routes/_auth/login_.enrol-mfa'
 import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedIn/index'
+import { Route as ShellSignedInDecisionsRouteImport } from './routes/_shell/_signedIn/decisions'
 import { Route as ShellSignedInDeclarationsRouteImport } from './routes/_shell/_signedIn/declarations'
 import { Route as ShellSignedInInboxRouteImport } from './routes/_shell/_signedIn/inbox'
 import { Route as ShellSignedInNotificationsRouteImport } from './routes/_shell/_signedIn/notifications'
@@ -148,6 +149,11 @@ const AuthLoginEnrolMfaRoute = AuthLoginEnrolMfaRouteImport.update({
 const ShellSignedInIndexRoute = ShellSignedInIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInDecisionsRoute = ShellSignedInDecisionsRouteImport.update({
+  id: '/decisions',
+  path: '/decisions',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
 const ShellSignedInDeclarationsRoute =
@@ -511,6 +517,7 @@ export interface FileRoutesByFullPath {
   '/platform/enrol': typeof PlatformEnrolRoute
   '/platform/login': typeof PlatformLoginRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/decisions': typeof ShellSignedInDecisionsRoute
   '/declarations': typeof ShellSignedInDeclarationsRoute
   '/inbox': typeof ShellSignedInInboxRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
@@ -583,6 +590,7 @@ export interface FileRoutesByTo {
   '/platform/enrol': typeof PlatformEnrolRoute
   '/platform/login': typeof PlatformLoginRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/decisions': typeof ShellSignedInDecisionsRoute
   '/declarations': typeof ShellSignedInDeclarationsRoute
   '/inbox': typeof ShellSignedInInboxRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
@@ -655,6 +663,7 @@ export interface FileRoutesById {
   '/platform/enrol': typeof PlatformEnrolRoute
   '/platform/login': typeof PlatformLoginRoute
   '/_auth/login_/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/_shell/_signedIn/decisions': typeof ShellSignedInDecisionsRoute
   '/_shell/_signedIn/declarations': typeof ShellSignedInDeclarationsRoute
   '/_shell/_signedIn/inbox': typeof ShellSignedInInboxRoute
   '/_shell/_signedIn/notifications': typeof ShellSignedInNotificationsRoute
@@ -730,6 +739,7 @@ export interface FileRouteTypes {
     | '/platform/enrol'
     | '/platform/login'
     | '/login/enrol-mfa'
+    | '/decisions'
     | '/declarations'
     | '/inbox'
     | '/notifications'
@@ -802,6 +812,7 @@ export interface FileRouteTypes {
     | '/platform/enrol'
     | '/platform/login'
     | '/login/enrol-mfa'
+    | '/decisions'
     | '/declarations'
     | '/inbox'
     | '/notifications'
@@ -873,6 +884,7 @@ export interface FileRouteTypes {
     | '/platform/enrol'
     | '/platform/login'
     | '/_auth/login_/enrol-mfa'
+    | '/_shell/_signedIn/decisions'
     | '/_shell/_signedIn/declarations'
     | '/_shell/_signedIn/inbox'
     | '/_shell/_signedIn/notifications'
@@ -1040,6 +1052,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof ShellSignedInIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/decisions': {
+      id: '/_shell/_signedIn/decisions'
+      path: '/decisions'
+      fullPath: '/decisions'
+      preLoaderRoute: typeof ShellSignedInDecisionsRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/declarations': {
@@ -1536,6 +1555,7 @@ const ShellSignedInAnalyticsCommitteesRouteWithChildren =
   )
 
 interface ShellSignedInRouteChildren {
+  ShellSignedInDecisionsRoute: typeof ShellSignedInDecisionsRoute
   ShellSignedInDeclarationsRoute: typeof ShellSignedInDeclarationsRoute
   ShellSignedInInboxRoute: typeof ShellSignedInInboxRoute
   ShellSignedInNotificationsRoute: typeof ShellSignedInNotificationsRoute
@@ -1590,6 +1610,7 @@ interface ShellSignedInRouteChildren {
 }
 
 const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
+  ShellSignedInDecisionsRoute: ShellSignedInDecisionsRoute,
   ShellSignedInDeclarationsRoute: ShellSignedInDeclarationsRoute,
   ShellSignedInInboxRoute: ShellSignedInInboxRoute,
   ShellSignedInNotificationsRoute: ShellSignedInNotificationsRoute,

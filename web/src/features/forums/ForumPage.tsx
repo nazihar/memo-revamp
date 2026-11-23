@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { holds, useMyAccess } from '@/features/access/access'
+import { ao } from '@/features/actions/officer/messages'
+import { Tracker } from '@/features/actions/officer/Tracker'
 import { MeetingsTab } from '@/features/meetings/MeetingsTab'
 import { rsm } from '@/features/resolutions/messages'
 import { readsRegister } from '@/features/resolutions/register'
@@ -78,6 +80,8 @@ export function ForumPage({
   }
   // The resolution register (E06 T10, flow AC1): the officers, forums.manage and forum.read.
   const register = readsRegister(f, holds(access.data, 'forum.read'))
+  // The action tracker (E07 T10, flow AN): its officers, members, forum.read and forums.manage; the server decides the rows.
+  const tracker = Boolean(f.myRole) || f.canManage || holds(access.data, 'forum.read')
 
   return (
     <section aria-labelledby="forum-title" className="flex flex-col gap-4">
@@ -142,7 +146,11 @@ export function ForumPage({
       </Link>
       <Tabs
         value={
-          tab && FORUM_TABS.includes(tab) && (tab !== 'submissions' || officer) && (tab !== 'resolutions' || register)
+          tab &&
+          FORUM_TABS.includes(tab) &&
+          (tab !== 'submissions' || officer) &&
+          (tab !== 'resolutions' || register) &&
+          (tab !== 'actions' || tracker)
             ? tab
             : 'members'
         }
@@ -162,6 +170,7 @@ export function ForumPage({
             </TabsTrigger>
           ) : null}
           {register ? <TabsTrigger value="resolutions">{intl.formatMessage(rsm.tab)}</TabsTrigger> : null}
+          {tracker ? <TabsTrigger value="actions">{intl.formatMessage(ao.tab)}</TabsTrigger> : null}
           <TabsTrigger value="history">{intl.formatMessage(fm.tabHistory)}</TabsTrigger>
           <TabsTrigger value="policy">{intl.formatMessage(fm.tabPolicy)}</TabsTrigger>
         </TabsList>
@@ -186,6 +195,11 @@ export function ForumPage({
         {register ? (
           <TabsContent value="resolutions" className="pt-4">
             <ResolutionsTab forum={f} />
+          </TabsContent>
+        ) : null}
+        {tracker ? (
+          <TabsContent value="actions" className="pt-4">
+            <Tracker forum={f} />
           </TabsContent>
         ) : null}
         <TabsContent value="history" className="pt-4">

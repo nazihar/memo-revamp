@@ -6,6 +6,7 @@ import com.memo.jooq.tables.references.ACTIONS_COUNTER
 import com.memo.jooq.tables.references.ACTIONS_ITEM
 import org.jooq.Condition
 import org.jooq.Field
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.Instant
 import java.time.LocalDate
@@ -417,3 +418,20 @@ internal fun ActionsItemRecord.actionRow() =
 
 /** The issued actions not finished (OPEN, IN_PROGRESS, DONE_PENDING), as the daily check reads them ([ActionStore.where]). */
 internal val OPEN_ACTIONS: Condition get() = ACTIONS_ITEM.STATUS.`in`(ActionChecks.OPEN.map { it.name })
+
+/**
+ * The open actions (issued, not finished) after [after] in the order of [ActionStore.where] (creation, then id), at most
+ * [limit]: a keyset page of `actions_item_open_idx`, so a pass over a tenant's open actions never reads the finished ones.
+ */
+internal fun ActionStore.openAfter(
+    after: ActionRow?,
+    limit: Int,
+): List<ActionRow> {
+    val position =
+        after?.let {
+            DSL
+                .row(ACTIONS_ITEM.CREATED_AT, ACTIONS_ITEM.ID)
+                .gt(DSL.row(DSL.inline(it.createdAt.atOffset(ZoneOffset.UTC)), DSL.inline(it.id)))
+        } ?: DSL.noCondition()
+    return where(OPEN_ACTIONS.and(position), limit)
+}

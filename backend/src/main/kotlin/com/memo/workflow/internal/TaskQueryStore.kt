@@ -8,7 +8,9 @@ import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
+import com.memo.workflow.InstanceStatus
 import com.memo.workflow.SubjectRef
+import com.memo.workflow.SubjectRun
 import com.memo.workflow.TaskItem
 import com.memo.workflow.TaskRole
 import com.memo.workflow.engine.StepKind
@@ -106,6 +108,38 @@ class TaskQueryStore(
             .where(WORKFLOW_TASK.INSTANCE_ID.eq(instanceId), WORKFLOW_TASK.STATE.eq(OPEN), WORKFLOW_TASK.KIND.eq(DECIDE))
             .fetchOne(0, OffsetDateTime::class.java)
             ?.toInstant()
+
+    /**
+     * Each of [subjectIds]' newest run: its instance, status and [dueOf], in one query (the instance by the subject index,
+     * the due time by the task index); subjects never started are absent.
+     */
+    fun runs(
+        subjectType: String,
+        subjectIds: Collection<UUID>,
+    ): Map<UUID, SubjectRun> {
+        if (subjectIds.isEmpty()) return emptyMap()
+        val i = WORKFLOW_INSTANCE
+        val t = WORKFLOW_TASK
+        val due =
+            DSL
+                .field(
+                    DSL
+                        .select(DSL.min(t.DUE_AT))
+                        .from(t)
+                        .where(t.TENANT_ID.eq(i.TENANT_ID), t.INSTANCE_ID.eq(i.ID), t.STATE.eq(OPEN), t.KIND.eq(DECIDE)),
+                ).`as`("due")
+        return tenantDsl
+            .current()
+            .selectDistinct(i.SUBJECT_ID, i.ID, i.STATUS, due)
+            .on(i.SUBJECT_ID)
+            .from(i)
+            .where(i.SUBJECT_TYPE.eq(subjectType), i.SUBJECT_ID.`in`(subjectIds))
+            .orderBy(i.SUBJECT_ID, i.RUN.desc())
+            .fetch { r ->
+                checkNotNull(r.value1()) to
+                    SubjectRun(checkNotNull(r.value2()), InstanceStatus.valueOf(checkNotNull(r.value3())), r.value4()?.toInstant())
+            }.toMap()
+    }
 
     fun holders(
         subjectType: String,

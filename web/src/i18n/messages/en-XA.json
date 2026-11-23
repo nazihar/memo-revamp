@@ -19915,6 +19915,34 @@
       "value": "]"
     }
   ],
+  "analytics.link.decisions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ ŧħḗḗşḗḗ ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "analytics.link.deferred": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ ḓḗḗƒḗḗřřḗḗḓ īŧḗḗḿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "analytics.link.detail": [
     {
       "type": 0,
@@ -27777,6 +27805,2461 @@
     {
       "type": 0,
       "value": "Ȧƥƥřǿǿṽȧȧŀş ḓȧȧşħƀǿǿȧȧřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.activeFilters": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīṽḗḗ ƒīŀŧḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.allCommittees": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḿẏ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.any": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.byCommittee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓẏ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.byOutcome": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓẏ ǿǿŭŭŧƈǿǿḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.byYear": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓẏ ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķ ŧħḗḗ ƞŭŭḿƀḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.checking": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķīƞɠ ŧħḗḗ ƞŭŭḿƀḗḗřş…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.complete": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": řḗḗşǿǿŀŭŭŧīǿǿƞş "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ȧȧŀŀ ȧȧƈƈǿǿŭŭƞŧḗḗḓ ƒǿǿř ("
+    },
+    {
+      "type": 1,
+      "value": "inForce"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ƒǿǿřƈḗḗ, "
+    },
+    {
+      "type": 1,
+      "value": "void"
+    },
+    {
+      "type": 0,
+      "value": " ṽǿǿīḓ)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.duplicates": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřş ɠīṽḗḗƞ ŧẇīƈḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƞŭŭḿƀḗḗřş ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ƈħḗḗƈķḗḗḓ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş şḗḗƈřḗḗŧȧȧřīḗḗş, ƈħȧȧīř ȧȧƞḓ ǿǿṽḗḗřşīɠħŧ ƈȧȧƞ ƈħḗḗƈķ īŧş ƞŭŭḿƀḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.missing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": řḗḗşǿǿŀŭŭŧīǿǿƞş "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞŭŭḿƀḗḗř īş ḿīşşīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞŭŭḿƀḗḗřş ȧȧřḗḗ ḿīşşīƞɠ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.more": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḿǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": ": ƞǿǿ řḗḗşǿǿŀŭŭŧīǿǿƞ ħȧȧş ȧȧ ƞŭŭḿƀḗḗř ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.check.outOfRange": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřş ǿǿŭŭŧşīḓḗḗ ŧħḗḗ řȧȧƞɠḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "numbers"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.chip": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.committee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.committeeType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.conditions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈǿǿƞḓīŧīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈǿǿƞḓīŧīǿǿƞş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.corrected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƈǿǿřřḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.count": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞş"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Şħǿǿẇīƞɠ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Şħǿǿẇīƞɠ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.countCapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇīƞɠ ḿǿǿřḗḗ ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.dissolved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (ḓīşşǿǿŀṽḗḗḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞş ḿȧȧŧƈħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.emptyAll": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓḗḗƈīşīǿǿƞ ħȧȧş ƀḗḗḗḗƞ řḗḗƈǿǿřḓḗḗḓ īƞ ẏǿǿŭŭř "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.emptyHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧřẏ ȧȧ ẇīḓḗḗř ḓȧȧŧḗḗ řȧȧƞɠḗḗ ǿǿř ƒḗḗẇḗḗř ƒīŀŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.exceptions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋƈḗḗƥŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋƥǿǿřŧ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.about": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗẋƥǿǿřŧ īƞƈŀŭŭḓḗḗş ȧȧ ƥȧȧɠḗḗ “Ȧƀǿǿŭŭŧ ŧħīş ḗḗẋƥǿǿřŧ” ẇīŧħ ŧħḗḗşḗḗ ƒīŀŧḗḗřş, ẏǿǿŭŭř ƞȧȧḿḗḗ ȧȧƞḓ ŧħḗḗ ŧīḿḗḗ, ȧȧƞḓ ȧȧ ƞŭŭḿƀḗḗř ƈħḗḗƈķ ƒǿǿř ḗḗȧȧƈħ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ ẏḗḗȧȧř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.allCommittees": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ẏǿǿŭŭř "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.allDates": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḓȧȧŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.count": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞ ḿȧȧŧƈħḗḗş ẏǿǿŭŭř ƒīŀŧḗḗřş:"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓḗḗƈīşīǿǿƞş ḿȧȧŧƈħ ẏǿǿŭŭř ƒīŀŧḗḗřş:"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.countCapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿřḗḗ ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗƈīşīǿǿƞş ḿȧȧŧƈħ ẏǿǿŭŭř ƒīŀŧḗḗřş:"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.dates": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.download": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.downloaded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗɠīşŧḗḗř ħȧȧş ƀḗḗḗḗƞ ḓǿǿẇƞŀǿǿȧȧḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗẋƥǿǿřŧ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ḿȧȧḓḗḗ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "’ şḗḗƈřḗḗŧȧȧřīḗḗş, ƈħȧȧīřş ȧȧƞḓ ǿǿṽḗḗřşīɠħŧ ƈȧȧƞ ḗḗẋƥǿǿřŧ ŧħḗḗ řḗḗɠīşŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.format": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřḿȧȧŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.fromOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.outOfScope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈȧȧƞ ḗḗẋƥǿǿřŧ ŧħḗḗ ḓḗḗƈīşīǿǿƞş ǿǿƒ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ẇħḗḗřḗḗ ẏǿǿŭŭ ȧȧřḗḗ ȧȧ şḗḗƈřḗḗŧȧȧřẏ ǿǿř ŧħḗḗ ƈħȧȧīř. Ƈħǿǿǿǿşḗḗ ǿǿƞḗḗ ǿǿƒ ŧħǿǿşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.pdf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƤḒƑ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.pdfHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ƒīŀīƞɠ, ŭŭƥ ŧǿǿ 2,000 řǿǿẇş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.preparing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗƥȧȧřīƞɠ ŧħḗḗ ƒīŀḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.rateLimited": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ḗḗẋƥǿǿřŧḗḗḓ 5 ŧīḿḗḗş īƞ ŧħḗḗ ŀȧȧşŧ ħǿǿŭŭř. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ ŀȧȧŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.rateLimitedAt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ḗḗẋƥǿǿřŧḗḗḓ 5 ŧīḿḗḗş īƞ ŧħḗḗ ŀȧȧşŧ ħǿǿŭŭř. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ ȧȧŧ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ īŧḗḗḿş şħǿǿẇ ŧħḗḗīř ƞŭŭḿƀḗḗř ǿǿƞŀẏ. Ḗȧȧƈħ ḗḗẋƥǿǿřŧ īş řḗḗƈǿǿřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.someCommittees": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "forums"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋƥǿǿřŧ ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.toOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.tooManyMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īş ḿǿǿřḗḗ ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗƈīşīǿǿƞş; ŧħḗḗ "
+    },
+    {
+      "type": 5,
+      "value": "format",
+      "options": {
+        "PDF": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƤḒƑ ħǿǿŀḓş ŭŭƥ ŧǿǿ 2,000"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "şƥřḗḗȧȧḓşħḗḗḗḗŧ ħǿǿŀḓş ŭŭƥ ŧǿǿ 20,000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ". Ƞȧȧřřǿǿẇ ŧħḗḗ ḓȧȧŧḗḗş ǿǿř ŧħḗḗ ƒīŀŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.tooManyPdf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īş "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗƈīşīǿǿƞş; ȧȧ ƤḒƑ ħǿǿŀḓş ŭŭƥ ŧǿǿ 2,000. Ƞȧȧřřǿǿẇ ŧħḗḗ ḓȧȧŧḗḗş ǿǿř ƈħǿǿǿǿşḗḗ ȧȧ şƥřḗḗȧȧḓşħḗḗḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.tooManyXlsx": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īş "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗƈīşīǿǿƞş; ȧȧ şƥřḗḗȧȧḓşħḗḗḗḗŧ ħǿǿŀḓş ŭŭƥ ŧǿǿ 20,000. Ƞȧȧřřǿǿẇ ŧħḗḗ ḓȧȧŧḗḗş ǿǿř ŧħḗḗ ƒīŀŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.words": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřḓş: “"
+    },
+    {
+      "type": 1,
+      "value": "words"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.xlsx": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƥřḗḗȧȧḓşħḗḗḗḗŧ (.ẋŀşẋ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.export.xlsxHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř şǿǿřŧīƞɠ ȧȧƞḓ ƈħḗḗƈķīƞɠ, ŭŭƥ ŧǿǿ 20,000 řǿǿẇş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.facetHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŭŭŧƈǿǿḿḗḗ ƈǿǿŭŭƞŧş īƞƈŀŭŭḓḗḗ ǿǿƞŀẏ ḓḗḗƈīşīǿǿƞş ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īƞ ƒŭŭŀŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.facetValue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.filters": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀŧḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.flag.corrected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.flag.toBeRatified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ ƀḗḗ řȧȧŧīƒīḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.flag.validityPassed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀīḓīŧẏ ƥȧȧşşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.flag.withConditions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħ ƈǿǿƞḓīŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.flag.withDissent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħ ḓīşşḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.inForce": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ƒǿǿřƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗȧȧřƈħ ḓḗḗƈīşīǿǿƞş ȧȧƞḓ řḗḗşǿǿŀŭŭŧīǿǿƞş ǿǿƒ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.loadingMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿȧȧḓīƞɠ ḿǿǿřḗḗ ḓḗḗƈīşīǿǿƞş…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.meetingItem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": ", īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.meetingLink": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.meetingLinkNoLabel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.meetingOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.memoLink": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.memoLinkNoNumber": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.memoType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.minutesApprovedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿīƞŭŭŧḗḗş ȧȧƥƥřǿǿṽḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.moreFilters": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿřḗḗ ƒīŀŧḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.noNumber": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ řḗḗşǿǿŀŭŭŧīǿǿƞ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.noScope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ẏǿǿŭŭ ȧȧřḗḗ ƞǿǿŧ ȧȧ ḿḗḗḿƀḗḗř ǿǿř ǿǿƒƒīƈḗḗř ǿǿƒ ȧȧƞẏ "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.noScopeHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗɠīşŧḗḗř īş ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ḿḗḗḿƀḗḗřş, ǿǿƒƒīƈḗḗřş ȧȧƞḓ ǿǿṽḗḗřşīɠħŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŭŭŧƈǿǿḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.approved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽḗḗḓ ẇīŧħ ƈǿǿƞḓīŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.deferred": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƒḗḗřřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.noted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.referred": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒḗḗřřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗĵḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.returned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗŧŭŭřƞḗḗḓ ƒǿǿř ḿǿǿřḗḗ īƞƒǿǿřḿȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.outcome.withdrawn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.cursor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ŀīşŧ ħȧȧş ƈħȧȧƞɠḗḗḓ şīƞƈḗḗ īŧ ẇȧȧş şħǿǿẇƞ. Şḗḗȧȧřƈħ ȧȧɠȧȧīƞ ŧǿǿ şḗḗḗḗ īŧ ƒřǿǿḿ ŧħḗḗ şŧȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.invalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş şḗḗȧȧřƈħ ƈȧȧƞƞǿǿŧ ƀḗḗ ḿȧȧḓḗḗ. Ƈħḗḗƈķ ŧħḗḗ ƒīŀŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.outOfScope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħīş "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " īş ƞǿǿŧ īƞ ẏǿǿŭŭř řḗḗɠīşŧḗḗř. Ƈħǿǿǿǿşḗḗ ǿǿƞḗḗ ƒřǿǿḿ ŧħḗḗ ŀīşŧ, ǿǿř řḗḗşḗḗŧ ŧħḗḗ ƒīŀŧḗḗřş."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.range": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗƞḓ ḓȧȧŧḗḗ ḿŭŭşŧ ƀḗḗ ǿǿƞ ǿǿř ȧȧƒŧḗḗř ŧħḗḗ şŧȧȧřŧ ḓȧȧŧḗḗ, ȧȧƞḓ ȧȧŧ ḿǿǿşŧ 25 ẏḗḗȧȧřş ȧȧƒŧḗḗř īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.rateLimited": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ şḗḗȧȧřƈħḗḗḓ ḿȧȧƞẏ ŧīḿḗḗş īƞ ŧħḗḗ ŀȧȧşŧ ḿīƞŭŭŧḗḗ. Ẇȧȧīŧ ȧȧ ḿǿǿḿḗḗƞŧ, ŧħḗḗƞ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.sortNeedsOne": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř ǿǿřḓḗḗř ƞḗḗḗḗḓş ǿǿƞḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ". Ƈħǿǿǿǿşḗḗ ȧȧ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ƒīřşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.textTooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ȧȧŧ ḿǿǿşŧ 200 ƈħȧȧřȧȧƈŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.timeout": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şḗḗȧȧřƈħ ŧǿǿǿǿķ ŧǿǿǿǿ ŀǿǿƞɠ. Ȧḓḓ ẇǿǿřḓş ǿǿř ƞȧȧřřǿǿẇ ŧħḗḗ ḓȧȧŧḗḗş, ŧħḗḗƞ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.tooManyTerms": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ȧȧŧ ḿǿǿşŧ 12 ẇǿǿřḓş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.problem.tooManyValues": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƒīŀŧḗḗř ħȧȧş ŧǿǿǿǿ ḿȧȧƞẏ ṽȧȧŀŭŭḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.query": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřḓş, ȧȧ řḗḗşǿǿŀŭŭŧīǿǿƞ ƞŭŭḿƀḗḗř ǿǿř ȧȧ ḿḗḗḿǿǿ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.queryHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ: ŀīɋŭŭīḓīŧẏ, ƁŘƇ/2026/014, ǿǿř 14 ẇīŧħ ǿǿƞḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ƈħǿǿşḗḗƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.ratified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řȧȧŧīƒīḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.reason.recused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ īƞ ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.reason.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īŧḗḗḿ īş řḗḗşŧřīƈŧḗḗḓ ŧǿǿ ƞȧȧḿḗḗḓ ḿḗḗḿƀḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.removeFilter": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ ƒīŀŧḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "filter"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.reset": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.resolution": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşǿǿŀŭŭŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.resolutionsOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşǿǿŀŭŭŧīǿǿƞş ǿǿƞŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ īŧḗḗḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.restrictedNote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ īŧḗḗḿş ȧȧřḗḗ ƞǿǿŧ ḿȧȧŧƈħḗḗḓ ƀẏ ẇǿǿřḓş, ȧȧƞ ǿǿŭŭŧƈǿǿḿḗḗ, ȧȧ ḿḗḗḿǿǿ ŧẏƥḗḗ ǿǿř ȧȧƞ ḗḗẋƈḗḗƥŧīǿǿƞ. Ȧ řḗḗşǿǿŀŭŭŧīǿǿƞ ƞŭŭḿƀḗḗř şŧīŀŀ ƒīƞḓş ŧħḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.results": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.search": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗȧȧřƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.searchAgain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗȧȧřƈħ ȧȧɠȧȧīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.searching": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗȧȧřƈħīƞɠ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.showMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ḿǿǿřḗḗ ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.sort": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.sort.newest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇḗḗşŧ ƒīřşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.sort.number": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř ǿǿřḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.sort.oldest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŀḓḗḗşŧ ƒīřşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.sort.relevance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓḗḗşŧ ḿȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state.final": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿīƞŭŭŧḗḗş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state.numbered": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state.recorded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state.released": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞŧ ŧǿǿ ŧħḗḗ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.state.void": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽǿǿīḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.toBeRatified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŧǿǿ ƀḗḗ řȧȧŧīƒīḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.toBeforeFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗƞḓ ḓȧȧŧḗḗ ḿŭŭşŧ ƀḗḗ ǿǿƞ ǿǿř ȧȧƒŧḗḗř ŧħḗḗ şŧȧȧřŧ ḓȧȧŧḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.untitled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.untitledNoItem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞ ẇīŧħǿǿŭŭŧ ȧȧ ŧīŧŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.validUntil": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ṽȧȧŀīḓ ŭŭƞŧīŀ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.validityPassed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ṽȧȧŀīḓīŧẏ ƥȧȧşşḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "decisionRegister.withDissent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ẇīŧħ ḓīşşḗḗƞŧ"
     },
     {
       "type": 0,
@@ -84194,6 +86677,20 @@
       "value": "]"
     }
   ],
+  "nav.decisions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.declarations": [
     {
       "type": 0,
@@ -92864,6 +95361,70 @@
     {
       "type": 0,
       "value": "Řḗḗƈǿǿṽḗḗřẏ ƈǿǿḓḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "registerLinks.inTheRegister": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ŧħḗḗ řḗḗɠīşŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "registerLinks.inTheRegisterNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşǿǿŀŭŭŧīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ŧħḗḗ řḗḗɠīşŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "registerLinks.ofCommittee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ḓḗḗƈīşīǿǿƞş ǿǿƒ ŧħīş "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,

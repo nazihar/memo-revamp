@@ -112,7 +112,7 @@ class MinutesComments(
         }
         MinutesStateMachine.next(row.state, MinutesTransition.COMMENT, row.policy.approval)
         val clean = text?.trim()?.ifEmpty { null }
-        val set = people.setOf(row, view.userId, reader)
+        val set = people.setsOf(row, mapOf(view.userId to reader)).getValue(view.userId)
         requireNoProblems(
             listOfNotNull(
                 FieldProblem("text", "TEXT_REQUIRED", "Write your suggestion.").takeIf { kind == CommentKind.SUGGESTION && clean == null },

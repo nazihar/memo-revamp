@@ -168,7 +168,7 @@ class ApprovedCopies(
     }
 
     /** The distinct redaction sets of the approved minutes' readers today. */
-    private fun sets(row: MinutesRow): Set<RedactionSet> = people.readers(row).map { (user, kind) -> people.setOf(row, user, kind) }.toSet()
+    private fun sets(row: MinutesRow): Set<RedactionSet> = people.setsOf(row, people.readers(row)).values.toSet()
 
     /** [copy] redacted, made into a PDF/A, its text checked, stored and marked built. */
     private fun buildOne(

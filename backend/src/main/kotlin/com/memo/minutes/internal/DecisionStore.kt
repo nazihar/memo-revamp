@@ -282,6 +282,10 @@ class DecisionReads(
     /** The current decision [decisionId]; null when there is none. */
     fun currentById(decisionId: UUID): CurrentDecision? = currentWhere(MINUTES_DECISION.ID.eq(decisionId)).firstOrNull()
 
+    /** The current decisions [decisionIds] that exist, in one query (a page of the resolution register). */
+    fun currentByIds(decisionIds: Collection<UUID>): List<CurrentDecision> =
+        if (decisionIds.isEmpty()) emptyList() else currentWhere(MINUTES_DECISION.ID.`in`(decisionIds))
+
     /** [meetingId]'s current decisions: one query on `(tenant_id, meeting_id)` joined to the current entries. */
     fun currentOf(meetingId: UUID): List<CurrentDecision> = currentWhere(MINUTES_DECISION.MEETING_ID.eq(meetingId))
 

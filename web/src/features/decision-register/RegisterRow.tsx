@@ -18,7 +18,7 @@ const LINK =
 
 /**
  * One decision of the register (flow AS1). In full: the date, the meeting and item, the resolution number and whether it
- * is in force, the title (opening the meeting where it was decided), the outcome, the exceptions and the state in words,
+ * is in force, the title (opening the resolution, or the meeting where a decision without a number was taken), the outcome, the exceptions and the state in words,
  * and the memo. A restricted line shows the number, the meeting and the item, and why it is restricted, in words: never
  * a title, an outcome or a memo (design §1.3).
  */
@@ -76,17 +76,31 @@ export function RegisterRow({
     <article aria-labelledby={titleId} className="flex flex-col gap-1 px-4 py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 id={titleId} className="min-w-0 flex-[1_1_18rem] font-medium">
-          <Link
-            id={rowFocusId(row)}
-            to="/meetings/$meetingId"
-            params={{ meetingId: row.meetingId }}
-            className={LINK}
-            onClick={() => {
-              onOpen(row)
-            }}
-          >
-            {title}
-          </Link>
+          {row.resolutionId ? (
+            <Link
+              id={rowFocusId(row)}
+              to="/resolutions/$resolutionId"
+              params={{ resolutionId: row.resolutionId }}
+              className={LINK}
+              onClick={() => {
+                onOpen(row)
+              }}
+            >
+              {title}
+            </Link>
+          ) : (
+            <Link
+              id={rowFocusId(row)}
+              to="/meetings/$meetingId"
+              params={{ meetingId: row.meetingId }}
+              className={LINK}
+              onClick={() => {
+                onOpen(row)
+              }}
+            >
+              {title}
+            </Link>
+          )}
         </h3>
         <p className="text-sm font-medium">
           {number}
@@ -96,20 +110,36 @@ export function RegisterRow({
       {outcome ? <p className="text-sm font-semibold uppercase tracking-wide">{outcome}</p> : null}
       {exceptions.length > 0 ? <p className="text-sm">{exceptions.join(' · ')}</p> : null}
       <p className="text-xs text-muted-foreground">{[where, rowStateWords(intl, row)].join(' · ')}</p>
-      {row.memoId ? (
-        <p className="text-sm">
-          <Link
-            to="/memos/$memoId"
-            params={{ memoId: row.memoId }}
-            className={LINK}
-            onClick={() => {
-              onOpen(row)
-            }}
-          >
-            {row.memoNumber
-              ? intl.formatMessage(drm.memoLink, { number: row.memoNumber })
-              : intl.formatMessage(drm.memoLinkNoNumber)}
-          </Link>
+      {row.resolutionId || row.memoId ? (
+        <p className="flex flex-wrap gap-x-5 text-sm">
+          {row.resolutionId ? (
+            <Link
+              to="/meetings/$meetingId"
+              params={{ meetingId: row.meetingId }}
+              className={LINK}
+              onClick={() => {
+                onOpen(row)
+              }}
+            >
+              {row.meetingLabel
+                ? intl.formatMessage(drm.meetingLink, { meeting: row.meetingLabel })
+                : intl.formatMessage(drm.meetingLinkNoLabel)}
+            </Link>
+          ) : null}
+          {row.memoId ? (
+            <Link
+              to="/memos/$memoId"
+              params={{ memoId: row.memoId }}
+              className={LINK}
+              onClick={() => {
+                onOpen(row)
+              }}
+            >
+              {row.memoNumber
+                ? intl.formatMessage(drm.memoLink, { number: row.memoNumber })
+                : intl.formatMessage(drm.memoLinkNoNumber)}
+            </Link>
+          ) : null}
         </p>
       ) : null}
     </article>

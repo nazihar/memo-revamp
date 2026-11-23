@@ -29020,6 +29020,38 @@
       "value": "‬"
     }
   ],
+  "decisionRegister.meetingLink": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "decisionRegister.meetingLinkNoLabel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "decisionRegister.meetingOnly": [
     {
       "type": 0,

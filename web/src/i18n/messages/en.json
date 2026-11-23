@@ -1647,6 +1647,8 @@
   "decisionRegister.lead": "Search decisions and resolutions of the {forums} you can see.",
   "decisionRegister.loadingMore": "Loading more decisions…",
   "decisionRegister.meetingItem": "{meeting}, item {item}",
+  "decisionRegister.meetingLink": "Meeting {meeting}",
+  "decisionRegister.meetingLinkNoLabel": "The meeting",
   "decisionRegister.meetingOnly": "Meeting of {date}",
   "decisionRegister.memoLink": "Memo {number}",
   "decisionRegister.memoLinkNoNumber": "The memo",

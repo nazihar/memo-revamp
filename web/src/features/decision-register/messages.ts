@@ -27,6 +27,7 @@ type WithValues =
   | 'validityPassed'
   | 'minutesApprovedOn'
   | 'memoLink'
+  | 'meetingLink'
   | 'outOfScope'
   | 'sortNeedsOne'
   | 'checkComplete'
@@ -95,6 +96,7 @@ type Plain =
   | 'ratified'
   | 'corrected'
   | 'memoLinkNoNumber'
+  | 'meetingLinkNoLabel'
   | 'stateRECORDED'
   | 'stateNUMBERED'
   | 'stateRELEASED'
@@ -254,6 +256,8 @@ export const drm = defineMessages<Values>({
   minutesApprovedOn: { id: 'decisionRegister.minutesApprovedOn', defaultMessage: 'Minutes approved {date}' },
   memoLink: { id: 'decisionRegister.memoLink', defaultMessage: 'Memo {number}' },
   memoLinkNoNumber: { id: 'decisionRegister.memoLinkNoNumber', defaultMessage: 'The memo' },
+  meetingLink: { id: 'decisionRegister.meetingLink', defaultMessage: 'Meeting {meeting}' },
+  meetingLinkNoLabel: { id: 'decisionRegister.meetingLinkNoLabel', defaultMessage: 'The meeting' },
 
   // States in words (flow AS)
   stateRECORDED: { id: 'decisionRegister.state.recorded', defaultMessage: 'Recorded at the meeting' },

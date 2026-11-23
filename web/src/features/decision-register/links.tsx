@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { ScrollText } from 'lucide-react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
+import { getDecisionRegisterScopeOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { ForumResponse } from '@/api/generated/types.gen'
 import { Button } from '@/components/ui/button'
 import { PERMISSION, holds, useMyAccess } from '@/features/access/access'
@@ -9,7 +11,7 @@ import { hashOf } from './register-params'
 
 /**
  * The register's entry points on other pages (design E08 §1.6). Their words are in the small `registerLinks` catalogue
- * part, which loads with the committee pages (and with the page that places "In the register", which adds its route to the part), so those pages do not load the whole register's part.
+ * part, which loads with the committee and resolution pages, so those pages do not load the whole register's part.
  */
 const lm = defineMessages<{
   ofCommittee: Record<string, string>
@@ -53,7 +55,8 @@ export function CommitteeDecisionsLink({ forum }: { forum: ForumResponse }) {
 
 /**
  * "In the register" for a resolution (design §1.6): the register filtered to its committee with its number as the words,
- * so the number lookup finds its row. For E06's resolution page and the decisions on the meeting page.
+ * so the number lookup finds its row. On the resolution page. Shown only to someone whose register holds the committee
+ * (the scope, read once and cached): a reader of the memo alone may open the resolution but has no register.
  */
 export function InTheRegisterLink({
   forumId,
@@ -68,6 +71,8 @@ export function InTheRegisterLink({
   className?: string
 }) {
   const intl = useIntl()
+  const scope = useQuery({ ...getDecisionRegisterScopeOptions(), retry: false, staleTime: 60_000 })
+  if (!scope.data?.committees.some((c) => c.id === forumId)) return null
   return (
     <Link
       to="/decisions"

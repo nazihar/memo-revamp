@@ -1647,6 +1647,8 @@
   "decisionRegister.lead": "ابحث في قرارات {forums} التي يمكنك الاطلاع عليها وقراراتها الرسمية.",
   "decisionRegister.loadingMore": "جارٍ تحميل مزيد من القرارات…",
   "decisionRegister.meetingItem": "{meeting}، البند {item}",
+  "decisionRegister.meetingLink": "الاجتماع {meeting}",
+  "decisionRegister.meetingLinkNoLabel": "الاجتماع",
   "decisionRegister.meetingOnly": "اجتماع {date}",
   "decisionRegister.memoLink": "المذكرة {number}",
   "decisionRegister.memoLinkNoNumber": "المذكرة",

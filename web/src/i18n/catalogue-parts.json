@@ -97,8 +97,8 @@
     "prefixes": ["decisionRegister"]
   },
   "registerLinks": {
-    "$comment": "The register's entry points on other pages (E08 T6, design §1.6): Decisions of this committee on the committee page, and In the register for E06's resolution page and the meeting page's decisions (the page that places it adds its route here).",
-    "routes": ["/committees"],
+    "$comment": "The register's entry points on other pages (E08 T6, design §1.6): Decisions of this committee on the committee page, and In the register on a resolution's page (a page that places it adds its route here).",
+    "routes": ["/committees", "/resolutions"],
     "prefixes": ["registerLinks"]
   },
   "imports": {

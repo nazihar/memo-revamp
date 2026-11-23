@@ -9,12 +9,21 @@ import type {
   DecisionSearchView,
   MyForumResponse,
   RegisterScopeView,
+  ResolutionResponse,
   ResolutionCheckResponse,
 } from '@/api/generated/types.gen'
 import { navigationGroups } from '@/app/navigation'
 import { viewerOf } from '@/features/auth/session'
 import { partsForPath } from '@/i18n/catalogue-parts'
-import { API_ORIGIN, csrfHandler, myForumsHandler, server, sessionHandler, signedInSession } from '@/test/msw'
+import {
+  accessHandler,
+  API_ORIGIN,
+  csrfHandler,
+  myForumsHandler,
+  server,
+  sessionHandler,
+  signedInSession,
+} from '@/test/msw'
 import { expectNoA11yViolations, renderRoute, renderWithProviders } from '@/test/render'
 import { InTheRegisterLink } from './links'
 import { parseRegisterSearch, searchBody } from './register-params'
@@ -251,7 +260,9 @@ describe('the decision register (Phase 4 E08 T6, flow AS)', () => {
     const [first, second, third] = within(list).getAllByRole('article')
     // In full: title (to the meeting where it was decided), number and its state, outcome, exceptions, state, memo.
     const open = within(first!).getByRole('link', { name: 'Liquidity contingency plan, annual review' })
-    expect(open).toHaveAttribute('href', '/meetings/m3')
+    // A resolution opens its own page; the meeting and the memo keep their links.
+    expect(open).toHaveAttribute('href', '/resolutions/r13')
+    expect(within(first!).getByRole('link', { name: 'Meeting BRC 3/2026' })).toHaveAttribute('href', '/meetings/m3')
     expect(first).toHaveTextContent('Resolution BRC/2026/013In force')
     expect(first).toHaveTextContent('Approved with conditions')
     expect(first).toHaveTextContent('2 conditions · with dissent · valid until Mar 10, 2027')
@@ -271,6 +282,12 @@ describe('the decision register (Phase 4 E08 T6, flow AS)', () => {
     expect(third).toHaveTextContent('No resolution number')
     expect(third).toHaveTextContent('Recorded at the meeting')
     expect(third).toHaveTextContent('Noted')
+    // A decision without a number opens the meeting where it was taken, with no second link to the same place.
+    expect(within(third!).getByRole('link', { name: 'Quarterly credit portfolio report' })).toHaveAttribute(
+      'href',
+      '/meetings/m7',
+    )
+    expect(within(third!).queryByRole('link', { name: /^Meeting / })).not.toBeInTheDocument()
 
     // Facets lead to the register narrowed to them; outcome counts are of rows seen in full.
     const facets = screen.getByText('By committee').closest('dl') as HTMLElement
@@ -682,13 +699,76 @@ describe('the register in the menu', () => {
 })
 
 describe('In the register (design §1.6)', () => {
-  it('opens the register filtered to the committee, with the resolution number as the words', async () => {
+  function renderLink() {
     const root = createRootRoute({
       component: () => <InTheRegisterLink forumId={BRC} resolutionNumber="BRC/2026/014" named />,
     })
     const router = createRouter({ routeTree: root, history: createMemoryHistory({ initialEntries: ['/'] }) })
-    renderWithProviders(<RouterProvider router={router as never} />)
+    return renderWithProviders(<RouterProvider router={router as never} />)
+  }
+
+  it('opens the register filtered to the committee, with the resolution number as the words', async () => {
+    scopeHandler()
+    renderLink()
     const link = await screen.findByRole('link', { name: 'Resolution BRC/2026/014 in the register' })
     expect(link).toHaveAttribute('href', `/decisions?committee=${BRC}#q=BRC%2F2026%2F014`)
+  })
+
+  it('is not offered to someone whose register does not hold the committee, or who has none', async () => {
+    for (const answer of [{ ...scope, committees: scope.committees.filter((c) => c.id !== BRC) }, 403] as const) {
+      let asked = false
+      server.use(
+        http.get(`${API}/decision-register/scope`, () => {
+          asked = true
+          return typeof answer === 'number'
+            ? HttpResponse.json({ title: 'Forbidden', status: answer }, { status: answer })
+            : HttpResponse.json<RegisterScopeView>(answer)
+        }),
+      )
+      const view = renderLink()
+      await waitFor(() => {
+        expect(asked).toBe(true)
+      })
+      await new Promise((resolve) => setTimeout(resolve, 50))
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      view.unmount()
+    }
+  })
+
+  it('stands on the resolution page for a reader of the register', async () => {
+    scopeHandler()
+    server.use(
+      accessHandler([]),
+      http.get(`${API}/resolutions/r14`, () =>
+        HttpResponse.json<ResolutionResponse>({
+          id: 'r14',
+          decisionId: 'd14',
+          forumId: BRC,
+          forumName: 'Board Risk Committee',
+          full: true,
+          number: 'BRC/2026/014',
+          numberedAt: '2026-12-12T08:00:00Z',
+          state: 'IN_FORCE',
+          meetingId: 'm3',
+          meetingLabel: 'BRC 3/2026',
+          meetingDate: '2026-12-12',
+          itemNumber: '5',
+          itemTitle: 'Term loan, Delta Textiles',
+          outcome: 'APPROVED',
+          outcomeLabel: 'Approved',
+          conditions: [],
+          mayIssueExtract: false,
+          viewerRecused: false,
+        }),
+      ),
+      http.get(`${API}/resolutions/r14/extracts`, () => HttpResponse.json([])),
+    )
+    const { container } = renderRoute('/resolutions/r14')
+    expect(partsForPath('/resolutions/r14')).toEqual(expect.arrayContaining(['resolutions', 'registerLinks']))
+    expect(await screen.findByRole('link', { name: 'In the register' }, { timeout: 5000 })).toHaveAttribute(
+      'href',
+      `/decisions?committee=${BRC}#q=BRC%2F2026%2F014`,
+    )
+    await expectNoA11yViolations(container)
   })
 })

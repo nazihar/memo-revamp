@@ -16648,6 +16648,26 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "decisionRegister.meetingLink": [
+    {
+      "type": 0,
+      "value": "Meeting "
+    },
+    {
+      "type": 1,
+      "value": "meeting"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "decisionRegister.meetingLinkNoLabel": [
+    {
+      "type": 0,
+      "value": "The meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "decisionRegister.meetingOnly": [
     {
       "type": 0,

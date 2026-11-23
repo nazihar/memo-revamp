@@ -80,19 +80,23 @@ class ForumSeeding(
         code: String,
         change: SeedTypeChange,
     ): Int? {
-        val type = typeStore.all().firstOrNull { it.code == code } ?: return null
-        val published = versions.published(type.id) ?: return null
-        val settings = published.settings
+        val type = typeStore.all().firstOrNull { it.code == code }
+        val settings = type?.let { versions.published(it.id) }?.settings
         val wanted =
-            settings.copy(
+            settings?.copy(
                 minutes = change.minutesApproval?.let { settings.minutes.copy(approval = it) } ?: settings.minutes,
                 meetings = change.quorumOverride?.let { settings.meetings.copy(quorumOverride = it) } ?: settings.meetings,
             )
-        if (wanted == settings || versions.versions(type.id).any { it.state.open }) return null
-        val draft = lifecycle.newDraft(type.id)
-        val saved = lifecycle.replace(type.id, draft.number, draft.revision, wanted)
-        lifecycle.submit(type.id, draft.number, saved.revision)
-        return draft.number
+        val open = type != null && versions.versions(type.id).any { it.state.open }
+        val changed = wanted != null && wanted != settings && !open
+        return if (type == null || !changed) {
+            null
+        } else {
+            val draft = lifecycle.newDraft(type.id)
+            val saved = lifecycle.replace(type.id, draft.number, draft.revision, checkNotNull(wanted))
+            lifecycle.submit(type.id, draft.number, saved.revision)
+            draft.number
+        }
     }
 
     /** Publishes version [number] of the type with [code], as the bound administrator (who did not submit it). */

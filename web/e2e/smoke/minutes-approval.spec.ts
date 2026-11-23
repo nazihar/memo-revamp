@@ -132,6 +132,8 @@ test.describe('drafting, reviewing, circulating and approving the minutes', () =
     await press(
       page.getByRole('dialog', { name: 'Send the draft to the chair?' }).getByRole('button', { name: 'Send' }),
     )
+    // The chair's page is read once the draft is with them (it failed locally once, read before the send landed).
+    await expect(page.getByText(/^The draft is with .+ for review\.$/).first()).toBeVisible()
     await chair.goto(minutes)
     await press(
       chair

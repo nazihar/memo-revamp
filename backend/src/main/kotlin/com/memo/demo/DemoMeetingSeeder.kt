@@ -71,6 +71,7 @@ class DemoMeetingSeeder(
     private val agendas: AgendaSeeding,
     private val declarations: DeclarationSeeding,
     private val e05: DemoMeetingAttendanceSeeder,
+    private val e06Held: DemoHeldRiskReviewSeeder,
     private val e06: DemoMinutesSeeder,
     private val memos: MemoSeeding,
     private val memoAccess: MemoAccessSeeding,
@@ -91,7 +92,8 @@ class DemoMeetingSeeder(
         val credit = forumId(ids, DemoForumSeeder.CREDIT)
         val today = LocalDate.now(clock.withZone(ZONE))
         val heldRisk =
-            asUser(ids.getValue(SECRETARY)) { meetings.find(risk, DemoMinutesSeeder.RISK_TITLE) } ?: e06.heldRiskReview(ids, risk, today)
+            asUser(ids.getValue(SECRETARY)) { meetings.find(risk, DemoMinutesSeeder.RISK_TITLE) }
+                ?: e06Held.heldRiskReview(ids, risk, today)
         val riskMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(risk, RISK_TITLE) } ?: riskReview(ids, risk, today)
         val creditMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(credit, CREDIT_TITLE) } ?: creditMeeting(ids, credit, today)
         riskDeclarations(ids, risk, riskMeeting, today)

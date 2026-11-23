@@ -45,6 +45,7 @@ import com.memo.memo.MemoAccessSeeding
 import com.memo.memo.MemoInterestLinks
 import com.memo.memo.MemoSeeding
 import com.memo.memo.internal.Memos
+import com.memo.minutes.DecisionSeeding
 import com.memo.minutes.MinutesSeeding
 import com.memo.minutes.internal.MinutesCopies
 import com.memo.minutes.internal.MinutesJobs
@@ -146,6 +147,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var invitations: InvitationScheduler
 
+    @Autowired lateinit var decisionSeeding: DecisionSeeding
+
     @Autowired lateinit var minutesSeeding: MinutesSeeding
 
     @Autowired lateinit var minutesJobs: MinutesJobs
@@ -238,7 +241,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             agendaSeeding,
             declarationSeeding,
             e05,
-            DemoMinutesSeeder(meetingSeeding, agendaSeeding, declarationSeeding, attendanceSeeding, minutesSeeding, e05),
+            DemoHeldRiskReviewSeeder(meetingSeeding, agendaSeeding, declarationSeeding, attendanceSeeding, e05),
+            DemoMinutesSeeder(declarationSeeding, attendanceSeeding, decisionSeeding, minutesSeeding),
             memoSeeding,
             memoAccess,
             forumSeeding,
@@ -496,7 +500,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val number = { m: UUID -> checkNotNull(asUser(secretary) { reads.get(m) }.label).substringBefore('/').substringAfter(' ').toInt() }
         assertThat(number(meeting)).isLessThan(number(seeded.riskReview))
         val item = { title: String -> checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, title) }) }
-        val resolution = { title: String -> asUser(secretary) { minutesSeeding.resolution(item(title)) }?.first }
+        val resolution = { title: String -> asUser(secretary) { decisionSeeding.resolution(item(title)) }?.first }
         val year = held.startsAt.atZone(DemoMeetingSeeder.ZONE).year
         assertThat(listOf(DemoMinutesSeeder.RUPSHA, DemoMinutesSeeder.CYBER, DemoMinutesSeeder.POLICY).map(resolution))
             .containsExactly("BRC/$year/001", "BRC/$year/002", "BRC/$year/003")
@@ -560,7 +564,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
         val meghna = checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, DemoMeetingSeeder.MEGHNA) })
         val year = asUser(secretary) { reads.get(meeting) }.startsAt.atZone(DemoMeetingSeeder.ZONE).year
-        val (number, resolutionId) = checkNotNull(asUser(secretary) { minutesSeeding.resolution(meghna) })
+        val (number, resolutionId) = checkNotNull(asUser(secretary) { decisionSeeding.resolution(meghna) })
         assertThat(number).isEqualTo("MCC/$year/001")
         assertThat(asUser(secretary) { reads.get(meeting) }.status).isEqualTo(MeetingStatus.MINUTES_APPROVED)
         AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
@@ -592,7 +596,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertThat(
                 c.long(
                     "select count(*) from minutes_decision d join workflow_instance w on w.subject_id = d.memo_id " +
-                        "join workflow_action a on a.instance_id = w.id where d.item_id = ? and a.kind = 'FORUM_DECIDED' and a.remark like ?",
+                        "join workflow_action a on a.instance_id = w.id " +
+                        "where d.item_id = ? and a.kind = 'FORUM_DECIDED' and a.remark like ?",
                     meghna,
                     "%Resolution $number:%",
                 ),

@@ -16,6 +16,7 @@ import { ErrorState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useWithStepUp } from '@/features/auth/step-up-context'
+import { InTheRegisterLink } from '@/features/decision-register/links'
 import { FormDialog } from '@/features/forums/FormDialog'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { rsm, rsmv } from './messages'
@@ -120,6 +121,7 @@ export function ResolutionPage({ resolutionId }: { resolutionId: string }) {
           {intl.formatMessage(rsm.backToMeeting)}
         </Link>
       ) : null}
+      <InTheRegisterLink forumId={r.forumId} resolutionNumber={r.number} />
       <Extracts resolution={r} />
     </section>
   )

@@ -819,7 +819,7 @@ These are written in the business transaction (AGENTS §3.3). Jobs audit as the 
 - `master` holds `forum/V7`, `meeting/V9`, `memo/V20`, `workflow/V16` and `notification/V4`.
 - Open #203 (E05 T5) holds `meeting/V10`.
 - E06 plans `minutes/V1`–`V4` and no forum migration after V7.
-- **E07 takes `forum/V8` and `actions/V1`–`V4`.** If another PR takes `forum/V8` first, E07 takes the next forum number.
+- **E07 takes `forum/V8` and `actions/V1`–`V4`** (and, as built, `actions/V5` in T9 for two indexes of the daily task). If another PR takes `forum/V8` first, E07 takes the next forum number.
 - E07 adds **no meeting, memo, workflow or notification migration**:
   - notification kinds are an enum in code;
   - the link check already allows `/actions/…`;
@@ -865,6 +865,19 @@ These are written in the business transaction (AGENTS §3.3). Jobs audit as the 
 
 - **Volumes** (the E03 and E06 generator, extended in T9): 30 committees × 10 years × 12 meetings × 8 actions ≈ 28,800 actions; 150,000 entries; 3,000 open; 1,000 follow-up memo links; 3,600 reports with 200,000 rows.
 - `EXPLAIN` is reviewed for "My actions", the tracker (with and without text), the report, and the daily task.
+- **As built in T9, volumes and plans** (2026-11-22; `ActionsVolume`, `ActionsVolumeIT`, weekly `load` job `actions-volume` on `ACTIONS_VOLUME`):
+  - **The volume**, written over `MeetingVolume` at 3,600 meetings (whose agendas now open with a "Matters arising" item, an opt-in of the generator) in a tenant of its own, committed and analysed stage by stage, then vacuumed:
+    - 29,162 actions: 9 per held meeting (seven from items of three sections, their columns copied; one from the meeting; one direct), about 970 per committee; one in ten owned through a position; contributors on about half;
+    - 3,414 open, each with a running workflow copied from two actions issued through the services (the owner's step, or verification by the secretaries), due times and timers moved with its date; one in nine done and to be verified; the director holds 202 and contributes to 50, the secretary has 386 to verify;
+    - 154,522 timeline entries, 16,226 contributors, 3,451 date requests, 30,120 digest keys, 5,000 people with 22,500 action notices for the next digest;
+    - 3,240 action taken reports with 219,240 rows, and the focal meeting's report built at 284 rows;
+    - 988 follow-up memo links (`actions_memo`, T6, on the base once #230 merged; the memos themselves are not written).
+  - **Plans:** every statement of "My actions" (each tab with its counts), the tracker (with and without text, overdue, with its totals), the export, an action with its timeline, the report (built and read) and the daily task is `EXPLAIN ANALYZE`d at volume; none scans an action table sequentially. The daily task's first plans scanned three times; fixed by:
+    - **`actions/V5__daily_indexes.sql`**: `actions_item_open_idx (tenant_id, created_at, id) INCLUDE (forum_id, status, reference) WHERE status IN (OPEN, IN_PROGRESS, DONE_PENDING)` and `actions_digest_day_idx (tenant_id, day, user_id)` (V3 is #230 and V4 #238, so V5);
+    - the safety net reads the open actions a batch of 500 at a time by keyset, with their workflows in one query each (the new published `WorkflowRuns.of`: newest run, status and due time), instead of `viewOf` and `dueOf` per action (about 17,000 statements a run);
+    - a person's last digest is read within the digest's 14-day lookback only (an earlier one changes nothing);
+    - the digest keys are written 1,000 a statement and the recipients read in one query per 1,000 (`RecipientLookup.recipients`, a default method that `identity` answers with one query per 1,000), and the organisation once a run.
+  - **Measured** (dev machine, Windows with PostgreSQL in Docker, shared with other work; best of three rounds of 20 calls, `Latency`): see the T9 entry of `log.md`.
 
 ## 9. Background work
 - **The engine's timers** (ADR-0041), which already exist: reminders, overdue and escalation per task. The actions module reacts to `WorkflowTimerFired` and `WorkflowEscalated` for its subject inside the timer's transaction:

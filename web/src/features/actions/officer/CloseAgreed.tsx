@@ -1,7 +1,6 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useId, useRef, useState, type SyntheticEvent } from 'react'
 import { useIntl } from 'react-intl'
-import { getMeetingOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { closeAgreedActions } from '@/api/generated/sdk.gen'
 import type { ActionReportResponse } from '@/api/generated/types.gen'
 import { Button } from '@/components/ui/button'
@@ -11,23 +10,22 @@ import { useTerms } from '@/features/terms/terms'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { ao } from './messages'
 import { officerRefusal, reasonWords } from './problems'
-import { RAISING, refreshActions } from './shared'
+import { refreshActions } from './shared'
 
 /**
  * "Close the actions the committee agreed" (flow AM2, design §1.9): at the meeting whose agenda carries the report, the
- * officers tick the actions proposed to close that the committee agreed, and close them in one request; each is
- * verified on its own with the remark "Agreed at BRC 4/2026, item 3" (or the one given). An officer who owns or helps
- * with one of them cannot close it: the result says so, and another officer does. Shown to the report's officers while
- * the meeting runs, is held or has its minutes approved.
+ * verifier ticks the actions proposed to close that the committee agreed, and closes them in one request; each is
+ * verified on its own with the remark "Agreed at BRC 4/2026, item 3" (or the one given). The server says who may: the
+ * report's `can.closeAgreed`, and each row's `canClose` by the verifier's rule (never the owner, a contributor or anyone
+ * recused from the item, and only while the meeting runs, is held or has its minutes approved). Only those rows are
+ * offered; a refusal that comes back anyway (another verifier was quicker) is said in words.
  */
 export function CloseAgreed({ report }: { report: ActionReportResponse }) {
   const intl = useIntl()
   const terms = useTerms()
   const queryClient = useQueryClient()
   const headingId = useId()
-  const officer = report.heldBack != null
-  const meeting = useQuery({ ...getMeetingOptions({ path: { meetingId: report.meetingId } }), enabled: officer })
-  const rows = report.sections.find((s) => s.section === 'TO_CLOSE')?.rows ?? []
+  const rows = (report.sections.find((s) => s.section === 'TO_CLOSE')?.rows ?? []).filter((r) => r.canClose)
   const [chosen, setChosen] = useState<string[]>([])
   const [remark, setRemark] = useState('')
   const [key, setKey] = useState(() => newIdempotencyKey())
@@ -39,7 +37,7 @@ export function CloseAgreed({ report }: { report: ActionReportResponse }) {
   useEffect(() => {
     if (said.times > 0) saidRef.current?.focus()
   }, [said])
-  if (!officer || !rows.length || !meeting.data || !RAISING.includes(meeting.data.status)) return null
+  if (!report.can.closeAgreed || !rows.length) return null
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault()

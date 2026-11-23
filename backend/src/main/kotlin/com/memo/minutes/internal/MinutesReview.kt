@@ -232,7 +232,7 @@ class MinutesReview(
         reason: String?,
     ): MinutesRow {
         val readers = people.readers(row)
-        val sets = readers.map { (user, kind) -> people.setOf(row, user, kind) }.map { it.key }.toSet()
+        val sets = people.setsOf(row, readers).values.toSet()
         refuseIf(sets.size > MinutesCopies.MAX_COPIES, "TOO_MANY_COPIES") {
             "These minutes would need ${sets.size} different copies for their readers; at most ${MinutesCopies.MAX_COPIES} are made."
         }

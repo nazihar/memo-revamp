@@ -235,12 +235,22 @@ class SectionStore(
     private val tenantDsl: TenantDsl,
     private val agendas: AgendaStore,
 ) {
-    fun live(meetingId: UUID): List<SectionRow> =
+    fun live(meetingId: UUID): List<SectionRow> = liveOf(listOf(meetingId))[meetingId].orEmpty()
+
+    /** The live sections of each of [meetingIds] in agenda order, in one query (E06's resolution register, design E06 §8). */
+    fun liveOf(meetingIds: Collection<UUID>): Map<UUID, List<SectionRow>> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            liveRows(meetingIds).groupBy { it.meetingId }
+        }
+
+    private fun liveRows(meetingIds: Collection<UUID>): List<SectionRow> =
         tenantDsl
             .current()
             .selectFrom(MEETING_SECTION)
-            .where(MEETING_SECTION.MEETING_ID.eq(meetingId), MEETING_SECTION.REMOVED_AT.isNull)
-            .orderBy(MEETING_SECTION.POSITION, MEETING_SECTION.ID)
+            .where(MEETING_SECTION.MEETING_ID.`in`(meetingIds), MEETING_SECTION.REMOVED_AT.isNull)
+            .orderBy(MEETING_SECTION.MEETING_ID, MEETING_SECTION.POSITION, MEETING_SECTION.ID)
             .fetch {
                 SectionRow(
                     id = it.id,
@@ -305,13 +315,21 @@ class ItemStore(
     private val agendas: AgendaStore,
     private val json: JsonMapper,
 ) {
-    fun live(meetingId: UUID): List<ItemRow> =
-        tenantDsl
-            .current()
-            .selectFrom(MEETING_ITEM)
-            .where(MEETING_ITEM.MEETING_ID.eq(meetingId), MEETING_ITEM.REMOVED_AT.isNull)
-            .orderBy(MEETING_ITEM.POSITION, MEETING_ITEM.ID)
-            .fetch { row(it) }
+    fun live(meetingId: UUID): List<ItemRow> = liveOf(listOf(meetingId))[meetingId].orEmpty()
+
+    /** The live items of each of [meetingIds] in position order, in one query (E06's resolution register, design E06 §8). */
+    fun liveOf(meetingIds: Collection<UUID>): Map<UUID, List<ItemRow>> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(MEETING_ITEM)
+                .where(MEETING_ITEM.MEETING_ID.`in`(meetingIds), MEETING_ITEM.REMOVED_AT.isNull)
+                .orderBy(MEETING_ITEM.MEETING_ID, MEETING_ITEM.POSITION, MEETING_ITEM.ID)
+                .fetch { row(it) }
+                .groupBy { it.meetingId }
+        }
 
     /** The live item [id] (read without a lock: callers lock its submission, then the agenda, and read it again). */
     fun find(id: UUID): ItemRow? =

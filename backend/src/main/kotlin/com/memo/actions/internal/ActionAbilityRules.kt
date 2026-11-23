@@ -1,8 +1,10 @@
 package com.memo.actions.internal
 
 import com.memo.forum.DueChange
+import com.memo.meeting.Meetings
 import com.memo.org.OrgDirectory
 import org.springframework.stereotype.Component
+import java.time.Clock
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.UUID
@@ -12,6 +14,9 @@ import java.util.UUID
 class ActionAbilityRules(
     private val deciders: ActionDeciders,
     private val org: OrgDirectory,
+    private val meetings: Meetings,
+    private val reports: ActionReportStore,
+    private val clock: Clock,
 ) {
     /** What [viewer] may do with [row] now, by the matrix of design E07 §4 (the services decide again on each call). */
     @Suppress("LongParameterList", "CyclomaticComplexMethod")
@@ -55,6 +60,17 @@ class ActionAbilityRules(
             reopen = ended && recent && manages,
             markDone = row.status in ActionChecks.UNDERWAY && viewer.userId == row.holderUserId,
             verify = row.status == ActionStatus.DONE_PENDING && !owner && !contributor && !recused && row.id in viewer.tasks(),
+            holdBack = manages && holdable(row),
         )
+    }
+
+    /**
+     * Whether [row] may be held back from the next report ([ActionReportHolds.hold]'s rule, for a secretary or
+     * `forums.manage` not recused): issued, and the committee has a meeting still to come whose reports do not yet leave it
+     * out (409 `NO_MEETING` and `ALREADY_HELD` otherwise).
+     */
+    private fun holdable(row: ActionRow): Boolean {
+        val next = row.reference?.let { ActionMeetings.next(meetings.ofForum(row.forumId), clock.instant()) }
+        return next != null && row.id !in reports.held(next.id)
     }
 }

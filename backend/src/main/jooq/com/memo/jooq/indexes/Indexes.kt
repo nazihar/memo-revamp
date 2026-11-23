@@ -6,6 +6,7 @@ package com.memo.jooq.indexes
 
 
 import com.memo.jooq.tables.ActionsContributor
+import com.memo.jooq.tables.ActionsDigest
 import com.memo.jooq.tables.ActionsDueRequest
 import com.memo.jooq.tables.ActionsItem
 import com.memo.jooq.tables.ActionsMemo
@@ -131,6 +132,7 @@ import org.jooq.impl.Internal
 val ACTIONS_CONTRIBUTOR_ACTION_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_action_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID), false)
 val ACTIONS_CONTRIBUTOR_CURRENT_UK: Index = Internal.createIndex(DSL.name("actions_contributor_current_uk"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.ACTION_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), true)
 val ACTIONS_CONTRIBUTOR_USER_IDX: Index = Internal.createIndex(DSL.name("actions_contributor_user_idx"), ActionsContributor.ACTIONS_CONTRIBUTOR, arrayOf(ActionsContributor.ACTIONS_CONTRIBUTOR.TENANT_ID, ActionsContributor.ACTIONS_CONTRIBUTOR.USER_ID), false)
+val ACTIONS_DIGEST_DAY_IDX: Index = Internal.createIndex(DSL.name("actions_digest_day_idx"), ActionsDigest.ACTIONS_DIGEST, arrayOf(ActionsDigest.ACTIONS_DIGEST.TENANT_ID, ActionsDigest.ACTIONS_DIGEST.DAY, ActionsDigest.ACTIONS_DIGEST.USER_ID), false)
 val ACTIONS_DUE_REQUEST_ACTION_IDX: Index = Internal.createIndex(DSL.name("actions_due_request_action_idx"), ActionsDueRequest.ACTIONS_DUE_REQUEST, arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ACTION_ID), false)
 val ACTIONS_DUE_REQUEST_PENDING_UK: Index = Internal.createIndex(DSL.name("actions_due_request_pending_uk"), ActionsDueRequest.ACTIONS_DUE_REQUEST, arrayOf(ActionsDueRequest.ACTIONS_DUE_REQUEST.TENANT_ID, ActionsDueRequest.ACTIONS_DUE_REQUEST.ACTION_ID), true)
 val ACTIONS_ITEM_DECISION_IDX: Index = Internal.createIndex(DSL.name("actions_item_decision_idx"), ActionsItem.ACTIONS_ITEM, arrayOf(ActionsItem.ACTIONS_ITEM.TENANT_ID, ActionsItem.ACTIONS_ITEM.DECISION_ID), false)
@@ -303,6 +305,7 @@ val MINUTES_APPROVAL_CHAIN_UK: Index = Internal.createIndex(DSL.name("minutes_ap
 val MINUTES_APPROVAL_CORRECTION_IDX: Index = Internal.createIndex(DSL.name("minutes_approval_correction_idx"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.CORRECTION_ID), false)
 val MINUTES_APPROVAL_FORUM_IDX: Index = Internal.createIndex(DSL.name("minutes_approval_forum_idx"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.FORUM_ID, MinutesApproval.MINUTES_APPROVAL.AT), false)
 val MINUTES_APPROVAL_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_approval_meeting_idx"), MinutesApproval.MINUTES_APPROVAL, arrayOf(MinutesApproval.MINUTES_APPROVAL.TENANT_ID, MinutesApproval.MINUTES_APPROVAL.MEETING_ID), false)
+val MINUTES_APPROVING_DECISION_IDX: Index = Internal.createIndex(DSL.name("minutes_approving_decision_idx"), Minutes.MINUTES, arrayOf(Minutes.MINUTES.TENANT_ID, Minutes.MINUTES.APPROVING_DECISION_ID), false)
 val MINUTES_COMMENT_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_comment_meeting_idx"), MinutesComment.MINUTES_COMMENT, arrayOf(MinutesComment.MINUTES_COMMENT.TENANT_ID, MinutesComment.MINUTES_COMMENT.MEETING_ID, MinutesComment.MINUTES_COMMENT.USER_ID), false)
 val MINUTES_COMMENT_NONE_UK: Index = Internal.createIndex(DSL.name("minutes_comment_none_uk"), MinutesComment.MINUTES_COMMENT, arrayOf(MinutesComment.MINUTES_COMMENT.TENANT_ID, MinutesComment.MINUTES_COMMENT.MEETING_ID, MinutesComment.MINUTES_COMMENT.USER_ID), true)
 val MINUTES_COMMENT_REQUEST_MEETING_IDX: Index = Internal.createIndex(DSL.name("minutes_comment_request_meeting_idx"), MinutesCommentRequest.MINUTES_COMMENT_REQUEST, arrayOf(MinutesCommentRequest.MINUTES_COMMENT_REQUEST.TENANT_ID, MinutesCommentRequest.MINUTES_COMMENT_REQUEST.MEETING_ID, MinutesCommentRequest.MINUTES_COMMENT_REQUEST.USER_ID), false)

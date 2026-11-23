@@ -2,7 +2,9 @@ package com.memo.actions.internal
 
 import com.memo.audit.AuditLog
 import com.memo.common.web.refuseIf
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.ForumDirectory
+import com.memo.forum.ForumPolicies
 import com.memo.forum.StandingKind
 import com.memo.identity.UserSummaries
 import com.memo.meeting.ItemLink
@@ -51,6 +53,33 @@ data class ActionReportRowResponse(
     /** Cancelled: how ("risk accepted", superseded, …) and why. */
     val cancelKind: CancelKind? = null,
     val cancelReason: String? = null,
+    /**
+     * The action's follow-up memos the reader may read now, joined at read time through the memo's own read rule (never
+     * part of the frozen snapshot): a memo the reader may not read is left out, with neither its number nor its subject.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val memos: List<ReportMemoResponse> = emptyList(),
+    /** Proposed to close: whether the reader may close it now as agreed by the committee (the verifier's rule). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canClose: Boolean = false,
+)
+
+/** A follow-up memo on a report's row, for a reader who may read the memo: its number, subject and status now. */
+data class ReportMemoResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val memoId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: MemoLinkKind,
+    /** The memo's number; null until it is numbered. */
+    val reference: String? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subject: String,
+    /** The memo's status (DRAFT, IN_REVIEW, RETURNED, APPROVED, REJECTED, WITHDRAWN, DISCARDED, CANCELLED, CLOSED). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: String,
+)
+
+/** What the reader may do with the report now. */
+data class ActionReportAbilities(
+    /**
+     * "Close the actions the committee agreed": the meeting runs, is held or has its minutes approved, and the reader may
+     * verify at least one action proposed to close (each row's `canClose`).
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val closeAgreed: Boolean,
 )
 
 /** A section of the report with the reader's rows; [count] is theirs, from the same rule. */
@@ -97,6 +126,9 @@ data class ActionReportResponse(
     val heldBack: Int? = null,
     /** "Action taken report: 2 to close, 3 overdue, 9 open, 4 closed since the last meeting". */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val summary: String,
+    /** The key's numbers: the committee type's actions policy in force today (as the tracker's). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val key: ActionRagKey = ActionRagKey(ActionsPolicy.DEFAULT_AMBER_DAYS),
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val can: ActionReportAbilities = ActionReportAbilities(false),
 )
 
 /** Holding an action back from a meeting's report: why (1 to 500 characters), and the meeting (the next one by default). */
@@ -149,6 +181,9 @@ class ActionReportReads(
     private val org: OrgDirectory,
     private val audit: AuditLog,
     private val json: JsonMapper,
+    private val access: ActionAccess,
+    private val memoViews: ActionMemoViews,
+    private val policies: ForumPolicies,
 ) {
     /** The report of [meetingId]'s [revision] (its latest by default) as the actor may see it. */
     fun report(
@@ -208,6 +243,14 @@ class ActionReportReads(
         val header = seen.header
         val meeting = meetings.find(header.meetingId)
         val previous = header.previousMeetingId?.let(meetings::find)
+        val shown = seen.rows.filter { it.section in ActionReportSection.SHOWN }
+        // Live, per reader: the follow-up memos they may read now (the snapshot stays as it was built).
+        val memos = memoViews.readableOf(shown.mapNotNull { it.actionId }.toSet())
+        // "Close the actions the committee agreed": only while the meeting runs, is held or minuted, by the verifier's rule.
+        val closing = meeting != null && meeting.status in ActionRules.RAISE_WINDOW
+        val toClose = shown.filter { it.section == ActionReportSection.TO_CLOSE }.mapNotNull { it.actionId }
+        val closable = if (closing) access.verifiable(seen.viewer, header.forumId, toClose) else emptySet()
+        val policy = policies.current(header.forumId)?.actions ?: ActionsPolicy()
         return ActionReportResponse(
             reportId = header.id,
             meetingId = header.meetingId,
@@ -226,13 +269,19 @@ class ActionReportReads(
                     ActionReportSectionResponse(
                         section,
                         seen.count(section),
-                        rows.mapNotNull { r -> r.actionId?.let { row(it, r.snapshot) } },
+                        rows.mapNotNull { r ->
+                            r.actionId?.let {
+                                row(it, r.snapshot).copy(memos = memos[it].orEmpty(), canClose = it in closable)
+                            }
+                        },
                         rows.filter { it.actionId == null }.map { correction(it.snapshot) },
                     )
                 },
             more = seen.count(ActionReportSection.MORE),
             heldBack = seen.count(ActionReportSection.HELD_BACK).takeIf { seen.officer },
             summary = ReportWords.summary(ActionReportSection.SHOWN.associateWith(seen::count)),
+            key = ActionRagKey(policy.amberWorkingDays, policy.staleWorkingDays.takeIf { it != ActionsPolicy.OFF }),
+            can = ActionReportAbilities(closeAgreed = closable.isNotEmpty()),
         )
     }
 
@@ -294,7 +343,16 @@ class ActionReportLinks(
     ): List<ItemLink> {
         val header = reports.find(meetingId, null)?.takeIf { it.itemId == itemId }
         val counts = header?.let(reads::counts) ?: return emptyList()
-        return listOf(ItemLink(KIND, meetingId, ReportWords.summary(counts), BUILT, header.builtAt))
+        return listOf(
+            ItemLink(
+                kind = KIND,
+                meetingId = meetingId,
+                label = ReportWords.summary(counts),
+                counts = counts.mapKeys { it.key.name },
+                state = BUILT,
+                at = header.builtAt,
+            ),
+        )
     }
 
     companion object {
@@ -483,7 +541,7 @@ internal object ReportPdf {
                 row.latestUpdate?.let { text ->
                     "Latest update" to (row.latestUpdateAt?.let { "${DATE.format(it.atZone(zone))}: " } ?: "") + text
                 },
-            ) + ended(row, zone)
+            ) + ended(row, zone) + row.memos.map { "Follow-up memo" to memo(it) }
         return PdfSection("${row.reference}  ${row.title}", lines = lines)
     }
 
@@ -507,6 +565,12 @@ internal object ReportPdf {
                 "Cancelled" to ReportWords.CANCELLED.getValue(kind) + (on?.let { " on $it" } ?: "") + why
             },
         )
+    }
+
+    /** "MEMO/2026/0412 (approved): Revised liquidity plan", the reader's own view of the memo now. */
+    private fun memo(memo: ReportMemoResponse): String {
+        val status = memo.status.lowercase().replace('_', ' ')
+        return (memo.reference ?: "Memo not yet numbered") + " ($status): " + memo.subject
     }
 
     private fun times(n: Int): String =

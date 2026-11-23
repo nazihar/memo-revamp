@@ -160,14 +160,19 @@ class ConsentRequestStore(
     }
 
     /** The open requests of [meetingId], the oldest first. */
-    fun open(meetingId: UUID): List<ConsentRequestRow> {
+    fun open(meetingId: UUID): List<ConsentRequestRow> = openOf(listOf(meetingId))[meetingId].orEmpty()
+
+    /** The open requests of each of [meetingIds], the oldest first, in one query (E06's resolution register). */
+    fun openOf(meetingIds: Collection<UUID>): Map<UUID, List<ConsentRequestRow>> {
+        if (meetingIds.isEmpty()) return emptyMap()
         val c = MEETING_CONSENT_REQUEST
         return tenantDsl
             .current()
             .selectFrom(c)
-            .where(c.MEETING_ID.eq(meetingId), c.WITHDRAWN_AT.isNull)
+            .where(c.MEETING_ID.`in`(meetingIds), c.WITHDRAWN_AT.isNull)
             .orderBy(c.REQUESTED_AT, c.ID)
             .fetch { ConsentRequestRow(it.id, it.meetingId, it.itemId, it.userId, it.revision, it.requestedAt.toInstant()) }
+            .groupBy { it.meetingId }
     }
 
     fun now(): Instant = clock.instant()

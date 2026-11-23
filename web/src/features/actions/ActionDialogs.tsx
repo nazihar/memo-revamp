@@ -350,8 +350,15 @@ function DoneDialog({ action, onClose, onDone, onStale }: DialogProps) {
   const [files, setFiles] = useState<Attached[]>([])
   const submit = (e: SyntheticEvent) => {
     e.preventDefault()
-    if (!note.trim()) {
-      s.setErrors({ note: s.intl.formatMessage(am.fieldRequired) })
+    // The committee type's rule, said before sending (the server's 422 EVIDENCE_REQUIRED says the same).
+    const missing = {
+      ...(note.trim() ? {} : { note: s.intl.formatMessage(am.fieldRequired) }),
+      ...(action.evidenceRequired && !files.length
+        ? { fileIds: s.intl.formatMessage(am.fieldEvidenceRequired, s.terms) }
+        : {}),
+    }
+    if (Object.keys(missing).length) {
+      s.setErrors(missing)
       return
     }
     void s.send(['note', 'fileIds'], async (headers) => {
@@ -390,6 +397,9 @@ function DoneDialog({ action, onClose, onDone, onStale }: DialogProps) {
           />
         )}
       </Field>
+      {action.evidenceRequired ? (
+        <p className="text-base font-medium">{s.intl.formatMessage(am.evidenceRequired, s.terms)}</p>
+      ) : null}
       <EvidenceFiles
         actionId={action.id}
         files={files}

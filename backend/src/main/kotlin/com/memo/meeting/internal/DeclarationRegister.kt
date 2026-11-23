@@ -157,7 +157,9 @@ class DeclarationReviewStates(
         val ranks = clearances.rankOf(people)
         val paperOfficers = viewers.officers(agenda.meeting.forumId)
         val all = people.map { p -> viewers.of(agenda.meeting, p, rows[p].orEmpty(), ranks[p] ?: 0, paperOfficers) }
-        return all.chunked(VIEWERS_PER_QUERY).fold(emptyMap()) { seen, chunk -> seen + paperAccess.titled(chunk, revision) }
+        return all.chunked(VIEWERS_PER_QUERY).fold(emptyMap()) { seen, chunk ->
+            seen + paperAccess.linesOf(chunk, revision, titledOnly = true).mapValues { it.value.lines.keys }
+        }
     }
 
     private companion object {

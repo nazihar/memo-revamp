@@ -151,29 +151,29 @@ class MinutesPeople(
     }
 
     /**
-     * [userId]'s redaction set on [row]'s minutes (ADR-0066, design E06 §1.9): each minuted item they do not see in full by
-     * the paper rule today is redacted, as their recused line when they are recused from it and it is for them (heading,
-     * declaration, decision), as its heading when they see its title, else hidden. Someone outside the meeting asked for
-     * comments sees the items named for them as a member would, every other item hidden.
+     * The redaction set of each of [readers] (with why they read) on [row]'s minutes (ADR-0066, design E06 §1.9): each
+     * minuted item they do not see in full by the paper rule today is redacted, as their recused line when they are recused
+     * from it and it is for them (heading, declaration, decision), as its heading when they see its title, else hidden.
+     * Someone outside the meeting asked for comments sees the items named for them as a member would, every other item
+     * hidden. Their views are read together (E06 T9: one by one, the minutes page and the copies job built a meeting view
+     * for each of forty readers).
      */
-    fun setOf(
+    fun setsOf(
         row: MinutesRow,
-        userId: UUID,
-        kind: ReaderKind?,
-    ): RedactionSet {
-        val asked = kind == ReaderKind.ASKED
-        val view = viewers.ofUser(row.meetingId, userId, asMember = asked || kind == ReaderKind.LINKED) ?: return RedactionSet.FULL
-        val named =
-            if (asked) {
-                comments
-                    .requests(row.meetingId)
+        readers: Map<UUID, ReaderKind?>,
+    ): Map<UUID, RedactionSet> {
+        val asMember = readers.mapValues { (_, kind) -> kind == ReaderKind.ASKED || kind == ReaderKind.LINKED }
+        val views = viewers.ofUsers(row.meetingId, asMember)
+        val requests = if (readers.values.any { it == ReaderKind.ASKED }) comments.requests(row.meetingId) else emptyList()
+        return readers.mapValues { (userId, kind) ->
+            val named =
+                requests
                     .filter { it.userId == userId }
                     .flatMap { it.itemIds }
                     .toSet()
-            } else {
-                null
-            }
-        return setOf(view, named)
+                    .takeIf { kind == ReaderKind.ASKED }
+            views[userId]?.let { setOf(it, named) } ?: RedactionSet.FULL
+        }
     }
 
     /** The set [view]'s person gets; [named]: only these items may be shown in full (someone asked for comments). */

@@ -11,6 +11,8 @@ import com.memo.jooq.tables.references.MEETING_SECTION
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.Record2
+import org.jooq.Record3
+import org.jooq.Record5
 import org.jooq.Select
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
@@ -238,29 +240,41 @@ class PaperAccess(
         viewer: PaperViewer,
         revisionId: UUID,
         changedOnly: Boolean = false,
-    ): Visibility = revisions(viewer, listOf(revisionId), changedOnly).getValue(revisionId)
+        withPapers: Boolean = true,
+    ): Visibility = revisions(viewer, listOf(revisionId), changedOnly, withPapers).getValue(revisionId)
 
-    /** [revision] for each of [revisionIds] (of one meeting or several, as [viewer] sees each), in two queries. */
+    /**
+     * [revision] for each of [revisionIds] (of one meeting or several, as [viewer] sees each), in two queries; without
+     * [withPapers], the lines only (a meeting view for other modules, E06 T9), in one.
+     */
     fun revisions(
         viewer: PaperViewer,
         revisionIds: Collection<UUID>,
         changedOnly: Boolean = false,
+        withPapers: Boolean = true,
     ): Map<UUID, Visibility> {
         if (revisionIds.isEmpty()) return emptyMap()
         val dsl = tenantDsl.current()
         val i = MEETING_REVISION_ITEM
         val p = MEETING_REVISION_PAPER
         val papers =
-            dsl
-                .select(p.REVISION_ID, p.PAPER_ID, p.ITEM_ID)
-                .from(p)
-                .join(i)
-                .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
-                .where(
-                    p.REVISION_ID.`in`(revisionIds),
-                    if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition(),
-                    paperCondition(viewer, REVISION_ITEM, REVISION_PAPER),
-                ).fetch()
+            if (!withPapers && !changedOnly) {
+                emptyList<Record3<UUID?, UUID?, UUID?>>()
+            } else {
+                dsl
+                    .select(p.REVISION_ID, p.PAPER_ID, p.ITEM_ID)
+                    .from(p)
+                    .join(i)
+                    .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
+                    .where(
+                        p.REVISION_ID.`in`(revisionIds),
+                        // The same revisions on the items' side, so the planner reads them by index for many revisions too (E06
+                        // T9: for twenty meetings at once it scanned every revision item of the tenant).
+                        i.REVISION_ID.`in`(revisionIds),
+                        if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition(),
+                        paperCondition(viewer, REVISION_ITEM, REVISION_PAPER),
+                    ).fetch()
+            }
         val changed =
             if (changedOnly) {
                 DSL.cardinality(i.CHANGES).gt(0).or(
@@ -286,33 +300,45 @@ class PaperAccess(
     }
 
     /**
-     * For each of [viewers] (people of one meeting), the items of revision [revisionId] whose line they see with its title
-     * (FULL or TITLE in [revision]): one statement for all of them, a `UNION ALL` of each one's conditions (E04's review of
-     * the agenda for every member at once, design E04 §1.5).
+     * The lines of revision [revisionId] (and the items each person sees only as their recused line) for each of [viewers]
+     * (people of one meeting, keyed by their user id), as [revision] gives them without the papers: one statement for all
+     * of them, a `UNION ALL` of each one's conditions (E04's review of the agenda for every member at once, design E04 §1.5;
+     * E06's copies of the minutes planned for every reader). [titledOnly]: only the lines they see with the title (FULL or
+     * TITLE), without the recusals.
      */
-    fun titled(
+    fun linesOf(
         viewers: Collection<PaperViewer>,
         revisionId: UUID,
-    ): Map<UUID, Set<UUID>> {
+        titledOnly: Boolean = false,
+    ): Map<UUID, Visibility> {
         if (viewers.isEmpty()) return emptyMap()
         val i = MEETING_REVISION_ITEM
         val query =
             viewers
-                .map<PaperViewer, Select<Record2<UUID, UUID?>>> { v ->
+                .map<PaperViewer, Select<Record5<UUID, UUID?, Boolean, Boolean, Boolean>>> { v ->
                     DSL
-                        .select(DSL.inline(v.userId).`as`("viewer"), i.ITEM_ID)
-                        .from(i)
+                        .select(
+                            DSL.inline(v.userId).`as`("viewer"),
+                            i.ITEM_ID,
+                            DSL.field(itemCondition(v, REVISION_ITEM)),
+                            DSL.field(titleCondition(v, REVISION_ITEM)),
+                            if (titledOnly) DSL.inline(false) else DSL.field(exclusions.excluded(v.userId, i.ITEM_ID, i.PARENT_ITEM_ID)),
+                        ).from(i)
                         .where(
                             i.REVISION_ID.eq(revisionId),
                             lineCondition(v, REVISION_ITEM),
-                            itemCondition(v, REVISION_ITEM).or(titleCondition(v, REVISION_ITEM)),
+                            if (titledOnly) itemCondition(v, REVISION_ITEM).or(titleCondition(v, REVISION_ITEM)) else DSL.noCondition(),
                         )
                 }.reduce { all, next -> all.unionAll(next) }
-        return tenantDsl
-            .current()
-            .fetch(query)
-            .groupBy({ checkNotNull(it.value1()) }, { checkNotNull(it.value2()) })
-            .mapValues { it.value.toSet() }
+        val lines =
+            tenantDsl
+                .current()
+                .fetch(query)
+                .groupBy(
+                    { checkNotNull(it.value1()) },
+                    { Line(checkNotNull(it.value2()), access(it.value3(), it.value4()), it.value5() == true) },
+                )
+        return viewers.associate { it.userId to visibility(lines[it.userId].orEmpty(), emptySet()) }
     }
 
     /** What [viewer] would see of [meetingId]'s draft if it were published now (the preview "as a member"). */

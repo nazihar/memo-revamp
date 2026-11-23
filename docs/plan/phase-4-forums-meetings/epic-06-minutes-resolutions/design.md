@@ -505,6 +505,7 @@ In the business transaction (AGENTS §3.3); jobs audit as the system actor with 
 - **`minutes/V3__minutes.sql`** (T5, T6): `minutes`, `minutes_event` (index `(tenant_id, meeting_id, at)`), `minutes_comment` (index `(tenant_id, meeting_id, user_id)`), `minutes_comment_request`, `minutes_copy` (unique `(tenant_id, meeting_id, stage, source_version_id, set_key)`), `minutes_approval` (index `(tenant_id, forum_id, at)` for the chain), index `minutes (tenant_id, state, comments_until)` for the sweep.
 - **`minutes/V4__corrections_and_extracts.sql`** (T8): `minutes_correction`, `minutes_extract` (index `(tenant_id, resolution_id)`). **As built: `minutes/V6__corrections_and_extracts.sql`** (T6 took V4, T7 V5), with the CORRECTION kind and its two columns on `minutes_approval`.
 - **As built (T5):** `minutes/V3__minutes.sql` holds T5's `minutes` and `minutes_event` only; T6 adds its tables (comments, requests, copies, approvals, and the minutes' review columns) as `minutes/V4`, and T8's corrections and extracts become `minutes/V5`.
+- **As built (T9): `minutes/V7__approving_decision_index.sql`**, found at volume: `minutes (tenant_id, approving_decision_id) WHERE approving_decision_id IS NOT NULL`, for the lookup every recorded or corrected decision makes of the minutes it approved (it read the whole `minutes` table).
 - All expand-only: new tables and one new nullable column. Old app versions ignore them. The `common.numbering` move is code only (memo JSON and tables unchanged). `MeetingChange.MINUTES_APPROVED` is a new enum value in an event, not a column.
 
 ## 8. Performance budget
@@ -527,6 +528,7 @@ In the business transaction (AGENTS §3.3); jobs audit as the system actor with 
 
 - **Volumes** (E03 T5's generator, extended in T9): 3,600 meetings, 54,000 decisions with 70,000 entries, 30,000 resolutions, 3,600 minutes with 7,000 copies, 20,000 comments.
 - `EXPLAIN` is reviewed for the register, the decisions list, `/me/meetings` with minutes and the sweep.
+- **As built (T9):** `MinutesVolume` writes 55,000 decisions, 75,000 entries, 27,000 numbers, 3,240 minutes (one per held meeting), 8,000 copies and 19,000 comments over E03's meeting volume with E05's rows; `MinutesVolumeIT` checks every statement's plan and p95 (also the minutes page and the reader's copy), `MinutesJobsVolumeIT` the jobs at their sizes; measured values in the E06 log (T9). Found at volume: the index of `minutes/V7`; the register and "My meetings" read their meetings' views together (`MeetingViewers.findAll`), the minutes' readers' sets are planned together (`MeetingViewers.ofUsers`), "My meetings" reads the minutes' readers only when needed. Not built as this table says: a consent section takes a quorum snapshot per item (E05's `take`), and E08's decision index is written in each decision's transaction; both are most of the section's statements.
 - Resource limits: at most 50 copies per minutes (`TOO_MANY_COPIES`), jobs on the existing rendition pool (no new pool), POI and ONLYOFFICE limits as ADR-0048 and ADR-0047.
 
 ## 9. Background work

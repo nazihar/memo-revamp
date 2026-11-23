@@ -115,6 +115,10 @@ export const am = plain(
       id: 'actions.dueOriginally',
       defaultMessage: 'originally {original}, revised {count, plural, one {once} =2 {twice} other {# times}}',
     },
+    overdueBy: {
+      id: 'actions.overdueBy',
+      defaultMessage: 'Overdue by {days, plural, one {# working day} other {# working days}}',
+    },
 
     // The action page (flow AL).
     owner: { id: 'actions.page.owner', defaultMessage: 'Owner' },
@@ -185,6 +189,10 @@ export const am = plain(
       defaultMessage: 'PDF, pictures, text, Word, Excel or PowerPoint, up to 25 MB each, at most 10.',
     },
     evidence: { id: 'actions.files.evidence', defaultMessage: 'Evidence' },
+    evidenceRequired: {
+      id: 'actions.files.evidenceRequired',
+      defaultMessage: 'Evidence is required by this {forum}: attach at least one file.',
+    },
     attached: { id: 'actions.files.attached', defaultMessage: 'Attached' },
     removeFile: { id: 'actions.files.remove', defaultMessage: 'Remove {name}' },
     fileAdded: { id: 'actions.files.added', defaultMessage: '{name} is attached.' },
@@ -505,6 +513,12 @@ export const am = plain(
     rowCancelled: { id: 'actions.report.row.cancelled', defaultMessage: 'Cancelled: {kind}' },
     rowLatest: { id: 'actions.report.row.latest', defaultMessage: '{date}: “{text}”' },
     rowLatestUndated: { id: 'actions.report.row.latestUndated', defaultMessage: '“{text}”' },
+    rowMemos: { id: 'actions.report.row.memos', defaultMessage: 'Follow-up memos, as they stand now' },
+    rowMemo: { id: 'actions.report.row.memo', defaultMessage: 'Memo {reference}: {subject} ({status})' },
+    rowMemoUnnumbered: {
+      id: 'actions.report.row.memoUnnumbered',
+      defaultMessage: 'Memo not yet numbered: {subject} ({status})',
+    },
     correctionApproved: { id: 'actions.report.correctionApproved', defaultMessage: '{label} (approved {date})' },
   }),
 )

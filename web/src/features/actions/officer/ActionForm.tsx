@@ -1,7 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useId, useState, type SyntheticEvent } from 'react'
 import { useIntl } from 'react-intl'
-import { listClassificationLevelsOptions } from '@/api/generated/@tanstack/react-query.gen'
+import {
+  getSuggestedActionDueOptions,
+  listClassificationLevelsOptions,
+} from '@/api/generated/@tanstack/react-query.gen'
 import { isProblem } from '@/api/http'
 import { editAction, issueAction, raiseDirectAction, raiseMeetingAction } from '@/api/generated/sdk.gen'
 import type { ActionPerson, ActionResponse, ActionWarning, MeetingResponse } from '@/api/generated/types.gen'
@@ -80,6 +83,16 @@ export function ActionForm({
   const next = useNextMeeting(forumId, meetingId ?? undefined)
   const [current, setCurrent] = useState<ActionResponse | undefined>(action)
   const issued = current ? current.status !== 'DRAFT' : false
+  // The committee type's default due date (design §1.13 defaultDue), worked out by the server on the business calendar.
+  const suggested = useQuery({
+    ...getSuggestedActionDueOptions({ path: { forumId } }),
+    enabled: Boolean(forumId) && !issued,
+    staleTime: 60_000,
+  })
+  const byWorkingDays =
+    suggested.data?.basis === 'WORKING_DAYS' && suggested.data.date && suggested.data.workingDays
+      ? { date: suggested.data.date, days: suggested.data.workingDays }
+      : undefined
   const direct = current ? current.source.kind === 'DIRECT' : from?.kind === 'DIRECT'
   const condition = from?.kind === 'DECISION' ? from.conditionText : undefined
 
@@ -97,8 +110,9 @@ export function ActionForm({
   const [sendKey] = useState(() => newIdempotencyKey())
   const ids = { due: useId() }
 
-  // "By the next meeting" is the first choice when one is planned, unless a date was chosen.
-  const mode = dueMode ?? (next ? 'next' : 'date')
+  // "By the next meeting" is the first choice when one is planned, unless a date was chosen or the committee type counts
+  // working days instead (WORKING_DAYS), whose date is then the first quick pick.
+  const mode = dueMode ?? (next && suggested.data?.defaultDue !== 'WORKING_DAYS' ? 'next' : 'date')
   const due = mode === 'next' ? next?.date : dueDate || undefined
 
   const formTitle = current
@@ -379,6 +393,18 @@ export function ActionForm({
                 />
               </label>
               <div role="group" aria-label={intl.formatMessage(ao.dueQuick)} className="flex flex-wrap gap-2">
+                {byWorkingDays ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-11"
+                    onClick={() => {
+                      setDueDate(byWorkingDays.date)
+                    }}
+                  >
+                    {intl.formatMessage(ao.dueSuggested, { ...s.terms, days: byWorkingDays.days })}
+                  </Button>
+                ) : null}
                 {(
                   [
                     [ao.in2Weeks, { days: 14 }],

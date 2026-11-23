@@ -3460,6 +3460,28 @@
       "value": "‬"
     }
   ],
+  "actions.files.evidenceRequired": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌıpǝuɔǝ ıs ɹǝbnıɹǝp qʎ ʇɥıs "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ": ɐʇʇɐɔɥ ɐʇ ʅǝɐsʇ ouǝ ɟıʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "actions.files.hint": [
     {
       "type": 0,
@@ -4274,6 +4296,50 @@
     {
       "type": 0,
       "value": "ʍıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actions.overdueBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ qʎ "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
@@ -5835,6 +5901,88 @@
     {
       "type": 0,
       "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actions.report.row.memo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actions.report.row.memoUnnumbered": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo uoʇ ʎǝʇ unɯqǝɹǝp: "
+    },
+    {
+      "type": 1,
+      "value": "subject"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "status"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actions.report.row.memos": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍ-nd ɯǝɯos, ɐs ʇɥǝʎ sʇɐup uoʍ"
     },
     {
       "type": 0,
@@ -8268,6 +8416,62 @@
       "value": "‬"
     }
   ],
+  "actionsOfficer.form.dueSuggested": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s nsnɐʅ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "actionsOfficer.form.editDraft": [
     {
       "type": 0,
@@ -10022,6 +10226,20 @@
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "actionsOfficer.tracker.askedToday": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʍuǝɹs ʍǝɹǝ ɐsʞǝp ɟoɹ ɐu ndpɐʇǝ ʇopɐʎ. ⅄on ɔɐu ɐsʞ ɐƃɐıu ʇoɯoɹɹoʍ."
     },
     {
       "type": 0,

@@ -49,6 +49,9 @@ export const am = defineMessages({
   notShown: { id: 'analytics.notShown', defaultMessage: 'Not shown' },
 
   linkAttendance: { id: 'analytics.link.attendance', defaultMessage: 'Attendance per member' },
+  // Into the decision register (E08 T6, design §2.6)
+  linkDecisions: { id: 'analytics.link.decisions', defaultMessage: 'Open these decisions' },
+  linkDeferred: { id: 'analytics.link.deferred', defaultMessage: 'Open deferred items' },
   linkBackToAttendance: { id: 'analytics.link.backToAttendance', defaultMessage: 'Back to attendance' },
 
   // AW, a committee's detail

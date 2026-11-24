@@ -7154,6 +7154,16 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingStartsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "meetingTimeZone" : {
+            "type" : [ "string", "null" ]
+          },
           "state" : {
             "type" : [ "string", "null" ]
           }
@@ -10337,6 +10347,10 @@
               "type" : "null"
             } ]
           },
+          "editFileId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
           "forumId" : {
             "format" : "uuid",
             "type" : "string"
@@ -10350,6 +10364,13 @@
               "$ref" : "#/components/schemas/MinutesItemResponse"
             },
             "type" : "array"
+          },
+          "lastReview" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesReviewNoteResponse"
+            }, {
+              "type" : "null"
+            } ]
           },
           "linkedMeeting" : {
             "oneOf" : [ {
@@ -10438,6 +10459,37 @@
           }
         },
         "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayProposeCorrection", "mayReadCopy", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
+        "type" : "object"
+      },
+      "MinutesReviewNoteResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "by" : {
+            "$ref" : "#/components/schemas/MinutesPerson"
+          },
+          "comment" : {
+            "type" : [ "string", "null" ]
+          },
+          "decision" : {
+            "enum" : [ "AGREE", "RETURN" ],
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "EMAIL", "PHONE", "IN_PERSON", "OTHER" ],
+            "type" : [ "string", "null" ]
+          },
+          "onBehalfBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesPerson"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "at", "by", "decision" ],
         "type" : "object"
       },
       "MinutesReviewRequest" : {

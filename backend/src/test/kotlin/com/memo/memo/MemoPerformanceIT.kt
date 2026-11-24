@@ -105,7 +105,9 @@ class MemoPerformanceIT : IntegrationTest() {
                 from generate_series(1, $MEMOS) i
                 """,
             )
-            dsl.execute("analyze memo, memo_participant, workflow_instance, workflow_task")
+            // Every table loaded above, so the planner has current statistics for all of the inbox query's joins: without
+            // workflow_round and workflow_step, CI once planned the first page at 321 ms against 11 ms locally (#243).
+            dsl.execute("analyze memo, memo_participant, workflow_instance, workflow_round, workflow_step, workflow_task")
         }
     }
 

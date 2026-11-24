@@ -318,6 +318,7 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
       'meetingReplies',
       'meetingAttendance',
       'declarations',
+      'minutes',
       'actions',
       'actionLinks',
       'decisions',

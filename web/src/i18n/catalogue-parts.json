@@ -56,6 +56,16 @@
     "routes": ["/meetings", "/declarations"],
     "prefixes": ["declarations"]
   },
+  "minutes": {
+    "$comment": "Minutes (Phase 4 E06 T11, flows AD–AG): the minutes page per stage, the editor, the copy viewer, the meeting page’s Minutes card and the previous minutes’ link on the next agenda.",
+    "routes": ["/meetings"],
+    "prefixes": ["minutes"]
+  },
+  "minutesToRead": {
+    "$comment": "Minutes to read in My meetings (Phase 4 E06 T11, flow AF1).",
+    "routes": ["/me/meetings"],
+    "prefixes": ["minutesToRead"]
+  },
   "mySecurity": {
     "$comment": "The user's own security page (sign-in methods, sessions), and only there: split from core when the meeting invitation texts (Phase 4 E05 T2) took the Arabic core past its limit.",
     "routes": ["/me/security"],
@@ -90,6 +100,16 @@
     "$comment": "Committee analytics (Phase 4 E08 T7, flows AU–AW): the overview, a committee's detail, attendance per member and a member's meetings.",
     "routes": ["/analytics"],
     "prefixes": ["analytics"]
+  },
+  "decisionRegister": {
+    "$comment": "The decision register (Phase 4 E08 T6, flows AS and AT): search, filters, the number check and the export.",
+    "routes": ["/decisions"],
+    "prefixes": ["decisionRegister"]
+  },
+  "registerLinks": {
+    "$comment": "The register's entry points on other pages (E08 T6, design §1.6): Decisions of this committee on the committee page, and In the register on a resolution's page (a page that places it adds its route here).",
+    "routes": ["/committees", "/resolutions"],
+    "prefixes": ["registerLinks"]
   },
   "imports": {
     "routes": ["/admin/imports"],

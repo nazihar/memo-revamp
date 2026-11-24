@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { holds, useMyAccess } from '@/features/access/access'
 import { ao } from '@/features/actions/officer/messages'
 import { Tracker } from '@/features/actions/officer/Tracker'
+import { CommitteeDecisionsLink } from '@/features/decision-register/links'
 import { MeetingsTab } from '@/features/meetings/MeetingsTab'
 import { rsm } from '@/features/resolutions/messages'
 import { readsRegister } from '@/features/resolutions/register'
@@ -92,6 +93,7 @@ export function ForumPage({
         description={<Summary forum={f} policy={policy.data} />}
         actions={
           <>
+            <CommitteeDecisionsLink forum={f} />
             {f.canManageMembers ? (
               <Button
                 onClick={() => {

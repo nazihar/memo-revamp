@@ -487,7 +487,10 @@ internal class RenditionWorker(
         outcomes(kind, state.name.lowercase()).increment()
     }
 
-    /** The conversion key (ONLYOFFICE caches results by it): one per tenant, version and kind, never reused across tenants. */
+    /**
+     * The conversion's name, one per tenant, version and kind. Not ONLYOFFICE's cache key: the adapter adds a fresh suffix to
+     * it on every call, so a retry is never answered with an earlier attempt's kept failure (E06 T12).
+     */
     private fun renditionKey(
         tenant: TenantId,
         versionId: UUID,

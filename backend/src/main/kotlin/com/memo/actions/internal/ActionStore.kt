@@ -162,12 +162,6 @@ class ActionStore(
     fun draftsOf(meetingId: UUID): List<ActionRow> =
         where(ACTIONS_ITEM.MEETING_ID.eq(meetingId).and(ACTIONS_ITEM.STATUS.eq(ActionStatus.DRAFT.name)))
 
-    /** The actions of [forumId] called [title], oldest first (seeders find what they made by its title). */
-    fun titled(
-        forumId: UUID,
-        title: String,
-    ): List<ActionRow> = where(ACTIONS_ITEM.FORUM_ID.eq(forumId).and(ACTIONS_ITEM.TITLE.eq(title)))
-
     /** The actions raised from [decisionId]. */
     fun ofDecision(decisionId: UUID): List<ActionRow> = where(ACTIONS_ITEM.DECISION_ID.eq(decisionId))
 
@@ -441,3 +435,9 @@ internal fun ActionStore.openAfter(
         } ?: DSL.noCondition()
     return where(OPEN_ACTIONS.and(position), limit)
 }
+
+/** The actions of [forumId] called [title], oldest first (the demo's seeder finds what it made by its title, E07 T12). */
+internal fun ActionStore.titled(
+    forumId: UUID,
+    title: String,
+): List<ActionRow> = where(ACTIONS_ITEM.FORUM_ID.eq(forumId).and(ACTIONS_ITEM.TITLE.eq(title)))

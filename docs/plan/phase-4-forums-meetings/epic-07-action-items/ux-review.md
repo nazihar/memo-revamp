@@ -251,7 +251,7 @@ None about the screens. Two refinements of the overview are reported (ADR-0067):
 | AP the follow-up memo | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AQ the committee type's Actions tab | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AR notifications and emails | 2026-11-21 | Delegated (Phase 4 Q1) |
-| Manual keyboard and screen-reader pass over AN and AL | 2026-11-24 | The agent's keyboard and structure pass done (T12, below), two defects fixed; the screen-reader pass by a person is carried (checklist below) |
+| Manual keyboard and screen-reader pass over AN and AL | 2026-11-24 | The agent's keyboard and structure pass done (T12, below), three defects fixed; the screen-reader pass by a person is carried (checklist below) |
 
 ## Keyboard and screen-reader pass (T12, 2026-11-24)
 Done by the agent in Chromium (Playwright, headless) against a local E2E stack with the T12 demo seed: flow AN as the company secretary on the Board Risk Committee's Actions tab, and flow AL on two action pages (the secretary on BRC A2, overdue and escalated; Demo Director on BRC A1, done and waiting for verification). The journeys `action-items.spec` and `committee-cycle.spec` drive the rest of AJ, AK, AL, AM, AO and AP with axe on every page and dialog on the way. A screen reader cannot be driven from there, so the spoken output is for a person (below).
@@ -267,6 +267,7 @@ Done by the agent in Chromium (Playwright, headless) against a local E2E stack w
 ### Defects found and fixed here
 1. **"Post an update" and "I have started" offered to a secretary who is not the owner** (flow AN on BRC A2): the server's abilities counted a secretary as able to update and start, but both endpoints take a secretary only when writing for the owner, so pressing either answered "You may not do this". `ActionAbilities.update` is now the owner or a contributor and `start` the owner (`ActionAbilityRules`); a secretary writes for the owner with "Record an update for the owner" (`updateOnBehalf`), as before.
 2. **The follow-up memo missing on the way back** (flow AP, found by `committee-cycle.spec`): after "Raise a memo", following "Raised from action …" from the new memo back to the action within five seconds showed "No memo follows up this action yet." from the cache. The dialog now stores the action the server answers with and refreshes the timeline before opening the memo (`FollowUpMemos.tsx`).
+3. **Quoted English in Arabic** (WCAG 1.3.2, seen in the new visual baselines): what the owner is told, the timeline's updates and the report's reasons and latest updates took the page's direction, so their full stop and quotation marks landed at the wrong ends. They now take `dir="auto"` (`ActionPage.tsx`, `Timeline.tsx`, `ActionReportPage.tsx`), and `<bdi>` where the words sit inside a sentence ("23 November: «…»").
 
 ### Observed, not changed
 - **The owner of an action waiting for verification** still has "Post an update" and "Ask for a new date": the server allows both until the action is verified (a date request is withdrawn when it is marked as done, not refused after).

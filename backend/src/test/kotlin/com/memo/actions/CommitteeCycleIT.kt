@@ -24,8 +24,36 @@ import java.util.UUID
  * memo. Every step's audit entry is there, and the tenant's chain verifies.
  */
 class CommitteeCycleIT : ReleaseFixture() {
+    /** The chain as built: the meeting, the placed memo, the resolution, the action and the follow-up memo. */
+    private data class Chain(
+        val r: Running,
+        val placed: Placed,
+        val number: String,
+        val decisionId: UUID,
+        val actionId: String,
+        val reference: String,
+        val followUp: String,
+    )
+
     @Test
     fun `memo, item, resolution, action and follow-up memo link both ways`() {
+        val chain = build()
+        forward(chain)
+        back(chain)
+
+        // Every step audited, in one chain that verifies.
+        listOf("memo.created", "forum.submission.placed", "minutes.decision.recorded", "minutes.resolution.numbered").forEach { kind ->
+            assertThat(Audit.entries(tenant.id).map { it.action }).describedAs(kind).contains(kind)
+        }
+        listOf("actions.action.issued", "actions.memo.raised", "actions.done", "actions.closed").forEach {
+            Audit.assertAudited(tenant.id, it, chain.actionId)
+        }
+        Audit.assertAudited(tenant.id, "memo.created", chain.followUp)
+        Audit.assertChainValid(tenant.id)
+    }
+
+    /** Memo → item → resolution (E02, E03, E06), then the action, its follow-up memo, done and verified (E07). */
+    private fun build(): Chain {
         // The memo to the resolution (E02, E03, E06).
         val r = running("Term loan, Kushtia Agro Mills")
         val placed = r.items.single()
@@ -62,7 +90,18 @@ class CommitteeCycleIT : ReleaseFixture() {
         val closed = change(actionId, "verify", secretary, """{"decision":"CLOSE","remark":"Seen."}""")
         assertThat(closed).hasStatusOk()
         assertThat(closed.json()["status"].asString()).isEqualTo("CLOSED")
+        return Chain(r, placed, number, decisionId, actionId, reference, followUp)
+    }
 
+    /** Forward, as the people who may read each step. */
+    private fun forward(chain: Chain) {
+        val r = chain.r
+        val placed = chain.placed
+        val number = chain.number
+        val decisionId = chain.decisionId
+        val actionId = chain.actionId
+        val reference = chain.reference
+        val followUp = chain.followUp
         // Forward: the memo's committee panel → the meeting and its number → the item's decision → its actions → the memo.
         val submission = ok("/api/v1/memos/${placed.memo}/forum-submissions", initiator).list().single()
         assertThat(submission["id"].asString()).isEqualTo(placed.submission.toString())
@@ -85,7 +124,15 @@ class CommitteeCycleIT : ReleaseFixture() {
         assertThat(action["source"]["conditionIndex"].asInt()).isZero()
         assertThat(action["source"]["label"].asString()).contains(number)
         assertThat(action["memos"].list().map { it["memoId"].asString() }).containsExactly(followUp)
+    }
 
+    /** Back, from the follow-up memo to the source memo. */
+    private fun back(chain: Chain) {
+        val r = chain.r
+        val placed = chain.placed
+        val actionId = chain.actionId
+        val reference = chain.reference
+        val followUp = chain.followUp
         // Back: the follow-up memo → "Raised from action" → the action's source → the item → the item's memo.
         val origin = ok("/api/v1/memos/$followUp", colleague)["followsUp"].list().single()
         assertThat(origin["reference"].asString()).isEqualTo(reference)
@@ -97,16 +144,6 @@ class CommitteeCycleIT : ReleaseFixture() {
         assertThat(sourceItem["memoId"].asString()).isEqualTo(placed.memo.toString())
         assertThat(ok("/api/v1/memos/${sourceItem["memoId"].asString()}", initiator)["subject"].asString())
             .isEqualTo("Term loan, Kushtia Agro Mills")
-
-        // Every step audited, in one chain that verifies.
-        listOf("memo.created", "forum.submission.placed", "minutes.decision.recorded", "minutes.resolution.numbered").forEach { kind ->
-            assertThat(Audit.entries(tenant.id).map { it.action }).describedAs(kind).contains(kind)
-        }
-        listOf("actions.action.issued", "actions.memo.raised", "actions.done", "actions.closed").forEach {
-            Audit.assertAudited(tenant.id, it, actionId)
-        }
-        Audit.assertAudited(tenant.id, "memo.created", followUp)
-        Audit.assertChainValid(tenant.id)
     }
 
     private fun send(

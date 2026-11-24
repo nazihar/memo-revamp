@@ -109,6 +109,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var memoAccess: MemoAccessSeeding
 
+    @Autowired lateinit var memoTemplates: com.memo.memo.MemoTemplateSeeding
+
     @Autowired lateinit var uploads: FileUploads
 
     @Autowired lateinit var lifecycle: com.memo.identity.UserLifecycle
@@ -211,26 +213,31 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertThat(e05Rows(seeded)).isEqualTo(e05Rows)
             assertThat(e06Rows(seeded)).isEqualTo(e06Rows)
             assertThat(e07Rows()).isEqualTo(e07Rows)
-            AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
-                listOf(
-                    DemoMeetingSeeder.RISK_TITLE,
-                    DemoMeetingSeeder.CREDIT_TITLE,
-                    DemoMeetingSeeder.HELD_TITLE,
-                    DemoMinutesSeeder.RISK_TITLE,
-                ).forEach {
-                    assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
-                }
-                assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
-                assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.MEGHNA)).isOne()
-                val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
-                assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
-                assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
-            }
+            assertOnce(seeded)
         } finally {
             notices.jobs = true
             invitations.jobs = true
             minutesJobs.jobs = true
             releases.jobs = true
+        }
+    }
+
+    /** After a second run: each meeting, the two credit memos and the risk review's declarations once. */
+    private fun assertOnce(seeded: DemoMeetingSeeder.Seeded) {
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            listOf(
+                DemoMeetingSeeder.RISK_TITLE,
+                DemoMeetingSeeder.CREDIT_TITLE,
+                DemoMeetingSeeder.HELD_TITLE,
+                DemoMinutesSeeder.RISK_TITLE,
+            ).forEach {
+                assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
+            }
+            assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
+            assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.MEGHNA)).isOne()
+            val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
+            assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
+            assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
         }
     }
 
@@ -259,6 +266,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
                 agendaSeeding,
                 meetingSeeding,
                 memoSeeding,
+                memoTemplates,
                 accounts,
                 orgDirectory,
                 transactions,

@@ -128,62 +128,6 @@ class WorkflowTimers(
         return due.size
     }
 
-    /**
-     * For seeders only ([com.memo.workflow.WorkflowSeeding.catchUp]): fires [instanceId]'s pending timers already due, as
-     * the timer task would, then, with [escalate], an escalation of each task whose due time has just fired, at once. A
-     * subject seeded with a due time long past (whose later timers [schedule] skips) so reaches the state the engine would
-     * have reached had it run all along. How many timers fired.
-     */
-    fun catchUp(
-        instanceId: UUID,
-        escalate: Boolean,
-    ): Int {
-        val now = clock.instant()
-        val due =
-            transactions.readInTenant(TenantContext.current()) {
-                tenantDsl
-                    .current()
-                    .select(WORKFLOW_TIMER.ID)
-                    .from(WORKFLOW_TIMER)
-                    .where(
-                        WORKFLOW_TIMER.INSTANCE_ID.eq(instanceId),
-                        WORKFLOW_TIMER.STATE.eq(PENDING),
-                        WORKFLOW_TIMER.FIRES_AT.le(at(now)),
-                    ).orderBy(WORKFLOW_TIMER.FIRES_AT)
-                    .fetch(WORKFLOW_TIMER.ID)
-                    .filterNotNull()
-            }
-        due.forEach(::fire)
-        // The scheduler may have fired a due time first: every task whose due time has fired and that has no escalation.
-        val escalations = if (escalate) transactions.inTenant(TenantContext.current()) { escalateFired(instanceId, now) } else emptyList()
-        escalations.forEach(::fire)
-        return due.size + escalations.size
-    }
-
-    /** An escalation timer at [now] for each task of [instanceId] whose due time has fired and that has none; their ids. */
-    private fun escalateFired(
-        instanceId: UUID,
-        now: Instant,
-    ): List<UUID> {
-        val dsl = tenantDsl.current()
-        val escalated =
-            dsl
-                .select(WORKFLOW_TIMER.TASK_ID)
-                .from(WORKFLOW_TIMER)
-                .where(WORKFLOW_TIMER.INSTANCE_ID.eq(instanceId), WORKFLOW_TIMER.KIND.eq(TimerKind.ESCALATE.name))
-                .fetchSet(WORKFLOW_TIMER.TASK_ID)
-        return dsl
-            .select(WORKFLOW_TIMER.STEP_ID, WORKFLOW_TIMER.TASK_ID)
-            .from(WORKFLOW_TIMER)
-            .where(
-                WORKFLOW_TIMER.INSTANCE_ID.eq(instanceId),
-                WORKFLOW_TIMER.KIND.eq(TimerKind.DUE.name),
-                WORKFLOW_TIMER.STATE.eq(FIRED),
-            ).fetch()
-            .filter { it.value2() !in escalated }
-            .map { insert(instanceId, checkNotNull(it.value1()), checkNotNull(it.value2()), TimerKind.ESCALATE, 0, now) }
-    }
-
     override fun fire(timerId: UUID) {
         transactions.inTenant(TenantContext.current()) {
             val dsl = tenantDsl.current()
@@ -323,7 +267,7 @@ class WorkflowTimers(
         kind: TimerKind,
         ordinal: Int,
         firesAt: Instant,
-    ): UUID {
+    ) {
         val id = ids.next()
         val tenant = tenantDsl.tenant()
         tenantDsl
@@ -343,7 +287,6 @@ class WorkflowTimers(
         scheduler.ifAvailable?.scheduleIfNotExists(
             SchedulableInstance.of(task.instance(id.toString(), TimerFire(tenant.value, id)), firesAt),
         )
-        return id
     }
 
     /** A task handed to someone else keeps its timers: they follow the new task. */

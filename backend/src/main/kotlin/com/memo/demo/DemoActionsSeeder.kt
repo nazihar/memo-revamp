@@ -22,6 +22,7 @@ import com.memo.meeting.DeclarationSeeding
 import com.memo.meeting.MeetingSeeding
 import com.memo.meeting.MeetingStatus
 import com.memo.memo.MemoSeeding
+import com.memo.memo.MemoTemplateSeeding
 import com.memo.org.OrgDirectory
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -66,6 +67,7 @@ class DemoActionsSeeder(
     private val agendas: AgendaSeeding,
     private val meetings: MeetingSeeding,
     private val memos: MemoSeeding,
+    private val memoTypes: MemoTemplateSeeding,
     private val accounts: UserAccounts,
     private val org: OrgDirectory,
     private val transactions: TenantTransactions,
@@ -129,7 +131,7 @@ class DemoActionsSeeder(
         s: Scene,
         actionId: UUID,
     ) {
-        val type = asUser(s.people.getValue(SECRETARY)) { memos.generalType() }
+        val type = asUser(s.people.getValue(SECRETARY)) { memoTypes.generalType() }
         val memo = s.owner { actions.raiseMemo(actionId, type, MEMO_SUBJECT) }
         s.owner {
             memos.document(memo, MEMO_FILE, DemoDocx.of(MEMO_SUBJECT, MEMO_LINES))
@@ -222,12 +224,15 @@ class DemoActionsSeeder(
         s: Scene,
         meeting: UUID,
     ) {
-        val overdue = s.found(s.forum(), RUPSHA_BORROWINGS) ?: return
-        if (overdue.id in s.secretary { actions.reported(meeting) }) return
-        if (s.secretary { meetings.status(meeting) } != MeetingStatus.SCHEDULED) {
-            return log.warn("Demo actions: the quarterly risk review is not scheduled, so its report is not published again")
+        val overdue = s.found(s.forum(), RUPSHA_BORROWINGS)
+        // Only while the overdue action is missing from the latest report.
+        val unreported = overdue != null && overdue.id !in s.secretary { actions.reported(meeting) }
+        val scheduled = s.secretary { meetings.status(meeting) } == MeetingStatus.SCHEDULED
+        val item = s.secretary { declarations.item(meeting, MATTERS_ARISING) }
+        if (!unreported || !scheduled || item == null) {
+            if (unreported) log.warn("Demo actions: the quarterly risk review cannot take a new revision")
+            return
         }
-        val item = s.secretary { declarations.item(meeting, MATTERS_ARISING) } ?: return log.warn("Demo actions: no matters arising item")
         s.secretary { agendas.paper(meeting, item, FIGURES_FILE, DemoPdf.of(FIGURES_TITLE, FIGURES_LINES)) }
         asUser(s.people.getValue(BOARD_MEMBER)) { agendas.agreeLatePapers(meeting) }
         s.secretary { agendas.publish(meeting, PUBLISH_NOTE) }

@@ -138,8 +138,17 @@ test.describe('as the initiator', () => {
       { version: draft.version },
     )
     const placed = draft.sections.flatMap((s) => s.items).find((i) => i.title === subject) as
-      { id: string; late?: string } | undefined
+      { id: string; late?: string; papers?: { id: string }[] } | undefined
     if (!placed) throw new Error('the paper is not on the agenda')
+    // The smoke stack has no document converter, so the memo's Word document has no PDF for members and would refuse
+    // the publication (PAPER_NOT_READABLE): the secretary leaves it out of the pack, as in meeting-agenda.spec.
+    for (const p of placed.papers ?? []) {
+      draft = await api.send<Draft>(
+        `/meetings/${meeting.id}/agenda/papers/${p.id}/remove`,
+        {},
+        { version: draft.version },
+      )
+    }
     // Placed after the paper deadline, the item waits for the chair, who agreed by phone.
     if (placed.late === 'AWAITING_CHAIR') {
       draft = await api.send<Draft>(

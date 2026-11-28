@@ -196,6 +196,7 @@ export function DateDialog({
   description,
   label,
   submitLabel,
+  initial,
   onSave,
   onClose,
 }: {
@@ -203,10 +204,12 @@ export function DateDialog({
   description?: string
   label: string
   submitLabel: string
+  /** The organisation's date today (from the server: the browser's calendar may be a day off). */
+  initial?: string
   onSave: (date: string) => Promise<unknown>
   onClose: () => void
 }) {
-  const [date, setDate] = useState(today())
+  const [date, setDate] = useState(initial ?? today())
   return (
     <FormDialog
       title={title}
@@ -300,6 +303,7 @@ export function PickAndDateDialog({
   kind,
   pickLabel,
   submitLabel,
+  initial,
   onSave,
   onClose,
 }: {
@@ -307,12 +311,14 @@ export function PickAndDateDialog({
   kind: 'user' | 'position'
   pickLabel: string
   submitLabel: string
+  /** The organisation's date today (from the server: the browser's calendar may be a day off). */
+  initial?: string
   onSave: (picked: Picked, from: string) => Promise<unknown>
   onClose: () => void
 }) {
   const intl = useIntl()
   const [picked, setPicked] = useState<Picked>()
-  const [from, setFrom] = useState(today())
+  const [from, setFrom] = useState(initial ?? today())
   return (
     <FormDialog
       title={title}

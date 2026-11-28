@@ -291,3 +291,26 @@
   - **Committee officers' memo access does not follow dates or the organisation** (`SubmissionReaders.resync` is called only from `ForumMembers` changes to chair or secretary rows and from submission changes): a term lapsing on its end date, a future appointment starting, or a new holder of a position seat leaves the queue's FORUM reader rows as they were until the next such change. The runbook said "one who leaves loses access at once"; it now gives the workaround. Needs a daily resync (the term reminder sweep is the natural place) or a listener on assignment changes.
   - Smaller: `MeetingStatus.CLOSED` is reachable by no action; the demo has no `forum.read` holder (the built-in Auditor role has `directory.read` and `audit.read` only), so the oversight view needs a role granted by hand until T8's demo cycle.
 - **Checks:** the `docs` job's ADR index (`node ci/check-adr-index.mjs`: 70 ADRs) and actionlint 1.7.12 (no workflow changed) pass; a relative-link check over `docs/runbooks/` finds every link. No code changed.
+
+## 2026-11-28 — T9: the demo script and the owner's walkthrough, ready
+- **Branch** `phase4/e08-t9` on `phase4/e08-t8` (#261), with `master` and `phase4/e08-t10` (#259, which carries T5) merged. Only `STATUS.md` and this log conflicted, and both sides were kept. No code changed.
+- **`phase-4-forums-meetings/demo.md`**, in the Phase 3 shape:
+  - the demo accounts and what each does, `auditor@` with "Committee oversight" among them. The password and TOTP secret are named by their variables only: `deploy/compose/.env` locally, the dev VM's `/opt/memo/dev/.env` (its administrator) on dev;
+  - E01–E08 as "Show / Who, where / What to point out" tables on the seeded data: BRC 1/2026 with the recused director's copy, MCC/2026/001 with its conditions and named dissent, the deferred item, the decision under the override, BRC A1–A4 and MCC A1 with the follow-up memo, the quarterly review's action taken report, and the year of history (with what analytics should show over it);
+  - the committee cycle end to end in the order of `committee-cycle.spec`'s fifteen legs;
+  - what dev does not show, from each close's carried notes and from reading dev;
+  - "If something looks wrong", pointing to the six Phase 4 runbooks and `search.md`;
+  - the evidence.
+- **`ux-review.md`** gains two sections, **both pending the owner** (the Review table says so):
+  - "Owner walkthrough of the committee cycle (exit criterion 3)": checks before the walk, the fifteen legs as a checklist, a results table and a sign-off line;
+  - "Moderated usability walkthrough" (overview §5, `TESTING_STRATEGY.md`): participants and roles, setup, thirteen tasks with what success means, the session's success criteria (unaided within about twice the moderator's time, ease from 1 to 7, no false finishes), what to observe, and tables for results and triage.
+- **Dev, read on 2026-11-28** as `secretary@` and `auditor@` through the API, read only (sign-ins and GETs; no searches, exports or journeys):
+  - dev runs bc2fa6fe (#253). #256's E07 seed and #261's history and oversight role are not there yet: the BRC has no actions, and analytics counts one held BRC meeting and two held MCC meetings. `auditor@` gets 403 on the register and on analytics;
+  - the meetings are numbered at publication, so on dev the quarterly review is **BRC 1/2026** and "Risk review, third quarter" is **BRC 2/2026** (fresh seed: the other way round). BRC/2026/001–003 match the seed, and the director's redacted copy and his comment are there;
+  - the quarterly review is dated 23 November and still Scheduled;
+  - the MCC "Monthly credit review" (MCC 1/2026) has MCC/2026/001 with both conditions, the 2–1 vote, the head of finance's dissent and the head of credit taking no part, and the deferred watch-list review. But its minutes are "at the next meeting" and Circulated, linked to a journey's meeting; there is no decision to be ratified (the override was refused); and no memo moves on;
+  - a journey's MCC 2/2026 is stuck "In progress" in UTC. Another, MCC 3/2026, holds MCC/2026/002 and **MCC A1/2026**, so the seeded Meghna Foods action will be MCC A2/2026 there.
+  The demo script says all of this in §10.
+- **Checks:** a relative-link check over `demo.md` and `ux-review.md` (12 links, none missing); the table column counts; `node ci/check-adr-index.mjs` (70 ADRs).
+- **Waiting for the owner:** the walk through the cycle (exit criterion 3 under A1) and the moderated walkthrough, both on dev once #256 and #261 are deployed and the journey has passed there. T12 records their results, or carries them.
+- **Noticed in #259's runbook** (`decision-register-and-analytics.md`, "Demo data"): it still says no demo account holds `forum.read`, which T8 changed.

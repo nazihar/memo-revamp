@@ -160,6 +160,7 @@ import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
 import com.memo.jooq.tables.WorkflowDoaVersion
+import com.memo.jooq.tables.WorkflowHolderSync
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
@@ -1585,6 +1586,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val WORKFLOW_DOA_VERSION: WorkflowDoaVersion get() = WorkflowDoaVersion.WORKFLOW_DOA_VERSION
 
     /**
+     * The table <code>memo.workflow_holder_sync</code>.
+     */
+    val WORKFLOW_HOLDER_SYNC: WorkflowHolderSync get() = WorkflowHolderSync.WORKFLOW_HOLDER_SYNC
+
+    /**
      * The table <code>memo.workflow_instance</code>.
      */
     val WORKFLOW_INSTANCE: WorkflowInstance get() = WorkflowInstance.WORKFLOW_INSTANCE
@@ -1784,6 +1790,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION,
         WorkflowDoaRule.WORKFLOW_DOA_RULE,
         WorkflowDoaVersion.WORKFLOW_DOA_VERSION,
+        WorkflowHolderSync.WORKFLOW_HOLDER_SYNC,
         WorkflowInstance.WORKFLOW_INSTANCE,
         WorkflowQueue.WORKFLOW_QUEUE,
         WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER,

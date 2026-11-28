@@ -42,7 +42,15 @@ class ActionWorkflowListener(
         val stepName = queries.task(event.taskId)?.stepName
         if (event.nodeId == null || event.nodeId == ownerStep) {
             val sentBack = ActionStatus.IN_PROGRESS.takeIf { row.status == ActionStatus.DONE_PENDING }
-            tracking.track(row.id, holder = event.assigneeId, ownerStep = firstStep, stepName = stepName, status = sentBack)
+            // Nobody found for the owner's step (its position vacant): the former holder no longer holds the action.
+            tracking.track(
+                row.id,
+                holder = event.assigneeId,
+                ownerStep = firstStep,
+                stepName = stepName,
+                status = sentBack,
+                vacant = event.assigneeId == null,
+            )
         } else {
             val done = row.status != ActionStatus.DONE_PENDING
             val now = clock.instant().truncatedTo(ChronoUnit.MICROS)

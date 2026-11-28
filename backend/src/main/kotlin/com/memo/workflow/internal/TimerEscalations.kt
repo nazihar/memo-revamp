@@ -72,7 +72,7 @@ class TimerEscalations(
             }
         }
         // A task that moved on in the meantime is the engine's to refuse; the timer has done its part either way.
-        runCatching { runner.getObject().onInstance(instanceId, Actor.User(WORKFLOW_ACTOR), command) }
+        runCatching { runner.getObject().onInstance(instanceId, Actor.User(WORKFLOW_ACTOR), command = command) }
             .onFailure { if (it !is WorkflowRefusedException) throw it }
     }
 

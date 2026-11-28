@@ -143,7 +143,7 @@ export async function scheduleNowAndPlace(
   await sheet.getByLabel(/^To/).fill(ends.slice(11, 16))
   if (ends.slice(0, 10) !== starts.slice(0, 10)) {
     await sheet.getByRole('checkbox', { name: 'Ends on another day' }).check()
-    await sheet.getByLabel(/^Ends on/).fill(ends.slice(0, 10))
+    await sheet.getByRole('textbox', { name: /^Ends on$/ }).fill(ends.slice(0, 10))
   }
   // The times are Dhaka's: the zone is chosen by city, whatever the organisation's (dev was on UTC before E06 T12).
   const zone = sheet.getByRole('combobox', { name: /^Time zone/ })

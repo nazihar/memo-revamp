@@ -27,6 +27,8 @@ abstract class IntegrationTest {
             registry.add("db-scheduler.polling-interval") { "500ms" }
             // Tests create memos by SQL without search rows: the search backfill sweep would index them all in the background.
             registry.add("memo.search.backfill-sweep") { "false" }
+            // Tests run the dated holder day themselves on a moved clock; the sweep would move their tasks in the background.
+            registry.add("memo.workflow.holder-sweep") { "false" }
         }
     }
 }

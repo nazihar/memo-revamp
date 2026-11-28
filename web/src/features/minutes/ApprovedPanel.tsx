@@ -1,13 +1,19 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ShieldCheck } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
 import {
+  getMinutesQueryKey,
   listMinutesApprovalsOptions,
   listMinutesCorrectionsOptions,
   listMinutesRecordsOptions,
 } from '@/api/generated/@tanstack/react-query.gen'
-import { checkMinutesRecord, decideMinutesCorrection, proposeMinutesCorrection } from '@/api/generated/sdk.gen'
+import {
+  checkMinutesRecord,
+  decideMinutesCorrection,
+  proposeMinutesCorrection,
+  retryMinutesRecord,
+} from '@/api/generated/sdk.gen'
 import type {
   MinutesApprovalResponse,
   MinutesCorrectionResponse,
@@ -45,7 +51,8 @@ const big = 'min-h-11 text-base'
  * The approved minutes (flow AG4): "Read the minutes" (the reader's own copy of the current record version), the
  * record with its fingerprint and the approval stamps with "Check", the earlier versions, and the corrections (proposed
  * by a secretary, approved or declined by the chair with a fresh step-up; E06 T8). While a record version is made, the
- * page asks again every two seconds.
+ * page asks again every two seconds. When what the reader reads could not be made, it says so (the secretary has been
+ * told); a secretary not recused gets "Make the record again".
  */
 export function ApprovedPanel({
   page,
@@ -59,6 +66,7 @@ export function ApprovedPanel({
   timeZone?: string
 }) {
   const intl = useIntl()
+  const queryClient = useQueryClient()
   const meetingId = page.meetingId
   const records = useQuery({
     ...listMinutesRecordsOptions({ path: { meetingId } }),
@@ -70,7 +78,16 @@ export function ApprovedPanel({
   const versions = records.data ?? []
   const current = versions.find((r) => r.current) ?? versions.find((r) => r.state === 'READY')
   const pending = versions.find((r) => r.state === 'PENDING')
-  const failed = versions.find((r) => r.state === 'FAILED')
+  // A version made (or failed again) changes what the secretary may do: read the page again once it settles.
+  const wasPending = useRef(false)
+  useEffect(() => {
+    if (wasPending.current && !pending) {
+      void queryClient.invalidateQueries({ queryKey: getMinutesQueryKey({ path: { meetingId } }) })
+    }
+    wasPending.current = Boolean(pending)
+  }, [pending, queryClient, meetingId])
+  // What the reader reads could not be made: the record, or their own copy of it.
+  const failed = !current?.file && versions.some((r) => r.failed)
   return (
     <div className="flex flex-col gap-5 text-lg">
       <div className="flex flex-wrap items-center gap-3">
@@ -95,10 +112,13 @@ export function ApprovedPanel({
         <p role="status">
           {pending
             ? intl.formatMessage(mn.recordPending)
-            : !current && failed
-              ? intl.formatMessage(mn.recordFailed)
-              : ''}
+            : page.mayRetryRecord
+              ? intl.formatMessage(mn.recordFailedOfficer)
+              : failed
+                ? intl.formatMessage(mn.recordFailed)
+                : ''}
         </p>
+        {page.mayRetryRecord && !pending ? <RetryRecord meetingId={meetingId} /> : null}
         {current?.file ? <RecordLine meetingId={meetingId} record={current} approvals={approvals.data ?? []} /> : null}
         {versions.filter((r) => r.state === 'READY').length > 1 ? (
           <div className="flex flex-col gap-2">
@@ -144,6 +164,43 @@ export function ApprovedPanel({
             setReading(undefined)
           }}
         />
+      ) : null}
+    </div>
+  )
+}
+
+/** "Make the record again" (a secretary not recused): the failed record and readers' copies are asked for again. */
+function RetryRecord({ meetingId }: { meetingId: string }) {
+  const intl = useIntl()
+  const write = useMinutesWrite()
+  const toast = useToast()
+  const [busy, setBusy] = useState(false)
+  const [refused, setRefused] = useState<string>()
+  const retry = async () => {
+    setBusy(true)
+    setRefused(undefined)
+    try {
+      await write(['retry-record', meetingId], (key) =>
+        retryMinutesRecord({ path: { meetingId }, headers: { 'Idempotency-Key': key }, throwOnError: true }),
+      )
+      toast.show(intl.formatMessage(mn.recordRetried), 'success')
+    } catch (problem) {
+      setRefused(refusal(intl, problem))
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <div className="flex flex-col gap-2">
+      <div>
+        <Button className={big} disabled={busy} onClick={() => void retry()}>
+          {intl.formatMessage(mn.retryRecord)}
+        </Button>
+      </div>
+      {refused ? (
+        <p role="alert" className="text-destructive">
+          {refused}
+        </p>
       ) : null}
     </div>
   )

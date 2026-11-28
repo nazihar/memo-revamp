@@ -94,6 +94,10 @@ data class CopyRow(
     /** veraPDF's verdict on an APPROVED copy (a PDF/A record of its own), once built. */
     val compliant: Boolean? = null,
     val validation: Map<String, Any?>? = null,
+    /** When an APPROVED copy last failed (null: never, or before the sweep kept it). */
+    val failedAt: Instant? = null,
+    /** How many times an APPROVED copy was asked for again after failing (the sweep, a secretary). */
+    val retries: Int = 0,
 )
 
 /** The chair's authenticated confirmation of the minutes (ADR-0051), as stored. */
@@ -117,7 +121,7 @@ data class ApprovalRow(
 )
 
 /** The sweep's reminders on minutes (design E06 §9 (j)–(l)). */
-enum class MinutesReminderKind { COMMENTS_CLOSING, DRAFT_OVERDUE, CONFIRMATION }
+enum class MinutesReminderKind { COMMENTS_CLOSING, DRAFT_OVERDUE, CONFIRMATION, RECORD_FAILED }
 
 /** Comments and the requests for them (design E06 §1.5), inside a tenant transaction. */
 @Repository
@@ -340,6 +344,22 @@ class MinutesCopyStore(
             .limit(limit)
             .fetch { it.row() }
 
+    /** The failed approved copies asked for again fewer than [below] times, in id order, at most [limit] (the sweep). */
+    fun failedApproved(
+        below: Int,
+        limit: Int,
+    ): List<CopyRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_COPY)
+            .where(
+                MINUTES_COPY.STAGE.eq(CopyStage.APPROVED.name),
+                MINUTES_COPY.STATE.eq(CopyState.FAILED.name),
+                MINUTES_COPY.RETRIES.lt(below),
+            ).orderBy(MINUTES_COPY.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
     /** [id], locked to the end of the transaction. */
     fun lock(id: UUID): CopyRow? =
         tenantDsl
@@ -366,6 +386,8 @@ class MinutesCopyStore(
             .set(c.BUILT_AT, after.builtAt?.atOffset(ZoneOffset.UTC))
             .set(c.COMPLIANT, after.compliant)
             .set(c.VALIDATION, after.validation?.let { JSONB.jsonb(json.writeValueAsString(it)) })
+            .set(c.FAILED_AT, after.failedAt?.atOffset(ZoneOffset.UTC))
+            .set(c.RETRIES, after.retries)
             .set(c.VERSION, before.version + 1)
             .where(c.ID.eq(before.id), c.VERSION.eq(before.version))
             .execute() == 1
@@ -390,6 +412,8 @@ class MinutesCopyStore(
             recordVersion = recordVersion,
             compliant = compliant,
             validation = validation?.let { json.readValue(it.data(), VALIDATION) },
+            failedAt = failedAt?.toInstant(),
+            retries = retries ?: 0,
         )
 
     private companion object {

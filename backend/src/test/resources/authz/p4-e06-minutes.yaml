@@ -59,3 +59,8 @@ endpoints:
   - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/record", rule: signedIn }
   - { endpoint: "GET /api/v1/meetings/{meetingId}/minutes/records", rule: signedIn }
   - { endpoint: "POST /api/v1/meetings/{meetingId}/minutes/records/{version}/check", rule: signedIn }
+  # "Make the record again" (the fix after E08 T10): a secretary or forums.manage not recused from any item, once the
+  # record or a reader's approved copy failed after its tries (RecordRetryIT: RECUSED, 403 to the others, RECORD_NOT_FAILED).
+  - endpoint: "POST /api/v1/meetings/{meetingId}/minutes/record/retry"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }

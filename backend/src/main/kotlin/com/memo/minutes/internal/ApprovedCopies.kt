@@ -38,9 +38,17 @@ sealed interface RecordLookup {
     /** The reader's copy is being made: 202, try again. */
     data object Building : RecordLookup
 
-    /** The record version is not made (yet, or it failed): 409 `RECORD_PENDING`. */
+    /** The record version is not made yet: 409 `RECORD_PENDING`. */
     data class Pending(
         val record: RecordRow?,
+    ) : RecordLookup
+
+    /**
+     * The record version, or the reader's copy of it, failed after its job's last try: 409 `RECORD_FAILED` (the secretaries
+     * were told; the sweep or a secretary asks for it again, [RecordRetries]).
+     */
+    data class Failed(
+        val record: RecordRow,
     ) : RecordLookup
 }
 
@@ -60,6 +68,7 @@ class ApprovedCopies(
     private val people: MinutesPeople,
     @param:Lazy private val minutesRecords: MinutesRecords,
     private val maker: MinutesRecordMaker,
+    private val failures: RecordFailures,
     private val files: Files,
     private val contents: FileContents,
     private val uploads: FileUploads,
@@ -96,13 +105,14 @@ class ApprovedCopies(
         // The current version is the newest made one (E06 T8: version 1 stays what everyone reads while version 2 is made).
         val chosen = record ?: versions.firstOrNull { it.state == RecordState.READY } ?: versions.firstOrNull()
         return when {
+            chosen?.state == RecordState.FAILED -> RecordLookup.Failed(chosen)
             chosen == null || chosen.state != RecordState.READY -> RecordLookup.Pending(chosen)
             set.redacted.isEmpty() -> RecordLookup.Ready(chosen, checkNotNull(chosen.fileVersionId), checkNotNull(chosen.sha256), null)
             else -> copyOf(row, chosen, set)
         }
     }
 
-    /** [set]'s built copy of [record], or one asked for now. */
+    /** [set]'s built copy of [record], or one asked for now; a copy that failed for good is said so. */
     private fun copyOf(
         row: MinutesRow,
         record: RecordRow,
@@ -110,10 +120,10 @@ class ApprovedCopies(
     ): RecordLookup {
         val copy = copyStore.ofRecord(row.meetingId, record.recordVersion).firstOrNull { it.setKey == set.key }
         if (copy == null && copyStore.insert(pending(record, set))) request(row)
-        return if (copy?.state == CopyState.DONE) {
-            RecordLookup.Ready(record, checkNotNull(copy.fileVersionId), checkNotNull(copy.sha256), copy)
-        } else {
-            RecordLookup.Building
+        return when (copy?.state) {
+            CopyState.DONE -> RecordLookup.Ready(record, checkNotNull(copy.fileVersionId), checkNotNull(copy.sha256), copy)
+            CopyState.FAILED -> RecordLookup.Failed(record)
+            else -> RecordLookup.Building
         }
     }
 
@@ -247,8 +257,9 @@ class ApprovedCopies(
         items: List<String>,
     ) {
         val locked = copyStore.lock(copy.id)?.takeIf { it.state == CopyState.PENDING } ?: return
+        val at = clock.instant().truncatedTo(ChronoUnit.MICROS)
         check(
-            copyStore.update(locked, locked.copy(state = CopyState.FAILED, error = code.take(CODE_LENGTH))),
+            copyStore.update(locked, locked.copy(state = CopyState.FAILED, error = code.take(CODE_LENGTH), failedAt = at)),
         ) { "the locked copy moved on" }
         audit.record(
             "minutes.copy.failed",
@@ -261,8 +272,10 @@ class ApprovedCopies(
                     "setKey" to copy.setKey,
                     "error" to code.take(CODE_LENGTH),
                     "items" to items,
+                    "retries" to locked.retries,
                 ),
         )
+        store.find(copy.meetingId)?.let { failures.failed(copy.meetingId, it.forumId, checkNotNull(copy.recordVersion)) }
     }
 
     private fun pending(

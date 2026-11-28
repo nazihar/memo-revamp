@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MINUTES_COPY_APPROVED_IDX
+import com.memo.jooq.indexes.MINUTES_COPY_FAILED_IDX
 import com.memo.jooq.indexes.MINUTES_COPY_SET_IDX
 import com.memo.jooq.keys.MINUTES_COPY_PKEY
 import com.memo.jooq.keys.MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY
@@ -171,6 +172,16 @@ open class MinutesCopy(
      */
     val VALIDATION: TableField<MinutesCopyRecord, JSONB?> = createField(DSL.name("validation"), SQLDataType.JSONB, this, "")
 
+    /**
+     * The column <code>memo.minutes_copy.failed_at</code>.
+     */
+    val FAILED_AT: TableField<MinutesCopyRecord, OffsetDateTime?> = createField(DSL.name("failed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes_copy.retries</code>.
+     */
+    val RETRIES: TableField<MinutesCopyRecord, Int?> = createField(DSL.name("retries"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MinutesCopyRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -203,7 +214,7 @@ open class MinutesCopy(
         override fun `as`(alias: Table<*>): MinutesCopyPath = MinutesCopyPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_COPY_APPROVED_IDX, MINUTES_COPY_SET_IDX)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_COPY_APPROVED_IDX, MINUTES_COPY_FAILED_IDX, MINUTES_COPY_SET_IDX)
     override fun getPrimaryKey(): UniqueKey<MinutesCopyRecord> = MINUTES_COPY_PKEY
     override fun getReferences(): List<ForeignKey<MinutesCopyRecord, *>> = listOf(MINUTES_COPY__MINUTES_COPY_TENANT_ID_MEETING_ID_FKEY)
 
@@ -220,6 +231,7 @@ open class MinutesCopy(
         Internal.createCheck(this, DSL.name("minutes_copy_record_ck"), "(((stage = 'APPROVED'::text) = (record_version IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_record_version_check"), "((record_version >= 1))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_redacted_check"), "(((jsonb_typeof(redacted) = 'array'::text) AND (octet_length((redacted)::text) <= 65536)))", true),
+        Internal.createCheck(this, DSL.name("minutes_copy_retries_check"), "((retries >= 0))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_set_key_check"), "((set_key ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_sha256_check"), "((sha256 ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_copy_stage_check"), "((stage = ANY (ARRAY['DRAFT'::text, 'APPROVED'::text])))", true),

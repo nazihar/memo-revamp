@@ -37,6 +37,10 @@ data class RecordRow(
     val createdAt: Instant,
     val builtAt: Instant?,
     val version: Long,
+    /** When it last failed (null: never, or before the sweep kept it). */
+    val failedAt: Instant? = null,
+    /** How many times it was asked for again after failing (the sweep, a secretary). */
+    val retries: Int = 0,
 )
 
 /** The record's versions (ADR-0066), inside a tenant transaction; a version changes only by a guarded update. */
@@ -110,6 +114,19 @@ class MinutesRecordStore(
             .limit(limit)
             .fetch { it.row() }
 
+    /** The failed versions asked for again fewer than [below] times, in id order, at most [limit] (the sweep). */
+    fun failed(
+        below: Int,
+        limit: Int,
+    ): List<RecordRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_RECORD)
+            .where(MINUTES_RECORD.STATE.eq(RecordState.FAILED.name), MINUTES_RECORD.RETRIES.lt(below))
+            .orderBy(MINUTES_RECORD.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
     /** Writes [after]'s build over [before]; false when the version moved on in between. */
     fun update(
         before: RecordRow,
@@ -129,6 +146,8 @@ class MinutesRecordStore(
             .set(r.COMPLIANT, after.compliant)
             .set(r.VALIDATION, after.validation?.let { JSONB.jsonb(json.writeValueAsString(it)) })
             .set(r.BUILT_AT, after.builtAt?.atOffset(ZoneOffset.UTC))
+            .set(r.FAILED_AT, after.failedAt?.atOffset(ZoneOffset.UTC))
+            .set(r.RETRIES, after.retries)
             .set(r.VERSION, before.version + 1)
             .where(r.ID.eq(before.id), r.VERSION.eq(before.version))
             .execute() == 1
@@ -155,6 +174,8 @@ class MinutesRecordStore(
             createdAt = createdAt.toInstant(),
             builtAt = builtAt?.toInstant(),
             version = version ?: 0,
+            failedAt = failedAt?.toInstant(),
+            retries = retries ?: 0,
         )
 
     private companion object {

@@ -3256,6 +3256,7 @@ export type MinutesRecordResponse = {
     builtAt?: string | null;
     createdAt: string;
     current: boolean;
+    failed: boolean;
     file?: MinutesRecordFile | null;
     redacted: Array<MinutesRedactedItem>;
     state: string;
@@ -3300,6 +3301,7 @@ export type MinutesResponse = {
     mayGenerate: boolean;
     mayProposeCorrection: boolean;
     mayReadCopy: boolean;
+    mayRetryRecord: boolean;
     mayReview: boolean;
     maySendForReview: boolean;
     mayWithdraw: boolean;
@@ -11899,6 +11901,27 @@ export type GetMinutesRecordResponses = {
      */
     200: unknown;
 };
+
+export type RetryMinutesRecordData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/minutes/record/retry';
+};
+
+export type RetryMinutesRecordResponses = {
+    /**
+     * OK
+     */
+    200: Array<MinutesRecordResponse>;
+};
+
+export type RetryMinutesRecordResponse = RetryMinutesRecordResponses[keyof RetryMinutesRecordResponses];
 
 export type ListMinutesRecordsData = {
     body?: never;

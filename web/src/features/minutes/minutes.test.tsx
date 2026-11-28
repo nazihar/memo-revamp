@@ -156,6 +156,7 @@ const base: MinutesResponse = {
   mayConfirm: false,
   mayReadCopy: false,
   mayProposeCorrection: false,
+  mayRetryRecord: false,
 }
 
 const drafted: MinutesResponse = {
@@ -768,6 +769,7 @@ describe('Approval (flow AG)', () => {
           full: false,
         },
         redacted: [{ itemNumber: '5', kind: 'RECUSED' }],
+        failed: false,
       },
     ]
     const approvals: MinutesApprovalResponse[] = [
@@ -868,6 +870,111 @@ describe('Approval (flow AG)', () => {
     await waitFor(() => {
       expect(calls.posts.at(-1)).toMatchObject({ path: 'decide', body: { decision: 'APPROVE' } })
     })
+  }, 30_000)
+
+  const failedRecord: MinutesRecordResponse = {
+    version: 1,
+    approvalId: 'a1',
+    state: 'FAILED',
+    current: true,
+    createdAt: '2027-01-09T08:00:00Z',
+    redacted: [],
+    failed: true,
+  }
+
+  it('a record that could not be made is said so to a reader, also in the copy viewer, and nothing waits for ever', async () => {
+    const user = userEvent.setup()
+    const calls: Calls = { posts: [] }
+    const approved: MinutesResponse = {
+      ...base,
+      state: 'APPROVED',
+      viewerAccess: 'READER',
+      mayGenerate: false,
+      mayReadCopy: true,
+      approvedAt: '2027-01-09T08:00:00Z',
+    }
+    let probes = 0
+    server.use(
+      http.get(`${API}/meetings/m1/minutes/records`, () => HttpResponse.json([failedRecord])),
+      http.get(`${API}/meetings/m1/minutes/approvals`, () => HttpResponse.json([])),
+      http.get(`${API}/meetings/m1/minutes/corrections`, () =>
+        HttpResponse.json<MinutesCorrectionsResponse>({ corrections: [], mayDecide: false, mayPropose: false }),
+      ),
+      http.get(`${API}/meetings/m1/minutes/document`, () => {
+        probes++
+        return problem(409, { reason: 'RECORD_FAILED' })
+      }),
+      ...handlers(calls, [approved], {
+        meeting: { ...meeting, status: 'MINUTES_APPROVED', relation: 'MEMBER', canManage: false },
+      }),
+    )
+    renderRoute('/meetings/m1/minutes')
+
+    expect(await screen.findByText('The record could not be made; the secretary has been told.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Make the record again' })).not.toBeInTheDocument()
+    expect(screen.queryByText(/tried again/)).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Read the minutes' }))
+    const viewer = await screen.findByRole('dialog')
+    expect(
+      await within(viewer).findByText('The record could not be made; the secretary has been told.'),
+    ).toBeInTheDocument()
+    expect(within(viewer).queryByText(/being made/)).not.toBeInTheDocument()
+    expect(probes).toBe(1)
+  }, 30_000)
+
+  it('the secretary makes the record again; a refusal is said in words', async () => {
+    const user = userEvent.setup()
+    const calls: Calls = { posts: [] }
+    const approved: MinutesResponse = {
+      ...base,
+      state: 'APPROVED',
+      viewerAccess: 'MANAGER',
+      mayGenerate: false,
+      mayReadCopy: true,
+      approvedAt: '2027-01-09T08:00:00Z',
+      mayRetryRecord: true,
+    }
+    let refuse = false
+    server.use(
+      http.get(`${API}/meetings/m1/minutes/records`, () => HttpResponse.json([failedRecord])),
+      http.get(`${API}/meetings/m1/minutes/approvals`, () => HttpResponse.json([])),
+      http.get(`${API}/meetings/m1/minutes/corrections`, () =>
+        HttpResponse.json<MinutesCorrectionsResponse>({ corrections: [], mayDecide: false, mayPropose: false }),
+      ),
+      http.post(`${API}/meetings/m1/minutes/record/retry`, ({ request }) => {
+        if (refuse) return problem(409, { reason: 'RECORD_NOT_FAILED' })
+        calls.posts.push({
+          path: 'record/retry',
+          body: null,
+          key: request.headers.get('Idempotency-Key'),
+          ifMatch: null,
+        })
+        return HttpResponse.json<MinutesRecordResponse[]>([{ ...failedRecord, state: 'PENDING', failed: false }], {
+          status: 202,
+        })
+      }),
+      ...handlers(calls, [approved], { meeting: { ...meeting, status: 'MINUTES_APPROVED' } }),
+    )
+    renderRoute('/meetings/m1/minutes')
+
+    expect(
+      await screen.findByText(
+        'The record could not be made after several tries. It is tried again once a day; when the document server is working again, you can make it now.',
+      ),
+    ).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Make the record again' }))
+    await waitFor(() => {
+      expect(calls.posts).toHaveLength(1)
+    })
+    expect(calls.posts[0]?.key).toMatch(UUID)
+    expect(await screen.findAllByText('The record is being made again.')).not.toHaveLength(0)
+
+    refuse = true
+    await user.click(screen.getByRole('button', { name: 'Make the record again' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'The record has not failed: there is nothing to make again.',
+    )
   }, 30_000)
 })
 

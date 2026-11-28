@@ -321,6 +321,9 @@ object PaperSurfaceRegistry {
                     "issuing a certified extract (E06 T8): secretaries not recused, with a step-up; no item content (officer probe)",
                 "GET /api/v1/meetings/{meetingId}/minutes/preview" to
                     "another reader's copy (E06 T6): secretaries, their own recusals applying (officer probe)",
+                "POST /api/v1/meetings/{meetingId}/minutes/record/retry" to
+                    "making a failed record again (the fix after E08 T10): secretaries not recused from any item; answered " +
+                    "with the record's versions as the secretary reads them (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */

@@ -89,7 +89,8 @@ class MinutesRecordMaker(
  * approved .docx with its cover and resolutions annex, validates it, stores it as the system through the files pipeline as
  * a `minutes.record` file (object-locked for the committee type's retention), marks it READY and audits its SHA-256, then
  * asks for the readers' approved copies. A record veraPDF rejects is still kept, marked not compliant. A converter outage
- * is retried; after the last try, or for a refusal, the version is FAILED with a code.
+ * is retried; after the last try, or for a refusal, the version is FAILED with a code and the secretaries are told once
+ * ([RecordFailures]); the minutes' sweep and a secretary ask for it again ([RecordRetries]).
  */
 @Service
 class MinutesRecords(
@@ -105,6 +106,7 @@ class MinutesRecords(
     private val contents: FileContents,
     private val uploads: FileUploads,
     private val copies: ApprovedCopies,
+    private val failures: RecordFailures,
     private val jobs: MinutesJobs,
     private val transactions: TenantTransactions,
     private val ids: IdGenerator,
@@ -303,15 +305,18 @@ class MinutesRecords(
     ) {
         transactions.inTenant(TenantContext.current()) {
             val locked = records.lock(record.id)?.takeIf { it.state == RecordState.PENDING } ?: return@inTenant
-            check(records.update(locked, locked.copy(state = RecordState.FAILED, error = code.take(CODE_LENGTH)))) {
+            val at = clock.instant().truncatedTo(ChronoUnit.MICROS)
+            check(records.update(locked, locked.copy(state = RecordState.FAILED, error = code.take(CODE_LENGTH), failedAt = at))) {
                 "the locked record moved on"
             }
             audit.record(
                 "minutes.record.failed",
                 MinutesDrafts.OBJECT_TYPE,
                 record.meetingId.toString(),
-                after = mapOf("recordVersion" to record.recordVersion, "error" to code.take(CODE_LENGTH)),
+                after =
+                    mapOf("recordVersion" to record.recordVersion, "error" to code.take(CODE_LENGTH), "retries" to locked.retries),
             )
+            failures.failed(record.meetingId, record.forumId, record.recordVersion)
         }
     }
 

@@ -16,7 +16,9 @@ import java.util.UUID
  *  - (i) BY_CIRCULATION minutes whose comment deadline has passed go to the chair, who is told;
  *  - (j) from 09:00 on the deadline's day, the readers who have not answered are reminded, once per deadline;
  *  - (k) minutes not circulated `draftWorkingDays` working days after the meeting: the secretaries are told, once;
- *  - (l) minutes with the chair for three working days: the confirmer is reminded, once per wait.
+ *  - (l) minutes with the chair for three working days: the confirmer is reminded, once per wait;
+ *  - (m) approved minutes whose record, or a reader's approved copy of it, failed after its job's last try: asked for
+ *    again once a day with backoff, in the tenant's zone ([RecordRetries.sweep]; a guarded update FAILED → PENDING).
  * Each is audited with the minutes; nothing of the minutes is in any notice.
  */
 @Component
@@ -28,10 +30,11 @@ class MinutesSweep(
     private val people: MinutesPeople,
     private val comments: MinutesCommentStore,
     private val notifier: MinutesNotifier,
+    private val retries: RecordRetries,
     private val workingDays: WorkingDays,
     private val audit: AuditLog,
 ) : MeetingSweepStep {
-    override fun sweep(now: Instant): Int = deadlines(now) + closing(now) + overdue(now) + confirming(now)
+    override fun sweep(now: Instant): Int = deadlines(now) + closing(now) + overdue(now) + confirming(now) + retries.sweep(now)
 
     /** (i) */
     private fun deadlines(now: Instant): Int =

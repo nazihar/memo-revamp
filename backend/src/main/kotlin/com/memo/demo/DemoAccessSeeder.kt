@@ -50,6 +50,9 @@ class DemoAccessSeeder(
                 grants.grantCustom(ids.getValue(ADMIN), IMPORTER, setOf(Permission.MEMO_IMPORT))
                 // An importer must be cleared to the highest level a batch writes: the legacy sample's is Confidential.
                 grants.ensureClearance(ids.getValue(ADMIN), IMPORTER_CLEARANCE)
+                // Phase 4 E08 T8: the auditor is the committees' oversight (forum.read is in no built-in role), so the
+                // register and analytics can be shown as oversight sees them: every committee, restricted items as lines.
+                grants.grantCustom(ids.getValue(AUDITOR), COMMITTEE_OVERSIGHT, setOf(Permission.FORUM_READ))
             }
         }
         letterhead(ids)
@@ -136,6 +139,7 @@ class DemoAccessSeeder(
         const val LIST = "Credit committee"
         const val UNIT_READER = "Unit reader"
         const val RECORDS_KEEPER = "Records keeper"
+        const val COMMITTEE_OVERSIGHT = "Committee oversight"
         const val IMPORTER = "Legacy importer"
 
         /** Confidential among the default levels (Public 0, Internal 1, Confidential 2, Strictly Confidential 3). */

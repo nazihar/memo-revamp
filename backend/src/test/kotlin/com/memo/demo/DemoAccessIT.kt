@@ -149,6 +149,9 @@ class DemoAccessIT : FilesIntegrationTest() {
         // Unit reader: the author sits in Retail Credit, under the Credit Division.
         assertThat(asUser(id(DemoAccessSeeder.AUDITOR)) { memos.get(memo).subject }).isEqualTo(DemoAccessSeeder.SUBJECT)
 
+        // Phase 4 E08 T8: the auditor is the committees' oversight (forum.read), so the register and analytics show it.
+        assertThat(asUser(id(DemoAccessSeeder.AUDITOR)) { policy.allows(com.memo.common.authz.Permission.FORUM_READ) }).isTrue()
+
         val admin = id(DemoAccessSeeder.ADMIN)
         // E06: the demo admin holds memo.import (a privileged permission no built-in role carries).
         assertThat(asUser(admin) { policy.allows(com.memo.common.authz.Permission.MEMO_IMPORT) }).isTrue()

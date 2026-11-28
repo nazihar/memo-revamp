@@ -67,7 +67,9 @@ class RegisterVolumeIT : CommitteeVolumeSupport() {
     @Order(1)
     fun `the backfill indexes every decision within budget`() {
         assertThat(decisions).isGreaterThan(meetings.toLong() * MIN_DECISIONS_PER_MEETING)
-        budget("backfill ($decisions decisions)", backfillMillis, BACKFILL_BUDGET_MS)
+        // Design §8 sets ten minutes for 54,000 decisions: a larger volume's budget grows with it.
+        val budget = BACKFILL_BUDGET_MS * maxOf(decisions, DESIGN_DECISIONS) / DESIGN_DECISIONS
+        budget("backfill ($decisions decisions)", backfillMillis, budget)
     }
 
     @Test
@@ -194,6 +196,7 @@ class RegisterVolumeIT : CommitteeVolumeSupport() {
 
     private companion object {
         const val PAGE = 50
+        const val DESIGN_DECISIONS = 54_000L
         const val MIN_DECISIONS_PER_MEETING = 13
         const val RARE = "covenants"
         const val COMMON = "proposal"

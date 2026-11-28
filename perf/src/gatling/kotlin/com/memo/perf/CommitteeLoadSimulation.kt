@@ -116,7 +116,8 @@ class CommitteeLoadSimulation : Simulation() {
         http(name)
             .get("/api/v1/auth/csrf")
             .header("Cookie", "$SESSION_COOKIE=#{session}")
-            .check(status().shouldBe(NO_CONTENT), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf"))
+            // A token still valid is not set again (after the second factor): the session keeps the one it has.
+            .check(status().shouldBe(NO_CONTENT), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").optional().saveAs("xsrf"))
 
     /** Even rounds search newest first (no words); odd ones search words in turn. */
     private fun body(round: Int): String = if (round % 2 == 0) "{}" else """{"text":"${WORDS[(round / 2) % WORDS.size]}"}"""

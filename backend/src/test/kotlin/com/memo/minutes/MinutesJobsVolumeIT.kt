@@ -222,7 +222,7 @@ class MinutesJobsVolumeIT : MinutesFixture() {
             .joinToString("\n  ") { (table, n) -> "$table: $n (${"%.1f".format(n.toDouble() / DECISIONS)} a decision)" }
 
     private companion object {
-        val TABLE = Regex("(?:from|into|update)\\s+\"?([a-z_]+)", RegexOption.IGNORE_CASE)
+        val TABLE = Regex("(?:from|into|update)\\s+(?:\"?memo\"?\\.)?\"?([a-z_]+)", RegexOption.IGNORE_CASE)
         const val DECISIONS = 60
         const val MEMOS_PER_INITIATOR = 20
         const val CONDITIONS_EVERY = 5

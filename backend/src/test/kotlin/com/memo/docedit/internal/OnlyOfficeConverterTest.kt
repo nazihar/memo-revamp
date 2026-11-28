@@ -3,6 +3,7 @@ package com.memo.docedit.internal
 import com.memo.files.FileType
 import com.memo.files.RenditionInput
 import com.memo.files.RenditionOutcome
+import com.memo.testsupport.CachingDocumentServer
 import com.sun.net.httpserver.HttpServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -67,8 +68,11 @@ class OnlyOfficeConverterTest {
             .contains("name=\"file\"")
             .contains("hello")
             .contains("name=\"params\"")
-            .contains("\"key\":\"r1-key\"")
-        assertThat(requests[1]).doesNotContain("name=\"file\"").contains("\"key\":\"r1-key\"")
+            .contains("\"key\":\"r1-key.")
+        // The polls of one call repeat its key (the caller's key with this call's suffix).
+        val key = Regex("\"key\":\"([^\"]+)\"")
+        assertThat(requests[1]).doesNotContain("name=\"file\"")
+        assertThat(key.find(requests[1])!!.groupValues[1]).isEqualTo(key.find(requests[0])!!.groupValues[1])
         val token = Regex("name=\"token\"\r\n\r\n([^\r]+)").find(requests[0])!!.groupValues[1]
         val claims = Hs256(secret, json, Clock.systemUTC()).verify(token)
         assertThat(claims["operation"]).isEqualTo("converter")
@@ -117,5 +121,50 @@ class OnlyOfficeConverterTest {
         val properties = DocEditProperties(documentServerUrl = "http://127.0.0.1:1", jwtSecret = secret)
         assertThat(OnlyOfficeConverter(properties, json, Clock.systemUTC()).toPdf(image, "k", ByteArrayOutputStream()))
             .isEqualTo(RenditionOutcome.Final("UNSUPPORTED"))
+    }
+}
+
+/**
+ * The key the client sends (E06 T12): ONLYOFFICE keeps each conversion's answer by its key, failures included, so every
+ * call is sent under the caller's key with a fresh suffix; the polls of one call repeat it.
+ */
+class OnlyOfficeConverterKeyTest {
+    private val pdf = "%PDF-1.7 test".toByteArray()
+    private val input = RenditionInput("minutes-copy.docx", FileType.DOCX, 5) { "hello".byteInputStream() }
+
+    @Test
+    fun `a call after a failure the document server kept is converted under a fresh key`() {
+        CachingDocumentServer { _, _, _ -> pdf }.use { server ->
+            val converter = server.converter()
+            server.down = true
+            assertThat(converter.toPdf(input, "minutes-copy-0193", ByteArrayOutputStream()))
+                .isEqualTo(RenditionOutcome.Retry("CONVERTER_M3"))
+            // The same caller key under ONLYOFFICE's cache would answer -3 again, at once.
+            server.down = false
+            val out = ByteArrayOutputStream()
+            assertThat(converter.toPdf(input, "minutes-copy-0193", out)).isEqualTo(RenditionOutcome.Written())
+            assertThat(out.toByteArray()).isEqualTo(pdf)
+            assertThat(converter.toPdfA(input, "minutes-copy-0193", ByteArrayOutputStream())).isEqualTo(RenditionOutcome.Written())
+
+            assertThat(server.keys).hasSize(3).doesNotHaveDuplicates().allSatisfy { assertThat(it).startsWith("minutes-copy-0193.") }
+            assertThat(server.conversions).isEqualTo(2)
+        }
+    }
+
+    @Test
+    fun `the keys are ones ONLYOFFICE accepts, a caller's key outside its rules hashed`() {
+        CachingDocumentServer { _, _, _ -> pdf }.use { server ->
+            val converter = server.converter()
+            val long = "minutes-record:" + "x".repeat(200)
+            listOf("record-0193-1", "rendition:0193", long, "").forEach { converter.toPdf(input, it, ByteArrayOutputStream()) }
+            assertThat(server.keys).hasSize(4).doesNotHaveDuplicates().allSatisfy {
+                assertThat(it).hasSizeLessThanOrEqualTo(128).matches("[0-9A-Za-z._=-]+")
+            }
+            assertThat(server.keys[0]).startsWith("record-0193-1.")
+            assertThat(server.keys[1]).doesNotContain(":")
+            assertThat(server.keys[2]).doesNotContain("xxxxxxxx")
+        }
+        assertThat(OnlyOfficeConverter.serverKey("x".repeat(95), "n")).isEqualTo("x".repeat(95) + ".n")
+        assertThat(OnlyOfficeConverter.serverKey("x".repeat(96), "0".repeat(40))).hasSize(41 + 1 + 32).startsWith("h")
     }
 }

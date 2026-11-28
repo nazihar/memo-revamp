@@ -14,8 +14,10 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import java.security.MessageDigest
 import java.time.Clock
 import java.time.Duration
+import java.util.HexFormat
 import java.util.UUID
 
 /**
@@ -23,6 +25,10 @@ import java.util.UUID
  * key, the bytes sent by us over the internal network (the document server fetches nothing), the parameters in a token
  * with `operation: converter` (required since 10.0). Polls the same key until the PDF comes back or the deadline passes.
  * Present only when a document server is configured.
+ *
+ * The document server keeps each conversion's answer by its key, failures included (E06 T12, ADR-0045 amendment of
+ * 2026-11-23): a call under a key already used gets that answer back at once. So every call is sent under its own key,
+ * the caller's key with a fresh suffix ([serverKey]); only the polls of that call repeat it. A retry is a new conversion.
  */
 @Component
 @ConditionalOnExpression("!'\${memo.docedit.document-server-url:}'.isBlank()")
@@ -67,11 +73,11 @@ class OnlyOfficeConverter(
                 "async" to true,
                 "filetype" to fileType,
                 "outputtype" to outputType,
-                "key" to key,
+                "key" to serverKey(key, nonce()),
                 "title" to "document.$fileType",
             )
         val deadline = clock.instant().plus(DEADLINE)
-        // The first request carries the file; the polls repeat the same key without it.
+        // The first request carries the file; the polls repeat this call's key without it.
         var outcome = poll(params, input, out)
         while (outcome == null && !clock.instant().isAfter(deadline)) {
             Thread.sleep(POLL.toMillis())
@@ -199,6 +205,32 @@ class OnlyOfficeConverter(
 
         /** Above the document server's own 120 s conversion timeout, so its answer (-2) arrives first. */
         private val DEADLINE: Duration = Duration.ofSeconds(150)
+
+        /** ONLYOFFICE's key rules (as for the editor's `document.key`): these characters, at most 128 of them. */
+        private val KEY_CHARS = Regex("[0-9A-Za-z._=-]+")
+        private const val MAX_KEY = 128
+        private const val NONCE_HEX = 32
+        private const val HASHED_HEX = 40
+
+        /** A caller's key longer than this leaves no room for the suffix and is hashed. */
+        private const val MAX_CALLER_KEY = MAX_KEY - 1 - NONCE_HEX
+
+        /** A fresh suffix for one call: a random UUID's 32 hex characters (122 random bits). */
+        private fun nonce(): String = UUID.randomUUID().toString().replace("-", "")
+
+        /**
+         * The document server's key for one call: the caller's [key] (or, outside ONLYOFFICE's key rules or too long for
+         * the suffix, `h` and the start of its SHA-256), a dot and [nonce]. Never longer than 128 characters.
+         */
+        internal fun serverKey(
+            key: String,
+            nonce: String,
+        ): String {
+            val base =
+                key.takeIf { it.length <= MAX_CALLER_KEY && KEY_CHARS.matches(it) }
+                    ?: ("h" + HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(key.toByteArray())).take(HASHED_HEX))
+            return "$base.${nonce.take(NONCE_HEX)}"
+        }
 
         /** ONLYOFFICE's conversion error codes: those retrying cannot fix are final. */
         fun outcomeOf(error: Int): RenditionOutcome =

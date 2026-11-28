@@ -155,10 +155,8 @@ export function longPast(m: Pick<MeetingTimes, 'endsAt'>, now = Date.now()): boo
   return new Date(m.endsAt).getTime() < now - 24 * 60 * 60 * 1000
 }
 
-/** Whether [m] has not ended yet. */
-export function notEnded(m: Pick<MeetingTimes, 'endsAt'>, now = Date.now()): boolean {
-  return new Date(m.endsAt).getTime() >= now
-}
+/** Whether [m] has not ended yet (defined beside "My meetings", which the home page loads). */
+export { notEnded } from './mine'
 
 /** The wall-clock fields of [instant] in [zone], read back as if they were UTC (milliseconds). */
 function wallAsUtc(instant: number, zone: string): number {

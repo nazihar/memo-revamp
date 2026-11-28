@@ -1,60 +1,27 @@
-import { Monitor, Moon, Sun } from 'lucide-react'
-import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
+import { lazy } from 'react'
+import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { THEMES, useTheme, type Theme } from '@/theme/ThemeProvider'
+import { useTheme } from '@/theme/ThemeProvider'
+import { DeferredMenu } from './DeferredMenu'
+import { themeIcons, themeMessages } from './theme-menu'
 
-/** Typed placeholders: a missing or misspelled value is a compile error. */
-const messages = defineMessages<{
-  label: NoMessageValues
-  trigger: { current: string }
-  light: NoMessageValues
-  dark: NoMessageValues
-  system: NoMessageValues
-}>({
-  label: { id: 'theme.label', defaultMessage: 'Theme' },
-  trigger: { id: 'theme.trigger', defaultMessage: 'Change theme (current: {current})' },
-  light: { id: 'theme.light', defaultMessage: 'Light' },
-  dark: { id: 'theme.dark', defaultMessage: 'Dark' },
-  system: { id: 'theme.system', defaultMessage: 'System' },
-})
+const load = () => import('./ThemeMenuFull')
+const ThemeMenuFull = lazy(load)
 
-const icons = { light: Sun, dark: Moon, system: Monitor } as const
-
+/** The theme menu of the top bar; its menu loads when first wanted ([DeferredMenu]). */
 export function ThemeMenu() {
   const intl = useIntl()
-  const { theme, setTheme } = useTheme()
-  const Icon = icons[theme]
-  const name = (t: Theme) => intl.formatMessage(messages[t])
+  const { theme } = useTheme()
+  const Icon = themeIcons[theme]
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={intl.formatMessage(messages.trigger, { current: name(theme) })}>
-          <Icon aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{intl.formatMessage(messages.label)}</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={theme}
-          onValueChange={(value) => {
-            setTheme(value as Theme)
-          }}
-        >
-          {THEMES.map((t) => (
-            <DropdownMenuRadioItem key={t} value={t}>
-              {name(t)}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <DeferredMenu menu={ThemeMenuFull} preload={load}>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={intl.formatMessage(themeMessages.trigger, { current: intl.formatMessage(themeMessages[theme]) })}
+      >
+        <Icon aria-hidden="true" />
+      </Button>
+    </DeferredMenu>
   )
 }

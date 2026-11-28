@@ -180,17 +180,31 @@ jobs:
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
           cache-read-only: true
-      - name: MeetingVolumeIT and InvitationVolumeIT at 3,600 meetings
+      # One JVM, and so one test database, each: the generator's ids are md5 of fixed keys (meetings, items, people), so the
+      # second class in one database met the first one's rows ("duplicate key value violates unique constraint
+      # meeting_pkey"; weekly runs 45012672128 and 46156574343). The first report is kept aside, as the second run
+      # replaces the test results.
+      - name: MeetingVolumeIT at 3,600 meetings
         env:
           MEETING_VOLUME: '3600'
-        run: ./gradlew :backend:test --tests com.memo.meeting.MeetingVolumeIT --tests com.memo.meeting.InvitationVolumeIT --rerun --console=plain
+        run: |
+          ./gradlew :backend:test --tests com.memo.meeting.MeetingVolumeIT --rerun --console=plain
+      - if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/meeting-volume"
+          cp backend/build/test-results/test/TEST-com.memo.meeting.MeetingVolumeIT.xml "$RUNNER_TEMP/meeting-volume/" || true
+      - name: InvitationVolumeIT at 3,600 meetings
+        if: always()
+        env:
+          MEETING_VOLUME: '3600'
+        run: ./gradlew :backend:test --tests com.memo.meeting.InvitationVolumeIT --rerun --console=plain
+      - if: always()
+        run: cp backend/build/test-results/test/TEST-com.memo.meeting.InvitationVolumeIT.xml "$RUNNER_TEMP/meeting-volume/" || true
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: meeting-volume-report
-          path: |
-            backend/build/test-results/test/TEST-com.memo.meeting.MeetingVolumeIT.xml
-            backend/build/test-results/test/TEST-com.memo.meeting.InvitationVolumeIT.xml
+          path: ${{ runner.temp }}/meeting-volume/
           retention-days: 30
 
   actions-volume:

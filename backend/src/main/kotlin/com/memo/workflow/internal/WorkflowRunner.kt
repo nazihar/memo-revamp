@@ -36,6 +36,7 @@ import org.springframework.stereotype.Component
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -105,12 +106,14 @@ class WorkflowRunner(
         command: (UUID) -> Command,
     ): WorkflowView {
         val instanceId = instances.instanceOfTask(taskId) ?: throw WorkflowRefusedException(TASK_NOT_FOUND)
-        return onInstance(instanceId, actor, command)
+        return onInstance(instanceId, actor, command = command)
     }
 
+    /** Runs [command] on the instance, with the organisation read as on [on] (today when null). */
     fun onInstance(
         instanceId: UUID,
         actor: Actor.User,
+        on: LocalDate? = null,
         command: (UUID) -> Command,
     ): WorkflowView {
         val ref = instances.subjectOfInstance(instanceId) ?: throw WorkflowRefusedException(INSTANCE_NOT_FOUND)
@@ -124,7 +127,7 @@ class WorkflowRunner(
         val carried = carried(loaded, cmd, subject)
         val outcome =
             accepted(
-                transition(subject, loaded.subjectId, loaded.state.initiator, people, loaded.definition, carried, loaded.doaVersionId)
+                transition(subject, loaded.subjectId, loaded.state.initiator, people, loaded.definition, carried, loaded.doaVersionId, on)
                     .apply(loaded.state, cmd),
             )
         return record(loaded, loaded.state, subject, outcome, actor)
@@ -171,13 +174,15 @@ class WorkflowRunner(
 
     /**
      * A staff change reaches a running instance (design E04 §4.6): [Block] for a deactivated holder, [Reresolve] for a
-     * step whose position changed holder; [actor] changed the organisation.
+     * step whose position changed holder; [actor] changed the organisation (or is the workflow, for a change that took
+     * effect on a recorded date). The step resolves with the organisation as on [on], today when null.
      */
     fun staffChange(
         instanceId: UUID,
         actor: Actor.User,
+        on: LocalDate? = null,
         command: (UUID) -> Command,
-    ): WorkflowView = onInstance(instanceId, actor, command)
+    ): WorkflowView = onInstance(instanceId, actor, on, command)
 
     /** Where the subject's instance is now, without locking it; null if it was never submitted. */
     fun viewOf(
@@ -217,6 +222,7 @@ class WorkflowRunner(
         definition: Definition,
         carried: Set<Carried> = emptySet(),
         doaVersion: UUID? = null,
+        on: LocalDate? = null,
     ): Transition {
         val named = definition.steps.flatMap { step -> listOfNotNull(step.assignee?.userId) + step.assignees.mapNotNull { it.userId } }
         val known = (people + named).toSet()
@@ -237,7 +243,7 @@ class WorkflowRunner(
                 maxApprovers = settings.maxApprovers(),
                 attributes = { subject.attributeValues(subjectId) },
                 carried = carried,
-                resolver = resolvers.resolver { slot -> subject.slot(subjectId, slot) },
+                resolver = resolvers.resolver(on) { slot -> subject.slot(subjectId, slot) },
                 oncePerRound = settings.oncePerRound(),
                 interested = interested::value,
                 // SOD-3: a substitute never acts on an item they initiated (unless the initiator takes part, ADR-0068) or

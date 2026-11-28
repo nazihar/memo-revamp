@@ -19,7 +19,8 @@ class ActionTracking(
 ) {
     /**
      * The engine's view of the action: null arguments keep what is there, except [stepName], which is always set (null
-     * when nothing is open).
+     * when nothing is open). [vacant] clears the holder: the owner's task waits for an administrator (nobody holds the
+     * owner's position any more).
      */
     @Suppress("LongParameterList")
     fun track(
@@ -32,6 +33,7 @@ class ActionTracking(
         closedAt: Instant? = null,
         cancelKind: CancelKind? = null,
         closedBy: UUID? = null,
+        vacant: Boolean = false,
     ) {
         val a = ACTIONS_ITEM
         var update =
@@ -41,6 +43,7 @@ class ActionTracking(
                 .set(a.STEP_NAME, stepName?.take(STEP_NAME_MAX))
                 .set(a.VERSION, a.VERSION.plus(1))
         holder?.let { update = update.set(a.HOLDER_USER_ID, it) }
+        if (vacant) update = update.setNull(a.HOLDER_USER_ID)
         ownerStep?.let { update = update.set(a.OWNER_STEP, it) }
         status?.let { update = update.set(a.STATUS, it.name) }
         doneAt?.let { update = update.set(a.DONE_AT, it.atOffset(ZoneOffset.UTC)) }

@@ -571,3 +571,25 @@
   - `committee-escalation.spec` (E06's leg, not changed here) stops on this stack at "Mark as held…": the menu item is never reached, on its own and beside a build; reported with #253's e2e fixes, which are under way.
   - Web: `typecheck`, `lint`, `format:check`, `i18n` and `build` pass. `pnpm test`: 570 of 583 in the full run beside a Gradle build; the 13 others (12 files, other features and `officer.test`) waited past their find timeouts and pass when run on their own (144 of 144).
 - **Found, not fixed (reported):** an owner whose action waits for verification is still offered "Post an update" and "Ask for a new date" (the server allows both until the action is verified). Tika's container does not start on the Windows stack (E06's note), so text extraction was off locally; nothing in E07 depends on it.
+
+## 2026-11-28 — T1 follow-up: position steps follow holder changes that take effect on a date
+- **The defect** (found by the officer-access fix, #260, E02 log 2026-11-28): the engine re-resolved a position step to the new holder only when an assignment was *edited* (`StaffChangeListener` on `OrgChanged`, against the holder on the day of the edit). An assignment that starts or ends on a recorded date (a holder change recorded for next Monday, a term ending) announces nothing on that day. So the task stayed with the former holder, or with nobody, until something edited the assignment. That affected every subject: memo approvals, an action's owner's task and `holder_user_id`, and every step resolved from a position (`position`, `supervisor`, `unitHead`, route entries naming a position, DoA groups, slots naming a position).
+- **Shown first by a test** on a build without a dated run: `DatedHolderChangesIT` "a holder change recorded for tomorrow …". In Asia/Dhaka, the administrator ends the holder's term tonight and starts the successor tomorrow. The pinned `MutableClock` moves to 00:00:30 Dhaka, still the same UTC day. The open task was still the former holder's (`[bob]`, expected `[dave]`).
+- **The fix** (ADR-0068 amendment, 2026-11-28):
+  - `DatedHolderChanges.daily` runs in the per-tenant task `workflow-position-holders`, fanned out every 15 minutes by `workflow-position-holders-sweep` (property `memo.workflow.holder-sweep`, off in integration tests). It runs once per tenant day, at the first run after midnight in `default.timezone`. The day is kept in `workflow/V18` `workflow_holder_sync`: RLS enabled and forced, one row per tenant, locked while planning.
+  - It reads only the active steps whose recorded resolution names a position with an assignment starting or ending since the last run: `OrgHolderChanges.between`, a new published org service, so workflow reads org through its API only. A first run, or one after more than 31 days, checks every active position step.
+  - A step moves only if its recorded people differ from the holders that day. A slot is compared against the people it names now. Each step moves in its own transaction after the check is made again, so a second run or a second node does nothing.
+  - It moves through `Reresolve` (`HOLDER_CHANGED`) with the organisation read as on the run's day (`WorkflowRunner.staffChange(…, on)`, `OrgResolvers.resolver(on)`). It is recorded by the workflow actor and audited `workflow.task.reassigned` (cause `HOLDER_CHANGED`) by the system actor `workflow-position-holders`.
+  - The substitute acts for the new holder. A vacant position leaves the step to its fallback or to an administrator (`UNRESOLVED`). A named route entry keeps its person.
+  - **Claims:** a re-resolved pool keeps the claim of a member still in it (`StaffChanges.keepClaim`, for edits too). The new step's `claimed_by` is now written on insert.
+  - **Actions:** an owner's task left with nobody clears `holder_user_id` (`ActionTracking.track(vacant = true)`). Before, a task without an assignee left the former holder there.
+- **Tests:**
+  - `DatedHolderChangesIT` (new), with five cases:
+    - the change for tomorrow: inbox, the former holder refused, the reason, the audit entry and actor, and a second run the same day doing nothing;
+    - a term ending with nobody after it: `UNRESOLVED` without a fallback, the fallback with one, then both to the successor when their term starts;
+    - a pool keeping a remaining member's claim, with the former holder out;
+    - a 40-day gap;
+    - cross-tenant RLS on `workflow_holder_sync`.
+  - `OwnerPositionDatesIT` (new): an action owned by a position, whose task and holder move to the successor and then wait with no holder.
+  - Also run: the workflow, memo and actions packages, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT` (regenerated), `JooqCodegenTest` (regenerated), both leak suites, ktlint, detekt and SpotBugs. Results are in the PR.
+- **Docs:** the ADR-0068 amendment, and the "Staff changes" section of `docs/runbooks/workflow-approvers-and-authority.md` (dates, background work, troubleshooting).

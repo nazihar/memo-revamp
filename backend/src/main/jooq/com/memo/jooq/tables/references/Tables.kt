@@ -161,6 +161,7 @@ import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
 import com.memo.jooq.tables.WorkflowDoaVersion
+import com.memo.jooq.tables.WorkflowHolderSync
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
@@ -1560,6 +1561,11 @@ val WORKFLOW_DOA_RULE: WorkflowDoaRule = WorkflowDoaRule.WORKFLOW_DOA_RULE
  * The table <code>memo.workflow_doa_version</code>.
  */
 val WORKFLOW_DOA_VERSION: WorkflowDoaVersion = WorkflowDoaVersion.WORKFLOW_DOA_VERSION
+
+/**
+ * The table <code>memo.workflow_holder_sync</code>.
+ */
+val WORKFLOW_HOLDER_SYNC: WorkflowHolderSync = WorkflowHolderSync.WORKFLOW_HOLDER_SYNC
 
 /**
  * The table <code>memo.workflow_instance</code>.

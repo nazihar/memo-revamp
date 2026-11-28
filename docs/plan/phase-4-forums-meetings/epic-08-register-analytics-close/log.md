@@ -266,3 +266,73 @@
   - **Committee officers' memo access does not follow dates or the organisation** (`SubmissionReaders.resync` is called only from `ForumMembers` changes to chair or secretary rows and from submission changes): a term lapsing on its end date, a future appointment starting, or a new holder of a position seat leaves the queue's FORUM reader rows as they were until the next such change. The runbook said "one who leaves loses access at once"; it now gives the workaround. Needs a daily resync (the term reminder sweep is the natural place) or a listener on assignment changes.
   - Smaller: `MeetingStatus.CLOSED` is reachable by no action; the demo has no `forum.read` holder (the built-in Auditor role has `directory.read` and `audit.read` only), so the oversight view needs a role granted by hand until T8's demo cycle.
 - **Checks:** the `docs` job's ADR index (`node ci/check-adr-index.mjs`: 70 ADRs) and actionlint 1.7.12 (no workflow changed) pass; a relative-link check over `docs/runbooks/` finds every link. No code changed.
+
+## 2026-11-28 — T8: the phase exit journey, the audit walk and a year of committee history
+- **Branch** `phase4/e08-t8` on `phase4/e07-t12` (#256, with #253 and `master`); `master` (#255) and `phase4/e06-t12` (its CI fixes: no converter on the smoke stack, the organisation's `today`) merged again before committing.
+- **`committee-cycle.spec`, the exit journey, through the screens only.** E07 T12 made the file with its leg on a meeting prepared through the API; that preparation is gone. The legs are steps in `e2e/cycle.ts` (new), each an earlier journey's screens made one call, beside the helpers of `e2e/actions.ts` (`openFromMyActions`, `resolutionNumber`, `said`) and `e2e/meetings.ts` (`checkPageA11y`):
+  1. Demo User's credit proposal of BDT 25 million, numbered `CR/…` on submit and recommended by Demo Head of Credit, waits for the Management Credit Committee (memo page and committee panel).
+  2. The secretary accepts it from the Submissions tab by keyboard; the initiator reads "Accepted".
+  3. The secretary schedules the meeting for now in "Schedule a meeting" (Dhaka time, started ten minutes ago), starts the agenda from the standard agenda in the builder and places the paper from the tray. It is past the paper deadline, so the builder says the paper goes to the chair first. Without a document converter (`/files/editing` off: the PR smoke stack) the memo's Word document is left out of the pack, as `meeting-agenda.spec` does. The chair agrees to the late item and to the agenda in the builder, and revision 1 is published.
+  4. The invitations went out at scheduling: Demo Director, Demo Head of Credit and Demo Head of Finance answer "Yes, in person" on "Will you attend?", and the secretary reads the three answers on Invitations and replies.
+  5. Demo Head of Credit (the vice-chair, who recommended the memo at the desk) declares an interest in the item and will leave the room.
+  6. The secretary starts the meeting, marks the three present ("Mark everyone who said yes as present") and records the Chief Risk Officer's seat holder arriving (quorate, 4 of 4). They move to the item and record the vice-chair stepping out for it; the vice-chair comes back once it is decided.
+  7. On the decision panel: approved with a condition by a vote of 2–1, with Demo Head of Finance's dissent and reason.
+  8. "Mark as held…" says one memo moves on; the release job numbers the resolution (`MCC/…`).
+  9. The initiator reads the number on the committee panel and on the note sheet, and the memo no longer waits for the committee.
+  10. The minutes are approved by circulation (the management committee type's way since E06 T12): drafted from the meeting page, agreed by the chair, "No comments" from the head of finance, the comment period ended early, then approved by the chair with their authenticator.
+  11. After the minutes, the secretary makes the condition an action owned by the **position** Chief Financial Officer and sends it ("Save and send to the owner").
+  12. Its holder, Demo Head of Finance, finds it under My actions and raises a General memo from it, routed to Demo Director, who approves it.
+  13. The owner marks the action done; the secretary's verification shows the approved follow-up memo and closes the action.
+  14. The register finds the resolution by its number and by the memo's `CR/…` number: one row each, with "Resolution …", the outcome and the links to the meeting and the memo. The demo auditor, the committees' oversight (below), reads the same row in full.
+  15. The committee's register is exported as a spreadsheet from the export dialog.
+  - axe runs on every page and dialog on the way. No document conversion is needed (nightly's documents stack and dev keep the paper in the pack). The journey has 900 s at most and 30 s per action, so a wrong locator fails within seconds instead of at the end of the test.
+- **`CommitteeCycleIT` extended:**
+  - the memo's note-sheet entry carries the number and links the resolution;
+  - the resolution leads to its decision and meeting, and `Resolutions.ofMemo` leads back from the memo to the number;
+  - the register's row, found by the resolution's number (and by the memo's when its type numbers it), holds the decision, resolution, meeting, item, submission and memo, and the memo leads back to the meeting;
+  - analytics counts the held meeting, the decision (time to decision and the deferrals' basis) and the closed action;
+  - each step's audit entry names who took it: the initiator's memo; the secretary's placing, meeting, agenda, attendance, decision, release and action steps; the chair's agreement to the late item; the release job's number; the owner's follow-up memo and "done"; the secretary's register search;
+  - `Audit.assertChainValid` verifies the tenant's chain from its first entry to its head.
+- **A year of committee history** (`DemoHistorySeeder`, new). It runs at start-up after `DemoMeetingSeeder`, so the meetings and resolutions seeded before it keep their numbers. The plan comes from `DemoHistory`, which is pure and unit-tested (`DemoHistoryTest`).
+  - **When:** the Board Risk Committee meets monthly on the second Tuesday (10:00–12:00) over the eleven months before this one. The Management Credit Committee meets every other month on the third Wednesday (14:00–16:00), five meetings. Two kinds of month are left out:
+    - a month in which the committee already has a meeting (the E05 and E06 held reviews, a journey's);
+    - anything before the demo seats' terms start (1 January 2026). On the local stack, a December 2025 meeting was refused at the first replies and left half made, so the plan now stops there.
+  - **Each meeting** goes as the app would take it, through the seeding facades, acting as the people who would act:
+    - titled by its month ("Risk review, March 2026"), with two items for decision and a report for noting;
+    - the chair's agreement recorded, then scheduled and published;
+    - the replies: demo accounts answer in the app, and the secretary records the staff members' answers by phone;
+    - started, with the register kept at its times, then held;
+    - the two items approved and the report noted at their times, and numbered by the release job.
+  - **Attendance:**
+    - Over the BRC's year, Demo Director sends apologies twice with their alternate (Demo Head of Credit) attending, once without, and is absent without apologies once. The Chairman arrives late twice, and the CRO leaves early twice.
+    - At the MCC: the head of finance sends apologies once, the vice-chair attends online once (a hybrid meeting), and the CRO arrives late once and leaves early once.
+    - At most one voting member is away from any meeting, so every decision has its quorum.
+  - **Fills gaps only:** a history meeting found by its title, in any state, is left as it is, and a step that fails is logged and skipped. `MeetingSeeding.dates` (new) gives the months already taken.
+  - **What the record cannot be told after the fact stays as it happened** (`AGENTS.md §3.3`):
+    - the agendas are published and the replies given on the day of seeding, so "Papers on time" counts the history meetings as late;
+    - the submissions' times are real, so the history uses plain items and has no time to decision;
+    - no minutes are drafted for the history meetings;
+    - each history meeting's action taken report is built when its agenda is published, so it lists the committee's actions as they stand on the day of seeding.
+- **Committee oversight in the demo.** The runbook check found no demo account with `forum.read`: the built-in Auditor role has only `directory.read` and `audit.read`. `DemoAccessSeeder` now grants `auditor@` a custom role, "Committee oversight", with `forum.read`. It goes through `AccessAdministration.grantCustom`, is idempotent and applies to the demo tenant only. `DemoAccessIT` checks it, and the journey's register leg reads the cycle's row as the auditor.
+- **`DemoMeetingsIT`** runs the history after the E03–E07 seed and checks:
+  - every history meeting is held, in the last year, with three decisions and two resolutions;
+  - over the BRC's year: the director's three apologies (two with the alternate standing in, and the alternate's register rows present), one absence, two late arrivals and two early departures;
+  - ten to twelve held BRC meetings and five or six held MCC meetings in the last year, counting the held reviews;
+  - a second run adds nothing: no new replies, register entries, progress entries, decisions or resolutions in the history. The E07 rows are now counted after the history, because its meetings have action taken reports.
+- **Running it against dev** (`web/e2e/README.md`, "Against dev"). Dev gets this code only after the merge and `deploy-dev`. Then, from a checkout of this repository on a machine with the dev SSH key:
+  ```sh
+  export E2E_BASE_URL=https://dev.memo-revamp.naziharitsolution.com
+  eval "$(ssh ubuntu@123.176.58.175 "sudo grep -E '^MEMO_DEMO_(PASSWORD|TOTP_SECRET)=' /opt/memo/dev/.env" | sed 's/^/export /')"
+  pnpm --filter web exec playwright test --project=smoke e2e/smoke/committee-cycle.spec.ts
+  ```
+  - **After the deploy**, the app's seeders run at start: E06 T12's management committee type version (minutes by circulation) and E07 T12's actions are added, the history fills the missing months, and the auditor gets the oversight role.
+  - **Dev's drift** (as the E06 and E07 T12 entries say): the E05 credit review was held under the type's first version, with minutes at the next meeting, no override and a Meghna item without a memo, so E06's credit minutes stop at circulation there. The journey makes its own meeting, which pins the new version, so its minutes leg runs.
+  - **To check after the deploy:** the backend log has the history's line ("Demo committee history seeded: n meetings") and no "Demo history: … not seeded" warnings. Then run the journey, then the other Phase 4 journeys.
+- **Results (local, on the E2E stack without ONLYOFFICE, after merging `master` (#255) and `phase4/e06-t12`):**
+  - `committee-cycle.spec`: passes, all fifteen legs, in 2.5 to 2.8 minutes (last run with `meeting-analytics.spec`, whose four tests pass on the history too). The runs that failed on the way were all the journey's own locators: the late-paper confirmation in the builder, the item sheet's name, the meeting menu among the register's row menus, the secretary and the presenter on the register, the follow-up memo sharing the action's title, the register's search box role.
+  - Backend: `CommitteeCycleIT`, `DemoHistoryTest` (6), `DemoMeetingsIT` with the history (its first run found the E07 rows counted before the history: the history meetings' action taken reports), `DemoAccessIT` with the oversight grant, and the other demo ITs (`com.memo.demo.*`: 20 tests): green. ktlint and detekt are clean. Detekt asked for the presence pattern as data, the seeder's helpers at file level, and the history's checks in `DemoHistoryRows` beside `DemoMeetingsIT`. `MeetingSeeding` is marked as a facade like `ActionSeeding`, and `DemoMeetingsIT` is marked as one class for one shared seed.
+  - Web: `typecheck`, `lint`, `format:check`, `i18n:verify` and `build` pass. `test`: 557 of 584 in the full run beside the E2E stack and its preview; the 27 others (20 files of other features) were find timeouts on first renders, and pass when their files run on their own (285 of 286 with two workers; the agenda builder's Arabic test, the one left, passes alone).
+- **Against dev (what dev had on 2026-11-28):**
+  - Before #253 deployed, dev's tenant was on UTC. "Schedule a meeting" defaulted to the organisation's zone, so the meeting started six hours later than the journey meant, and the register refused the arrivals. The journey now picks the zone by city (Dhaka).
+  - After #253 deployed (`deploy-dev` 46120595639), the journey passed legs 1–14 on dev: the memo, the agenda with the chair's agreements, replies, declaration, attendance and stepping out, the decision, the number, the memo moving on, the minutes by circulation, the position's action, the approved follow-up memo, verification, and the register by both numbers. It stopped at the oversight check, because dev's auditor gets the role only from this PR's seed.
+  - These runs left their test memos and meetings on dev (titles with a time stamp: "E2E committee cycle …", "Term loan, Jamuna Rice Mills …").

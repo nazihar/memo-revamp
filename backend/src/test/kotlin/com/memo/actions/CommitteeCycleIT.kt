@@ -1,6 +1,7 @@
 package com.memo.actions
 
 import com.memo.minutes.ReleaseFixture
+import com.memo.org.internal.OrgCalendar
 import com.memo.testsupport.Audit
 import com.memo.testsupport.Person
 import com.memo.testsupport.sendJson
@@ -22,6 +23,12 @@ import java.util.UUID
  * submission, the item, the decision and its number, the action raised from its condition and the follow-up memo; and
  * back from the follow-up memo to the action, its source decision and item, and the item's memo, which is the source
  * memo. Every step's audit entry is there, and the tenant's chain verifies.
+ *
+ * E08 T8 extends it to the phase's exit check: the memo's note sheet carries the number and links the resolution; the
+ * resolution leads to its decision, meeting and memo and back; the decision register finds the row by the resolution's
+ * number and by the memo's, with every link of the chain on it; analytics counts the held meeting, the decision and the
+ * closed action; each step's audit entry names who took it (the release job for the number), and the tenant's whole
+ * chain verifies from its first entry to its head.
  */
 class CommitteeCycleIT : ReleaseFixture() {
     /** The chain as built: the meeting, the placed memo, the resolution, the action and the follow-up memo. */
@@ -40,17 +47,124 @@ class CommitteeCycleIT : ReleaseFixture() {
         val chain = build()
         forward(chain)
         back(chain)
+        // E08 T8: the memo moved on with the number, the resolution both ways, the register by both numbers, analytics.
+        memoMovedOn(chain)
+        resolutionBothWays(chain)
+        register(chain)
+        analytics()
+        audited(chain)
+    }
 
-        // Every step audited, in one chain that verifies.
-        listOf("memo.created", "forum.submission.placed", "minutes.decision.recorded", "minutes.resolution.numbered").forEach { kind ->
-            assertThat(Audit.entries(tenant.id).map { it.action }).describedAs(kind).contains(kind)
+    /**
+     * Every step of the cycle audited, each by the person (or the job) who took it, and the tenant's whole chain verified
+     * from its first entry to its head (E08 T8).
+     */
+    private fun audited(chain: Chain) {
+        val meeting =
+            chain.r.meeting.id
+                .toString()
+        val by = { kind: String, actor: Person ->
+            val entries = Audit.entries(tenant.id).filter { it.action == kind }
+            assertThat(entries).describedAs(kind).isNotEmpty()
+            assertThat(entries.map { it.actorId }).describedAs("$kind by").contains(actor.id.toString())
         }
-        listOf("actions.action.issued", "actions.memo.raised", "actions.done", "actions.closed").forEach {
-            Audit.assertAudited(tenant.id, it, chain.actionId)
-        }
-        Audit.assertAudited(tenant.id, "memo.created", chain.followUp)
+        // The memo and its escalation (E02).
+        Audit.assertAudited(tenant.id, "memo.created", chain.placed.memo.toString(), initiator.id.toString())
+        by("forum.submission.placed", secretary)
+        // The meeting and its agenda (E03, E05).
+        listOf("meeting.created", "meeting.scheduled", "meeting.agenda.published", "meeting.started", "meeting.ended")
+            .forEach { by(it, secretary) }
+        by("meeting.late.agreed", chair)
+        by("meeting.attendance.recorded", secretary)
+        // The decision, its number and the memo moving on (E06).
+        by("minutes.decision.recorded", secretary)
+        Audit.assertAudited(tenant.id, "minutes.resolution.numbered", meeting, "minutes-release")
+        Audit.assertAudited(tenant.id, "minutes.decision.released", meeting, secretary.id.toString())
+        // The action, the follow-up memo, done and verified (E07).
+        Audit.assertAudited(tenant.id, "actions.action.issued", chain.actionId, secretary.id.toString())
+        Audit.assertAudited(tenant.id, "actions.memo.raised", chain.actionId, colleague.id.toString())
+        Audit.assertAudited(tenant.id, "memo.created", chain.followUp, colleague.id.toString())
+        Audit.assertAudited(tenant.id, "actions.done", chain.actionId, colleague.id.toString())
+        Audit.assertAudited(tenant.id, "actions.closed", chain.actionId, secretary.id.toString())
+        // The register's searches (E08).
+        by("search.decisions.performed", secretary)
         Audit.assertChainValid(tenant.id)
     }
+
+    /** The memo moved on: its note sheet's committee entry carries the number and links to the resolution. */
+    private fun memoMovedOn(chain: Chain) {
+        val entry =
+            ok("/api/v1/memos/${chain.placed.memo}/notes", initiator)["entries"].list().single {
+                it["actionKind"]?.asString() == "FORUM_DECIDED"
+            }
+        assertThat(entry["committeeOutcome"].asString()).isEqualTo("APPROVED_WITH_CONDITIONS")
+        assertThat(entry["resolution"].asString()).isEqualTo(chain.number)
+        assertThat(entry["resolutionId"].asString()).isEqualTo(resolutionId(chain).toString())
+    }
+
+    /** The resolution forward to its decision, meeting and memo, and back from the decision to the resolution. */
+    private fun resolutionBothWays(chain: Chain) {
+        val resolution = ok("/api/v1/resolutions/${resolutionId(chain)}", secretary)
+        assertThat(resolution["number"].asString()).isEqualTo(chain.number)
+        assertThat(resolution["decisionId"].asString()).isEqualTo(chain.decisionId.toString())
+        assertThat(resolution["meetingId"].asString()).isEqualTo(
+            chain.r.meeting.id
+                .toString(),
+        )
+        assertThat(resolution["conditions"].list().map { it.asString() }).containsExactly("Security perfected before disbursement.")
+        assertThat(transactions.readInTenant(tenant.id) { resolutionsApi.ofMemo(chain.placed.memo) }.map { it.number })
+            .containsExactly(chain.number)
+    }
+
+    /**
+     * The register (E08 T1–T2) finds the resolution by its number and by its memo's number, and its row links the meeting,
+     * the item, the decision, the resolution, the submission and the memo, which leads back to the meeting.
+     */
+    private fun register(chain: Chain) {
+        val row = search(chain.number).single()
+        assertThat(row["level"].asString()).isEqualTo("FULL")
+        assertThat(row["decisionId"].asString()).isEqualTo(chain.decisionId.toString())
+        assertThat(row["resolutionNumber"].asString()).isEqualTo(chain.number)
+        assertThat(row["resolutionId"].asString()).isEqualTo(resolutionId(chain).toString())
+        assertThat(row["meetingId"].asString()).isEqualTo(
+            chain.r.meeting.id
+                .toString(),
+        )
+        assertThat(row["itemId"].asString()).isEqualTo(chain.placed.item.toString())
+        assertThat(row["submissionId"].asString()).isEqualTo(chain.placed.submission.toString())
+        assertThat(row["memoId"].asString()).isEqualTo(chain.placed.memo.toString())
+        assertThat(row["outcomeKind"].asString()).isEqualTo("APPROVED_WITH_CONDITIONS")
+        val memoNumber = row["memoNumber"]?.takeUnless { it.isNull }?.asString()
+        if (memoNumber != null) {
+            assertThat(search(memoNumber).map { it["decisionId"].asString() }).containsExactly(chain.decisionId.toString())
+        }
+        val submission = ok("/api/v1/memos/${row["memoId"].asString()}/forum-submissions", initiator).list().single()
+        assertThat(submission["meetingId"].asString()).isEqualTo(row["meetingId"].asString())
+    }
+
+    /** Analytics (E08 T4) counts the cycle: the held meeting's attendance, the decision and the action closed. */
+    private fun analytics() {
+        // The committee meets in Dhaka: the tenant keeps its dates there, as a real tenant does (see AnalyticsFixture).
+        transactions.inTenant(tenant.id) { settings.put(OrgCalendar.TIME_ZONE, "Asia/Dhaka") }
+        val summary =
+            ok("/api/v1/analytics/committees?forumIds=$brc", secretary)["committees"].list().single {
+                it["forumId"].asString() == brc.toString()
+            }
+        assertThat(summary["attendance"]["heldMeetings"].asInt()).isOne()
+        assertThat(summary["timeToDecision"]["decisions"].asInt()).isOne()
+        assertThat(summary["deferrals"]["decisions"].asInt()).isOne()
+        assertThat(summary["actions"]["closed"].asInt()).isOne()
+    }
+
+    /** The register's rows for [text] (a number in any spelling) as the secretary. */
+    private fun search(text: String): List<JsonNode> {
+        val result = send(HttpMethod.POST, "/api/v1/decision-register/search", secretary, """{"text":"$text"}""")
+        assertThat(result).describedAs("search $text").hasStatusOk()
+        return result.json()["rows"].list()
+    }
+
+    private fun resolutionId(chain: Chain): UUID =
+        transactions.readInTenant(tenant.id) { resolutionsApi.ofDecision(chain.decisionId) }.single().id
 
     /** Memo → item → resolution (E02, E03, E06), then the action, its follow-up memo, done and verified (E07). */
     private fun build(): Chain {

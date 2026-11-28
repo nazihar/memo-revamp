@@ -132,7 +132,7 @@ class DemoMeetingAttendanceSeeder(
             }
         // The memo's papers were placed after the paper deadline: the chair agreed them before the agenda went out.
         asUser(director) { agendas.agreeLatePapers(meeting) }
-        asUser(secretary) { agendas.publish(meeting, null) }
+        asUser(secretary) { agendas.publish(meeting, null, leaveOutUnreadable = true) }
         asUser(director) { replies.answer(meeting, SeedReply.IN_PERSON) }
         asUser(finance) { replies.answer(meeting, SeedReply.IN_PERSON) }
         asUser(credit) { replies.answer(meeting, SeedReply.ONLINE) }

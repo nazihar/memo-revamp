@@ -22,7 +22,7 @@ import { AlertDialog } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/toast-context'
 import { HistoryList } from './HistoryList'
 import { DateDialog, PickAndDateDialog, PositionFormDialog } from './OrgDialogs'
-import { om, omv, orgProblemMessage, today } from './org-messages'
+import { om, omv, orgProblemMessage } from './org-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
 
 type Pending =
@@ -49,7 +49,8 @@ export function PositionPage({ positionId }: { positionId: string }) {
   if (detail.isPending) return <LoadingState />
   if (detail.isError) return <ErrorState onRetry={() => void detail.refetch()} />
   const { position, unit, assignments, reportingLines, canManage } = detail.data
-  const now = today()
+  // The organisation's date, not the browser's: a day apart around midnight when their zones differ.
+  const now = detail.data.today
   const refresh = () => queryClient.invalidateQueries()
   const currentLine = reportingLines.find(
     (l) => l.status === 'ACTIVE' && l.validFrom <= now && (!l.validTo || l.validTo > now),
@@ -218,6 +219,7 @@ function PositionActions({
   const intl = useIntl()
   const toast = useToast()
   const { position, reportingLines } = detail
+  const now = detail.today
   const [key] = useState(() => ({ 'Idempotency-Key': newIdempotencyKey() }))
   const confirmed = useRef(false)
   const after = async <T,>(call: Promise<T>) => {
@@ -249,6 +251,7 @@ function PositionActions({
     case 'close':
       return (
         <DateDialog
+          initial={now}
           title={intl.formatMessage(omv.closeTitle, { name: position.title })}
           description={intl.formatMessage(om.closeLead)}
           label={intl.formatMessage(om.closeDate)}
@@ -269,6 +272,7 @@ function PositionActions({
     case 'assign':
       return (
         <PickAndDateDialog
+          initial={now}
           title={intl.formatMessage(omv.assignTitle, { position: position.title })}
           kind="user"
           pickLabel={intl.formatMessage(om.person)}
@@ -289,6 +293,7 @@ function PositionActions({
     case 'line':
       return (
         <PickAndDateDialog
+          initial={now}
           title={intl.formatMessage(omv.lineTitle, { position: position.title })}
           kind="position"
           pickLabel={intl.formatMessage(om.linePosition)}
@@ -319,6 +324,7 @@ function PositionActions({
     case 'end':
       return (
         <DateDialog
+          initial={now}
           title={intl.formatMessage(omv.endTitle, { name: pending.assignment.person.displayName })}
           label={intl.formatMessage(om.endDate)}
           submitLabel={intl.formatMessage(om.end)}

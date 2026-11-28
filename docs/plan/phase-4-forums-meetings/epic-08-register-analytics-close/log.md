@@ -204,3 +204,48 @@
   - one plan gate word changed: words in nearly every row are read in order under the cap, by the planner's choice (above);
   - `forums.manage` and `forum.read` are privileged, so the load's auditors and managers sign in with a second factor (the host enrols the 50 with one TOTP secret).
 - **To run on `master` once merged** (the weekly `load` stage's new jobs, by hand first, Phase 2's lesson): `gh workflow run load.yml --ref master`, then check the jobs `committee-volume` (RegisterVolumeIT and AnalyticsVolumeIT at 3,600, RegisterVolumeIT at 7,200) and `committee-load` (CommitteeLoadHostIT with CommitteeLoadSimulation), and the existing `meeting-volume`, `actions-volume` and `minutes-volume` (shared code changed). The reports are the artefacts `committee-volume-report` and `committee-load-reports`.
+
+## 2026-11-28 — T11: ASVS, threat models and the pen-test scope
+- **Branch** `phase4/e08-t11`, on `phase4/e07-t12` (#256, which holds #253) with `master` merged (#255 included). Docs and security tests only.
+- **ASVS** (`docs/security/asvs-checklist.md`):
+  - **E08 rows (seven):**
+    - V8: the register's one rule;
+    - V8: analytics over visible rows, with members' own attendance only;
+    - V16: searches and exports audited, the words as a hash, with `rowsSha256`;
+    - V1: formula prefix and text-only PDF;
+    - V2: caps, rate limits, periods and streaming;
+    - V14: words out of URLs, no discussion in the store;
+    - V2: business dates in the tenant's zone, from the date-boundary fixes #238, #247 and #251.
+  - **E01 had no rows.** Four were added: V8 visibility and clearance, V8 maker-checker with step-up and the secretaries' limit, V2 membership as history, V16 audit.
+  - **Every Phase 4 row (E01–E08) reviewed.** None was `planned` or `partial`, so none was left open. Every cited test class, matrix file, spec, runbook and rule was checked to exist in the tree (a script over the rows' code spans). Several claims were checked in code as well: grants and CHECKs in `forum/V1` and `V2`, the definer functions, the rate-limit values in `RateLimiter`, `SheetCells`, the timeouts.
+  - **Rows extended:**
+    - V15 "one privileged database path" gains E08's six definer functions;
+    - E06's V14 copies row gains the conversion retry key (#255: `ConversionRetryIT`, `OnlyOfficeConverterKeyTest`);
+    - E06's V6 step-up row and E07's V16 row gain the seeding rule below.
+  - A header note records the review. The carried items (screen-reader passes, the real-client calendar run, the journeys on dev) are not ASVS evidence and stay carried.
+- **Threat models:** each of E01–E08 has a "Reviewed at phase close" section dated 2026-11-28, with what the build changed, the evidence per threat and the residual risks confirmed.
+  - **Corrected in place:**
+    - E01 I1: the predicate is `ForumAccess.visible`.
+    - E01 I4: the roster cache holds rows only, and holders are resolved on each read, so there is no `OrgChanged` eviction.
+    - E08 T1: the cross-tenant test is `DecisionSearchExplainIT`. `DecisionSearchCrossTenantIT` does not exist.
+  - **Recorded, already fixed during the phase:**
+    - E04 T5: an officer read the hidden title of their own recused item.
+    - E06 T3: a recused alternate got the recused view of a restricted item; `FROZEN` was answered before the 403.
+    - E06 T6: action titles appeared in the meeting-level table of copies.
+    - E05 T10: an ambiguous local time in invites.
+    - #255: the converter kept a failed conversion by its key.
+  - **Not closed:** E05 T4 and I8 wait for the carried recorded run (T9).
+- **Pen-test scope:** new `docs/security/pen-test-scope.md`. The repository had none; Phase 3 E07 was to scope it, and the file is written so that 1b E10 and Phase 3 E07 can add their parts.
+  - Phase 4 part: environment and demo accounts (no secrets), the claim under test, and eight areas, each with endpoints or functions, what should hold and the in-house evidence. The areas are recusal leak surfaces, SECURITY DEFINER functions, minutes copies per reader, exports, invitations, the action taken report with its follow-up memos, step-up, and rate limits.
+  - Also: what is accepted and what is not in this test.
+- **Seeding-only paths: verified, and an ArchUnit rule added.**
+  - **What exists:** 18 `*Seeding` facades, among them `ActionSeeding`, `WorkflowTimerSeeding`, `DecisionSeeding`, `MinutesSeeding`, `DeclarationSeeding`, `AgendaSeeding` and `AttendanceSeeding`. Outside `com.memo.demo` only other facades depend on them (`ActionSeeding` → `WorkflowTimerSeeding`; `MinutesSeeding` ↔ `DecisionSeeding`; `MeetingSeeding` → `AgendaSeeding`). `ActionIssuing.issue` with `asOf` is called only by `ActionSeeding`; the controllers use the default (today). `TimerCatchUp` is used only by `WorkflowTimerSeeding`. No controller reaches any of them.
+  - **The gap:** the only rule was the Phase 3 one for `ImportSeeding`.
+  - **New tests in `ArchitectureRulesTest`:**
+    - only the demo seeders use a seeding facade (`com\.memo\..*Seeding`);
+    - only the timer seeding facade fires overdue timers at once;
+    - only the action seeding facade issues an action as on a past day (the explicit `asOf` overload).
+    - Each has a positive companion, so a pattern or a signature that matched nothing would fail.
+  - **The gate:** the demo seeders are `@Component`s, started only by the `*SeedOnStartup` runners under `memo.demo.seed=true` (`MEMO_DEMO_SEED`, default false; `true` only for local development (`scripts/dev.mjs`), the dev playbook and the nightly on-prem stack (`ci/onprem-stack.sh`)). `DemoTenantSeeder` refuses the `prod` profile (`DemoTenantSeedIT`). Its runner, ordered first, does not catch, so the start fails before the other runners. Every seeder binds `DemoTenant.ID`. The volume generators bind their own synthetic tenants, refuse `prod` and are run by tests only. The facades skip the step-up because the step-up is checked in the controllers. The facades are not in a request's path, so that cannot happen outside the demo tenant.
+- **Defects found:** none in the product. The threat-model files named two things that do not exist (`DecisionSearchCrossTenantIT`, the `OrgChanged` eviction), corrected as above. STATUS still lists "E01 T6 … ASVS rows" as open: the rows exist now, and the line is left to the phase close (T12).
+- **Checks run:** `ArchitectureRulesTest` (with the three new tests), `ModularityTest`, `ActionAccessArchTest`, ktlint and detekt on the backend; `node ci/check-adr-index.mjs`.

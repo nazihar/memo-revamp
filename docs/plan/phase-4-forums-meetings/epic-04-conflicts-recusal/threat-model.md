@@ -40,3 +40,22 @@
 - **Papers already read:** a member who read the papers before declaring has read them. The paper-open audit shows it, and the register shows when the declaration came.
 - **Oversight natures on hidden-title items:** `forum.read` sees a nature only where it sees the title, so an auditor may need the secretary for a hidden item. E08 revisits with the decision register.
 - **No standing register:** a member who forgets to declare is not flagged automatically (Phase 4 Q6). The review confirmation records that they were asked.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**. Three leaks were found by the suites and fixed during the phase.
+- **Found and fixed:**
+  - I1, I5 (E04 T5): a recused officer read the hidden title of their own item in `GET …/declarations/mine`, in the review's `toReview` and in the answers to declaring, intent changes, rulings and withdrawals. Fixed with `DeclarationAccess.officerReadsTitle`, and `RecusalLeakIT` probes it.
+  - E1 (#204): when the chair is recused, the vice-chair decides the item's late papers (`LateRequestsIT`).
+  - I1 (E06 T3): a recused alternate not named on the member's restricted item got the recused view of its decision. The recused view now needs the item to be unrestricted or restricted to the viewer.
+- **Changed by the build:**
+  - The one rule (`DeclarationExclusions` inside `PaperAccess`, and `RecusalStore`) now also covers E05's invitations and quorum, E06's decisions, minutes copies and extracts, E07's actions, tracker and action taken report, and E08's register and analytics.
+  - An alternate inherits the member's recusals (ADR-0064, `AlternateRecusalIT`).
+  - The register computes recused items in the request from committed declarations (E08 I2), so a declaration applies at once (`DecisionRegisterIT`).
+- **Evidence:**
+  - S1, S2, E3: `DeclarationsIT`, `DeclarationReviewIT`, `MeetingCrossTenantIT`, matrix `p4-e04-declarations.yaml`.
+  - T1, T3: the guard trigger and `FROZEN` (`DeclarationStateTest`, `MeetingCrossTenantIT`). T2: `DeclarationConcurrencyIT`. R1: `meeting.declaration.*` (`AuditActionCoverageTest`).
+  - I1, I2, I5, E1, E2: `RecusalRuleIT`, `RecusedOfficerIT`, `RecusalNarrowsProperties`, `RecusalLeakIT`, `PaperLeakIT`. I3, I4: `DeclarationNotificationsIT`, `RecusalMailIT`, `MailTemplatesTest`, the AUDIT channel. I6: `MemoInterestFromMeetingIT` (SOD-4). I7: `DeclarationRegisterIT`, `DECLARATION_EXPORT_PER_USER`.
+  - D1: the caps and `ONE_OPEN`. D2: the register's quorum warning (`DeclarationRegisterIT`).
+- **Residual risks:** all five confirmed.
+  - On oversight natures for hidden-title items, which was to be revisited with the register: the register holds no natures (`DecisionRowTest`) and shows a hidden-title item as a line. An auditor still asks the secretary for such an item.
+- **Pen test:** area 1 of `docs/security/pen-test-scope.md`. Its accounts include the demo director, recused and awaiting a ruling.

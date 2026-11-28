@@ -287,3 +287,39 @@ Each item has a recommended answer; "as recommended" accepts all of them.
 | Flow | Date | Result |
 |---|---|---|
 | AA–AI (decisions, members' view, resolutions and extracts, drafting, chair review, circulation, approval, the memo side, the type's Minutes tab) | 2026-11-19 | Approved as drawn, with all nine recommendations as written ("ok") |
+| Manual keyboard and screen-reader pass over AA and AF | 2026-11-23 | The agent's keyboard and structure pass done (T12, below), one defect fixed; the screen-reader pass by a person is carried (checklist below) |
+
+## Keyboard and screen-reader pass (T12, 2026-11-23)
+Done by the agent in Chromium (Playwright, headless) against a local E2E stack with ONLYOFFICE and the T12 demo seed. Flow AA: a Management Credit Committee meeting started by the secretary through the API (a decision item, a consent section of two, everyone present), its Decisions tab with the keyboard only. Flow AF: Demo Director on the seeded circulated minutes of "Risk review, third quarter" (BRC 1/2026), recused from item 5, from "My meetings". A screen reader cannot be driven from there, so the spoken output is for a person (below).
+
+### What the agent checked, and found
+- **axe** (WCAG 2.2 A/AA, serious and critical): nothing on the decision panel with the vote and the dissent open, the consent dialog and the override dialog (`meeting-decisions.spec`), and on the minutes pages of `minutes-approval.spec` in English and Arabic. Both journeys keep this on every run.
+- **Tab order, flow AA:** after the Decisions tab, the agenda list (one button per item, "Approved — numbered when the meeting ends" read with it), then the item's panel: the outcome radio group as one stop (arrow keys move between "Approved", "Approved with conditions", …), the resolution text, "Record a vote (optional)", "Dissent and abstentions (optional)", "Record the decision", "Add an action", the notes. A visible 2 px focus ring on every stop; buttons 44 px high, the radio buttons 20 px inside 44 px rows.
+- **Focus, flow AA:** choosing an item moves focus to its heading ("Item 5 — …"); after "Record the decision" focus returns to the heading once the decision is read again; a submit with no outcome puts focus on the first outcome with the error; "Decide the consent items together" opens its dialog with focus on Close, Tab goes Close → Cancel → "Decide together", Escape closes it and focus returns to the opening button; the ⋯ menu opens with focus on "Mark as held…".
+- **Tab order and focus, flow AF:** "My meetings" lists "Open the minutes of Board Risk Committee — BRC 1/2026" before the meetings; on the minutes page "Back to the meeting", "Read the minutes", "Suggest a correction" ("No comments" while not yet answered). "Read the minutes" opens the copy viewer as a modal dialog named "Draft minutes of …" with focus on Close, then "Back to the minutes" and the page image; the live region says "The copy is being made. It opens by itself when it is ready." when the copy is not built yet, then "Page 1 of 1". "Suggest a correction" opens with focus on Close, then "Which part?" (a native select), "Your suggestion", Cancel, Send; Escape returns focus to "Suggest a correction".
+- **Reflow at 400 %** (320 CSS px): nothing scrolls sideways on the Decisions tab or the minutes page.
+- **The recused director's copy** (built by the real ONLYOFFICE from the seed): item 5 carries only the heading, "You declared an interest in this item and took no part." and the decision; the full copy has the discussion (the backend's `MinutesRedactionIT` checks the text layers).
+
+### Defect found and fixed here
+1. **Comments in the other script's direction** (WCAG 1.3.2): a member's English comment on the Arabic page put its full stop at the wrong end, because the comment's paragraph took the page's direction. The comment texts on the reader's card, the secretaries' comments panel and the approved page's corrections now have `dir="auto"` (`ReaderCard.tsx`, `CommentsPanel.tsx`, `ApprovedPanel.tsx`). Seen in the new visual baselines.
+
+### Observed, not changed
+- **After moving to another page** (My meetings → the minutes page) focus starts at the top of the document, as everywhere in the app; the skip link is the first stop.
+- **Menu items** show focus by their background, not the 2 px ring (Radix menus, as elsewhere).
+- **The item heading** that takes focus after choosing or recording shows no ring (`tabindex="-1"`, a programmatic focus target only).
+- **Tab past the last control of a dialog** goes to the browser's toolbar and back (the native modal `<dialog>`, as in E05).
+
+### For a person with a screen reader (still to do)
+Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and Arabic. Use a meeting started by the secretary as `meeting-decisions.spec` does for flow AA, and Demo Director on the seeded "Risk review, third quarter" (BRC 1/2026) for flow AF; the seeded "Monthly credit review" (MCC) shows approved minutes, a record and an extract.
+1. **The agenda list:** each item reads its number, title and state ("Approved — numbered when the meeting ends", "To be ratified").
+2. **The quorum line** reads before the form, with who declared an interest; "Record without a quorum…" and its dialog read the rule and the reason's hint.
+3. **The outcome group** reads its name and the chosen outcome; the resolution text, the conditions ("Condition 1", "Remove condition 1"), and the vote fields ("For", "Against", "Abstaining") read their labels; "n voting members present and able to vote" is read with the vote.
+4. **Dissent and abstentions:** each person reads as a group with "Agreed", "Dissented", "Abstained"; the reason field appears after "Dissented" and is announced.
+5. **After recording:** "The decision is recorded." is announced once; focus on the item's heading is read.
+6. **Errors:** "Some answers need your attention." and the field's own message are read where focus lands (no outcome, too many votes, a recused person named).
+7. **Consent and Mark as held:** the dialogs read what each item becomes and what happens next (numbers, memos moving on, items without a decision).
+8. **Minutes to read (AF1):** the card's heading, the deadline and the three actions read in order; after "No comments" the confirmation is read where focus lands.
+9. **The copy viewer (AF2):** the dialog's name, "The copy is being made…" then the page count are announced once each; "Back to the minutes" is always reachable.
+10. **Suggest a correction (AF3):** "Which part?" reads the items the reader may comment on (not item 5 for Demo Director) and "The minutes in general"; the hint "The secretary and the chair will see this; other members will not." is read with the field; after Send, "Sent on …" is announced.
+11. **Arabic:** right to left; English comments, names and "BRC 1/2026" keep their own direction inside Arabic sentences.
+12. **Zoom and contrast by eye:** 200 % and 400 % in a real window, light and dark: the steps' current marker, the focus rings, the outcome choices.

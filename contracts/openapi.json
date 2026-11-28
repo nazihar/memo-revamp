@@ -11621,11 +11621,16 @@
             },
             "type" : "array"
           },
+          "today" : {
+            "description" : "The organisation's date today, in its time zone: the default for new dates and what \"current\" means",
+            "format" : "date",
+            "type" : "string"
+          },
           "unit" : {
             "$ref" : "#/components/schemas/OrgUnit"
           }
         },
-        "required" : [ "assignments", "canManage", "position", "reportingLines", "unit" ],
+        "required" : [ "assignments", "canManage", "position", "reportingLines", "today", "unit" ],
         "type" : "object"
       },
       "OrgPositionWithHolder" : {
@@ -11734,11 +11739,16 @@
             },
             "type" : "array"
           },
+          "today" : {
+            "description" : "The organisation's date today, in its time zone: the default for new dates and what \"current\" means",
+            "format" : "date",
+            "type" : "string"
+          },
           "unit" : {
             "$ref" : "#/components/schemas/OrgUnit"
           }
         },
-        "required" : [ "canManage", "path", "unit" ],
+        "required" : [ "canManage", "path", "today", "unit" ],
         "type" : "object"
       },
       "OrgUserPosition" : {

@@ -3712,6 +3712,10 @@ export type OrgPositionDetail = {
      * Newest first, cancelled ones included
      */
     reportingLines: Array<OrgReportingLine>;
+    /**
+     * The organisation's date today, in its time zone: the default for new dates and what "current" means
+     */
+    today: string;
     unit: OrgUnit;
 };
 
@@ -3763,6 +3767,10 @@ export type OrgUnitDetail = {
      * Ancestors, root first
      */
     path: Array<OrgUnit>;
+    /**
+     * The organisation's date today, in its time zone: the default for new dates and what "current" means
+     */
+    today: string;
     unit: OrgUnit;
 };
 

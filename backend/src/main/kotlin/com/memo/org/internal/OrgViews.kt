@@ -21,6 +21,7 @@ class OrgViews(
     private val users: UserSummaries,
     private val trail: AuditTrail,
     private val policy: Policy,
+    private val calendar: OrgCalendar,
 ) {
     /** Positions of a unit with their holders on [date]. */
     fun positionsOf(
@@ -49,6 +50,7 @@ class OrgViews(
             history.mapNotNull { a -> people[a.userId]?.let { a.toResponse(it) } },
             reporting.mapNotNull { line -> targets[line.reportsToPositionId]?.let { line.toResponse(it) } },
             policy.allows(Permission.ORG_MANAGE, Resource.Unit(position.unitId)),
+            calendar.today(),
         )
     }
 

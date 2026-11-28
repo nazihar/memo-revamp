@@ -19,6 +19,7 @@ import com.memo.meeting.internal.LateDecision
 import com.memo.meeting.internal.Lateness
 import com.memo.meeting.internal.MeetingPaperPurpose
 import com.memo.meeting.internal.PaperInput
+import com.memo.meeting.internal.PaperNotReadableException
 import com.memo.meeting.internal.Presenter
 import com.memo.meeting.internal.SectionInput
 import org.springframework.stereotype.Service
@@ -137,19 +138,35 @@ class AgendaSeeding(
         tx { chair.agree(meetingId, version(meetingId), true, note) }
     }
 
-    /** The chair, in the app, agrees every late paper waiting for them; how many. */
+    /**
+     * The chair, in the app, agrees every late item (one placed after the paper deadline, Phase 4 E06 T12) and every late
+     * paper waiting for them; how many.
+     */
     fun agreeLatePapers(meetingId: UUID): Int =
         tx {
+            val rows = checkNotNull(guard.rows(meetingId))
+            val items = rows.items.filter { it.late == Lateness.AWAITING_CHAIR }
+            items.forEach { chair.decideItem(meetingId, it.id, version(meetingId), LateDecision(true)) }
             val waiting = checkNotNull(guard.rows(meetingId)).papers.filter { it.late == Lateness.AWAITING_CHAIR }
             waiting.forEach { chair.decidePaper(meetingId, it.id, version(meetingId), LateDecision(true)) }
-            waiting.size
+            items.size + waiting.size
         }
 
     /** Publishes the next revision, telling the audience; its number. */
     fun publish(
         meetingId: UUID,
         note: String?,
-    ): Int = tx { publisher.publish(meetingId, version(meetingId), note, notify = true) }
+        leaveOutUnreadable: Boolean = false,
+    ): Int =
+        try {
+            tx { publisher.publish(meetingId, version(meetingId), note, notify = true) }
+        } catch (e: PaperNotReadableException) {
+            if (!leaveOutUnreadable) throw e
+            // Phase 4 E06 T12: without a document server (the smoke stack, `pnpm dev` without the documents profile) a memo's
+            // Word document has no PDF; the secretary leaves it out of the pack, as on the agenda builder, and publishes.
+            tx { e.paperIds.forEach { papers.remove(meetingId, it, version(meetingId)) } }
+            tx { publisher.publish(meetingId, version(meetingId), note, notify = true) }
+        }
 
     private fun version(meetingId: UUID): Long = checkNotNull(agendas.find(meetingId)) { "agenda of $meetingId" }.version
 

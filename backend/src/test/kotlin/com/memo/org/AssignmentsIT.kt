@@ -12,6 +12,7 @@ import com.memo.identity.UserLifecycle
 import com.memo.org.internal.Assignment
 import com.memo.org.internal.Assignments
 import com.memo.org.internal.LegalEntities
+import com.memo.org.internal.OrgCalendar
 import com.memo.org.internal.OrgPosition
 import com.memo.org.internal.OrgUnits
 import com.memo.org.internal.OrgViews
@@ -23,6 +24,7 @@ import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.Audit
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.MutableClock
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.aPassword
 import com.memo.testsupport.aTestTenant
@@ -32,6 +34,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Clock
+import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 import java.util.concurrent.CountDownLatch
@@ -218,5 +222,28 @@ class AssignmentsIT : IntegrationTest() {
         assertThat(history.first().before?.get("title")).isEqualTo("Analyst")
         assertThat(history.first().after?.get("title")).isEqualTo("Senior analyst")
         assertThat(history.first().actor).isEqualTo(admin.displayName)
+    }
+
+    /**
+     * Phase 4 E06 T12 (#253's org journey at 00:30 in Dhaka): the organisation's date is its zone's, a day ahead of UTC
+     * after 18:00 UTC. The position page answers it, so the web starts new dates on it (it used the browser's calendar,
+     * which made an assignment start the day before a position created on the organisation's today: `DATES`).
+     */
+    @Test
+    fun `the organisation's today is its zone's date, and the position page answers it`() {
+        val dhaka = registry.aTestTenant(transactions, settings, "dhaka")
+        transactions.inTenant(dhaka.id) { settings.put(OrgCalendar.TIME_ZONE, "Asia/Dhaka") }
+        val todayIn = { t: TestTenant, at: String ->
+            TenantContext.call(t.id) { transactions.inTenant(t.id) { OrgCalendar(settings, MutableClock(Instant.parse(at))).today() } }
+        }
+
+        assertThat(todayIn(dhaka, "2026-11-23T18:30:00Z")).isEqualTo(LocalDate.of(2026, 11, 24))
+        assertThat(todayIn(dhaka, "2026-11-23T17:30:00Z")).isEqualTo(LocalDate.of(2026, 11, 23))
+        // A tenant without a zone keeps UTC's date.
+        assertThat(todayIn(tenant, "2026-11-23T18:30:00Z")).isEqualTo(LocalDate.of(2026, 11, 23))
+
+        val seat = aPosition("Clerk")
+        val detail = asAdmin { views.positionDetail(seat.id) }
+        assertThat(detail.today).isEqualTo(asAdmin { OrgCalendar(settings, Clock.systemUTC()).today() })
     }
 }

@@ -317,6 +317,8 @@ function UnitActions({
 }) {
   const intl = useIntl()
   const unit = units.find((u) => u.id === selected)
+  // The organisation's today (the unit panel has read it): the browser's calendar may be a day off.
+  const orgToday = useQuery({ ...getOrgUnitOptions({ path: { id: selected ?? '' } }), enabled: !!selected }).data?.today
   const ifMatch = unit ? { 'If-Match': `"${String(unit.version)}"` } : undefined
   // One key per dialog: a double click or a retry after a lost response creates the object once.
   const [key] = useState(() => ({ 'Idempotency-Key': newIdempotencyKey() }))
@@ -390,6 +392,7 @@ function UnitActions({
           description={intl.formatMessage(om.closeLead)}
           label={intl.formatMessage(om.closeDate)}
           submitLabel={intl.formatMessage(om.close)}
+          {...(orgToday ? { initial: orgToday } : {})}
           onSave={(validTo) =>
             after(closeOrgUnit({ path: { id: unit.id }, headers: ifMatch, body: { validTo }, throwOnError: true }))
           }

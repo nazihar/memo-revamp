@@ -13,6 +13,8 @@ import com.memo.memo.internal.rendition.RecordBuilder
 import com.memo.memo.internal.rendition.RenditionState
 import com.memo.memo.internal.rendition.RenditionTrigger
 import com.memo.testsupport.Audit
+import com.memo.testsupport.CachingDocumentServer
+import com.memo.testsupport.FakeRenditionServices
 import com.memo.testsupport.MemoIntegrationTest
 import com.memo.testsupport.OwnerJdbc
 import com.memo.testsupport.Person
@@ -121,6 +123,32 @@ class FinalRenditionIT : MemoIntegrationTest() {
             Files.deleteIfExists(file)
         }
         assertThat(get(memo, alice.session).json()["rendition"].asString()).isEqualTo("READY")
+    }
+
+    /**
+     * E06 T12: the document server keeps each key's answer, failures included; a retry under the first try's key got the
+     * outage's failure back at once. The real ONLYOFFICE client against a stand-in that caches the same way.
+     */
+    @Test
+    fun `a document that failed to convert while the document server restarted is converted on the next try`() {
+        CachingDocumentServer { _, _, title -> FakeRenditionServices.pdfa(title) }.use { server ->
+            FakeRenditionServices.documentServer = FakeRenditionServices.Route(setOf("credit-line"), server.converter())
+            try {
+                val (memo, _, _) = approved()
+                server.down = true
+                assertThat(runCatching { build(memo) }.isFailure).isTrue()
+                assertThat(versions(memo).single().state to versions(memo).single().error)
+                    .isEqualTo(RenditionState.PENDING to "CONVERTER_CONVERTER_M3")
+
+                server.down = false
+                build(memo)
+                val record = versions(memo).single()
+                assertThat(record.state to record.compliant).isEqualTo(RenditionState.READY to true)
+                assertThat(server.keys.filter { it.startsWith("record-${record.id}-") }.distinct()).hasSize(2)
+            } finally {
+                FakeRenditionServices.documentServer = null
+            }
+        }
     }
 
     @Test

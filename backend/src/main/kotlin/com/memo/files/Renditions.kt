@@ -54,11 +54,17 @@ sealed interface RenditionOutcome {
 /**
  * Converts a document to PDF (ADR-0045). Implemented by the editor adapter (ONLYOFFICE's conversion API); without an
  * implementation, PDF renditions are not possible. Writes the PDF to [out]; never fetches anything by URL.
+ *
+ * Every call is a new conversion, a retry too: an implementation must never answer a call with the result of an earlier
+ * one. The `key` a caller passes names the document being converted (for the service's logs); it is not the service's
+ * cache key. ONLYOFFICE keeps a conversion's answer by its key, failures included, so its adapter sends each call under
+ * the caller's key with a fresh suffix (E06 T12, ADR-0045 amendment of 2026-11-23).
  */
 interface RenditionConverter {
     /** The types it can convert to PDF. */
     val pdfTypes: Set<FileType>
 
+    /** Converts [input] to PDF; [key] names the document (see the interface). */
     fun toPdf(
         input: RenditionInput,
         key: String,
@@ -67,7 +73,7 @@ interface RenditionConverter {
 
     /**
      * Converts to an archival PDF (PDF/A) for final records (ADR-0053); which part and level the converter writes is
-     * checked by the caller's validator. [key] must differ from the one used for [toPdf]. Unsupported by default.
+     * checked by the caller's validator. [key] as for [toPdf]. Unsupported by default.
      */
     fun toPdfA(
         input: RenditionInput,

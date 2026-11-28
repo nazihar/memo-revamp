@@ -29,6 +29,7 @@
 - The secretaries are reminded before a term ends: 42 days and 1 day before, by default (1–365 days, distinct; `FORUM_TERM_ENDING`, audit `forum.term.reminded`). Holders of `forums.manage` are reminded when a committee has no secretary.
 - **Dates are the organisation's:** terms of office, "in office today" and the reminders count on the tenant's date (`default.timezone`, Organisation → calendar; set at provisioning, and UTC for a tenant without one). The organisation pages (positions, units, assignments) take their default dates and "Current" from the server's date (#253), so a browser in another zone cannot start an assignment on the wrong day. A position seat follows whoever holds the position on the meeting's date.
 - **Background work:** the hourly `forum-term-reminders-sweep` schedules one `forum-term-reminders` per tenant, which sends both the term reminders and the triage reminders (at most 1,000 queued papers a run). Days are counted on the tenant's date (`default.timezone`).
+- **Background work, queue readers:** the `forum-officer-readers-sweep` (every 15 minutes) schedules one `forum-officer-readers` per tenant. Once a day, at the first run after midnight in the tenant's zone, it resyncs the queue readers of every committee whose chair or secretaries changed by date since its last run (the day is kept in `forum_reader_sync`; the first run, or one after more than 31 days, resyncs every committee). A position's holder change applies at once.
 - Refusals worth knowing: `ONE_CHAIR`, `ALREADY_MEMBER`, `SECRETARY_LIMIT` (a secretary changing a chair, a secretary or their own row), `MEMBER_ENDED`, `FORUM_DISSOLVED`; a meeting of a type with no published version is `TYPE_NOT_PUBLISHED`.
 
 ## A memo sent to a committee
@@ -37,8 +38,10 @@
    - Nobody's inbox has a task for it.
 2. The committee's queue gets a **submission** in the same transaction, and the secretaries are told.
    - While the paper is open, the chair and secretaries in office can read the memo, within their clearance.
-   - A chair or secretary appointed or ended through the Members tab reads it, or stops reading it, at once.
-   - **Changes that come by date or through the organisation do not apply by themselves** (known limit): a term that lapses on its planned end date, a future appointment reaching its start, or a new holder of a position seat leaves the queue's memo access as it was until the next change to the committee's chair or secretary rows or to a submission of its queue. To apply it at once, end or record the change in the Members tab on the day.
+   - Access follows the chair and secretaries in office on the organisation's date, with a position seat resolved to whoever holds the position:
+     - appointed or ended through the Members tab: at once;
+     - a new holder of a position seat (Organisation → positions or assignments): at once, in the same change; the previous holder stops reading;
+     - by date (a term that lapses on its planned end, an appointment or a holder change recorded for a later day): at the start of that day in the tenant's zone (`default.timezone`), within 15 minutes of midnight, by the `forum-officer-readers` task.
 3. The secretary triages the paper:
    - **Accept**, with an optional target meeting date.
    - **Defer**, with a reason.
@@ -63,7 +66,8 @@ The demo's "Credit under authority" workflow sends credit proposals of BDT 10 mi
 ## "Why can't I see this memo?"
 - Committee members who are not chair or secretary do not read memos from the queue. They get them with the meeting's papers ([meetings-and-agendas.md](meetings-and-agendas.md)).
 - An officer below the memo's classification cannot read it. The queue shows the paper as "restricted" (no number or subject) until they are cleared.
-- Check the audit log: `memo.reader.forum_added` and `memo.reader.forum_retired` on the memo, and `forum.member.*` on the committee.
+- An officer whose term started today reads the queue from shortly after midnight in the tenant's zone; one whose term ended yesterday no longer does. If that has not happened, check that `forum-officer-readers` ran for the tenant today (`forum_reader_sync.synced_on`) and that the tenant's zone is the one expected.
+- Check the audit log: `memo.reader.forum_added` and `memo.reader.forum_retired` on the memo (the actor is `forum-officer-readers` for a change by date, and whoever changed the assignment for a new holder), `forum.member.*` on the committee, and `org.assignment.*` for a position seat.
 
 ## Audit actions
 - Submissions: `forum.submission.created`, `.updated`, `.accepted`, `.deferred`, `.returned`, `.declined`, `.referred`, `.decided`, `.withdrawn`, `.reminded`, and `.placed` and `.unplaced` (on and off an agenda).

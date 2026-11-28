@@ -62,6 +62,14 @@ class ForumMemberStore(
                 ),
             ).fetch { json.member(it) }
 
+    /** Every row of [positionId] as a seat, in any forum (a position's holder changed), through `forum_member_position_idx`. */
+    fun seatsOf(positionId: UUID): List<ForumMemberRow> =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_MEMBER)
+            .where(FORUM_MEMBER.POSITION_ID.eq(positionId))
+            .fetch { json.member(it) }
+
     /** Rows not ended whose planned term ends on [date], in any forum (term reminders). */
     fun insertMember(
         forumId: UUID,

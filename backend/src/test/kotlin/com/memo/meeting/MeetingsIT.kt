@@ -33,6 +33,11 @@ import com.memo.meeting.internal.MeetingRelation
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.TimesInput
 import com.memo.org.OrgDirectory
+import com.memo.org.internal.Assignments
+import com.memo.org.internal.LegalEntities
+import com.memo.org.internal.OrgUnits
+import com.memo.org.internal.Period
+import com.memo.org.internal.Positions
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AppRoleJdbc
@@ -87,6 +92,14 @@ class MeetingsIT : IntegrationTest() {
     @Autowired lateinit var clearances: Clearances
 
     @Autowired lateinit var org: OrgDirectory
+
+    @Autowired lateinit var entities: LegalEntities
+
+    @Autowired lateinit var units: OrgUnits
+
+    @Autowired lateinit var positions: Positions
+
+    @Autowired lateinit var assignments: Assignments
 
     private lateinit var tenant: TestTenant
     private lateinit var admin: UserAccount
@@ -353,6 +366,33 @@ class MeetingsIT : IntegrationTest() {
         asUser(admin) { members.end(brc, directorSeat.id, directorSeat.version, today, EndReason.RESIGNED, null) }
         assertThat(asUser(director) { reads.get(held.id) }.relation).isEqualTo(MeetingRelation.MEMBER)
         assertThat(newcomerSeat.forumId).isEqualTo(brc)
+    }
+
+    @Test
+    fun `a position seat's audience follows the position's holder at once`() {
+        val first = accounts.anActiveUser(transactions, tenant, aPassword())
+        val second = accounts.anActiveUser(transactions, tenant, aPassword())
+        val from = today.minusDays(30)
+        val (position, held) =
+            asUser(admin) {
+                val entity = entities.create("Bank ${UUID.randomUUID().toString().take(6)}", null, null, from)
+                val unit = units.createUnit(entity.id, null, "RK${(100..999).random()}", "Risk", from)
+                val p = positions.create(unit.id, null, "Chief Risk Officer", false, from)
+                p to assignments.assign(p.id, first.id.value, Period(from, null))
+            }
+        asUser(admin) { members.add(brc, MemberInput(positionId = position.id)) }
+        val meeting = asUser(secretary) { create(today.plusDays(30)).let { lifecycle.schedule(it.id, it.version) } }
+        assertThat(audience(meeting.id, first)).startsWith("MEMBER:true:")
+
+        // The holder changes in the organisation, not on the committee: the open meeting's audience follows in that change.
+        asUser(admin) {
+            assignments.changeDates(held.id, held.version, Period(from, today))
+            assignments.assign(position.id, second.id.value, Period(today, null))
+        }
+        assertThat(audience(meeting.id, second)).startsWith("MEMBER:true:")
+        assertThat(audience(meeting.id, first)).isNull()
+        assertThat(asUser(second) { reads.get(meeting.id) }.relation).isEqualTo(MeetingRelation.MEMBER)
+        assertThatThrownBy { asUser(first) { reads.get(meeting.id) } }.isInstanceOf(MeetingNotFoundException::class.java)
     }
 
     private fun audience(

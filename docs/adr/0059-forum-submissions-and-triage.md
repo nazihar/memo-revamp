@@ -65,3 +65,22 @@ Chosen option 1.
 - **Option 1:** + nothing lost, one paper model, reasons recorded; − one type per committee for direct papers.
 - **Option 2:** + a tailored form; − a second document and access model (Q4).
 - **Option 3:** + no table; − nowhere to keep triage, cover sheets or history.
+
+## Amendment — 2026-11-28 (officers' access follows terms and position holders)
+The E08 T10 runbook check found that the `FORUM` readers were brought in line only after a member edit to a chair or
+secretary row or a submission change. A term that lapsed on its end date left the former officer reading the queue's
+memos; an appointment that started on its date, or a position seat's new holder, read nothing until the next edit. Those
+are revocation and grant gaps, so the readers now also follow the calendar and the organisation:
+- **Daily:** the per-tenant task `forum-officer-readers` (fanned out every 15 minutes by `forum-officer-readers-sweep`)
+  runs a tenant's day once, at the first sweep after midnight in the tenant's zone (`default.timezone`). It resyncs every
+  committee whose chair and secretaries differ between two days since the last run (terms ending or starting, a holder
+  change recorded for a date). The day last run is kept in `forum_reader_sync` (one row per tenant, locked for the run).
+  The first run, or one after more than 31 days, resyncs every committee.
+- **At once:** an `OrgChanged` on an assignment resyncs, in the changing transaction, the committees with a chair or
+  secretary seat held by that position, and publishes `ForumChanged` for every committee with a seat of it, so open
+  meetings recompute their audience (design E03 §1.6).
+- Resyncing still diffs the expected readers against the rows there, writes only the rows that change, and audits each
+  change as before (`memo.reader.forum_added`, `memo.reader.forum_retired`; the daily run's actor is the system).
+- Confirmation: `OfficerAccessIT` (a term ended yesterday in Asia/Dhaka, a term starting today, a position seat's new
+  holder at once and on a recorded date, cross-tenant isolation of `forum_reader_sync`) and `MeetingsIT` (a position seat's
+  audience follows its holder).

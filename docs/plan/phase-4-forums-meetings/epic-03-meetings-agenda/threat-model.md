@@ -36,6 +36,7 @@
 ## Residual risks
 - Officers (secretaries, chair) see every draft and every paper. This matches the role. E04 narrows it for recusals.
 - Directors may print or photograph papers. Watermarking and the secure viewer are Phase 5.
+- A position seat's audience row (2026-11-28): an open meeting's audience follows a change of the position's holder at once (the forum module publishes `ForumChanged` on the assignment change; ADR-0059 amendment). A meeting already held keeps its audience by design, and a position seat's `until` is the seat's last day, not the holder's last day in the position. So a former holder keeps reading the papers and minutes of meetings held while they held the seat, until the seat itself ends. For a person seat the two are the same: the member's papers stop after their own last day. For a position seat the holder can leave the position years before the seat ends, without any edit on the committee. Recorded, not changed: limiting `until` to the holder's assignment would need held meetings' audiences recomputed on every assignment change.
 
 ## Reviewed at phase close
 Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**. The paper rule became the base of every later surface.
@@ -45,6 +46,7 @@ Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation hold
   - I1: the rule now also covers E05–E08 surfaces (invitations, quorum, decisions, minutes copies, actions, the register, analytics). `PaperSurfaceRegistry` lists every one, and its meta-test fails for an unregistered controller of the six Phase 4 modules. No placeholder is left (`pending` is empty).
 - **Evidence:**
   - S1: matrices `p4-e03-meetings.yaml` and `p4-e03-agenda.yaml`, `ConsentRequestIT`, `AgendaPublishIT`. S2: audience rows with `until`, checked on every read (`PaperAccessIT` former member).
+  - S2 (position seats): an open meeting's audience follows a position's new holder at once through `ForumChanged` (#260, `MeetingsIT`).
   - T1: the append-only check in `AgendaPublishIT`. T2: `AgendaConcurrencyIT`, `AgendaPlacementIT`. T3: `AgendaRulesTest`. T4: `MeetingFieldsTest`.
   - R1, R2: `meeting.agenda.*` and `meeting.paper.opened` (`AuditActionCoverageTest`, `PaperServingIT`).
   - I1: `PaperAccessIT`, `PaperServingIT`, `PaperLeakIT`, `PaperAccessArchTest`. I3: `AgendaBuilderIT` (copied restrictions narrowed and listed). I4: members are not memo readers (`PaperAccessIT`). I5: `MeetingsIT`.
@@ -53,4 +55,5 @@ Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation hold
 - **Residual risks:**
   - Officers still see every draft and paper of items they are not recused from. This matches the role.
   - Printing and photographing papers is still possible. Watermarking and the secure viewer come in Phase 5.
+  - A former holder of a position seat keeps the papers and minutes of meetings held while they held it, until the seat ends (added by #260, see above). Open meetings follow a holder change at once (`MeetingsIT`).
 - **Pen test:** the surfaces are in `docs/security/pen-test-scope.md`, area 1.

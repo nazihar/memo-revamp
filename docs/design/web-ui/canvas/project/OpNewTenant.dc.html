@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New organisation · Platform administration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+.th{--bar-bg:#18181b;--bar-fg:#fafafa;--bar-muted:#a1a1aa;--bar-line:rgba(255,255,255,0.14)}
+.ed-main>*{flex-shrink:0}
+button[role="combobox"]:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; min-height: 1000px; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="flex-shrink: 0; background: var(--bar-bg); color: var(--bar-fg); border-bottom: 1px solid var(--bar-line)">
+    <div style="display: flex; align-items: center; gap: 28px; height: 56px; padding: 0 24px"><span style="display: inline-flex; align-items: center; gap: 10px"><span aria-hidden="true" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--bar-fg); color: var(--bar-bg); font-weight: 700; font-size: 14px">M</span><span style="font-weight: 600">Memo &amp; Meetings</span><span aria-hidden="true" style="width: 1px; height: 16px; background: var(--bar-line)"></span><span style="font-weight: 500; color: var(--bar-muted)">Platform administration</span></span><nav aria-label="Platform administration" style="display: flex; gap: 20px; align-self: stretch"><a href="OpTenants.dc.html" aria-current="page" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; box-sizing: border-box; border-bottom: 2px solid var(--bar-fg); color: var(--bar-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Organisations</a><a href="OpAudit.dc.html" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; box-sizing: border-box; border-bottom: 2px solid transparent; color: var(--bar-muted); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Platform audit</a></nav><span style="margin-left: auto; display: flex; align-items: center; gap: 12px"><span style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 13px; font-weight: 500">Tahmid Chowdhury</span><span style="font-size: 11px; color: var(--bar-muted)">Operator · t.chowdhury@[platform]</span></span><button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--bar-line); border-radius: 8px; background: transparent; color: var(--bar-fg); font-size: 13px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>Sign out</button></span></div>
+  </header>
+  <main style="flex: 1; min-width: 0; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px">
+    <a href="OpTenants.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px;  font-size: 13px; color: var(--muted-fg); text-decoration: none"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Back to Organisations</a>
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px"><div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; max-width: 760px"><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">New organisation</h1></div><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Creates the organisation and emails its first administrator an invitation.</p></div><div style="display: flex; flex-wrap: wrap; gap: 8px"></div></div>
+    <div style="display: grid; grid-template-columns: minmax(0, 880px) 340px; gap: 16px; align-items: start"><form novalidate onSubmit="{{nt.submit}}" style="display: contents"><section style="border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 20px; display: flex; flex-direction: column; gap: 16px"><h2 style="margin: 0; font-size: 15px; font-weight: 600">The organisation</h2>        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="nt-name" style="font-size: 14px; font-weight: 500">Name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="nt-name" type="text" autocomplete="off" value="{{nt.name}}" onChange="{{nt.on_name}}" aria-invalid="{{nt.nameInvalid}}" aria-describedby="nt-name-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{nt.nameBorder}}">
+          <sc-if value="{{nt.nameHasErr}}" hint-placeholder-val="{{false}}"><span id="nt-name-msg" style="font-size: 12px; color: var(--danger-fg)">{{nt.nameErr}}</span></sc-if>
+        </div>        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="nt-slug" style="font-size: 14px; font-weight: 500">Address <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="nt-slug" type="text" autocomplete="off" value="{{nt.slug}}" onChange="{{nt.on_slug}}" aria-invalid="{{nt.slugInvalid}}" aria-describedby="nt-slug-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; font-family: 'Geist Mono', ui-monospace, monospace; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{nt.slugBorder}}">
+          <sc-if value="{{nt.slugHasErr}}" hint-placeholder-val="{{false}}"><span id="nt-slug-msg" style="font-size: 12px; color: var(--danger-fg)">{{nt.slugErr}}</span></sc-if>
+          <span style="font-size: 12px; color: var(--muted-fg)">3 to 63 lower-case letters, digits and hyphens. Becomes the start of the organisation’s web address: <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2); white-space: nowrap">{{host}}</span></span>
+        </div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"><div style="display: flex; flex-direction: column; gap: 6px"><label for="nt-lang" style="font-size: 14px; font-weight: 500">Default language</label><span style="position: relative; display: flex; align-items: center"><select id="nt-lang" style="width: 100%; height: 36px; padding: 0 30px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px"><option selected>English</option><option>العربية</option></select><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg></span></div><div style="display: flex; flex-direction: column; gap: 6px"><label for="nt-tz" style="font-size: 14px; font-weight: 500">Time zone</label><span style="position: relative; display: flex; align-items: center"><span style="position: relative; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; width: 100%"><button type="button" id="nt-tz" role="combobox" aria-haspopup="listbox" aria-expanded="{{cbx.timeZone.aria}}" aria-controls="cbx-timeZone-list" onClick="{{cbx.timeZone.toggle}}" style="width: 100%; height: 36px; padding: 0 30px 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{cbx.timeZone.value}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button><sc-if value="{{cbx.timeZone.isOpen}}" hint-placeholder-val="{{false}}"><button type="button" tabIndex="-1" aria-label="Close" onClick="{{cbx.timeZone.close}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 40; border: 0; padding: 0; background: transparent; cursor: default"></button><div onKeyDown="{{cbx.timeZone.key}}" style="position: absolute; z-index: 41; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 0 4px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12)"><label style="display: flex; align-items: center; gap: 8px; margin: 0 -4px 4px; padding: 0 10px; border-bottom: 1px solid var(--border)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0">Search time zones</span><input type="text" placeholder="Search time zones…" value="{{cbx.timeZone.q}}" onChange="{{cbx.timeZone.onQ}}" aria-controls="cbx-timeZone-list" autocomplete="off" style="flex: 1; min-width: 0; height: 34px; border: 0; outline: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px"></label><ul id="cbx-timeZone-list" role="listbox" aria-label="Time zone" style="list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto"><sc-for list="{{cbx.timeZone.items}}" as="c1" hint-placeholder-count="4"><li role="none"><button type="button" role="option" aria-selected="{{c1.aria}}" onClick="{{c1.pick}}" class="ghost" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; text-align: left; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{c1.check}}"><path d="M20 6 9 17l-5-5"></path></svg><span>{{c1.label}}</span></button></li></sc-for></ul><sc-if value="{{cbx.timeZone.empty}}" hint-placeholder-val="{{false}}"><span style="padding: 16px 8px; font-size: 13px; color: var(--muted-fg); text-align: center">No time zones found.</span></sc-if></div></sc-if></span></span></div></div><h2 style="margin: 8px 0 0; font-size: 15px; font-weight: 600">Its first administrator</h2><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="nt-adminName" style="font-size: 14px; font-weight: 500">First administrator’s name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="nt-adminName" type="text" autocomplete="off" value="{{nt.adminName}}" onChange="{{nt.on_adminName}}" aria-invalid="{{nt.adminNameInvalid}}" aria-describedby="nt-adminName-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{nt.adminNameBorder}}">
+          <sc-if value="{{nt.adminNameHasErr}}" hint-placeholder-val="{{false}}"><span id="nt-adminName-msg" style="font-size: 12px; color: var(--danger-fg)">{{nt.adminNameErr}}</span></sc-if>
+        </div>        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="nt-adminEmail" style="font-size: 14px; font-weight: 500">First administrator’s email <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="nt-adminEmail" type="email" autocomplete="off" value="{{nt.adminEmail}}" onChange="{{nt.on_adminEmail}}" aria-invalid="{{nt.adminEmailInvalid}}" aria-describedby="nt-adminEmail-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{nt.adminEmailBorder}}">
+          <sc-if value="{{nt.adminEmailHasErr}}" hint-placeholder-val="{{false}}"><span id="nt-adminEmail-msg" style="font-size: 12px; color: var(--danger-fg)">{{nt.adminEmailErr}}</span></sc-if>
+        </div></div>        <sc-if value="{{nt.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{nt.alert}}</span></span></div>
+        </sc-if><div style="display: flex; justify-content: flex-end; gap: 8px"><a href="OpTenants.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none">Cancel</a><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Create and invite</button></div></section></form><aside aria-labelledby="wh" style="border: 1px solid var(--border); border-radius: 10px; background: var(--subtle); padding: 16px; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 16px"><h2 id="wh" style="margin: 0; font-size: 14px; font-weight: 600">What happens</h2><ol style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-2)"><li>You confirm it is you with a code from your authenticator app.</li><li>The organisation is created at <span style="font-family: 'Geist Mono', ui-monospace, monospace; white-space: nowrap">{{host}}</span>, with its own data. Nobody else can see it.</li><li>{{adminEmail}} gets an invitation to set a password.</li><li>They set up two-step sign-in, then invite everyone else and set the organisation up.</li><li>You see only its registry entry: name, address, status, and whether it has an administrator.</li></ol></aside></div>
+  </main>
+
+  <sc-if value="{{isStepUp}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="su-title" novalidate onSubmit="{{su.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="su-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p>
+        </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center"><label for="op-su-code" style="font-size: 14px; font-weight: 500">Code</label><div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px"><input id="op-su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_code.value}}" onChange="{{otp.su_code.onInput}}" onFocus="{{otp.su_code.onFocus}}" onBlur="{{otp.su_code.onBlur}}" aria-invalid="{{otp.su_code.invalid}}" aria-describedby="{{otp.su_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text"><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.su_code.a}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span><span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.su_code.b}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span></div><sc-if value="{{codeHasErr}}" hint-placeholder-val="{{false}}"><span id="op-su-code-err" style="font-size: 12px; color: var(--danger-fg)">{{codeErr}}</span></sc-if></div>
+        <sc-if value="{{su.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{su.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Confirm</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"dialog":{"editor":"enum","options":["none","stepUp"],"default":"none"},"error":{"editor":"enum","options":["none","required","slugTaken","slugBad","wrong","tooMany","failed"],"default":"none"},"combobox":{"editor": "enum", "options": ["none", "timeZone"], "default": "none"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this._rv0() || {}; const st = this.state || {};
+    const CBX = {"timeZone": {"options": ["Africa/Cairo", "America/New_York", "Asia/Bangkok", "Asia/Colombo", "Asia/Dhaka", "Asia/Dubai", "Asia/Karachi", "Asia/Kathmandu", "Asia/Kolkata", "Asia/Kuala_Lumpur", "Asia/Riyadh", "Asia/Singapore", "Asia/Tokyo", "Australia/Sydney", "Europe/Berlin", "Europe/London", "UTC"], "sel": 4}};
+    const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+    const open = st.cbxOpen !== undefined ? st.cbxOpen : (this.props.combobox && this.props.combobox !== 'none' ? this.props.combobox : '');
+    const q = (st.cbxQ || '').toLowerCase(); const vals = st.cbxVal || {};
+    const close = () => this.setState({ cbxOpen: '', cbxQ: '' });
+    v.cbx = {};
+    Object.keys(CBX).forEach((k) => {
+      const c = CBX[k];
+      const all = c.path ? (get(v, c.path) || []).map((o) => ({ value: String(o[c.valueKey] != null ? o[c.valueKey] : o[c.labelKey]), label: String(o[c.labelKey]), sel: !!o[c.selKey] }))
+                         : c.options.map((o, i) => ({ value: o, label: o, sel: i === c.sel }));
+      const placeholder = all.find((o) => o.value === '');
+      const opts = all.filter((o) => o.value !== '');
+      const chosen = vals[k] !== undefined ? vals[k] : ((opts.find((o) => o.sel) || placeholder || opts[0] || { label: '' }).label);
+      const isOpen = open === k;
+      const items = opts.filter((o) => !isOpen || !q || o.label.toLowerCase().indexOf(q) >= 0).map((o) => ({
+        label: o.label, aria: o.label === chosen ? 'true' : 'false', check: 'flex-shrink: 0; visibility: ' + (o.label === chosen ? 'visible' : 'hidden'),
+        pick: () => { const n = Object.assign({}, vals); n[k] = o.label; const h = c.onChange ? get(v, c.onChange) : null; if (typeof h === 'function') h({ target: { value: o.value } }); this.setState({ cbxOpen: '', cbxQ: '', cbxVal: n }); }
+      }));
+      v.cbx[k] = { value: chosen, isOpen: isOpen, aria: isOpen ? 'true' : 'false', toggle: () => this.setState({ cbxOpen: isOpen ? '' : k, cbxQ: '' }), close: close,
+        key: (ev) => { if (ev && ev.key === 'Escape') close(); }, q: st.cbxQ || '', onQ: (ev) => this.setState({ cbxQ: ev && ev.target ? ev.target.value : '' }),
+        items: items, empty: items.length === 0 };
+    });
+    return v;
+  }
+
+  _rv0() {
+    const st = this.state || {};
+    const PHONE = false;
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+    const suVals = { isStepUp: dlg === 'stepUp', otp: { su_code: mkOtp('su_code', 'op-su-code', { init: err === 'wrong' ? '551203' : '55', error: err === 'wrong' }) }, codeHasErr: dlg === 'stepUp' && err === 'wrong', codeErr: 'That did not match. Try again.',
+      su: { hasAlert: err === 'tooMany', alert: 'Too many attempts. Wait a minute and try again.', submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (err === 'wrong' || err === 'tooMany') { this.setState({ err: err }); return; } this.setState({ dlg: '', toast: 'Organisation created. The invitation is on its way.' }); } } };
+
+    const f = (k, d) => form[k] !== undefined ? form[k] : (err === 'required' ? '' : d);
+    const name = f('name', 'Karnaphuli Finance'), slug = f('slug', err === 'slugTaken' ? 'meghna-leasing' : (err === 'slugBad' ? 'Karnaphuli_Finance' : 'karnaphuli')), an = f('adminName', 'Shamima Nasrin'), ae = f('adminEmail', 's.nasrin@karnaphuli.example');
+    const tried = !!form.tried || err === 'required';
+    const slugErr = tried && !slug.trim() ? 'Required.' : (err === 'slugTaken' ? 'Another organisation has this address.' : (err === 'slugBad' ? '3 to 63 lower-case letters, digits and hyphens.' : ''));
+    const alertText = !dlg ? (({ failed: 'That did not work. Try again.' })[err] || '') : '';
+    const vals = Object.assign(base, suVals, {
+      host: (slug || 'address') + '.memo.[domain]', adminEmail: ae || 'the first administrator',
+      nt: Object.assign({ on_name: setForm('name'), on_slug: setForm('slug'), on_adminName: setForm('adminName'), on_adminEmail: setForm('adminEmail'), hasAlert: !!alertText, alert: alertText,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!name.trim() || !slug.trim() || !an.trim() || !ae.trim() || slugErr) { this.setState({ form: Object.assign({}, form, { name: name, slug: slug, adminName: an, adminEmail: ae, tried: true }) }); return; }
+          if (alertText) { this.setState({ err: err }); return; } this.setState({ dlg: 'stepUp', err: 'none' }); } },
+        fieldVals('nt', 'name', name, tried && !name.trim() ? 'Required.' : ''), fieldVals('nt', 'slug', slug, slugErr), fieldVals('nt', 'adminName', an, tried && !an.trim() ? 'Required.' : ''), fieldVals('nt', 'adminEmail', ae, tried && !ae.trim() ? 'Required.' : ''))
+    });
+    return Object.assign(vals, { themeClass: st.theme || this.props.theme || 'system' });
+  }
+}
+</script>
+</body>
+</html>

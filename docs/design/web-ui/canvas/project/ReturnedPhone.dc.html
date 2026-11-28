@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Returned memo on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.ghost:active{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="Phone.dc.html" class="ghost" aria-label="Back to Inbox" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; font-weight: 500">CR/2026/0142</span>
+    <button type="button" class="ghost" aria-label="Edit details" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+    </button>
+  </header>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 16px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">Returned</span>
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">Confidential</span>
+      </div>
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">Credit line renewal for Meghna Agro</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Returned to you 10 Nov by Farhana Rahman, Head of Credit, at step 3 of 5</span>
+    </div>
+
+    <section aria-labelledby="pt-req" style="padding: 12px; border: 1px solid var(--border-strong); border-radius: 10px; display: flex; flex-direction: column; gap: 8px; background: var(--card)">
+      <h2 id="pt-req" style="margin: 0; font-size: 14px; font-weight: 600">What to change</h2>
+      <blockquote style="margin: 0; padding-left: 10px; border-left: 2px solid var(--border-strong); font-size: 15px; line-height: 22px">Please attach a collateral valuation not older than six months. The one on file is from March 2025.</blockquote>
+      <span style="font-size: 12px; color: var(--muted-fg)">Farhana Rahman · 10 Nov, 11:40</span>
+    </section>
+
+    <section aria-labelledby="pt-chg" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 8px; background: var(--card)">
+      <h2 id="pt-chg" style="margin: 0; font-size: 14px; font-weight: 600">Changed since it was returned</h2>
+      <sc-for list="{{changes}}" as="c" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; gap: 10px; min-height: 44px">
+          <span aria-hidden="true" style="{{c.dotStyle}}">{{c.mark}}</span>
+          <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+            <span style="font-size: 13px; font-weight: 500">{{c.title}}</span>
+            <span style="font-size: 12px; color: var(--muted-fg)">{{c.text}}</span>
+          </span>
+          <sc-if value="{{c.hasAction}}" hint-placeholder-val="{{true}}">
+            <button type="button" onClick="{{c.act}}" style="height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500">{{c.action}}</button>
+          </sc-if>
+        </div>
+      </sc-for>
+      <span style="font-size: 12px; color: var(--muted-fg)">Editing the document needs a computer; on a phone you can upload a new version.</span>
+    </section>
+
+    <section aria-labelledby="pt-route" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px; background: var(--card)">
+      <h2 id="pt-route" style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Approvers</h2>
+      <sc-for list="{{route}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+          <span aria-hidden="true" style="{{s.dotStyle}}">{{s.n}}</span>
+          <span style="display: flex; flex-direction: column; min-width: 0">
+            <span style="font-size: 13px; font-weight: 500">{{s.title}}</span>
+            <span style="{{s.statusStyle}}">{{s.status}}</span>
+          </span>
+        </div>
+      </sc-for>
+      <span style="font-size: 12px; color: var(--muted-fg)">Everyone acts again in round 2.</span>
+    </section>
+
+    <section aria-label="More about this memo" style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+      <sc-for list="{{more}}" as="m" hint-placeholder-count="5">
+        <a href="#" style="{{m.rowStyle}}">
+          <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+            <span style="font-weight: 500">{{m.title}}</span>
+            <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.value}}</span>
+          </span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); flex-shrink: 0"><path d="m9 18 6-6-6-6"></path></svg>
+        </a>
+      </sc-for>
+    </section>
+  </main>
+
+  <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; padding: 10px 16px 12px; border-top: 1px solid var(--border); background: var(--bg)">
+    <div style="display: flex; gap: 8px">
+      <button type="button" class="ghost" aria-label="More: withdraw memo" onClick="{{openWithdraw}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+      </button>
+      <button type="button" onClick="{{openResubmit}}" style="flex: 1; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500">Resubmit</button>
+    </div>
+    <span style="text-align: center; font-size: 12px; color: var(--muted-fg)">{{barNote}}</span>
+  </div>
+
+  <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDialog}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="ptd-title" aria-describedby="ptd-desc" onKeyDown="{{dialogKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; display: flex; flex-direction: column; gap: 14px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 id="ptd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{dlg.title}}</h2>
+        <p id="ptd-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{dlg.desc}}</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="ptd-remark" style="font-size: 14px; font-weight: 500">{{dlg.label}}</label>
+        <textarea id="ptd-remark" rows="3" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 16px; line-height: 22px; resize: none; outline: none"></textarea>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <button type="button" onClick="{{closeDialog}}" style="{{dlg.btnStyle}}">{{dlg.confirm}}</button>
+        <button type="button" class="ghost" onClick="{{closeDialog}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 15px; font-weight: 500; color: var(--fg)">Cancel</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const v3 = !!st.v3;
+    const valuation = !!st.valuation;
+    const dialog = st.dialog || '';
+    const dot = 'display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; box-sizing: border-box; border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; ';
+    const changes = [
+      { ok: v3, title: 'Document', text: v3 ? 'Version 3 uploaded' : 'Still version 2', action: 'Upload', act: () => this.setState({ v3: true }) },
+      { ok: valuation, title: 'Attachments', text: valuation ? 'Valuation report added' : 'No new files', action: 'Add file', act: () => this.setState({ valuation: true }) }
+    ].map((c) => Object.assign({}, c, {
+      hasAction: !c.ok,
+      mark: c.ok ? '✓' : '',
+      dotStyle: dot + (c.ok ? 'background: var(--primary); color: var(--primary-fg)' : 'border: 1.5px dashed var(--border-strong)')
+    }));
+    const route = [
+      { title: 'Head of Corporate Banking', status: 'Mahmud Karim · recommended in round 1', kind: 'past' },
+      { title: 'Credit risk analysts · any one', status: 'Sadia Islam recommended in round 1', kind: 'past' },
+      { title: 'Head of Credit', status: 'Farhana Rahman · returned it 10 Nov', kind: 'returned' },
+      { title: 'Chief Risk Officer', status: 'Shirin Akter · not reached', kind: 'none' },
+      { title: 'Managing Director', status: 'Abdul Kader · not reached', kind: 'none' }
+    ].map((s, i) => Object.assign({}, s, {
+      n: String(i + 1),
+      dotStyle: dot + 'margin-top: 1px; ' + (s.kind === 'returned' ? 'border: 1.5px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)' : 'border: 1.5px solid var(--border-strong); color: var(--text-3)'),
+      statusStyle: 'font-size: 12px; ' + (s.kind === 'returned' ? 'color: var(--warn-fg); font-weight: 500' : 'color: var(--muted-fg)')
+    }));
+    const more = [
+      { title: 'Details', value: 'BDT 250,000,000 · revolving credit line · 12 months' },
+      { title: 'Note sheet', value: '3 notes' },
+      { title: 'Attachments', value: valuation ? '3 files' : '2 files' },
+      { title: 'Linked memos', value: 'Follows up CR/2025/0388' },
+      { title: 'History', value: v3 ? 'Version 3 uploaded just now' : 'Returned 10 Nov' },
+      { title: 'People with access', value: '8 people · 1 copy sent, 1 after approval' }
+    ].map((m, i) => Object.assign({}, m, {
+      rowStyle: 'display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 8px 6px 12px; text-decoration: none; color: var(--fg)' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+    }));
+    const primaryBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--primary); font-size: 15px; font-weight: 500; color: var(--primary-fg)';
+    const dangerBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--destructive); font-size: 15px; font-weight: 500; color: var(--on-destructive)';
+    const dialogs = {
+      resubmit: { title: 'Resubmit?', desc: 'Round 2 starts with the Head of Corporate Banking, now Mahmud Karim. Approvals from round 1 no longer count.', label: 'What you changed (optional)', confirm: 'Resubmit', btnStyle: primaryBtn },
+      withdraw: { title: 'Withdraw this memo?', desc: 'The approval ends for good. It moves to Closed as Withdrawn; the record of it is kept.', label: 'Reason (optional)', confirm: 'Withdraw', btnStyle: dangerBtn }
+    };
+    const closeDialog = () => this.setState({ dialog: '' });
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      changes: changes,
+      route: route,
+      more: more,
+      barNote: (v3 || valuation) ? 'Starts round 2 with Mahmud Karim.' : 'Nothing changed yet. You can still resubmit.',
+      openResubmit: () => this.setState({ dialog: 'resubmit' }),
+      openWithdraw: () => this.setState({ dialog: 'withdraw' }),
+      dialogOpen: !!dialog,
+      dlg: dialogs[dialog] || dialogs.resubmit,
+      closeDialog: closeDialog,
+      dialogKey: (ev) => { if (ev && ev.key === 'Escape') closeDialog(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Notifications on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+.ghost:active{background:var(--muted)}
+.chips::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <button type="button" class="ghost" aria-label="Open navigation" aria-expanded="{{navAria}}" onClick="{{openNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+    </button>
+    <span style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0">
+      <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 13px; flex-shrink: 0">N</span>
+      <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+    </span>
+    <a href="SearchPhone.dc.html" class="ghost" aria-label="Search memos" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    </a>
+    <a href="NotificationsPhone.dc.html" class="ghost" aria-current="page" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: var(--muted); border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+      <span aria-hidden="true" style="position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+    </a>
+    <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">FR</span>
+    </button>
+  </header>
+  <div style="flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 8px 4px 0 16px">
+    <h1 style="margin: 0; flex: 1; font-size: 18px; line-height: 26px; font-weight: 600">Notifications</h1>
+    <button type="button" class="ghost" onClick="{{markAll}}" disabled="{{noneUnread}}" style="{{markAllStyle}}">Mark all read</button>
+    <a href="PrefsPhone.dc.html" class="ghost" aria-label="Notification settings" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+    </a>
+  </div>
+
+  <div class="chips" role="tablist" aria-label="Show" style="flex-shrink: 0; display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--hover)">
+    <sc-for list="{{views}}" as="v" hint-placeholder-count="5">
+      <button type="button" role="tab" aria-selected="{{v.ariaSel}}" onClick="{{v.pick}}" style="{{v.style}}">
+        {{v.label}}
+        <sc-if value="{{v.hasCount}}" hint-placeholder-val="{{false}}">
+          <span style="{{v.countStyle}}">{{v.count}}</span>
+        </sc-if>
+      </button>
+    </sc-for>
+  </div>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto">
+    <sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column">
+        <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+          <section>
+            <h2 style="margin: 0; padding: 12px 16px 6px; font-size: 12px; font-weight: 500; color: var(--muted-fg)">{{g.title}}</h2>
+            <ul style="list-style: none; margin: 0; padding: 0">
+              <sc-for list="{{g.items}}" as="n" hint-placeholder-count="3">
+                <li style="{{n.rowStyle}}">
+                  <span aria-hidden="true" style="{{n.dotStyle}}"></span>
+                  <a href="{{n.href}}" onClick="{{n.read}}" style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; padding: 12px 0; text-decoration: none; color: var(--fg)">
+                    <span style="{{n.textStyle}}"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{n.srUnread}}</span>{{n.text}}</span>
+                    <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{n.kindLabel}} · {{n.time}}</span>
+                  </a>
+                </li>
+              </sc-for>
+            </ul>
+          </section>
+        </sc-for>
+        <div style="display: flex; justify-content: center; padding: 16px">
+          <button type="button" class="ghost" style="height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500">Show older</button>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 64px 24px; text-align: center">
+        <span style="font-weight: 500; font-size: 16px">{{emptyTitle}}</span>
+        <span style="font-size: 14px; color: var(--muted-fg)">Notifications about your account and work appear here.</span>
+      </div>
+    </sc-if>
+  </main>
+  <!-- Navigation drawer -->
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <nav aria-label="Main navigation" onKeyDown="{{navKey}}" style="position: absolute; top: 0; bottom: 0; left: 0; z-index: 11; width: 300px; display: flex; flex-direction: column; padding: 8px; box-sizing: border-box; background: var(--subtle); border-right: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow-y: auto">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 4px 6px 8px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+        <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+          <span style="font-weight: 600; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+        </span>
+        <button type="button" class="ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--text-3)">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Work</div>
+      <a href="HomePhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Home
+      </a>
+      <a href="Phone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span style="flex: 1">Inbox</span>
+        <span style="font-size: 12px; color: var(--text-3)">8</span>
+      </a>
+      <a href="SavedPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        Saved searches
+      </a>
+      <a href="DashboardPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dashboard
+      </a>
+      <a href="StatusPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        Status
+      </a>
+      <a href="OrgPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        Organisation
+      </a>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Administration</div>
+      <a href="AdminOverviewPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        Overview
+      </a>      <a href="AuditPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+        Audit
+      </a>
+    </nav>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const navOpen = !!(this.state && this.state.navOpen);
+    const closeNav = () => this.setState({ navOpen: false });
+    const st = this.state || {};
+    const view = st.view || 'all';
+    const readSet = st.readSet || { n4: true, n5: true, n6: true, n7: true, n9: true };
+    const data = [
+      { id: 'n1', day: 'Today', cat: 'WORKFLOW', text: 'Reminder: memo CR/2026/0142 is waiting for your decision', time: '09:00', href: 'MemoPhone.dc.html' },
+      { id: 'n2', day: 'Today', cat: 'WORKFLOW', text: 'Memo CR/2026/0142 is overdue', time: '08:00', href: 'MemoPhone.dc.html', urgent: true },
+      { id: 'n3', day: 'Today', cat: 'WATCHING', text: 'You were mentioned in a note on memo PRC/2026/0087', time: '08:42', href: '#' },
+      { id: 'n4', day: 'Yesterday', cat: 'WORKFLOW', text: 'Memo FIN/2026/0298 is waiting for your approval', time: '15:47', href: '#' },
+      { id: 'n5', day: 'Yesterday', cat: 'WATCHING', text: 'There is news about memo CR/2025/0388', time: '11:10', href: '#' },
+      { id: 'n6', day: 'Yesterday', cat: 'SECURITY', text: 'New sign-in to your account from Chrome on Windows', time: '08:31', href: '#' },
+      { id: 'n7', day: 'Earlier this week', cat: 'WORKFLOW', text: 'Memo AUD/2026/0021 was copied to you for information', time: 'Mon', href: '#' },
+      { id: 'n8', day: 'Earlier this week', cat: 'WORKFLOW', text: 'Your changes to Credit memo — Meghna Agro.docx in the browser editor could not be saved', time: 'Mon', href: '#', urgent: true },
+      { id: 'n9', day: 'Earlier this week', cat: 'ADMINISTRATION', text: 'You were given the role Credit approver', time: 'Sun', href: '#' }
+    ].map((d) => Object.assign({}, d, { unread: !readSet[d.id] }));
+    const unreadCount = data.filter((d) => d.unread).length;
+    const labels = { WORKFLOW: 'Memo approvals', WATCHING: 'Memos you follow', SECURITY: 'Security', ADMINISTRATION: 'Access and administration' };
+    const setRead = (id) => { const next = Object.assign({}, readSet); next[id] = true; this.setState({ readSet: next }); };
+
+    const pill = 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: 500; white-space: nowrap; ';
+    const views = [
+      { id: 'all', label: 'All' }, { id: 'unread', label: 'Unread', count: unreadCount }, { id: 'WORKFLOW', label: 'Approvals' },
+      { id: 'WATCHING', label: 'Following' }, { id: 'SECURITY', label: 'Security' }
+    ].map((v) => {
+      const on = v.id === view;
+      return {
+        label: v.label, count: v.count, hasCount: !!v.count, ariaSel: on ? 'true' : 'false',
+        style: pill + (on ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--text-2)'),
+        countStyle: 'display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; ' + (on ? 'background: var(--primary-divider); color: var(--primary-fg)' : 'background: var(--muted); color: var(--text-2)'),
+        pick: () => this.setState({ view: v.id })
+      };
+    });
+    const shown = data.filter((d) => view === 'all' || (view === 'unread' ? d.unread : d.cat === view));
+    const groups = ['Today', 'Yesterday', 'Earlier this week'].map((g) => ({
+      title: g,
+      items: shown.filter((d) => d.day === g).map((d) => ({
+        text: d.text, time: d.time, href: d.href, kindLabel: labels[d.cat],
+        srUnread: d.unread ? 'Unread: ' : '',
+        read: () => setRead(d.id),
+        rowStyle: 'display: flex; align-items: flex-start; gap: 10px; padding: 0 16px 0 12px; border-top: 1px solid var(--hover)' + (d.unread ? '; background: var(--subtle)' : ''),
+        dotStyle: 'width: 8px; height: 8px; margin-top: 18px; border-radius: 50%; flex-shrink: 0; background: ' + (d.unread ? (d.urgent ? 'var(--destructive)' : 'var(--primary)') : 'transparent'),
+        textStyle: 'font-size: 15px; line-height: 21px; ' + (d.unread ? 'font-weight: 600' : 'font-weight: 400; color: var(--text-1)')
+      }))
+    })).filter((g) => g.items.length > 0);
+
+    return {
+      navOpen: navOpen,
+      navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      views: views,
+      groups: groups,
+      hasItems: groups.length > 0,
+      empty: groups.length === 0,
+      emptyTitle: view === 'unread' ? 'Nothing unread.' : 'Nothing here yet.',
+      noneUnread: unreadCount === 0,
+      markAll: () => { const next = {}; data.forEach((d) => { next[d.id] = true; }); this.setState({ readSet: next }); },
+      markAllStyle: 'height: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; font-size: 14px; font-weight: 500; ' + (unreadCount === 0 ? 'color: var(--muted-fg)' : 'color: var(--fg)')
+    };
+  }
+}
+</script>
+</body>
+</html>

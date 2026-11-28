@@ -1,0 +1,114 @@
+    <main style="flex: 1; min-height: 0; overflow-y: auto; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Organisation</h1>
+        <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Units, positions and who holds them.</p>
+      </div>
+
+      <label style="position: relative; display: flex; align-items: center">
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Find a unit</span>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input type="search" placeholder="Find a unit" style="width: 100%; height: 44px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 16px; outline: none">
+      </label>
+
+      <section aria-labelledby="po-unit" style="display: flex; flex-direction: column; gap: 10px">
+        <nav aria-label="Unit path" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; font-size: 13px; color: var(--muted-fg)">
+          <sc-for list="{{crumbs}}" as="c" hint-placeholder-count="1">
+            <button type="button" onClick="{{c.pick}}" style="min-height: 32px; padding: 0 2px; border: 0; background: transparent; color: var(--muted-fg); font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px">{{c.name}}</button>
+            <span aria-hidden="true">›</span>
+          </sc-for>
+          <span style="color: var(--text-2)">{{unit.name}}</span>
+        </nav>
+        <div style="display: flex; align-items: flex-start; gap: 8px">
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <h2 id="po-unit" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{unit.name}}</h2>
+            <span style="font-size: 13px; color: var(--muted-fg)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">{{unit.code}}</span> · Since {{unit.since}} · {{unit.summary}}</span>
+          </div>
+          <sc-if value="{{canEdit}}" hint-placeholder-val="{{true}}">
+            <button type="button" class="ghost" aria-haspopup="dialog" onClick="{{openSheet}}" aria-label="More for this unit" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); cursor: pointer">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            </button>
+          </sc-if>
+        </div>
+      </section>
+
+      <section aria-labelledby="po-pos" style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+          <h3 id="po-pos" style="margin: 0; font-size: 14px; font-weight: 600">Positions</h3>
+          <sc-if value="{{canEdit}}" hint-placeholder-val="{{true}}">
+            <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+              Add position
+            </button>
+          </sc-if>
+        </div>
+        <sc-if value="{{hasPositions}}" hint-placeholder-val="{{true}}">
+          <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+            <sc-for list="{{positions}}" as="p" hint-placeholder-count="5">
+              <li style="{{p.rowStyle}}">
+                <a href="#" style="display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 8px 8px 8px 12px; text-decoration: none; color: var(--fg)">
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="display: flex; align-items: center; gap: 6px"><span style="font-weight: 500">{{p.title}}</span><sc-if value="{{p.head}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">Head</span></sc-if></span>
+                    <sc-if value="{{p.filled}}" hint-placeholder-val="{{true}}"><span style="font-size: 13px; color: var(--text-1)">{{p.holder}} <span style="color: var(--muted-fg)">· since {{p.since}}</span></span></sc-if>
+                    <sc-if value="{{p.vacant}}" hint-placeholder-val="{{false}}"><span><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">Vacant</span></span></sc-if>
+                  </span>
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m9 18 6-6-6-6"></path></svg>
+                </a>
+              </li>
+            </sc-for>
+          </ul>
+        </sc-if>
+        <sc-if value="{{noPositions}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 20px 16px; border: 1px dashed var(--border); border-radius: 10px; text-align: center; font-size: 13px; color: var(--muted-fg)">No positions in this unit.</div>
+        </sc-if>
+      </section>
+
+      <sc-if value="{{hasSubunits}}" hint-placeholder-val="{{true}}">
+        <section aria-labelledby="po-sub" style="display: flex; flex-direction: column; gap: 8px">
+          <h3 id="po-sub" style="margin: 0; font-size: 14px; font-weight: 600">Sub-units</h3>
+          <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+            <sc-for list="{{subunits}}" as="s" hint-placeholder-count="2">
+              <li style="{{s.rowStyle}}">
+                <button type="button" class="ghost" onClick="{{s.pick}}" style="display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px 8px 6px 12px; border: 0; background: transparent; color: var(--fg); font-size: 14px; text-align: left; cursor: pointer">
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 500">{{s.name}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{s.meta}}</span></span>
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m9 18 6-6-6-6"></path></svg>
+                </button>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+      </sc-if>
+
+      <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <button type="button" class="ghost" aria-expanded="{{histAria}}" aria-controls="po-hist" onClick="{{toggleHist}}" style="display: flex; align-items: center; gap: 8px; width: 100%; height: 48px; padding: 0 12px; border: 0; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{histChev}}"><path d="m9 18 6-6-6-6"></path></svg>
+          Change history
+        </button>
+        <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+          <ol id="po-hist" aria-label="Changes, newest first" style="list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border)">
+            <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+              <li style="{{h.rowStyle}}">
+                <span style="font-size: 13px">{{h.change}}</span>
+                <span style="font-size: 12px; color: var(--muted-fg)">{{h.by}} · {{h.when}}</span>
+              </li>
+            </sc-for>
+          </ol>
+        </sc-if>
+      </div>
+    </main>
+
+  <!-- Unit actions sheet -->
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeSheet}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 8; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="po-sheet" onKeyDown="{{sheetKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 9; display: flex; flex-direction: column; padding: 8px 12px 20px; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -10px 40px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 36px; height: 4px; margin-bottom: 8px; border-radius: 2px; background: var(--chip)"></span>
+      <h2 id="po-sheet" style="margin: 0 4px 6px; font-size: 16px; font-weight: 600">{{unit.name}}</h2>
+      <sc-for list="{{menuItems}}" as="m" hint-placeholder-count="4">
+        <button type="button" class="ghost" onClick="{{closeSheet}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 52px; padding: 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; color: var(--fg); font-size: 15px; text-align: left; cursor: pointer">
+          <span>{{m.label}}</span>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{m.hint}}</span>
+        </button>
+      </sc-for>
+      <button type="button" onClick="{{closeSheet}}" style="margin-top: 8px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button>
+    </div>
+  </sc-if>
+

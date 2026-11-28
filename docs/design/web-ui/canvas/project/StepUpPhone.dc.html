@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Confirm it is you on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input,select,textarea{font-family:inherit}
+.ghost:hover{background:var(--hover)}
+.ghost:active{background:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{opacity:.55}}
+.sk{background:var(--muted);border-radius:6px;animation:pulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.sk,.spin{animation:none}}
+@keyframes caret-blink{0%,70%,100%{opacity:1}20%,50%{opacity:0}}
+.otp-caret{animation:caret-blink 1.2s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.otp-caret{animation:none}}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; font-weight: 500">CR/2026/0142</header>
+  <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; padding: 16px"><span class="sk" style="display: block; width: 80%; height: 18px; "></span><span class="sk" style="display: block; width: 100%; height: 100px; border-radius: 10px"></span><span class="sk" style="display: block; width: 100%; height: 160px; border-radius: 10px"></span></div>
+  <span aria-hidden="true" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; background: rgba(0,0,0,0.5)"></span>
+<sc-if value="{{is.code}}" hint-placeholder-val="{{true}}"><form role="dialog" aria-modal="true" aria-labelledby="su-code-t" aria-describedby="su-code-d" novalidate style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span><div style="display: flex; align-items: flex-start; gap: 12px">
+    <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--muted); color: var(--fg); flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="su-code-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2><p id="su-code-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+    <label for="su-code" style="font-size: 14px; font-weight: 500">Code</label>
+    <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_code.value}}" onChange="{{otp.su_code.onInput}}" onFocus="{{otp.su_code.onFocus}}" onBlur="{{otp.su_code.onBlur}}" disabled="{{otp.su_code.disabled}}" aria-invalid="{{otp.su_code.invalid}}" aria-describedby="{{otp.su_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_code.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_code.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+    
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">Confirm</button><button type="button" class="ghost" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></form></sc-if>
+<sc-if value="{{is.password}}" hint-placeholder-val="{{false}}"><form role="dialog" aria-modal="true" aria-labelledby="su-password-t" aria-describedby="su-password-d" novalidate style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span><div style="display: flex; align-items: flex-start; gap: 12px">
+    <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--muted); color: var(--fg); flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="su-password-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2><p id="su-password-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter your password to continue.</p></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <label for="su-password" style="font-size: 14px; font-weight: 500">Password</label>
+    <input id="su-password" type="password" autocomplete="current-password" aria-invalid="false" style="width: 100%; height: 44px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">Confirm</button><button type="button" class="ghost" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></form></sc-if>
+<sc-if value="{{is.wrong}}" hint-placeholder-val="{{false}}"><form role="dialog" aria-modal="true" aria-labelledby="su-wrong-t" aria-describedby="su-wrong-d" novalidate style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span><div style="display: flex; align-items: flex-start; gap: 12px">
+    <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--muted); color: var(--fg); flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="su-wrong-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2><p id="su-wrong-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+    <label for="su-wrong" style="font-size: 14px; font-weight: 500">Code</label>
+    <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="su-wrong" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_wrong.value}}" onChange="{{otp.su_wrong.onInput}}" onFocus="{{otp.su_wrong.onFocus}}" onBlur="{{otp.su_wrong.onBlur}}" disabled="{{otp.su_wrong.disabled}}" aria-invalid="{{otp.su_wrong.invalid}}" aria-describedby="{{otp.su_wrong.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_wrong.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_wrong.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+    <span id="su-wrong-err" role="alert" style="font-size: 12px; color: var(--danger-fg)">That did not match. Try again.</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">Confirm</button><button type="button" class="ghost" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></form></sc-if>
+<sc-if value="{{is.tooMany}}" hint-placeholder-val="{{false}}"><form role="dialog" aria-modal="true" aria-labelledby="su-tooMany-t" aria-describedby="su-tooMany-d" novalidate style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span><div style="display: flex; align-items: flex-start; gap: 12px">
+    <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--muted); color: var(--fg); flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="su-tooMany-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2><p id="su-tooMany-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+    <label for="su-tooMany" style="font-size: 14px; font-weight: 500">Code</label>
+    <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="su-tooMany" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_tooMany.value}}" onChange="{{otp.su_tooMany.onInput}}" onFocus="{{otp.su_tooMany.onFocus}}" onBlur="{{otp.su_tooMany.onBlur}}" disabled="{{otp.su_tooMany.disabled}}" aria-invalid="{{otp.su_tooMany.invalid}}" aria-describedby="{{otp.su_tooMany.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_tooMany.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_tooMany.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+    <span id="su-tooMany-err" role="alert" style="font-size: 12px; color: var(--danger-fg)">Too many attempts. Wait a minute and try again.</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">Confirm</button><button type="button" class="ghost" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></form></sc-if>
+<sc-if value="{{is.checking}}" hint-placeholder-val="{{false}}"><form role="dialog" aria-modal="true" aria-labelledby="su-checking-t" aria-describedby="su-checking-d" novalidate style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span><div style="display: flex; align-items: flex-start; gap: 12px">
+    <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--muted); color: var(--fg); flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="su-checking-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2><p id="su-checking-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+    <label for="su-checking" style="font-size: 14px; font-weight: 500">Code</label>
+    <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="su-checking" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_checking.value}}" onChange="{{otp.su_checking.onInput}}" onFocus="{{otp.su_checking.onFocus}}" onBlur="{{otp.su_checking.onBlur}}" disabled="{{otp.su_checking.disabled}}" aria-invalid="{{otp.su_checking.invalid}}" aria-describedby="{{otp.su_checking.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_checking.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_checking.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+    
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" aria-busy="true" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer"><svg class="spin" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="animation: spin 0.8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>Checking…</button><button type="button" class="ghost" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></form></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"variant":{"editor":"enum","options":["code", "password", "wrong", "tooMany", "checking"],"default":"code"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const v = this.props.variant || 'code';
+    const is = {};
+    ["code", "password", "wrong", "tooMany", "checking"].forEach((k) => { is[k] = k === v; });
+    // One-time code: six boxes in two groups of three (shadcn InputOTP); the real input sits on top, invisible.
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 48px; height: 52px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 20px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+    const OTP = {
+      su_code: mkOtp('su_code', 'su-code', {}),
+      su_wrong: mkOtp('su_wrong', 'su-wrong', { init: '481209', error: true }),
+      su_tooMany: mkOtp('su_tooMany', 'su-tooMany', { init: '481209', error: true }),
+      su_checking: mkOtp('su_checking', 'su-checking', { init: '481209', disabled: true })
+    };
+    return Object.assign({ otp: OTP }, { themeClass: st.theme || this.props.theme || 'system', is: is });
+  }
+}
+</script>
+</body>
+</html>

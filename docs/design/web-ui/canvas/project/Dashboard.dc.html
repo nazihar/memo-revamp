@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Approvals dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+.th{--series-1:#2a78d6;--series-2:#eb6834;--critical:#d03b3b}
+.th.dark{--series-1:#3987e5;--series-2:#d95926}
+@media (prefers-color-scheme: dark){.th.system{--series-1:#3987e5;--series-2:#d95926}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="#" class="nav-item" title="Dashboard" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="AdminOverview.dc.html" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>      <a href="Audit.dc.html" class="nav-item" title="Audit" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+        <span class="lbl">Audit</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">FR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Farhana Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">f.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px; max-width: 720px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Approvals dashboard</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">How approvals are moving: what is waiting and for how long, how long decisions take, and the flow per week.</p>
+        </div>
+      </div>
+
+      <!-- Filters: one row above every figure -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-fg)">Scope
+          <select onChange="{{onScope}}" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+            <option value="unit">Credit Risk</option>
+            <option value="cb">Corporate Banking</option>
+            <option value="me">Me</option>
+          </select>
+        </label>
+        <div role="radiogroup" aria-label="Period" style="display: inline-flex; gap: 2px; height: 32px; padding: 2px; box-sizing: border-box; border-radius: 8px; background: var(--muted)">
+          <sc-for list="{{periods}}" as="p" hint-placeholder-count="3">
+            <button type="button" role="radio" aria-checked="{{p.aria}}" onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 13px; color: var(--muted-fg)">{{showing}}</span>
+      </div>
+
+      <!-- Headline numbers -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <span style="font-size: 13px; color: var(--muted-fg)">Pending now</span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 600; font-variant-numeric: tabular-nums">38</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">tasks waiting for a decision</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted-fg)">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--critical)"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+            Overdue
+          </span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 600; font-variant-numeric: tabular-nums">7</span>
+          <a href="InboxTeam.dc.html" style="font-size: 12px; font-weight: 500; color: var(--fg)">View list</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <span style="font-size: 13px; color: var(--muted-fg)">Decided</span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 600; font-variant-numeric: tabular-nums">112</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">{{periodShort}}</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <span style="font-size: 13px; color: var(--muted-fg)">Created</span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 600; font-variant-numeric: tabular-nums">116</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">{{periodShort}} · 4 more than decided</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 12px">
+
+        <!-- Pending by age -->
+        <figure style="margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+            <figcaption style="display: flex; flex-direction: column">
+              <span style="font-size: 14px; font-weight: 600">Pending by age</span>
+              <span style="font-size: 12px; color: var(--muted-fg)">Working days waiting · 38 tasks</span>
+            </figcaption>
+            <button type="button" class="ghost" aria-pressed="{{t.age}}" onClick="{{toggleAge}}" style="height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">{{tl.age}}</button>
+          </div>
+          <sc-if value="{{chart.age}}" hint-placeholder-val="{{true}}">
+            <div style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; height: 170px; padding-bottom: 24px; border-bottom: 1px solid var(--border); background-image: linear-gradient(var(--hover) 1px, transparent 1px); background-size: 100% 25%">
+              <sc-for list="{{age}}" as="a" hint-placeholder-count="4">
+                <div onMouseEnter="{{a.enter}}" onMouseLeave="{{leave}}" style="position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; cursor: default">
+                  <span style="font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; margin-bottom: 4px">{{a.value}}</span>
+                  <span style="{{a.barStyle}}"></span>
+                  <span style="position: absolute; bottom: -22px; font-size: 12px; color: var(--muted-fg); white-space: nowrap">{{a.label}}</span>
+                  <sc-if value="{{a.hover}}" hint-placeholder-val="{{false}}">
+                    <span role="tooltip" style="position: absolute; bottom: calc(100% - 8px); z-index: 2; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 12px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.10)"><strong>{{a.value}} tasks</strong> waiting {{a.label}}</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{t.age}}" hint-placeholder-val="{{false}}">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+              <thead><tr style="text-align: left; color: var(--muted-fg)"><th scope="col" style="padding: 6px 0; font-weight: 500">Waiting (working days)</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Tasks</th></tr></thead>
+              <tbody><sc-for list="{{age}}" as="a" hint-placeholder-count="4"><tr style="border-top: 1px solid var(--hover)"><td style="padding: 6px 0">{{a.label}}</td><td style="padding: 6px 0; text-align: right; font-variant-numeric: tabular-nums">{{a.value}}</td></tr></sc-for></tbody>
+            </table>
+          </sc-if>
+        </figure>
+
+        <!-- Pending by person -->
+        <figure style="margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+            <figcaption style="display: flex; flex-direction: column">
+              <span style="font-size: 14px; font-weight: 600">Pending by person</span>
+              <span style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted-fg)">
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--series-1)"></span>On time</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--critical)"></span>Overdue</span>
+              </span>
+            </figcaption>
+            <button type="button" class="ghost" aria-pressed="{{t.person}}" onClick="{{togglePerson}}" style="height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">{{tl.person}}</button>
+          </div>
+          <sc-if value="{{chart.person}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <sc-for list="{{people}}" as="p" hint-placeholder-count="7">
+                <div onMouseEnter="{{p.enter}}" onMouseLeave="{{leave}}" style="position: relative; display: grid; grid-template-columns: 128px minmax(0, 1fr) 96px; align-items: center; gap: 10px; font-size: 13px">
+                  <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.name}}</span>
+                  <span style="display: flex; gap: 2px; height: 16px">
+                    <span style="{{p.onStyle}}"></span>
+                    <sc-if value="{{p.hasOver}}" hint-placeholder-val="{{false}}"><span style="{{p.overStyle}}"></span></sc-if>
+                  </span>
+                  <span style="font-size: 12px; color: var(--muted-fg); font-variant-numeric: tabular-nums; white-space: nowrap"><strong style="color: var(--fg); font-weight: 500">{{p.pending}}</strong> {{p.overText}}</span>
+                  <sc-if value="{{p.hover}}" hint-placeholder-val="{{false}}">
+                    <span role="tooltip" style="position: absolute; left: 140px; top: -30px; z-index: 2; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 12px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.10)"><strong>{{p.name}}</strong> · {{p.pending}} pending, {{p.overdue}} overdue</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{t.person}}" hint-placeholder-val="{{false}}">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+              <thead><tr style="text-align: left; color: var(--muted-fg)"><th scope="col" style="padding: 6px 0; font-weight: 500">Person</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Pending</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Overdue</th></tr></thead>
+              <tbody><sc-for list="{{people}}" as="p" hint-placeholder-count="7"><tr style="border-top: 1px solid var(--hover)"><td style="padding: 6px 0">{{p.name}}</td><td style="padding: 6px 0; text-align: right">{{p.pending}}</td><td style="padding: 6px 0; text-align: right">{{p.overdue}}</td></tr></sc-for></tbody>
+            </table>
+          </sc-if>
+        </figure>
+
+        <!-- Cycle time by type -->
+        <figure style="margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+            <figcaption style="display: flex; flex-direction: column">
+              <span style="font-size: 14px; font-weight: 600">Cycle time by memo type</span>
+              <span style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted-fg)">
+                <span>Days from submission to decision</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 9px; height: 9px; border-radius: 50%; background: var(--series-1)"></span>Median</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 9px; height: 9px; border-radius: 50%; background: var(--series-2)"></span>P90 (9 in 10 within)</span>
+              </span>
+            </figcaption>
+            <button type="button" class="ghost" aria-pressed="{{t.cycle}}" onClick="{{toggleCycle}}" style="height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">{{tl.cycle}}</button>
+          </div>
+          <sc-if value="{{chart.cycle}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{cycle}}" as="c" hint-placeholder-count="6">
+                <div onMouseEnter="{{c.enter}}" onMouseLeave="{{leave}}" style="position: relative; display: grid; grid-template-columns: 128px minmax(0, 1fr); align-items: center; gap: 10px; height: 26px; font-size: 13px">
+                  <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.type}}</span>
+                  <span style="position: relative; height: 100%; background-image: linear-gradient(90deg, var(--hover) 1px, transparent 1px); background-size: 25% 100%">
+                    <span style="{{c.rangeStyle}}"></span>
+                    <span style="{{c.medStyle}}"></span>
+                    <span style="{{c.p90Style}}"></span>
+                    <span style="{{c.labelStyle}}">{{c.p90}}</span>
+                  </span>
+                  <sc-if value="{{c.hover}}" hint-placeholder-val="{{false}}">
+                    <span role="tooltip" style="position: absolute; left: 140px; top: -30px; z-index: 2; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 12px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.10)"><strong>{{c.type}}</strong> · {{c.decided}} decided · median {{c.median}} d · P90 {{c.p90}} d</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 10px; font-size: 11px; color: var(--muted-fg)">
+                <span></span>
+                <span style="display: flex; justify-content: space-between; font-variant-numeric: tabular-nums"><span>0</span><span>5</span><span>10</span><span>15</span><span>20 days</span></span>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{t.cycle}}" hint-placeholder-val="{{false}}">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+              <thead><tr style="text-align: left; color: var(--muted-fg)"><th scope="col" style="padding: 6px 0; font-weight: 500">Memo type</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Decided</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Median (days)</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">P90 (days)</th></tr></thead>
+              <tbody><sc-for list="{{cycle}}" as="c" hint-placeholder-count="6"><tr style="border-top: 1px solid var(--hover)"><td style="padding: 6px 0">{{c.type}}</td><td style="padding: 6px 0; text-align: right">{{c.decided}}</td><td style="padding: 6px 0; text-align: right">{{c.median}}</td><td style="padding: 6px 0; text-align: right">{{c.p90}}</td></tr></sc-for></tbody>
+            </table>
+          </sc-if>
+        </figure>
+
+        <!-- Throughput per week -->
+        <figure style="margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+            <figcaption style="display: flex; flex-direction: column">
+              <span style="font-size: 14px; font-weight: 600">Throughput per week</span>
+              <span style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted-fg)">
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 2px; border-radius: 1px; background: var(--series-1)"></span>Created</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 2px; border-radius: 1px; background: var(--series-2)"></span>Completed</span>
+              </span>
+            </figcaption>
+            <button type="button" class="ghost" aria-pressed="{{t.flow}}" onClick="{{toggleFlow}}" style="height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">{{tl.flow}}</button>
+          </div>
+          <sc-if value="{{chart.flow}}" hint-placeholder-val="{{true}}">
+            <div style="display: grid; grid-template-columns: 24px minmax(0, 1fr) 72px; gap: 6px">
+              <div style="display: flex; flex-direction: column; justify-content: space-between; height: 160px; font-size: 11px; color: var(--muted-fg); text-align: right; font-variant-numeric: tabular-nums"><span>15</span><span>10</span><span>5</span><span>0</span></div>
+              <div style="position: relative; height: 160px; border-bottom: 1px solid var(--border); background-image: linear-gradient(var(--hover) 1px, transparent 1px); background-size: 100% 33.333%">
+                <svg aria-hidden="true" viewBox="0 0 110 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible">
+                  <polyline points="{{createdPts}}" fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+                  <polyline points="{{completedPts}}" fill="none" stroke="var(--series-2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+                </svg>
+                <sc-for list="{{weeks}}" as="w" hint-placeholder-count="12">
+                  <div onMouseEnter="{{w.enter}}" onMouseLeave="{{leave}}" style="{{w.colStyle}}">
+                    <sc-if value="{{w.hover}}" hint-placeholder-val="{{false}}">
+                      <span aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--border-strong)"></span>
+                      <span aria-hidden="true" style="{{w.dotC}}"></span>
+                      <span aria-hidden="true" style="{{w.dotD}}"></span>
+                      <span role="tooltip" style="{{w.tipStyle}}"><strong>Week of {{w.label}}</strong><br>Created {{w.created}} · Completed {{w.completed}}</span>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <span aria-hidden="true" style="{{endC}}"></span>
+                <span aria-hidden="true" style="{{endD}}"></span>
+              </div>
+              <div style="position: relative; height: 160px; font-size: 12px">
+                <span style="{{endLabelC}}">Created 9</span>
+                <span style="{{endLabelD}}">Completed 9</span>
+              </div>
+              <span></span>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--muted-fg)"><span>25 Aug</span><span>22 Sep</span><span>20 Oct</span><span>10 Nov</span></div>
+              <span></span>
+            </div>
+          </sc-if>
+          <sc-if value="{{t.flow}}" hint-placeholder-val="{{false}}">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+              <thead><tr style="text-align: left; color: var(--muted-fg)"><th scope="col" style="padding: 6px 0; font-weight: 500">Week of</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Created</th><th scope="col" style="padding: 6px 0; font-weight: 500; text-align: right">Completed</th></tr></thead>
+              <tbody><sc-for list="{{weeks}}" as="w" hint-placeholder-count="12"><tr style="border-top: 1px solid var(--hover)"><td style="padding: 4px 0">{{w.label}}</td><td style="padding: 4px 0; text-align: right">{{w.created}}</td><td style="padding: 4px 0; text-align: right">{{w.completed}}</td></tr></sc-for></tbody>
+            </table>
+          </sc-if>
+        </figure>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const hov = st.hov || '';
+    const tables = st.tables || {};
+    const weeksN = st.weeks || 12;
+    const leave = () => this.setState({ hov: '' });
+    const on = (id) => () => this.setState({ hov: id });
+
+    const periods = [4, 12, 26].map((n) => ({
+      label: 'Last ' + n + ' weeks',
+      aria: n === weeksN ? 'true' : 'false',
+      style: 'height: 28px; padding: 0 10px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; ' + (n === weeksN ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)'),
+      pick: () => this.setState({ weeks: n })
+    }));
+    const fromLabel = { 4: '21 Oct', 12: '25 Aug', 26: '19 May' }[weeksN];
+
+    const ageData = [['0–2 days', 14], ['3–5 days', 11], ['6–10 days', 8], ['Over 10 days', 5]];
+    const ageMax = 16;
+    const age = ageData.map((a, i) => ({
+      label: a[0], value: String(a[1]), hover: hov === 'a' + i, enter: on('a' + i),
+      barStyle: 'display: block; width: 24px; height: ' + (a[1] / ageMax * 120).toFixed(1) + 'px; border-radius: 4px 4px 0 0; background: var(--series-1)'
+    }));
+
+    const peopleData = [['Farhana Rahman', 8, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 3, 0]];
+    const pMax = 10;
+    const people = peopleData.map((p, i) => ({
+      name: p[0], pending: String(p[1]), overdue: String(p[2]), hasOver: p[2] > 0,
+      overText: p[2] > 0 ? '(' + p[2] + ' overdue)' : '',
+      hover: hov === 'p' + i, enter: on('p' + i),
+      onStyle: 'display: block; width: ' + ((p[1] - p[2]) / pMax * 100).toFixed(1) + '%; height: 100%; border-radius: ' + (p[2] > 0 ? '0' : '0 4px 4px 0') + '; background: var(--series-1)',
+      overStyle: 'display: block; width: ' + (p[2] / pMax * 100).toFixed(1) + '%; height: 100%; border-radius: 0 4px 4px 0; background: var(--critical)'
+    }));
+
+    const cycleData = [['Credit proposal', 41, 6.5, 14], ['Budget request', 18, 4, 9], ['Procurement', 22, 8, 17], ['Policy', 6, 11, 19], ['HR request', 15, 2.5, 6], ['General memo', 10, 1.5, 4]];
+    const cx = (d) => (d / 20 * 100).toFixed(2) + '%';
+    const dot = (color, d) => 'position: absolute; top: 50%; left: ' + cx(d) + '; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: ' + color + '; box-shadow: 0 0 0 2px var(--bg)';
+    const cycle = cycleData.map((c, i) => ({
+      type: c[0], decided: String(c[1]), median: String(c[2]), p90: String(c[3]),
+      hover: hov === 'c' + i, enter: on('c' + i),
+      rangeStyle: 'position: absolute; top: 50%; height: 2px; margin-top: -1px; left: ' + cx(c[2]) + '; width: calc(' + cx(c[3] - c[2]) + '); background: var(--border-strong)',
+      medStyle: dot('var(--series-1)', c[2]),
+      p90Style: dot('var(--series-2)', c[3]),
+      labelStyle: 'position: absolute; top: 50%; transform: translateY(-50%); left: calc(' + cx(c[3]) + ' + 10px); font-size: 11px; color: var(--muted-fg); font-variant-numeric: tabular-nums'
+    }));
+
+    const created = [8, 10, 9, 12, 7, 11, 10, 9, 13, 8, 10, 9];
+    const completed = [7, 9, 10, 8, 9, 12, 8, 10, 11, 9, 10, 9];
+    const labels = ['25 Aug', '1 Sep', '8 Sep', '15 Sep', '22 Sep', '29 Sep', '6 Oct', '13 Oct', '20 Oct', '27 Oct', '3 Nov', '10 Nov'];
+    const X = (i) => 5 + i * (100 / 11);
+    const Y = (v) => 100 - v / 15 * 100;
+    const pts = (arr) => arr.map((v, i) => X(i).toFixed(2) + ',' + Y(v).toFixed(2)).join(' ');
+    const pct = (i) => (X(i) / 110 * 100).toFixed(2) + '%';
+    const mark = (color, i, v) => 'position: absolute; left: ' + pct(i) + '; top: ' + Y(v).toFixed(2) + '%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: ' + color + '; box-shadow: 0 0 0 2px var(--bg)';
+    const weeks = labels.map((l, i) => ({
+      label: l, created: String(created[i]), completed: String(completed[i]),
+      hover: hov === 'w' + i, enter: on('w' + i),
+      colStyle: 'position: absolute; top: 0; bottom: 0; left: calc(' + pct(i) + ' - 4.2%); width: 8.4%; cursor: crosshair',
+      dotC: 'position: absolute; left: 50%; top: ' + Y(created[i]).toFixed(2) + '%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--series-1); box-shadow: 0 0 0 2px var(--bg)',
+      dotD: 'position: absolute; left: 50%; top: ' + Y(completed[i]).toFixed(2) + '%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--series-2); box-shadow: 0 0 0 2px var(--bg)',
+      tipStyle: 'position: absolute; top: -8px; ' + (i > 7 ? 'right: 60%' : 'left: 60%') + '; z-index: 2; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 12px; line-height: 16px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.10)'
+    }));
+    const lastC = created[11], lastD = completed[11];
+
+    const tl = (k) => tables[k] ? 'Show as chart' : 'Show as table';
+    const tog = (k) => () => { const n = Object.assign({}, tables); n[k] = !n[k]; this.setState({ tables: n }); };
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      periods: periods,
+      periodShort: 'in the last ' + weeksN + ' weeks',
+      showing: 'Showing: Credit Risk, ' + fromLabel + ' – 17 Nov 2026',
+      onScope: () => {},
+      leave: leave,
+      age: age, people: people, cycle: cycle, weeks: weeks,
+      createdPts: pts(created), completedPts: pts(completed),
+      endC: mark('var(--series-1)', 11, lastC),
+      endD: mark('var(--series-2)', 11, lastD),
+      endLabelC: 'position: absolute; left: 0; top: calc(' + Y(lastC).toFixed(2) + '% - 18px); color: var(--fg); white-space: nowrap',
+      endLabelD: 'position: absolute; left: 0; top: calc(' + Y(lastD).toFixed(2) + '% + 2px); color: var(--fg); white-space: nowrap',
+      t: { age: !!tables.age, person: !!tables.person, cycle: !!tables.cycle, flow: !!tables.flow },
+      chart: { age: !tables.age, person: !tables.person, cycle: !tables.cycle, flow: !tables.flow },
+      tl: { age: tl('age'), person: tl('person'), cycle: tl('cycle'), flow: tl('flow') },
+      toggleAge: tog('age'), togglePerson: tog('person'), toggleCycle: tog('cycle'), toggleFlow: tog('flow'),
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

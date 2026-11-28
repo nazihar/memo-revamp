@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Memo detail on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.ghost:active{background:var(--muted)}
+.tabs::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="Phone.dc.html" class="ghost" aria-label="Back to Inbox" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; min-width: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">CR/2026/0142</span>
+    <button type="button" class="ghost" aria-label="{{followLabel}}" aria-pressed="{{followAria}}" onClick="{{toggleFollow}}" style="{{followStyle}}">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    </button>
+    <button type="button" class="ghost" aria-label="More options for this memo" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+    </button>
+  </header>
+
+  <!-- Scrolling content -->
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+    <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 12px">
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">In review</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Confidential
+        </span>
+      </div>
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">Credit line renewal for Meghna Agro</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Credit proposal · Round 2 · From Tanvir Ahmed</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--card)">
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 13px; font-weight: 600">Your decision</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">Head of Credit review · step 3 of 5</span>
+        </span>
+        <span style="flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--destructive); color: var(--on-destructive); font-size: 12px; font-weight: 500">Overdue 1 day</span>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Memo sections" style="display: flex; gap: 6px; padding: 0 16px 12px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="6">
+        <button type="button" role="tab" aria-selected="{{t.ariaSel}}" onClick="{{t.pick}}" style="{{t.style}}">
+          {{t.label}}
+          <sc-if value="{{t.hasCount}}" hint-placeholder-val="{{false}}">
+            <span style="{{t.countStyle}}">{{t.count}}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 0 16px 24px">
+
+      <!-- Overview -->
+      <sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <section aria-labelledby="since-h" style="border: 1px solid var(--border-strong); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: var(--card)">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px">
+                  <h2 id="since-h" style="margin: 0; font-size: 14px; font-weight: 600">Since you last looked</h2>
+                  <span style="font-size: 12px; color: var(--muted-fg)">10 Nov, when you returned it</span>
+                </div>
+                <div style="padding: 8px 10px; border-radius: 8px; background: var(--subtle); font-size: 13px; color: var(--text-1)"><span style="color: var(--muted-fg)">You asked:</span> “Please attach a collateral valuation not older than six months.”</div>
+                <div style="display: flex; flex-direction: column">
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Resubmitted by Tanvir Ahmed · 14 Nov, 16:05</span><span style="font-size: 12px; color: var(--muted-fg)">“Added the revised collateral valuation as requested.”</span></span>
+                  
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Document: version 2 → version 3</span><span style="font-size: 12px; color: var(--muted-fg)">2 changes</span></span>
+                  <button type="button" class="ghost" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Compare</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Attachment added</span><span style="font-size: 12px; color: var(--muted-fg)">Panel valuation report, October 2026.pdf</span></span>
+                  <button type="button" class="ghost" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Preview</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">3 new notes</span><span style="font-size: 12px; color: var(--muted-fg)">Mahmud Karim and Sadia Islam recommended it</span></span>
+                  <button type="button" class="ghost" onClick="{{goNotes}}" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Read</button>
+                </div>
+                </div>
+              </section>
+          <section aria-labelledby="pdoc-h" style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              </span>
+              <span style="display: flex; flex-direction: column; min-width: 0">
+                <h2 id="pdoc-h" style="margin: 0; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Credit memo — Meghna Agro.docx</h2>
+                <span style="font-size: 12px; color: var(--muted-fg)">Version 3 · 248 KB · 14 Nov</span>
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px">
+              <a href="DocumentPhone.dc.html" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; text-decoration: none">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                Read document
+              </a>
+              <a href="#" aria-label="Download the document" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 40px; box-sizing: border-box; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+              </a>
+            </div>
+          </section>
+
+          <section aria-labelledby="pdet-h" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+            <h2 id="pdet-h" style="margin: 0 0 6px; font-size: 14px; font-weight: 600">Details</h2>
+            <dl style="margin: 0; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 12px; font-size: 13px">
+              <dt style="color: var(--muted-fg)">Borrower</dt><dd style="margin: 0">Meghna Agro Ltd.</dd>
+              <dt style="color: var(--muted-fg)">Facility</dt><dd style="margin: 0">Revolving credit line</dd>
+              <dt style="color: var(--muted-fg)">Amount</dt><dd style="margin: 0; font-variant-numeric: tabular-nums">BDT 250,000,000</dd>
+              <dt style="color: var(--muted-fg)">Tenor</dt><dd style="margin: 0">12 months</dd>
+              <dt style="color: var(--muted-fg)">Originating unit</dt><dd style="margin: 0">Corporate Banking</dd>
+            </dl>
+          </section>
+
+          <section aria-labelledby="plat-h" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <h2 id="plat-h" style="margin: 0; font-size: 14px; font-weight: 600">Latest note</h2>
+              <button type="button" class="ghost" onClick="{{goNotes}}" style="height: 36px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 13px; font-weight: 500; color: var(--fg)">All notes</button>
+            </div>
+            <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px">
+              <span style="font-weight: 500">Sadia Islam</span>
+              <span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">Recommended</span>
+              <span style="color: var(--muted-fg)">Yesterday</span>
+            </span>
+            <p style="margin: 0; color: var(--text-1)">Updated valuation from the panel valuer is attached. Security cover is now 1.4×. Recommend renewal at the proposed limit.</p>
+          </section>
+
+          <section aria-labelledby="ppeople-h" style="border: 1px solid var(--border); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: var(--card)">
+            <h2 id="ppeople-h" style="margin: 0; font-size: 14px; font-weight: 600">People with access</h2>
+            <span style="font-size: 12px; font-weight: 500; color: var(--muted-fg); margin-top: 2px">Authors</span><div><div style="display: flex; align-items: center; gap: 8px; min-height: 44px; "><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">TA</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Tanvir Ahmed</span><span style="font-size: 12px; color: var(--muted-fg)">initiator</span></span></div><div style="display: flex; align-items: center; gap: 8px; min-height: 44px; border-top: 1px solid var(--hover);"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">NJ</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Nusrat Jahan</span><span style="font-size: 12px; color: var(--muted-fg)">co-author</span></span></div></div>
+            <span style="font-size: 12px; font-weight: 500; color: var(--muted-fg); margin-top: 2px">Copies</span><div><div style="display: flex; align-items: center; gap: 8px; min-height: 44px; "><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">BG</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Branch Gulshan</span><span style="font-size: 12px; color: var(--muted-fg)">list · 6 people · at submit</span></span><span style="flex-shrink: 0; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500; white-space: nowrap">Sent</span></div><div style="display: flex; align-items: center; gap: 8px; min-height: 44px; border-top: 1px solid var(--hover);"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">CA</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Credit Administration</span><span style="font-size: 12px; color: var(--muted-fg)">position · 2 people · after approval</span></span><span style="flex-shrink: 0; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 11px; font-weight: 500; white-space: nowrap">After approval</span></div></div>
+            <span style="font-size: 12px; font-weight: 500; color: var(--muted-fg); margin-top: 2px">Shared with</span><div><div style="display: flex; align-items: center; gap: 8px; min-height: 44px; "><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">KH</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Kamal Hasan</span><span style="font-size: 12px; color: var(--muted-fg)">by Tanvir Ahmed · until 31 Dec 2026</span></span></div></div>
+            <span style="font-size: 12px; color: var(--muted-fg)">Approvers on the route can read it too.</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px"><button type="button" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 44px; padding: 0 12px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Share</button><button type="button" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 44px; padding: 0 12px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: 0; background: transparent; color: var(--text-2)">Copies and receipts</button></div>
+          </section>
+        </div>
+      </sc-if>
+
+      <!-- Note sheet -->
+      <sc-if value="{{isNotes}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <button type="button" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg)">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+            Write a note
+          </button>
+          <sc-for list="{{rounds}}" as="rd" hint-placeholder-count="2">
+            <div style="display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+              <div style="display: flex; flex-direction: column; padding: 8px 12px; background: var(--subtle); border-bottom: 1px solid var(--hover); font-size: 12px; line-height: 16px">
+                <span style="font-weight: 600">{{rd.title}}</span>
+                <span style="color: var(--muted-fg)">{{rd.hint}}</span>
+              </div>
+              <sc-for list="{{rd.notes}}" as="n" hint-placeholder-count="3">
+                <div style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-bottom: 1px solid var(--hover)">
+                  <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px">
+                    <span style="font-weight: 500">{{n.author}}</span>
+                    <span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">{{n.action}}</span>
+                    <sc-if value="{{n.isNew}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); font-size: 11px; font-weight: 600">New</span></sc-if>
+                    <span style="color: var(--muted-fg)">{{n.time}}</span>
+                  </span>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{n.position}}</span>
+                  <p style="margin: 0; color: var(--text-1)">{{n.text}}</p>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- Approvers -->
+      <sc-if value="{{isRoute}}" hint-placeholder-val="{{false}}">
+        <section aria-label="Approvers" style="padding: 14px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+            <sc-for list="{{route}}" as="s" hint-placeholder-count="5">
+              <li style="display: flex; gap: 10px">
+                <div aria-hidden="true" style="display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0">
+                  <sc-if value="{{s.done}}" hint-placeholder-val="{{false}}">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); color: var(--primary-fg)">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{s.current}}" hint-placeholder-val="{{false}}">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--primary); background: var(--bg)">
+                      <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary)"></span>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{s.upcoming}}" hint-placeholder-val="{{true}}">
+                    <span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--border-strong); background: var(--bg)"></span>
+                  </sc-if>
+                  <sc-if value="{{s.hasLine}}" hint-placeholder-val="{{true}}">
+                    <span style="{{s.lineStyle}}"></span>
+                  </sc-if>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1px; padding-bottom: 14px; min-width: 0">
+                  <span style="font-size: 13px; font-weight: 500">{{s.title}}</span>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{s.who}}</span>
+                  <span style="{{s.statusStyle}}">{{s.status}}</span>
+                </div>
+              </li>
+            </sc-for>
+          </ol>
+        </section>
+      </sc-if>
+
+      <!-- Attachments -->
+      <sc-if value="{{isAttachments}}" hint-placeholder-val="{{false}}">
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+          <sc-for list="{{attachments}}" as="f" hint-placeholder-count="3">
+            <li style="display: flex; align-items: center; gap: 10px; padding: 8px 4px 8px 12px; border-bottom: 1px solid var(--hover)">
+              <div style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+                <span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{f.title}}</span>
+                <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-fg)">
+                  {{f.meta}}
+                  <sc-if value="{{f.restricted}}" hint-placeholder-val="{{false}}">
+                    <span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Restricted</span>
+                  </sc-if>
+                </span>
+              </div>
+              <button type="button" class="ghost" aria-label="{{f.downloadLabel}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--text-2)">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+              </button>
+            </li>
+          </sc-for>
+        </ul>
+      </sc-if>
+
+      <!-- Linked memos -->
+      <sc-if value="{{isLinks}}" hint-placeholder-val="{{false}}">
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+          <sc-for list="{{links}}" as="l" hint-placeholder-count="2">
+            <li style="border-bottom: 1px solid var(--hover)">
+              <a href="#" style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; text-decoration: none; color: var(--fg)">
+                <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)">
+                  {{l.kind}}
+                  <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 11px; font-weight: 500">{{l.status}}</span>
+                </span>
+                <span style="font-weight: 500">{{l.subject}}</span>
+                <span style="font-size: 12px; color: var(--muted-fg); font-family: 'Geist Mono', ui-monospace, monospace">{{l.ref}}</span>
+              </a>
+            </li>
+          </sc-for>
+        </ul>
+      </sc-if>
+
+      <!-- History -->
+      <sc-if value="{{isHistory}}" hint-placeholder-val="{{false}}">
+        <ol style="list-style: none; margin: 0; padding: 4px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+          <sc-for list="{{history}}" as="h" hint-placeholder-count="8">
+            <li style="display: flex; flex-direction: column; padding: 8px 0; border-bottom: 1px solid var(--hover); font-size: 13px">
+              <span><span style="font-weight: 500">{{h.who}}</span> {{h.what}}</span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{h.time}} · Round {{h.round}}</span>
+            </li>
+          </sc-for>
+        </ol>
+      </sc-if>
+    </div>
+  </main>
+
+  <!-- Action bar -->
+  <div role="toolbar" aria-label="Your decision" style="flex-shrink: 0; display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--border); background: var(--bg)">
+    <button type="button" class="ghost" aria-label="More actions" aria-haspopup="menu" aria-expanded="{{moreAria}}" onClick="{{openMore}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+    </button>
+    <button type="button" class="ghost" onClick="{{openReturn}}" style="height: 44px; padding: 0 16px; flex-shrink: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg)">Return</button>
+    <button type="button" onClick="{{openApprove}}" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+      Approve
+    </button>
+  </div>
+
+  <!-- More actions: bottom sheet -->
+  <sc-if value="{{moreOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeMore}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <div role="menu" aria-label="More actions" onKeyDown="{{moreKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 11; display: flex; flex-direction: column; padding: 8px 8px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.15)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin: 0 0 8px; border-radius: 2px; background: var(--chip)"></span>
+      <button type="button" role="menuitem" class="ghost" onClick="{{openReject}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 48px; padding: 4px 12px; border: 0; border-radius: 8px; background: transparent; text-align: left">
+        <span style="font-size: 15px; font-weight: 500; color: var(--danger-fg)">Reject</span>
+        <span style="font-size: 12px; color: var(--muted-fg)">Ends the memo</span>
+      </button>
+      <sc-for list="{{moreItems}}" as="m" hint-placeholder-count="5">
+        <button type="button" role="menuitem" class="ghost" onClick="{{closeMore}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 48px; padding: 4px 12px; border: 0; border-radius: 8px; background: transparent; text-align: left; color: var(--fg)">
+          <span style="font-size: 15px">{{m.label}}</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">{{m.hint}}</span>
+        </button>
+      </sc-for>
+      <div aria-hidden="true" style="height: 1px; background: var(--chip); margin: 4px 0"></div>
+      <button type="button" role="menuitem" class="ghost" onClick="{{closeMore}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 48px; padding: 4px 12px; border: 0; border-radius: 8px; background: transparent; text-align: left; color: var(--fg)">
+        <span style="font-size: 15px">Declare an interest</span>
+        <span style="font-size: 12px; color: var(--muted-fg)">You can no longer approve this memo</span>
+      </button>
+    </div>
+  </sc-if>
+
+  <!-- Decision sheet -->
+  <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDialog}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="pdlg-title" aria-describedby="pdlg-desc" onKeyDown="{{dialogKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; display: flex; flex-direction: column; gap: 14px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 id="pdlg-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{dlg.title}}</h2>
+        <p id="pdlg-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{dlg.desc}}</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="pdlg-remark" style="font-size: 14px; font-weight: 500">{{dlg.label}}</label>
+        <textarea id="pdlg-remark" rows="4" placeholder="{{dlg.placeholder}}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; line-height: 22px; color: var(--fg); resize: none; outline: none"></textarea>
+      </div>
+      <label style="display: flex; align-items: flex-start; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer">
+          <input type="checkbox" checked="{{nextOn}}" onChange="{{toggleNext}}" style="margin: 2px 0 0; width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Open my next task after this</span><span style="font-size: 12px; color: var(--muted-fg)">{{nextHint}}</span></span>
+        </label>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <button type="button" onClick="{{confirmDecision}}" style="{{dlg.btnStyle}}">{{dlg.confirm}}</button>
+        <button type="button" class="ghost" onClick="{{closeDialog}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 15px; font-weight: 500; color: var(--fg)">Cancel</button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 12px; right: 12px; bottom: 76px; z-index: 40; display: flex; flex-direction: column; align-items: stretch; gap: 8px 14px; padding: 10px 12px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 10px 30px rgba(0,0,0,0.15); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <span style="display: flex; gap: 8px">
+        <sc-if value="{{toastNext}}" hint-placeholder-val="{{false}}"><button type="button" class="ghost" onClick="{{dismissToast}}" style="height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Open next task</button></sc-if>
+        <a href="Phone.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 10px; border-radius: 6px; color: var(--fg); font-size: 13px; font-weight: 500">Back to Inbox</a>
+      </span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"queue":{"editor":"enum","options":["more","last"],"default":"more"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const tab = st.tab || 'overview';
+    const following = st.following !== undefined ? st.following : true;
+    const dialog = st.dialog || '';
+    const moreOpen = !!st.moreOpen;
+
+    const tabBase = 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: 500; white-space: nowrap; ';
+    const tabs = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'notes', label: 'Note sheet', count: 6 },
+      { id: 'route', label: 'Approvers' },
+      { id: 'attachments', label: 'Attachments', count: 3 },
+      { id: 'links', label: 'Linked', count: 2 },
+      { id: 'history', label: 'History' }
+    ].map((t) => {
+      const on = t.id === tab;
+      return {
+        label: t.label,
+        count: t.count,
+        hasCount: !!t.count,
+        ariaSel: on ? 'true' : 'false',
+        style: tabBase + (on ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--text-2)'),
+        countStyle: 'display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; ' + (on ? 'background: var(--primary-divider); color: var(--primary-fg)' : 'background: var(--muted); color: var(--text-2)'),
+        pick: () => this.setState({ tab: t.id })
+      };
+    });
+
+    const note = (author, position, action, time, text) => ({ author, position, action, time, text });
+    const rounds = [
+      { title: 'Round 2', hint: 'Current round', notes: [
+        note('Sadia Islam', 'Credit Risk Analyst', 'Recommended', 'Yesterday', 'Updated valuation from the panel valuer is attached. Security cover is now 1.4×. Recommend renewal at the proposed limit.'),
+        note('Mahmud Karim', 'Head of Corporate Banking', 'Recommended', '15 Nov', 'Relationship remains satisfactory. Repayments have been on time for 36 months.'),
+        note('Tanvir Ahmed', 'Relationship Manager', 'Resubmitted', '14 Nov', 'Added the revised collateral valuation as requested.')
+      ]},
+      { title: 'Round 1', hint: 'Earlier round: its approvals no longer count', notes: [
+        note('Farhana Rahman', 'Head of Credit', 'Returned', '10 Nov', 'Please attach a collateral valuation not older than six months.'),
+        note('Mahmud Karim', 'Head of Corporate Banking', 'Recommended', '6 Nov', 'Supported. Client is a long-standing relationship of the unit.'),
+        note('Tanvir Ahmed', 'Relationship Manager', 'Submitted', '5 Nov', 'Renewal of the existing revolving line at the same limit; pricing unchanged.')
+      ]}
+    ];
+
+    const routeDefs = [
+      { state: 'done', title: 'Head of Corporate Banking', who: 'Mahmud Karim', status: 'Recommended · 15 Nov' },
+      { state: 'done', title: 'Credit risk analysts · any one', who: 'Sadia Islam, Imran Hossain', status: 'Recommended by Sadia Islam · yesterday' },
+      { state: 'current', title: 'Head of Credit', who: 'Farhana Rahman (you)', status: 'Waiting for you · overdue 1 day' },
+      { state: 'upcoming', title: 'Chief Risk Officer', who: 'Shirin Akter', status: 'Not yet' },
+      { state: 'upcoming', title: 'Managing Director', who: 'Position holder', status: 'Not yet' }
+    ];
+    const route = routeDefs.map((s, i) => ({
+      title: s.title, who: s.who, status: s.status,
+      done: s.state === 'done', current: s.state === 'current', upcoming: s.state === 'upcoming',
+      hasLine: i < routeDefs.length - 1,
+      lineStyle: 'flex: 1; width: 2px; min-height: 16px; margin: 2px 0; background: ' + (s.state === 'done' ? 'var(--primary)' : 'var(--chip)'),
+      statusStyle: 'font-size: 12px; line-height: 16px; margin-top: 2px; ' + (s.state === 'current' ? 'color: var(--danger-fg); font-weight: 500' : 'color: var(--muted-fg)')
+    }));
+
+    rounds[0].notes = rounds[0].notes.map((x) => Object.assign({}, x, { isNew: true }));
+    rounds.slice(1).forEach((r) => { r.notes = r.notes.map((x) => Object.assign({}, x, { isNew: false })); });
+    const attachments = [
+      { title: 'Panel valuation report, October 2026.pdf', meta: 'PDF · 1.8 MB', restricted: false },
+      { title: 'Audited financial statements FY2025.pdf', meta: 'PDF · 4.2 MB', restricted: false },
+      { title: 'Group exposure summary.xlsx', meta: 'Excel · 96 KB', restricted: true }
+    ].map((f) => Object.assign({}, f, { downloadLabel: 'Download ' + f.title }));
+    const links = [
+      { kind: 'Follows up', subject: 'Credit line for Meghna Agro, 2025', ref: 'CR/2025/0388', status: 'Approved' },
+      { kind: 'Refers to', subject: 'Agro sector exposure limits', ref: 'RSK/2026/0012', status: 'Closed' }
+    ];
+    const history = [
+      { time: 'Yesterday 13:58', who: 'Sadia Islam', what: 'recommended', round: 2 },
+      { time: '15 Nov 10:22', who: 'Mahmud Karim', what: 'recommended', round: 2 },
+      { time: '14 Nov 16:05', who: 'Tanvir Ahmed', what: 'resubmitted with document version 3', round: 2 },
+      { time: '10 Nov 11:40', who: 'Farhana Rahman', what: 'returned the memo to the initiator', round: 1 },
+      { time: '6 Nov 09:15', who: 'Mahmud Karim', what: 'recommended', round: 1 },
+      { time: '5 Nov 17:30', who: 'Tanvir Ahmed', what: 'submitted; numbered CR/2026/0142', round: 1 }
+    ];
+    const moreItems = [
+      { label: 'Send back', hint: 'To an earlier approver in this round' },
+      { label: 'Ask a question', hint: 'The initiator answers before you decide' },
+      { label: 'Ask for opinions', hint: 'Others advise; you still decide' },
+      { label: 'Forward', hint: 'Hand the decision to someone else' },
+      { label: 'Delegate', hint: 'Someone acts for you on this memo' }
+    ];
+
+    const primaryBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--primary); font-size: 15px; font-weight: 500; color: var(--primary-fg)';
+    const dangerBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--destructive); font-size: 15px; font-weight: 500; color: var(--on-destructive)';
+    const dialogs = {
+      approve: { title: 'Approve CR/2026/0142?', desc: 'You approve document version 3. You may be asked to confirm it is you.', label: 'Remark (optional)', placeholder: 'Add a remark for the note sheet…', confirm: 'Approve', btnStyle: primaryBtn, btnClass: 'primary' },
+      ret: { title: 'Return CR/2026/0142 to its author?', desc: 'Say what needs to change. They can resubmit it.', label: 'Remark *', placeholder: 'What needs to change…', confirm: 'Return', btnStyle: primaryBtn, btnClass: 'primary' },
+      reject: { title: 'Reject CR/2026/0142?', desc: 'The memo ends here. Say why.', label: 'Remark *', placeholder: 'Why it is rejected…', confirm: 'Reject', btnStyle: dangerBtn, btnClass: 'danger' }
+    };
+    const closeDialog = () => this.setState({ dialog: '' });
+
+    // Next task and 'since you last looked' (UX additions).
+    const queueLast = this.props.queue === 'last';
+    const nextOn = st.nextOn !== undefined ? st.nextOn : true;
+    const pastTense = { approve: 'Approved', ret: 'Returned', reject: 'Rejected' };
+    const ux = {
+      nextOn: nextOn,
+      toggleNext: () => this.setState({ nextOn: !nextOn }),
+      nextHint: queueLast ? 'This is your last task in My tasks.' : 'Next: Credit Risk unit budget, FY2027 (2 of 7 in My tasks)',
+      confirmDecision: () => {
+        const verb = pastTense[dialog] || 'Done';
+        const msg = verb + ' CR/2026/0142. ' + (queueLast ? 'That was your last task: My tasks is clear.' : (nextOn ? 'Opening your next task: Credit Risk unit budget, FY2027.' : ''));
+        this.setState({ dialog: '', toast: msg.trim(), toastNext: !nextOn && !queueLast });
+      },
+      hasToast: !!st.toast, toast: st.toast || '', toastNext: !!st.toastNext,
+      dismissToast: () => this.setState({ toast: '' }),
+      prevLabel: 'No previous task: this is the first',
+      nextLabel: 'Next task: Credit Risk unit budget, FY2027'
+    };
+    const closeMore = () => this.setState({ moreOpen: false });
+
+    return Object.assign(ux, {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      tabs: tabs,
+      isOverview: tab === 'overview',
+      isNotes: tab === 'notes',
+      isRoute: tab === 'route',
+      isAttachments: tab === 'attachments',
+      isLinks: tab === 'links',
+      isHistory: tab === 'history',
+      goNotes: () => this.setState({ tab: 'notes' }),
+      rounds: rounds,
+      route: route,
+      attachments: attachments,
+      links: links,
+      history: history,
+      moreItems: moreItems,
+      followLabel: following ? 'Watching this memo' : 'Watch this memo',
+      followAria: following ? 'true' : 'false',
+      followStyle: 'display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; ' + (following ? 'background: var(--muted); color: var(--fg)' : 'background: transparent; color: var(--muted-fg)'),
+      toggleFollow: () => this.setState({ following: !following }),
+      openApprove: () => this.setState({ dialog: 'approve', moreOpen: false }),
+      openReturn: () => this.setState({ dialog: 'ret', moreOpen: false }),
+      openReject: () => this.setState({ dialog: 'reject', moreOpen: false }),
+      dialogOpen: !!dialog,
+      dlg: dialogs[dialog] || dialogs.approve,
+      closeDialog: closeDialog,
+      dialogKey: (ev) => { if (ev && ev.key === 'Escape') closeDialog(); },
+      moreOpen: moreOpen,
+      moreAria: moreOpen ? 'true' : 'false',
+      openMore: () => this.setState({ moreOpen: true }),
+      closeMore: closeMore,
+      moreKey: (ev) => { if (ev && ev.key === 'Escape') closeMore(); }
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Organisation</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Units, positions and who holds them.</p>
+        </div>
+        <sc-if value="{{canEdit}}" hint-placeholder-val="{{true}}">
+          <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            New top unit
+          </button>
+        </sc-if>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px">
+        <!-- Tree -->
+        <nav aria-label="Units" style="flex: 0 1 300px; min-width: 240px; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+          <div style="padding: 10px; border-bottom: 1px solid var(--border)">
+            <label style="position: relative; display: flex; align-items: center">
+              <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Find a unit</span>
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              <input type="search" placeholder="Find a unit" style="width: 100%; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; outline: none">
+            </label>
+          </div>
+          <div style="padding: 8px 4px 6px 12px; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Units</div>
+          <ul role="tree" aria-label="Units" style="list-style: none; margin: 0; padding: 0 6px 8px">
+            <sc-for list="{{tree}}" as="n" hint-placeholder-count="10">
+              <li role="treeitem" aria-expanded="{{n.ariaExp}}" aria-selected="{{n.ariaSel}}" aria-level="{{n.level}}" style="{{n.rowStyle}}">
+                <sc-if value="{{n.hasKids}}" hint-placeholder-val="{{true}}">
+                  <button type="button" aria-label="{{n.toggleLabel}}" onClick="{{n.toggle}}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--muted-fg); cursor: pointer; flex-shrink: 0">
+                    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{n.chevStyle}}"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                </sc-if>
+                <sc-if value="{{n.leaf}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 20px; flex-shrink: 0"></span></sc-if>
+                <button type="button" onClick="{{n.pick}}" style="{{n.btnStyle}}">
+                  <span style="flex: 1; min-width: 0; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{n.name}}</span>
+                </button>
+              </li>
+            </sc-for>
+          </ul>
+        </nav>
+
+        <!-- Unit -->
+        <section aria-labelledby="org-unit" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+              <nav aria-label="Unit path" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; color: var(--muted-fg)">
+                <sc-for list="{{crumbs}}" as="c" hint-placeholder-count="1">
+                  <button type="button" onClick="{{c.pick}}" style="padding: 0; border: 0; background: transparent; color: var(--muted-fg); font-size: 12px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px">{{c.name}}</button>
+                  <span aria-hidden="true">›</span>
+                </sc-for>
+                <span style="color: var(--text-2)">{{unit.name}}</span>
+              </nav>
+              <h2 id="org-unit" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{unit.name}}</h2>
+              <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--muted-fg)">
+                <span>Code <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">{{unit.code}}</span></span>
+                <span aria-hidden="true">·</span><span>Since {{unit.since}}</span>
+                <span aria-hidden="true">·</span><span>{{unit.summary}}</span>
+              </span>
+            </div>
+            <sc-if value="{{canEdit}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">
+                  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                  Add position
+                </button>
+                <span style="position: relative; display: inline-flex">
+                  <button type="button" class="ghost" aria-haspopup="menu" aria-expanded="{{menuAria}}" onClick="{{toggleMenu}}" aria-label="More for this unit" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); cursor: pointer">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                  </button>
+                  <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+                    <button type="button" tabIndex="-1" aria-label="Close menu" onClick="{{closeMenu}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 6; border: 0; padding: 0; background: transparent; cursor: default"></button>
+                    <div role="menu" aria-label="Unit actions" onKeyDown="{{menuKey}}" style="position: absolute; z-index: 7; top: 36px; right: 0; width: 240px; padding: 4px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 8px 24px rgba(0,0,0,0.10)">
+                      <sc-for list="{{menuItems}}" as="m" hint-placeholder-count="4">
+                        <button type="button" role="menuitem" class="ghost" onClick="{{closeMenu}}" style="{{m.style}}">
+                          <span>{{m.label}}</span>
+                          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{m.hint}}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </span>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h3 style="margin: 0; font-size: 14px; font-weight: 600">Positions</h3>
+            <sc-if value="{{hasPositions}}" hint-placeholder-val="{{true}}">
+              <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+                <table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px">
+                  <thead>
+                    <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg); font-size: 13px">
+                      <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500">Position</th>
+                      <th scope="col" style="padding: 0 12px; font-weight: 500">Held by</th>
+                      <th scope="col" style="padding: 0 12px; font-weight: 500; width: 120px">Since</th>
+                      <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; width: 40px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Open</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{positions}}" as="p" hint-placeholder-count="5">
+                      <tr class="lrow" style="border-top: 1px solid var(--hover)">
+                        <td style="padding: 10px 16px; vertical-align: middle">
+                          <span style="display: flex; align-items: center; gap: 8px">
+                            <a href="#" style="font-weight: 500; color: var(--fg); text-decoration: none">{{p.title}}</a>
+                            <sc-if value="{{p.head}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">Head</span></sc-if>
+                          </span>
+                          <sc-if value="{{p.hasCode}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: var(--muted-fg); font-family: 'Geist Mono', ui-monospace, monospace">{{p.code}}</span></sc-if>
+                        </td>
+                        <td style="padding: 0 12px">
+                          <sc-if value="{{p.filled}}" hint-placeholder-val="{{true}}">
+                            <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600">{{p.initials}}</span>{{p.holder}}</span>
+                          </sc-if>
+                          <sc-if value="{{p.vacant}}" hint-placeholder-val="{{false}}">
+                            <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">Vacant</span>
+                          </sc-if>
+                        </td>
+                        <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{p.since}}</td>
+                        <td style="padding: 0 16px 0 12px; text-align: right">
+                          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><path d="m9 18 6-6-6-6"></path></svg>
+                        </td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+            <sc-if value="{{noPositions}}" hint-placeholder-val="{{false}}">
+              <div style="padding: 24px 16px; border: 1px dashed var(--border); border-radius: 10px; text-align: center; font-size: 13px; color: var(--muted-fg)">No positions in this unit.</div>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{hasSubunits}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 14px; font-weight: 600">Sub-units</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px">
+                <sc-for list="{{subunits}}" as="s" hint-placeholder-count="2">
+                  <button type="button" onClick="{{s.pick}}" class="ghost" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--fg); text-align: left; cursor: pointer">
+                    <span style="font-weight: 500">{{s.name}}</span>
+                    <span style="font-size: 12px; color: var(--muted-fg)">{{s.meta}}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+            <button type="button" class="ghost" aria-expanded="{{histAria}}" aria-controls="org-hist" onClick="{{toggleHist}}" style="display: flex; align-items: center; gap: 8px; width: 100%; height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{histChev}}"><path d="m9 18 6-6-6-6"></path></svg>
+              Change history
+            </button>
+            <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+              <div id="org-hist" style="border-top: 1px solid var(--border); overflow-x: auto">
+                <table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px">
+                  <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Changes, newest first</caption>
+                  <thead>
+                    <tr style="text-align: left; color: var(--muted-fg)">
+                      <th scope="col" style="height: 36px; padding: 0 16px; font-weight: 500; width: 160px">When</th>
+                      <th scope="col" style="padding: 0 12px; font-weight: 500">Change</th>
+                      <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; width: 160px">By</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+                      <tr style="border-top: 1px solid var(--hover)">
+                        <td style="padding: 8px 16px; color: var(--muted-fg); white-space: nowrap">{{h.when}}</td>
+                        <td style="padding: 8px 12px">{{h.change}}</td>
+                        <td style="padding: 8px 16px 8px 12px">{{h.by}}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"canEdit":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  units() {
+    return [
+      { id: 'ho', name: 'Head Office', parent: null, code: 'HO', since: '1 Jan 2010', positions: 3 },
+      { id: 'cb', name: 'Corporate Banking', parent: 'ho', code: 'CB-01', since: '1 Jan 2010', positions: 6 },
+      { id: 'lc', name: 'Large Corporates', parent: 'cb', code: 'CB-LC', since: '1 Jul 2016', positions: 4 },
+      { id: 'agro', name: 'Agro and SME Finance', parent: 'cb', code: 'CB-AS', since: '1 Jul 2016', positions: 5 },
+      { id: 'cr', name: 'Credit Risk', parent: 'ho', code: 'CR-01', since: '1 Jan 2018', positions: 5 },
+      { id: 'ca', name: 'Credit Analysis', parent: 'cr', code: 'CR-CA', since: '1 Jan 2018', positions: 3 },
+      { id: 'cad', name: 'Credit Administration', parent: 'cr', code: 'CR-AD', since: '1 Jan 2018', positions: 4 },
+      { id: 'fin', name: 'Finance', parent: 'ho', code: 'FIN-01', since: '1 Jan 2010', positions: 4 },
+      { id: 'rb', name: 'Retail Banking', parent: 'ho', code: 'RB-01', since: '1 Jan 2010', positions: 3 },
+      { id: 'br', name: 'Branches', parent: 'rb', code: 'RB-BR', since: '1 Jan 2010', positions: 0 },
+      { id: 'ia', name: 'Internal Audit', parent: 'ho', code: 'IA-01', since: '1 Jan 2012', positions: 2 }
+    ];
+  }
+  renderVals() {
+    const st = this.state || {};
+    const sel = st.sel || 'cr';
+    const open = st.open || { ho: true, cr: true };
+    const units = this.units();
+    const byId = {};
+    units.forEach((u) => { byId[u.id] = u; });
+    const kids = (id) => units.filter((u) => u.parent === id);
+    const flat = [];
+    const walk = (id, depth) => kids(id).forEach((u) => { flat.push({ u: u, depth: depth }); if (open[u.id]) walk(u.id, depth + 1); });
+    walk(null, 0);
+    const tree = flat.map((f) => {
+      const u = f.u, isSel = u.id === sel, has = kids(u.id).length > 0, exp = !!open[u.id];
+      return {
+        name: u.name,
+        level: String(f.depth + 1), hasKids: has, leaf: !has,
+        ariaExp: has ? (exp ? 'true' : 'false') : undefined, ariaSel: isSel ? 'true' : 'false',
+        toggleLabel: (exp ? 'Collapse ' : 'Expand ') + u.name,
+        chevStyle: 'transition: transform 0.15s; transform: rotate(' + (exp ? '90deg' : '0') + ')',
+        rowStyle: 'display: flex; align-items: center; gap: 2px; padding-left: ' + (f.depth * 16) + 'px',
+        btnStyle: 'flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; color: var(--fg); ' + (isSel ? 'background: var(--active); font-weight: 500' : 'background: transparent'),
+        toggle: () => { const o = Object.assign({}, open); o[u.id] = !exp; this.setState({ open: o }); },
+        pick: () => this.setState({ sel: u.id, menu: false })
+      };
+    });
+    const u = byId[sel];
+    const path = [];
+    for (let p = byId[u.parent]; p; p = byId[p.parent]) path.unshift(p);
+    const pickUnit = (id) => { const o = Object.assign({}, open); for (let q = byId[id]; q; q = byId[q.parent]) o[q.id] = true; this.setState({ sel: id, open: o, menu: false }); };
+    const posData = {
+      cr: [
+        ['Head of Credit', 'Farhana Rahman', '1 Mar 2023', true, 'CR-H'],
+        ['Credit Risk Manager', 'Nusrat Jahan', '15 Aug 2024', false, 'CR-M1'],
+        ['Credit Risk Analyst', 'Sadia Islam', '2 Jan 2025', false, ''],
+        ['Credit Risk Analyst', 'Imran Hossain', '10 Feb 2025', false, ''],
+        ['Senior Credit Officer', '', '', false, 'CR-S1']
+      ],
+      cb: [
+        ['Head of Corporate Banking', 'Mahmud Karim', '1 Jan 2021', true, 'CB-H'],
+        ['Relationship Manager', 'Tanvir Ahmed', '5 May 2022', false, '']
+      ],
+      fin: [
+        ['Chief Financial Officer', 'Rafiq Chowdhury', '1 Jul 2020', true, 'FIN-H'],
+        ['Deputy CFO', 'Karim Reza', '1 Jan 2024', false, '']
+      ]
+    }[sel] || [];
+    const positions = posData.map((p) => ({
+      title: p[0], holder: p[1] || 'Vacant', since: p[2] || '—', head: p[3], code: p[4], hasCode: !!p[4],
+      filled: !!p[1], vacant: !p[1], initials: p[1] ? p[1].split(' ').map((x) => x[0]).join('') : ''
+    }));
+    const subunits = kids(sel).map((k) => { const n = kids(k.id).length; return { name: k.name, meta: k.code + (n ? ' · ' + n + (n === 1 ? ' sub-unit' : ' sub-units') : ''), pick: () => pickUnit(k.id) }; });
+    const vacant = positions.filter((p) => p.vacant).length;
+    const menuOpen = !!st.menu;
+    const closeMenu = () => this.setState({ menu: false });
+    const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      canEdit: this.props.canEdit !== false,
+      tree: tree,
+      unit: { name: u.name, code: u.code, since: u.since, summary: positions.length + (positions.length === 1 ? ' position' : ' positions') + (vacant ? ', ' + vacant + ' vacant' : '') },
+      crumbs: path.map((q) => ({ name: q.name, pick: () => pickUnit(q.id) })),
+      histOpen: !!st.hist, histAria: st.hist ? 'true' : 'false', toggleHist: () => this.setState({ hist: !st.hist }),
+      histChev: 'transition: transform 0.15s; color: var(--muted-fg); transform: rotate(' + (st.hist ? '90deg' : '0') + ')',
+      history: [
+        { when: '12 Oct 2026, 15:40', change: 'Changed (name: Credit Risk Management → Credit Risk)', by: 'Rafiq Chowdhury' },
+        { when: '3 Mar 2025, 10:02', change: 'Moved', by: 'Rafiq Chowdhury' },
+        { when: '1 Jan 2018, 09:00', change: 'Created', by: 'System' }
+      ],
+      positions: positions, hasPositions: positions.length > 0, noPositions: positions.length === 0,
+      subunits: subunits, hasSubunits: subunits.length > 0,
+      menuOpen: menuOpen, menuAria: menuOpen ? 'true' : 'false',
+      toggleMenu: () => this.setState({ menu: !menuOpen }), closeMenu: closeMenu,
+      menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      menuItems: [
+        { label: 'Add sub-unit', hint: 'A unit inside this one' },
+        { label: 'Rename', hint: 'Name and code' },
+        { label: 'Move', hint: 'Its sub-units and positions move with it.', skip: !u.parent },
+        { label: 'Close', hint: 'It stays in the history.' }
+      ].filter((m) => !m.skip).map((m) => Object.assign({}, m, { style: 'display: flex; flex-direction: column; align-items: flex-start; width: 100%; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-size: 14px; text-align: left; cursor: pointer' })),
+      shortcut: (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '')) ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

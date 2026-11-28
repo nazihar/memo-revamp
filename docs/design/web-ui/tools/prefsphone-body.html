@@ -1,0 +1,93 @@
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 14px 16px 24px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Notification settings</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Choose how you hear about each kind of event. Security notices always reach you.</span>
+    </div>
+
+    <sc-for list="{{kinds}}" as="k" hint-placeholder-count="4">
+      <section style="border: 1px solid var(--border); border-radius: 10px">
+        <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 12px 8px">
+          <h2 style="margin: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600">{{k.label}}
+            <sc-if value="{{k.mandatory}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></sc-if>
+          </h2>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{k.desc}}</span>
+        </div>
+        <sc-for list="{{k.cells}}" as="c" hint-placeholder-count="2">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 0 12px; border-top: 1px solid var(--hover)">
+            <span style="font-size: 15px">{{c.channel}}</span>
+            <button type="button" role="switch" aria-checked="{{c.aria}}" aria-label="{{c.label}}" disabled="{{c.locked}}" onClick="{{c.toggle}}" style="{{c.track}}"><span aria-hidden="true" style="{{c.knob}}"></span></button>
+          </div>
+        </sc-for>
+      </section>
+    </sc-for>
+
+    <section aria-labelledby="pnp-watch" style="border: 1px solid var(--border); border-radius: 10px">
+      <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 12px 8px">
+        <h2 id="pnp-watch" style="margin: 0; font-size: 14px; font-weight: 600">Memos you follow</h2>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Anything that needs you always reaches you at once.</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 12px; border-top: 1px solid var(--hover)">
+        <span id="pnp-auto" style="font-size: 15px">Follow memos I create or act on</span>
+        <button type="button" role="switch" aria-checked="{{auto.aria}}" aria-labelledby="pnp-auto" onClick="{{auto.toggle}}" style="{{auto.track}}"><span aria-hidden="true" style="{{auto.knob}}"></span></button>
+      </div>
+      <fieldset style="margin: 0; padding: 8px 12px 12px; border: 0; border-top: 1px solid var(--hover)">
+        <legend style="float: left; width: 100%; padding: 4px 0 6px; font-size: 15px">Email me about followed memos</legend>
+        <div style="clear: both; display: flex; flex-direction: column">
+          <sc-for list="{{emailOpts}}" as="o" hint-placeholder-count="3">
+            <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15px">
+              <input type="radio" name="pnp-email" checked="{{o.on}}" onChange="{{o.pick}}" style="margin: 0; width: 18px; height: 18px; accent-color: var(--primary)">
+              {{o.label}}
+            </label>
+          </sc-for>
+        </div>
+      </fieldset>
+    </section>
+    <span style="font-size: 12px; color: var(--muted-fg); text-align: center">Changes save as you make them.</span>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const prefs = st.prefs || { WORKFLOW: [true, true], WATCHING: [true, false], ADMINISTRATION: [true, true], SECURITY: [true, true] };
+    const auto = st.auto !== undefined ? st.auto : true;
+    const email = st.email || 'DIGEST';
+    const closeNav = () => this.setState({ navOpen: false });
+    const sw = (on, locked) => ({
+      track: 'flex-shrink: 0; display: inline-flex; align-items: center; width: 44px; height: 26px; padding: 3px; box-sizing: border-box; border: 0; border-radius: 13px; background: ' + (on ? 'var(--primary)' : 'var(--chip)') + (locked ? '; opacity: 0.6' : ''),
+      knob: 'display: block; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.2); transform: translateX(' + (on ? '18px' : '0') + '); transition: transform 0.15s'
+    });
+    const defs = [
+      { id: 'WORKFLOW', label: 'Memo approvals', desc: 'Tasks for you, reminders, and your memos being decided' },
+      { id: 'WATCHING', label: 'Memos you follow', desc: 'Steps decided, notes added and memos closed' },
+      { id: 'ADMINISTRATION', label: 'Access and administration', desc: 'Roles given to you and changes to your account' },
+      { id: 'SECURITY', label: 'Security', desc: 'Always on, to protect your account', mandatory: true }
+    ];
+    const kinds = defs.map((d) => ({
+      label: d.label, desc: d.desc, mandatory: !!d.mandatory,
+      cells: ['In memo', 'Email'].map((ch, j) => {
+        const on = !!prefs[d.id][j];
+        const s = sw(on, !!d.mandatory);
+        return {
+          channel: ch, aria: on ? 'true' : 'false', locked: !!d.mandatory, label: d.label + ': ' + ch,
+          track: s.track, knob: s.knob,
+          toggle: () => { if (d.mandatory) return; const n = JSON.parse(JSON.stringify(prefs)); n[d.id][j] = !on; this.setState({ prefs: n }); }
+        };
+      })
+    }));
+    const a = sw(auto, false);
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      navOpen: !!st.navOpen, navAria: st.navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }), closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      kinds: kinds,
+      auto: { aria: auto ? 'true' : 'false', track: a.track, knob: a.knob, toggle: () => this.setState({ auto: !auto }) },
+      emailOpts: [['DIGEST', 'Daily digest (default)'], ['IMMEDIATE', 'At once'], ['OFF', 'Never']].map((o) => ({ label: o[1], on: o[0] === email, pick: () => this.setState({ email: o[0] }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

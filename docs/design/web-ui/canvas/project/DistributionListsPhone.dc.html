@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Distribution lists on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input{font-family:inherit}
+.ghost:active{background:var(--muted)}
+.chips::-webkit-scrollbar{display:none}
+.ed-main>*{flex-shrink:0}
+input:disabled,select:disabled,textarea:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <button type="button" class="ghost" aria-label="Open navigation" aria-expanded="{{navAria}}" onClick="{{openNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+    </button>
+    <span style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0">
+      <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 13px; flex-shrink: 0">N</span>
+      <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+    </span>
+    <a href="SearchPhone.dc.html" class="ghost" aria-label="Search memos" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    </a>
+    <a href="NotificationsPhone.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+      <span aria-hidden="true" style="position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+    </a>
+    <button type="button" class="ghost" aria-label="Account menu, Arif Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">AR</span>
+    </button>
+  </header>
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+    <nav aria-label="Memos" style="flex-shrink: 0; display: flex; gap: 0; padding: 0 4px; border-bottom: 1px solid var(--border); overflow-x: auto"><a href="MemoTypesPhone.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Memo types</a><a href="MemoNumberingPhone.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Numbering</a><a href="DistributionListsPhone.dc.html" aria-current="page" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid var(--fg); color: var(--fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Distribution lists</a></nav>
+    <div style="display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px 8px">
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Distribution lists</h1>
+        <span style="font-size: 13px; color: var(--muted-fg)">Groups of people and positions to copy memos to.</span>
+      </div>
+      <button type="button" onClick="{{openNew}}" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Add</button>
+    </div>
+    <sc-if value="{{hasRows}}" hint-placeholder-val="{{true}}"><ul aria-label="Distribution lists" style="list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--hover)">
+      <sc-for list="{{lists}}" as="r" hint-placeholder-count="5"><li style="display: flex; align-items: center; gap: 4px; padding: 10px 4px 10px 16px; border-bottom: 1px solid var(--hover)">
+        <button type="button" onClick="{{r.open}}" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 0; border: 0; background: transparent; color: var(--fg); font-family: inherit; text-align: left">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 500">{{r.name}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{r.count}}</span></span>
+          <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px"><sc-for list="{{r.chips}}" as="mc" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 12px; color: var(--text-2); white-space: nowrap"><sc-if value="{{mc.isPos}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-flex; color: var(--text-3)"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg></span></sc-if><sc-if value="{{mc.isPerson}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="display: inline-flex; color: var(--text-3)"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></sc-if>{{mc.name}}</span></sc-for><sc-if value="{{r.hasMore}}" hint-placeholder-val="{{true}}"><span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap">{{r.more}}</span></sc-if></span>
+        </button>
+        <button type="button" class="ghost" aria-label="{{r.menuLabel}}" aria-haspopup="dialog" onClick="{{r.toggleMenu}}" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--text-3)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
+      </li></sc-for>
+    </ul></sc-if><sc-if value="{{noRows}}" hint-placeholder-val="{{false}}"><div style="padding: 4px 16px 0"><div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px 16px; border: 1px dashed var(--border); border-radius: 10px; text-align: center"><span style="font-weight: 500; font-size: 16px">No distribution lists yet.</span><span style="max-width: 520px; font-size: 14px; color: var(--muted-fg)">Make a list for a group you often copy memos to, such as a committee. Add positions rather than people, and the list stays right when people move.</span><span style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px"><button type="button" onClick="{{openNew}}" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">Add list</button></span></div></div></sc-if>
+    <p style="margin: 0; padding: 12px 16px 24px; font-size: 13px; color: var(--muted-fg)">{{footNote}}</p>
+  </main>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeMenu}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="ac-sheet" onKeyDown="{{menuKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; display: flex; flex-direction: column; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin-bottom: 8px; border-radius: 2px; background: var(--chip)"></span>
+      <h2 id="ac-sheet" style="margin: 0 4px 6px; font-size: 16px; font-weight: 600">{{sheet.name}}</h2>
+      <sc-for list="{{sheet.items}}" as="m" hint-placeholder-count="3">
+        <button type="button" class="ghost" onClick="{{m.pick}}" style="{{m.sheetStyle}}">{{m.label}}</button>
+      </sc-for>
+      <button type="button" onClick="{{closeMenu}}" style="margin-top: 8px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Close</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isList}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <form role="dialog" aria-modal="true" aria-labelledby="ld-title" novalidate onSubmit="{{ld.submit}}" onKeyDown="{{dlgKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; max-height: 92%; display: flex; flex-direction: column; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; padding: 8px 16px 12px"><span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h2 id="ld-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{ld.title}}</h2><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">People named here get a copy. Positions are expanded when the copy is sent.</p></div>
+      </div>
+      <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 0 16px 12px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="ld-name" style="font-size: 14px; font-weight: 500">Name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="ld-name" type="text" autocomplete="off" value="{{ld.name}}" onChange="{{ld.on_name}}" aria-invalid="{{ld.nameInvalid}}" aria-describedby="ld-name-msg" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{ld.nameBorder}}">
+          <sc-if value="{{ld.nameHasErr}}" hint-placeholder-val="{{false}}"><span id="ld-name-msg" style="font-size: 12px; color: var(--danger-fg)">{{ld.nameErr}}</span></sc-if>
+        </div>
+        <fieldset aria-describedby="ld-members-msg" style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="display: contents"><span style="display: flex; align-items: baseline; justify-content: space-between; width: 100%; font-size: 14px; font-weight: 500"><span>Members <span aria-hidden="true" style="color: var(--danger-fg)">*</span></span><span style="font-size: 12px; font-weight: 400; color: var(--muted-fg)">{{ld.count}}</span></span></legend>
+          <sc-if value="{{ld.hasMembers}}" hint-placeholder-val="{{true}}"><ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden"><sc-for list="{{ld.members}}" as="mb" hint-placeholder-count="4"><li style="{{mb.liStyle}}">
+            <sc-if value="{{mb.isPos}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="display: inline-flex; color: var(--text-3)"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg></span></sc-if><sc-if value="{{mb.isPerson}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="display: inline-flex; color: var(--text-3)"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></sc-if><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 500">{{mb.name}}</span><span style="font-size: 12px; {{mb.subStyle}}">{{mb.kindLabel}} · {{mb.sub}}</span></span>
+            <button type="button" class="ghost" aria-label="{{mb.removeLabel}}" onClick="{{mb.remove}}" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </li></sc-for></ul></sc-if>
+          <sc-if value="{{ld.noMembers}}" hint-placeholder-val="{{false}}"><div style="padding: 12px; border: 1px dashed var(--border); border-radius: 8px; text-align: center; font-size: 13px; color: var(--muted-fg)">No members yet.</div></sc-if>
+          <sc-if value="{{ld.membersHasErr}}" hint-placeholder-val="{{false}}"><span id="ld-members-msg" style="font-size: 12px; color: var(--danger-fg)">{{ld.membersErr}}</span></sc-if>
+          <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 8px; background: var(--subtle); border: 1px solid var(--border)">
+            <div role="radiogroup" aria-label="Add a" style="align-self: flex-start; display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--muted)"><button type="button" role="radio" aria-checked="{{ld.personAria}}" onClick="{{ld.pickPerson}}" style="{{ld.personStyle}}">Person</button><button type="button" role="radio" aria-checked="{{ld.positionAria}}" onClick="{{ld.pickPosition}}" style="{{ld.positionStyle}}">Position</button></div>
+            <div style="display: flex; gap: 8px"><label for="ld-member" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Member</label><input id="ld-member" type="text" role="combobox" aria-expanded="false" placeholder="{{ld.memberPlaceholder}}" style="flex: 1; min-width: 0; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"><button type="button" class="ghost" style="flex-shrink: 0; height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Add member</button></div>
+            <span style="font-size: 12px; color: var(--muted-fg)">A position reaches whoever holds it when a copy is sent.</span>
+          </div>
+        </fieldset>
+        <sc-if value="{{ld.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{ld.alert}}</span></span></div>
+        </sc-if>
+      </div>
+      <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 16px; border-top: 1px solid var(--border)">
+<div style="display: flex; flex-direction: column-reverse; gap: 8px"><sc-if value="{{ld.isEdit}}" hint-placeholder-val="{{true}}"><button type="button" class="ghost" onClick="{{ld.switchOff}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: var(--danger-fg); font-size: 14px; font-weight: 500; cursor: pointer">Switch off</button></sc-if><div style="display: flex; flex-direction: column; gap: 8px"><button type="submit" style="height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">Save</button><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button></div></div>
+      </div>
+    </form>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+  <!-- Navigation drawer -->
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <nav aria-label="Main navigation" onKeyDown="{{navKey}}" style="position: absolute; top: 0; bottom: 0; left: 0; z-index: 11; width: 300px; display: flex; flex-direction: column; padding: 8px; box-sizing: border-box; background: var(--subtle); border-right: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow-y: auto">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 4px 6px 8px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+        <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+          <span style="font-weight: 600; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+        </span>
+        <button type="button" class="ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--text-3)">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Work</div>
+      <a href="HomePhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Home
+      </a>
+      <a href="Phone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span style="flex: 1">Inbox</span>
+        <span style="font-size: 12px; color: var(--text-3)">8</span>
+      </a>
+      <a href="SavedPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        Saved searches
+      </a>
+      <a href="DashboardPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dashboard
+      </a>
+      <a href="StatusPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        Status
+      </a>
+      <a href="OrgPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        Organisation
+      </a>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Administration</div>
+      <a href="AdminOverviewPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        Overview
+      </a>
+      <a href="UsersPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Users
+      </a>
+      <a href="MemoTypesPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500" aria-current="page">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        Memo types
+      </a>
+      <a href="WorkflowsPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        Workflows
+      </a>
+      <a href="TasksPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        Open tasks
+      </a>
+      <a href="OrgSecurityPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        Security
+      </a>
+    </nav>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"empty":{"editor":"boolean","default":false},"dialog":{"editor":"enum","options":["none","new","edit"],"default":"none"},"error":{"editor":"enum","options":["none","required","conflict","failed"],"default":"none"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = true;
+    const navOpen = !!st.navOpen;
+    const closeNav = () => this.setState({ navOpen: false });
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+
+    const M = (kind, name, sub) => ({ kind: kind, name: name, sub: sub });
+    const LISTS = [
+      { id: 'cc', name: 'Credit committee', members: [M('pos', 'Head of Credit', 'Farhana Rahman'), M('pos', 'Chief Financial Officer', 'Rafiq Chowdhury'), M('pos', 'Deputy CFO', 'Karim Reza'), M('pos', 'Head of Corporate Banking', 'Mahmud Karim'), M('person', 'Nusrat Jahan', 'Credit Risk Manager')] },
+      { id: 'ia', name: 'Internal audit', members: [M('pos', 'Head of Internal Audit', 'Shirin Akter'), M('person', 'Abdul Kader', 'Auditor')] },
+      { id: 'bs', name: 'Board secretariat', members: [M('person', 'Rafiq Chowdhury', 'Chief Financial Officer'), M('person', 'Nasrin Akter', 'Company Secretary')] },
+      { id: 'br', name: 'Branch managers, Dhaka', members: [M('pos', 'Branch Manager, Gulshan', 'Tanvir Ahmed'), M('pos', 'Branch Manager, Motijheel', 'Rashed Khan'), M('pos', 'Branch Manager, Uttara', 'Vacant')] },
+      { id: 'it', name: 'IT security', members: [M('person', 'Imran Hossain', 'IT Security Officer')] }
+    ];
+    const target = LISTS.find((l) => l.id === (st.target || 'cc')) || LISTS[0];
+    const isNew = dlg === 'new';
+    const startMembers = isNew ? (err === 'required' ? [] : [M('pos', 'Head of Retail Banking', 'Vacant')]) : target.members;
+    const members = form.members || startMembers;
+    const name = form.name !== undefined ? form.name : (isNew ? (err === 'required' ? '' : 'Retail heads') : target.name);
+    const tried = !!form.tried || err === 'required';
+    const kind = form.kind || 'person';
+    const ldAlert = ({ conflict: 'Someone changed this list meanwhile. Open it again.', failed: 'That did not work. Try again.' })[err] || '';
+    const openList = (l) => this.setState({ dlg: 'edit', target: l.id, err: 'none', form: null, menu: '' });
+    const itemsFor = (l) => [item('Edit', () => openList(l)), item('Switch off', () => this.setState({ menu: '', toast: 'The list is switched off. Memos that used it keep it.' }), true)];
+    const mrow = (m, i, removable) => ({ name: m.name, sub: m.sub + (m.kind === 'pos' ? ' holds it now' : ''), isPos: m.kind === 'pos', isPerson: m.kind !== 'pos', subStyle: m.sub === 'Vacant' ? 'color: var(--warn-fg)' : 'color: var(--muted-fg)',
+      kindLabel: m.kind === 'pos' ? 'Position' : 'Person', remove: () => this.setState({ form: Object.assign({}, form, { name: name, members: members.filter((x, j) => j !== i) }) }), removeLabel: 'Remove ' + m.name,
+      liStyle: 'display: flex; align-items: center; gap: 10px; padding: ' + (PHONE ? '8px 4px 8px 12px' : '6px 4px 6px 12px') + (i > 0 ? '; border-top: 1px solid var(--hover)' : '') });
+    const lists = LISTS.map((l) => { const open = st.menu === l.id; const pos = l.members.filter((m) => m.kind === 'pos').length, ppl = l.members.length - pos; return {
+      name: l.name, open: () => openList(l), items: itemsFor(l), chips: l.members.slice(0, 3).map((m) => ({ name: m.name, isPos: m.kind === 'pos', isPerson: m.kind !== 'pos' })), more: l.members.length > 3 ? '+' + (l.members.length - 3) + ' more' : '', hasMore: l.members.length > 3,
+      count: [pos ? pos + (pos === 1 ? ' position' : ' positions') : '', ppl ? ppl + (ppl === 1 ? ' person' : ' people') : ''].filter(Boolean).join(', '),
+      menuOpen: open && !PHONE, menuAria: open ? 'true' : 'false', menuLabel: 'Actions for ' + l.name, toggleMenu: () => this.setState({ menu: open ? '' : l.id }) }; });
+    const sheetL = PHONE ? LISTS.find((l) => l.id === st.menu) : null;
+    const seg = (on) => 'display: inline-flex; align-items: center; height: ' + (PHONE ? '36px' : '28px') + '; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; ' + (on ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)');
+    const vals = Object.assign(base, {
+      lists: lists, footNote: LISTS.length + ' lists. Switched-off lists are not offered in Copy to; memos that used them keep them.',
+      openNew: () => this.setState({ dlg: 'new', form: {}, err: 'none' }),
+      sheetOpen: !!sheetL, sheet: sheetL ? { name: sheetL.name, items: itemsFor(sheetL) } : { name: '', items: [] },
+      isList: dlg === 'new' || dlg === 'edit',
+      ld: Object.assign({ title: isNew ? 'Add list' : 'Edit ' + target.name, isEdit: !isNew, on_name: setForm('name'),
+        members: members.map((m, i) => mrow(m, i, true)), hasMembers: members.length > 0, noMembers: members.length === 0,
+        membersHasErr: tried && members.length === 0, membersErr: 'Add at least one member.', count: members.length + (members.length === 1 ? ' member' : ' members'),
+        personStyle: seg(kind === 'person'), positionStyle: seg(kind === 'position'), pickPerson: () => this.setState({ form: Object.assign({}, form, { name: name, members: members, kind: 'person' }) }), pickPosition: () => this.setState({ form: Object.assign({}, form, { name: name, members: members, kind: 'position' }) }),
+        personAria: kind === 'person' ? 'true' : 'false', positionAria: kind === 'position' ? 'true' : 'false', memberPlaceholder: kind === 'person' ? 'Search people' : 'Search positions',
+        switchOff: () => this.setState({ dlg: '', toast: 'The list is switched off. Memos that used it keep it.' }),
+        hasAlert: !!ldAlert, alert: ldAlert,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!name.trim() || !members.length) { this.setState({ form: Object.assign({}, form, { name: name, members: members, tried: true }) }); return; }
+          if (ldAlert) { this.setState({ err: err }); return; } this.setState({ dlg: '', form: null, toast: 'Saved.' }); } },
+        fieldVals('ld', 'name', name, tried && !name.trim() ? 'Required.' : ''))
+    });
+    if (this.props.empty) vals.lists = [];
+    vals.hasRows = vals.lists.length > 0; vals.noRows = !vals.hasRows;
+    return Object.assign(vals, {
+      themeClass: st.theme || this.props.theme || 'system',
+      navOpen: navOpen, navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }), closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    });
+  }
+}
+</script>
+</body>
+</html>

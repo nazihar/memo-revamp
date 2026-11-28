@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Operator two-step setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+.th{--bar-bg:#18181b;--bar-fg:#fafafa;--bar-muted:#a1a1aa;--bar-line:rgba(255,255,255,0.14)}
+.ed-main>*{flex-shrink:0}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-direction: column; min-height: 900px; background: var(--subtle); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+    <div style="display: flex; justify-content: flex-end; gap: 4px; padding: 8px 12px">
+      <button type="button" class="ghost" aria-label="Language: English" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 13px; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
+        English
+      </button>
+      <button type="button" class="ghost" aria-label="Theme: System" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+      </button>
+    </div>
+  <main style="flex: 1; display: flex; justify-content: center; padding: 0 16px">
+    <div style="width: 100%; max-width: 400px; box-sizing: border-box; margin-top: 64px; margin-bottom: 48px; padding: 28px; align-self: flex-start; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 16px">M</span>
+        <span style="display: flex; flex-direction: column">
+          <span style="font-weight: 600">Memo &amp; Meetings</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">Platform administration</span>
+        </span>
+      </div>
+      <sc-if value="{{is.newpw}}" hint-placeholder-val="{{true}}">
+      <form novalidate onSubmit="{{lp.submit}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Choose your password</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{who}}</p></div>
+        <sc-if value="{{lp.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{lp.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="lp-password" style="font-size: 14px; font-weight: 500">New password (at least 15 characters) <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="lp-password" type="password" autocomplete="new-password" value="{{lp.password}}" onChange="{{lp.on_password}}" aria-invalid="{{lp.passwordInvalid}}" aria-describedby="lp-password-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{lp.passwordBorder}}">
+          <sc-if value="{{lp.passwordHasErr}}" hint-placeholder-val="{{false}}"><span id="lp-password-msg" style="font-size: 12px; color: var(--danger-fg)">{{lp.passwordErr}}</span></sc-if>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; background: var(--primary); color: var(--primary-fg); border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer">Set password</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.enrol}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{ec.submit}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Set up two-step sign-in</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Scan the code with an authenticator app, or type the key, then enter the 6-digit code it shows.</p></div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px"><svg role="img" aria-label="QR code for your authenticator app" width="132" height="132" viewBox="0 0 21 21" style="flex-shrink: 0; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: #ffffff" shape-rendering="crispEdges"><rect x="0" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="1" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="5" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="19" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="0" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="1" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="1" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="1" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="1" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="2" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="3" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="4" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="5" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="5" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="5" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="5" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="1" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="5" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="14" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="19" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="6" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="8" width="1" height="1" fill="#0a0a0a"></rect><rect x="11" y="9" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="9" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="9" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="9" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="13" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="10" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="13" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="11" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="12" width="1" height="1" fill="#0a0a0a"></rect><rect x="11" y="12" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="12" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="12" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="12" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="1" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="5" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="11" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="14" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="13" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="15" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="13" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="16" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="11" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="17" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="18" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="18" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="18" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="18" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="18" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="11" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="12" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="16" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="17" y="19" width="1" height="1" fill="#0a0a0a"></rect><rect x="0" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="1" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="2" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="3" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="4" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="5" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="6" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="8" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="10" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="13" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="15" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="18" y="20" width="1" height="1" fill="#0a0a0a"></rect><rect x="20" y="20" width="1" height="1" fill="#0a0a0a"></rect></svg><div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 160px"><span style="font-size: 13px; color: var(--muted-fg)">Cannot scan? Type this key in the app instead:</span><span style="display: flex; align-items: flex-start; gap: 4px"><code style="flex: 1; min-width: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; letter-spacing: 0.06em; word-break: break-all">JBSW Y3DP EHPK 3PXP K4ZT 7QAB</code><button type="button" class="ghost" aria-label="Copy the key" title="Copy the key" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c0-1.1.9-2 2-2h2"></path><path d="M4 8V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2"></path></svg></button></span></div></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center"><label for="op-en-code" style="font-size: 14px; font-weight: 500">Code</label><div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px"><input id="op-en-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.en_code.value}}" onChange="{{otp.en_code.onInput}}" onFocus="{{otp.en_code.onFocus}}" onBlur="{{otp.en_code.onBlur}}" aria-invalid="{{otp.en_code.invalid}}" aria-describedby="{{otp.en_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text"><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.en_code.a}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span><span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.en_code.b}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span></div><sc-if value="{{codeHasErr}}" hint-placeholder-val="{{false}}"><span id="op-en-code-err" style="font-size: 12px; color: var(--danger-fg)">{{codeErr}}</span></sc-if></div>
+        <sc-if value="{{ec.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{ec.alert}}</span></span></div>
+        </sc-if>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; background: var(--primary); color: var(--primary-fg); border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer">Continue</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.expired}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.signin}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">This link no longer works</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">This link is no longer valid. Ask for a new one to be generated on the server.</p></div>
+        <p style="margin: 0; font-size: 13px; color: var(--muted-fg)">A link works once, and only for a short time. Whoever runs the platform’s servers can make a new one.</p>
+        <button type="submit" style="width: 100%; height: 36px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer">Go to sign in</button>
+      </form>
+      </sc-if>
+      <p style="margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--hover); font-size: 12px; color: var(--muted-fg)">For the people who run the platform. Organisations sign in at their own address, such as <span style="white-space: nowrap">meghna-leasing.memo.[domain]</span>.</p>
+    </div>
+  </main>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"screen":{"editor":"enum","options":["newpw","enrol","expired"],"default":"newpw"},"error":{"editor":"enum","options":["none","required","weak","codeInvalid","failed"],"default":"none"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = false;
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+
+    const scr = st.screen || this.props.screen || 'newpw';
+    const tried = !!form.tried || err === 'required';
+    const pw = form.password !== undefined ? form.password : (err === 'required' ? '' : (err === 'weak' ? 'tahmid2026' : 'river lantern copper autumn'));
+    const pwErr = tried && !pw ? 'Required.' : (err === 'weak' ? 'Choose a longer password that is not on a list of breached passwords and does not contain your name.' : '');
+    const codeErr = err === 'codeInvalid' && scr === 'enrol' ? 'That code is not valid. Try the next one.' : '';
+    const vals = Object.assign(base, {
+      who: 'Operator account for Tahmid Chowdhury (t.chowdhury@[platform]).',
+      is: { newpw: scr === 'newpw', enrol: scr === 'enrol', expired: scr === 'expired' }, go: { signin: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); } },
+      otp: { en_code: mkOtp('en_code', 'op-en-code', { init: err === 'codeInvalid' ? '120934' : '', error: !!codeErr }) }, codeHasErr: !!codeErr, codeErr: codeErr,
+      lp: Object.assign({ on_password: setForm('password'), hasAlert: err === 'failed' && scr === 'newpw', alert: 'That did not work. Try again.',
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!pw || pwErr) { this.setState({ form: Object.assign({}, form, { password: pw, tried: true }) }); return; } this.setState({ screen: 'enrol', err: 'none' }); } },
+        fieldVals('lp', 'password', pw, pwErr)),
+      // On success the app opens Organisations; there is no message.
+      ec: { hasAlert: err === 'failed' && scr === 'enrol', alert: 'That did not work. Try again.', submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (codeErr) this.setState({ err: err }); } }
+    });
+    return Object.assign(vals, { themeClass: st.theme || this.props.theme || 'system' });
+  }
+}
+</script>
+</body>
+</html>

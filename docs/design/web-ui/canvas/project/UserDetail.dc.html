@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>User detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+button[role="combobox"]:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="Dashboard.dc.html" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="AdminOverview.dc.html" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>
+      <a href="Users.dc.html" class="nav-item" title="Users" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span class="lbl">Users</span>
+      </a>
+      <a href="MemoTypes.dc.html" class="nav-item" title="Memo types" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        <span class="lbl">Memo types</span>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" title="Workflows" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        <span class="lbl">Workflows</span>
+      </a>
+      <a href="Tasks.dc.html" class="nav-item" title="Open tasks" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        <span class="lbl">Open tasks</span>
+      </a>
+      <a href="OrgSecurity.dc.html" class="nav-item" title="Security" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span class="lbl">Security</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Arif Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">AR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Arif Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">a.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <a href="Users.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Back to Users</a>
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: -8px">
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+          <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 14px; font-weight: 600; flex-shrink: 0">{{u.initials}}</span>
+          <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+              <h1 id="user-title" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">{{u.name}}</h1>
+              <span style="{{u.chipStyle}}">{{u.statusLabel}}</span><sc-if value="{{u.admin}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Administrator</span></sc-if>
+            </div>
+            <span style="font-size: 13px; color: var(--muted-fg)">{{u.email}} · Positions, roles and clearance of this person.</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{acts}}" as="a" hint-placeholder-count="3">
+            <button type="button" class="ghost" onClick="{{a.pick}}" style="{{a.style}}">{{a.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Two-step sign-in</dt>
+          <dd style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px"><span style="display: flex; flex-direction: column"><span style="font-weight: 500; color: {{u.mfaColor}}">{{u.mfa}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{u.mfaSub}}</span></span></dd>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-left: 1px solid var(--border)">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Last sign-in</dt>
+          <dd style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px"><span style="font-weight: 500; font-variant-numeric: tabular-nums">{{u.last}}</span></dd>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-left: 1px solid var(--border)">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Clearance</dt>
+          <dd style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px"><span style="font-weight: 500">{{u.clearance}}</span><button type="button" class="ghost" onClick="{{openClearance}}" style="flex-shrink: 0; height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 3px">Change</button></dd>
+        </div>
+      </dl>
+
+      <section aria-labelledby="ud-positions" style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 32px">
+          <h2 id="ud-positions" style="margin: 0; font-size: 14px; font-weight: 600">Positions</h2>
+          <a href="Org.dc.html" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); text-decoration: none">Open in Organisation</a>
+        </div>
+        <sc-if value="{{has_positions}}" hint-placeholder-val="{{true}}">
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
+            <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+              <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Positions held, newest first</caption>
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border)">
+                <th scope="col" style="height: 40px; padding: 0 16px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap">Position</th>
+                <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 160px">From</th>
+                <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 160px">Until</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{positions}}" as="pr" hint-placeholder-count="2">
+                  <tr class="lrow" style="border-bottom: 1px solid var(--hover)">
+                    <td style="padding: 8px 16px; vertical-align: middle"><span style="display: flex; flex-direction: column; gap: 2px"><a href="Position.dc.html" style="font-weight: 500; color: var(--fg); text-decoration: none">{{pr.title}}</a><span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{pr.unit}}</span></span></td>
+                    <td style="padding: 0 12px; vertical-align: middle; color: var(--text-1); white-space: nowrap; font-variant-numeric: tabular-nums">{{pr.from}}</td>
+                    <td style="padding: 0 12px; vertical-align: middle; color: var(--text-1); white-space: nowrap; font-variant-numeric: tabular-nums">{{pr.until}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+        <sc-if value="{{noPositions}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 20px 16px; border: 1px dashed var(--border); border-radius: 10px; text-align: center; font-size: 14px; color: var(--muted-fg)">No positions.</div>
+        </sc-if>
+      </section>
+
+      <section aria-labelledby="ud-roles" style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 32px">
+          <h2 id="ud-roles" style="margin: 0; font-size: 14px; font-weight: 600">Roles</h2>
+          <button type="button" class="ghost" onClick="{{openGrant}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Give a role</button>
+        </div>
+        <sc-if value="{{has_grants}}" hint-placeholder-val="{{true}}">
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
+            <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px">
+              <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Roles given to this person</caption>
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border)">
+                <th scope="col" style="height: 40px; padding: 0 16px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap">Role</th>
+                <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 220px">Where</th>
+                <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 140px">Given on</th>
+                <th scope="col" style="width: 100px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{grants}}" as="gt" hint-placeholder-count="2">
+                  <tr class="lrow" style="border-bottom: 1px solid var(--hover)">
+                    <td style="padding: 8px 16px; vertical-align: middle"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">{{gt.role}}</span><span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{gt.kind}}</span></span></td>
+                    <td style="padding: 0 12px; vertical-align: middle; color: var(--text-1)">{{gt.where}}</td>
+                    <td style="padding: 0 12px; vertical-align: middle; color: var(--muted-fg); white-space: nowrap; font-variant-numeric: tabular-nums">{{gt.given}}</td>
+                    <td style="padding: 0 8px 0 12px; vertical-align: middle; text-align: right"><button type="button" class="ghost" onClick="{{gt.revoke}}" aria-label="{{gt.revokeLabel}}" style="height: 30px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Revoke</button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+        <sc-if value="{{noGrants}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 20px 16px; border: 1px dashed var(--border); border-radius: 10px; text-align: center; font-size: 14px; color: var(--muted-fg)">Only the basic user role, which everyone has.</div>
+        </sc-if>
+        <span style="padding: 0 4px; font-size: 13px; color: var(--muted-fg)">Everyone also holds the User role. Changes here ask you to confirm it is you.</span>
+      </section>
+    </main>
+  </div>
+
+  <sc-if value="{{isGrant}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="gr-title" novalidate onSubmit="{{gr.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="gr-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Give a role</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">What they may do and where.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="gr-role" style="font-size: 14px; font-weight: 500">Role <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <span style="position: relative; display: flex; align-items: center">
+            <span style="position: relative; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; width: 100%"><button type="button" id="gr-role" aria-invalid="{{gr.roleInvalid}}" aria-describedby="gr-role-msg gr-role-hint" role="combobox" aria-haspopup="listbox" aria-expanded="{{cbx.role.aria}}" aria-controls="cbx-role-list" onClick="{{cbx.role.toggle}}" style="width: 100%; height: 36px; padding: 0 30px 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{gr.roleBorder}}; {{gr.roleLook}}; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{cbx.role.value}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button><sc-if value="{{cbx.role.isOpen}}" hint-placeholder-val="{{false}}"><button type="button" tabIndex="-1" aria-label="Close" onClick="{{cbx.role.close}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 40; border: 0; padding: 0; background: transparent; cursor: default"></button><div onKeyDown="{{cbx.role.key}}" style="position: absolute; z-index: 41; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 0 4px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12)"><label style="display: flex; align-items: center; gap: 8px; margin: 0 -4px 4px; padding: 0 10px; border-bottom: 1px solid var(--border)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0">Search roles</span><input type="text" placeholder="Search roles…" value="{{cbx.role.q}}" onChange="{{cbx.role.onQ}}" aria-controls="cbx-role-list" autocomplete="off" style="flex: 1; min-width: 0; height: 34px; border: 0; outline: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px"></label><ul id="cbx-role-list" role="listbox" aria-label="Role" style="list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto"><sc-for list="{{cbx.role.items}}" as="c1" hint-placeholder-count="4"><li role="none"><button type="button" role="option" aria-selected="{{c1.aria}}" onClick="{{c1.pick}}" class="ghost" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; text-align: left; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{c1.check}}"><path d="M20 6 9 17l-5-5"></path></svg><span>{{c1.label}}</span></button></li></sc-for></ul><sc-if value="{{cbx.role.empty}}" hint-placeholder-val="{{false}}"><span style="padding: 16px 8px; font-size: 13px; color: var(--muted-fg); text-align: center">No roles found.</span></sc-if></div></sc-if></span>
+          </span>
+          <sc-if value="{{gr.roleHasErr}}" hint-placeholder-val="{{false}}"><span id="gr-role-msg" style="font-size: 12px; color: var(--danger-fg)">{{gr.roleErr}}</span></sc-if>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="gr-where" style="font-size: 14px; font-weight: 500">Where</label>
+          <span style="position: relative; display: flex; align-items: center">
+            <span style="position: relative; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; width: 100%"><button type="button" id="gr-where" disabled="{{gr.whereDisabled}}" aria-invalid="{{gr.whereInvalid}}" aria-describedby="gr-where-msg gr-where-hint" role="combobox" aria-haspopup="listbox" aria-expanded="{{cbx.where.aria}}" aria-controls="cbx-where-list" onClick="{{cbx.where.toggle}}" style="width: 100%; height: 36px; padding: 0 30px 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{gr.whereBorder}}; {{gr.whereLook}}; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{cbx.where.value}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button><sc-if value="{{cbx.where.isOpen}}" hint-placeholder-val="{{false}}"><button type="button" tabIndex="-1" aria-label="Close" onClick="{{cbx.where.close}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 40; border: 0; padding: 0; background: transparent; cursor: default"></button><div onKeyDown="{{cbx.where.key}}" style="position: absolute; z-index: 41; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 0 4px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12)"><label style="display: flex; align-items: center; gap: 8px; margin: 0 -4px 4px; padding: 0 10px; border-bottom: 1px solid var(--border)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0">Search units</span><input type="text" placeholder="Search units…" value="{{cbx.where.q}}" onChange="{{cbx.where.onQ}}" aria-controls="cbx-where-list" autocomplete="off" style="flex: 1; min-width: 0; height: 34px; border: 0; outline: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px"></label><ul id="cbx-where-list" role="listbox" aria-label="Where" style="list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto"><sc-for list="{{cbx.where.items}}" as="c2" hint-placeholder-count="4"><li role="none"><button type="button" role="option" aria-selected="{{c2.aria}}" onClick="{{c2.pick}}" class="ghost" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; text-align: left; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{c2.check}}"><path d="M20 6 9 17l-5-5"></path></svg><span>{{c2.label}}</span></button></li></sc-for></ul><sc-if value="{{cbx.where.empty}}" hint-placeholder-val="{{false}}"><span style="padding: 16px 8px; font-size: 13px; color: var(--muted-fg); text-align: center">No units found.</span></sc-if></div></sc-if></span>
+          </span>
+          <span id="gr-where-hint" style="font-size: 12px; color: var(--muted-fg)">{{gr.whereHint}}</span>
+        </div>
+        <sc-if value="{{gr.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{gr.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Give a role</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isClearance}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="cl-title" novalidate onSubmit="{{cl.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="cl-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Change clearance</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">The most sensitive classification this person may open.</p>
+        </div>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 0">
+          <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Clearance</legend>
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+            <sc-for list="{{cl.levels}}" as="l" hint-placeholder-count="4">
+              <label style="{{l.style}}">
+                <input type="radio" name="clearance" value="{{l.id}}" checked="{{l.checked}}" onChange="{{l.pick}}" style="margin: 2px 0 0; width: 16px; height: 16px; accent-color: var(--primary); flex-shrink: 0">
+                <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">{{l.name}}<sc-if value="{{l.current}}" hint-placeholder-val="{{false}}"><span style="margin-left: 6px; font-size: 12px; font-weight: 400; color: var(--muted-fg)">Current</span></sc-if></span><span style="font-size: 12px; color: var(--muted-fg)">{{l.desc}}</span></span>
+              </label>
+            </sc-for>
+          </div>
+        </fieldset>
+        <sc-if value="{{cl.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{cl.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Save clearance</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isConfirm}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="alertdialog" aria-modal="true" aria-labelledby="cf-title" novalidate onSubmit="{{cf.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="cf-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{cf.title}}</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{cf.explain}}</p>
+        </div>
+        <sc-if value="{{cf.hasDetail}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--subtle); font-size: 14px"><span style="font-weight: 500">{{cf.detail}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{cf.detailSub}}</span></div></sc-if>
+        <sc-if value="{{cf.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{cf.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">{{cf.cancel}}</button><button type="submit" style="{{cf.btnStyle}}">{{cf.confirm}}</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"account":{"editor":"enum","options":["active","locked","invited","deactivated","admin"],"default":"active"},"dialog":{"editor":"enum","options":["none","grant","revoke","clearance","unlock","reactivate","mfaReset","revokeSessions","deactivate"],"default":"none"},"error":{"editor":"enum","options":["none","required","duplicate","notScopable","lastAdmin","wrongState","changed","failed"],"default":"none"},"combobox":{"editor": "enum", "options": ["none", "role", "where"], "default": "none"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this._rv0() || {}; const st = this.state || {};
+    const CBX = {"role": {"path": "gr.roleOptions", "labelKey": "label", "selKey": "sel", "valueKey": "value", "onChange": "gr.on_role"}, "where": {"path": "gr.whereOptions", "labelKey": "label", "selKey": "sel", "valueKey": "value", "onChange": "gr.on_where"}};
+    const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+    const open = st.cbxOpen !== undefined ? st.cbxOpen : (this.props.combobox && this.props.combobox !== 'none' ? this.props.combobox : '');
+    const q = (st.cbxQ || '').toLowerCase(); const vals = st.cbxVal || {};
+    const close = () => this.setState({ cbxOpen: '', cbxQ: '' });
+    v.cbx = {};
+    Object.keys(CBX).forEach((k) => {
+      const c = CBX[k];
+      const all = c.path ? (get(v, c.path) || []).map((o) => ({ value: String(o[c.valueKey] != null ? o[c.valueKey] : o[c.labelKey]), label: String(o[c.labelKey]), sel: !!o[c.selKey] }))
+                         : c.options.map((o, i) => ({ value: o, label: o, sel: i === c.sel }));
+      const placeholder = all.find((o) => o.value === '');
+      const opts = all.filter((o) => o.value !== '');
+      const chosen = vals[k] !== undefined ? vals[k] : ((opts.find((o) => o.sel) || placeholder || opts[0] || { label: '' }).label);
+      const isOpen = open === k;
+      const items = opts.filter((o) => !isOpen || !q || o.label.toLowerCase().indexOf(q) >= 0).map((o) => ({
+        label: o.label, aria: o.label === chosen ? 'true' : 'false', check: 'flex-shrink: 0; visibility: ' + (o.label === chosen ? 'visible' : 'hidden'),
+        pick: () => { const n = Object.assign({}, vals); n[k] = o.label; const h = c.onChange ? get(v, c.onChange) : null; if (typeof h === 'function') h({ target: { value: o.value } }); this.setState({ cbxOpen: '', cbxQ: '', cbxVal: n }); }
+      }));
+      v.cbx[k] = { value: chosen, isOpen: isOpen, aria: isOpen ? 'true' : 'false', toggle: () => this.setState({ cbxOpen: isOpen ? '' : k, cbxQ: '' }), close: close,
+        key: (ev) => { if (ev && ev.key === 'Escape') close(); }, q: st.cbxQ || '', onQ: (ev) => this.setState({ cbxQ: ev && ev.target ? ev.target.value : '' }),
+        items: items, empty: items.length === 0 };
+    });
+    return v;
+  }
+
+  _rv0() {
+    const st = this.state || {};
+    const PHONE = false;
+    const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+
+    const LABEL = { ACTIVE: 'Active', INVITED: 'Invited', LOCKED: 'Locked', DEACTIVATED: 'Deactivated' };
+    const chip = 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
+    const TONE = { ACTIVE: 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)', INVITED: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+                   LOCKED: 'border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)', DEACTIVATED: 'border: 1px solid var(--border); background: var(--muted); color: var(--text-2)' };
+    const ACT = {
+      deactivate: { label: 'Deactivate', title: (n) => 'Deactivate ' + n + '?', explain: 'They are signed out at once and cannot sign in until reactivated. Their work stays.', danger: true },
+      reactivate: { label: 'Reactivate', title: (n) => 'Reactivate ' + n + '?', explain: 'They can sign in again.' },
+      unlock: { label: 'Unlock', title: (n) => 'Unlock ' + n + '?', explain: 'They can try to sign in again right away.' },
+      mfaReset: { label: 'Reset two-step sign-in', title: (n) => 'Reset two-step sign-in for ' + n + '?', explain: 'They are signed out and set up an authenticator app again at the next sign-in. They get an email.' },
+      revokeSessions: { label: 'Sign out everywhere', title: (n) => 'Sign ' + n + ' out everywhere?', explain: 'Every device they use is signed out.' }
+    };
+    // The app's rules: who may get which action.
+    const actionsFor = (u) => [].concat(
+      u.status === 'LOCKED' ? ['unlock'] : [],
+      u.status === 'DEACTIVATED' ? ['reactivate'] : [],
+      u.mfa && !u.self ? ['mfaReset'] : [],
+      u.status !== 'DEACTIVATED' && !u.self ? ['revokeSessions'] : [],
+      u.status !== 'DEACTIVATED' && !u.self ? ['deactivate'] : []);
+    const initials = (n) => n.split(' ').map((p) => p[0]).join('');
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none' });
+    const toastVals = { hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }), closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); } };
+
+    const PEOPLE = {
+      active: { name: 'Farhana Rahman', email: 'f.rahman@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:31', clearance: 'confidential',
+        positions: [['Head of Credit', 'Head Office › Credit Risk', '1 Mar 2023', 'Ongoing'], ['Head of Credit Analysis (cover)', 'Head Office › Credit Risk › Credit Analysis', '10 Nov 2026', '30 Nov 2026']],
+        grants: [['Auditor', 'Built-in', '', '12 Jan 2026'], ['Dashboard viewer', 'Made by your organisation', 'cr', '3 Mar 2026']] },
+      locked: { name: 'Kamal Hasan', email: 'k.hasan@[domain]', status: 'LOCKED', admin: false, mfa: true, last: '15 Nov, 17:48', clearance: 'internal',
+        positions: [['Relationship Manager', 'Head Office › Corporate Banking', '5 Jun 2024', 'Ongoing']], grants: [] },
+      invited: { name: 'Lutfa Begum', email: 'l.begum@[domain]', status: 'INVITED', admin: false, mfa: false, last: '', clearance: 'internal', positions: [], grants: [] },
+      deactivated: { name: 'Nasir Uddin', email: 'n.uddin@[domain]', status: 'DEACTIVATED', admin: false, mfa: true, last: '2 Nov, 10:05', clearance: 'restricted', positions: [], grants: [] },
+      admin: { name: 'Shirin Akter', email: 's.akter@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Yesterday, 11:40', clearance: 'strict',
+        positions: [['Head of Internal Audit', 'Head Office › Internal Audit', '1 Jul 2021', 'Ongoing']], grants: [['Organisation administrator', 'Built-in', '', '1 Jul 2021']] }
+    };
+    const account = this.props.account || 'active';
+    const p = PEOPLE[account] || PEOPLE.active;
+    const LEVELS = [
+      { id: 'internal', name: 'Internal', desc: 'Everyday memos inside the organisation.' },
+      { id: 'restricted', name: 'Restricted', desc: 'Memos for the units and people named on them.' },
+      { id: 'confidential', name: 'Confidential', desc: 'Credit, staff and legal matters.' },
+      { id: 'strict', name: 'Strictly confidential', desc: 'Board and regulator matters.' }
+    ];
+    const UNITS = [['', 'Whole organisation'], ['ho', 'Head Office'], ['cr', 'Credit Risk'], ['ca', 'Credit Analysis'], ['cb', 'Corporate Banking'], ['ia', 'Internal Audit']];
+    const unitName = (id) => (UNITS.find((u) => u[0] === id) || UNITS[0])[1];
+    const ROLES = [['', '', false], ['tenant_admin', 'Organisation administrator', false], ['org_admin', 'Org directory administrator', false], ['auditor', 'Auditor', false], ['dash', 'Dashboard viewer', true], ['team', 'Team lead view', true]];
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const u = { status: p.status, mfa: p.mfa, self: false };
+    const sheetBase = 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; ';
+    const btnBase = 'display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); ';
+    const acts = actionsFor(u).map((k) => ({ label: ACT[k].label, pick: () => this.setState({ dlg: k, err: 'none', more: false }),
+      style: btnBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)'), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') }));
+    const rowP = (i) => 'display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 4px 8px 12px; box-sizing: border-box' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '');
+    const positions = p.positions.map((r, i) => ({ title: r[0], unit: r[1], from: r[2], until: r[3], span: r[3] === 'Ongoing' ? 'Since ' + r[2] : r[2] + ' – ' + r[3], rowStyle: rowP(i) }));
+    const grants = p.grants.map((g, i) => ({ role: g[0], kind: g[1], where: unitName(g[2]), given: g[3], rowStyle: rowP(i),
+      revokeLabel: 'Revoke ' + g[0], revoke: () => this.setState({ dlg: 'revoke', target: i, err: 'none' }) }));
+    const ALERTS = { duplicate: 'The person already holds this role there.', notScopable: 'This role cannot be limited to a unit.', lastAdmin: 'The organisation needs at least one active administrator.',
+      wrongState: 'Not possible in the account’s current status.', changed: 'Someone changed this meanwhile. It was reloaded.', failed: 'That did not work. Try again.' };
+    const alertFor = (allowed) => (allowed.indexOf(err) >= 0 ? ALERTS[err] : '');
+    // Give a role
+    const gr = st.gr || {};
+    const roleId = gr.role !== undefined ? gr.role : (err === 'required' ? '' : (dlgProp === 'grant' ? 'dash' : '')), where = gr.where !== undefined ? gr.where : (roleId === 'dash' ? 'cr' : '');
+    const role = ROLES.find((r) => r[0] === roleId) || ROLES[0];
+    const scopable = role[2];
+    const roleErr = (gr.tried || err === 'required') && !roleId ? 'Required.' : '';
+    const grAlert = alertFor(['duplicate', 'notScopable', 'changed', 'failed']);
+    const pickGr = (k) => (ev) => { const n = Object.assign({}, gr); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ gr: n, err: 'none' }); };
+    // Clearance
+    const lvl = st.lvl || p.clearance;
+    const clAlert = alertFor(['changed', 'failed']);
+    // Confirm (account actions and revoke)
+    const isRevoke = dlg === 'revoke';
+    const g = p.grants[st.target || 0] || ['Auditor', 'Built-in', '', '12 Jan 2026'];
+    const a = ACT[dlg] || ACT.deactivate;
+    const cfAlert = isRevoke ? alertFor(['lastAdmin', 'changed', 'failed']) : alertFor(['lastAdmin', 'wrongState', 'changed', 'failed']);
+    const done = (msg) => this.setState({ dlg: '', toast: msg, gr: {} });
+    const vals = Object.assign(toastVals, {
+      u: { name: p.name, email: p.email, admin: p.admin, initials: initials(p.name), statusLabel: LABEL[p.status], chipStyle: chip + TONE[p.status],
+           mfa: p.mfa ? 'On' : 'Off', mfaColor: p.mfa ? 'var(--fg)' : 'var(--warn-fg)', mfaSub: p.mfa ? 'Authenticator app' : (p.status === 'INVITED' ? 'Set up at the first sign-in' : 'Not set up'),
+           last: p.last || 'Never', clearance: (LEVELS.find((l) => l.id === lvl) || LEVELS[0]).name },
+      acts: acts, sheetOpen: !!st.more, openMore: () => this.setState({ more: true }), closeMore: () => this.setState({ more: false }), moreKey: (ev) => { if (ev && ev.key === 'Escape') this.setState({ more: false }); },
+      positions: positions, has_positions: positions.length > 0, noPositions: positions.length === 0,
+      grants: grants, has_grants: grants.length > 0, noGrants: grants.length === 0,
+      openGrant: () => this.setState({ dlg: 'grant', gr: {}, err: 'none' }), openClearance: () => this.setState({ dlg: 'clearance', err: 'none' }),
+      isGrant: dlg === 'grant', isClearance: dlg === 'clearance', isConfirm: !!dlg && dlg !== 'grant' && dlg !== 'clearance',
+      gr: {
+        roleOptions: ROLES.map((r) => ({ value: r[0], label: r[0] ? r[1] : 'Choose a role', sel: r[0] === roleId })),
+        on_role: pickGr('role'), roleHasErr: !!roleErr, roleErr: roleErr, roleInvalid: roleErr ? 'true' : 'false', roleBorder: roleErr ? 'var(--destructive)' : 'var(--border)', roleLook: roleId ? '' : 'color: var(--muted-fg)',
+        whereOptions: UNITS.map((x) => ({ value: x[0], label: x[1], sel: x[0] === (scopable ? where : '') })),
+        on_where: pickGr('where'), whereDisabled: !scopable, whereInvalid: 'false', whereBorder: 'var(--border)', whereLook: scopable ? '' : 'opacity: 0.6; cursor: not-allowed',
+        whereHint: roleId && !scopable ? 'This role always applies to the whole organisation.' : 'Limit to one unit and the units below it, where the role allows.',
+        hasAlert: !!grAlert, alert: grAlert,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!roleId) { this.setState({ gr: Object.assign({}, gr, { tried: true }) }); return; } if (grAlert) { this.setState({ err: err }); return; } done('Saved.'); }
+      },
+      cl: {
+        levels: LEVELS.map((l, i) => ({ id: l.id, name: l.name, desc: l.desc, checked: l.id === lvl, current: l.id === p.clearance, pick: () => this.setState({ lvl: l.id, err: 'none' }),
+          style: 'display: flex; align-items: flex-start; gap: 10px; padding: ' + (PHONE ? '12px' : '10px 12px') + '; font-size: 14px; cursor: pointer' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '') + (l.id === lvl ? '; background: var(--subtle)' : '') })),
+        hasAlert: !!clAlert, alert: clAlert,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (clAlert) { this.setState({ err: err }); return; } done('Saved.'); }
+      },
+      cf: isRevoke ? {
+        title: 'Revoke this role?', explain: 'The person loses what this role allowed at once.', confirm: 'Revoke', cancel: 'Keep', btnStyle: okStyle(true),
+        hasDetail: true, detail: g[0], detailSub: unitName(g[2]) + ' · Given on ' + g[3], hasAlert: !!cfAlert, alert: cfAlert,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (cfAlert) { this.setState({ err: err }); return; } done('Saved.'); }
+      } : {
+        title: a.title(p.name), explain: a.explain, confirm: a.label, cancel: 'Cancel', btnStyle: okStyle(a.danger),
+        hasDetail: false, detail: '', detailSub: '', hasAlert: !!cfAlert, alert: cfAlert,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (cfAlert) { this.setState({ err: err }); return; } done('Done.'); }
+      }
+    });
+    return Object.assign(vals, {
+      themeClass: st.theme || this.props.theme || 'system',
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    });
+  }
+}
+</script>
+</body>
+</html>

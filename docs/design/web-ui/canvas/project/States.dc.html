@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input,select,textarea{font-family:inherit}
+.ghost:hover{background:var(--hover)}
+.ghost:active{background:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{opacity:.55}}
+.sk{background:var(--muted);border-radius:6px;animation:pulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.sk,.spin{animation:none}}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="min-height: 100vh; display: flex; flex-direction: column; gap: 24px; padding: 32px; box-sizing: border-box; background: var(--subtle); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="display: flex; flex-direction: column; gap: 4px; max-width: 900px">
+    <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Page states</h1>
+    <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">What any page or section shows while it loads, when it has nothing, when it fails, and when the link or the session is no good. Each sits in the content area; the sidebar and top bar stay.</p>
+  </header>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 28px 24px; align-items: start">
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Loading a list</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">Skeleton rows in the shape of the list; no spinner. After 10 seconds a line says “Still loading…”.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div role="status" aria-label="Loading" style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+  <div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 40px; padding: 0 16px"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span class="sk" style="display: block; width: 60px; height: 10px; "></span><span class="sk" style="display: block; width: 70px; height: 10px; "></span><span class="sk" style="display: block; width: 50px; height: 10px; "></span><span class="sk" style="display: block; width: 40px; height: 10px; "></span></div>
+  <div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 62%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div><div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 48%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div><div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div><div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 55%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div><div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 40%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div><div style="display: grid; grid-template-columns: 16px minmax(0, 1fr) 160px 120px 110px; align-items: center; gap: 16px; height: 52px; padding: 0 16px; border-top: 1px solid var(--hover)"><span class="sk" style="display: block; width: 16px; height: 16px; "></span><span style="display: flex; flex-direction: column; gap: 6px"><span class="sk" style="display: block; width: 66%; height: 12px; "></span><span class="sk" style="display: block; width: 30%; height: 10px; "></span></span><span class="sk" style="display: block; width: 70%; height: 12px; "></span><span class="sk" style="display: block; width: 60%; height: 12px; "></span><span class="sk" style="display: block; width: 70%; height: 20px; border-radius: 6px"></span></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Loading a memo</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">The page’s own layout in grey: header, tabs, cards, right column.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div role="status" aria-label="Loading" style="display: flex; flex-direction: column; gap: 14px">
+  <span class="sk" style="display: block; width: 60px; height: 10px; "></span><div style="display: flex; align-items: center; gap: 10px"><span class="sk" style="display: block; width: 360px; height: 22px; "></span><span class="sk" style="display: block; width: 70px; height: 22px; "></span></div><span class="sk" style="display: block; width: 280px; height: 12px; "></span>
+  <div style="display: flex; gap: 20px">
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 12px"><span class="sk" style="display: block; width: 380px; height: 36px; border-radius: 10px"></span><span class="sk" style="display: block; width: 100%; height: 120px; border-radius: 10px"></span><span class="sk" style="display: block; width: 100%; height: 64px; border-radius: 10px"></span><span class="sk" style="display: block; width: 100%; height: 100px; border-radius: 10px"></span></div>
+    <div style="flex: 0 0 300px; display: flex; flex-direction: column; gap: 12px"><span class="sk" style="display: block; width: 100%; height: 150px; border-radius: 10px"></span><span class="sk" style="display: block; width: 100%; height: 200px; border-radius: 10px"></span></div>
+  </div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Empty: nothing yet</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">Says what will appear here, and the one action that fills it.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></span>
+  <span style="font-weight: 500; font-size: 16px">You have no drafts.</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)">Memos you start but have not submitted yet appear here.</span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><a href="NewMemo.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">New memo</a></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Empty: filters match nothing</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">Keeps the filters on screen and offers to clear them.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></span>
+  <span style="font-weight: 500; font-size: 16px">No task matches.</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)">Change the unit, status or person to see more.</span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><button type="button" class="ghost" onClick="{{noop}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Clear filters</button></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Error: the page could not load</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">A plain title and the reference for support, never technical details.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div role="alert" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span>
+  <span style="font-weight: 500; font-size: 16px">Something went wrong</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)"><span style="font-size: 12px">Reference: 7f3a9c2e</span></span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><button type="button" class="ghost" onClick="{{noop}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Try again</button></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Error: one part could not load</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">The rest of the page stays usable; only that section shows the error.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div role="alert" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--danger-border); border-radius: 10px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px">
+  <span style="display: flex; align-items: flex-start; gap: 10px; flex: 1"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">The note sheet could not be loaded.</strong><span>The rest of the memo is fine. Reference: 7f3a9c2e</span></span></span>
+  <button type="button" class="ghost" onClick="{{noop}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Try again</button>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Memo not found or not yours to see</span>
+        <span style="font-size: 13px; color: var(--muted-fg)">The same message for both, so a link never reveals that a memo exists.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17h.01"></path><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"></path></svg></span>
+  <span style="font-weight: 500; font-size: 16px">This memo does not exist, or you cannot see it.</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)">If someone sent you this link, ask them to share the memo with you.</span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><a href="Main.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Go to Inbox</a><a href="Search.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Search memos</a></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Page not found<span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--info-fg); color: var(--info-fg); font-size: 11px; font-weight: 500">New, not in the app yet</span></span>
+        <span style="font-size: 13px; color: var(--muted-fg)">For an address the app does not know.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"></path></svg></span>
+  <span style="font-weight: 500; font-size: 16px">This page does not exist.</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)">Check the address, or start again from Home.</span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><a href="Home.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Go to Home</a></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">No access to this page<span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--info-fg); color: var(--info-fg); font-size: 11px; font-weight: 500">New, not in the app yet</span></span>
+        <span style="font-size: 13px; color: var(--muted-fg)">For a page that needs a permission the person does not have, reached from a shared link or a bookmark. The menu never shows it to them.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; text-align: center">
+  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+  <span style="font-weight: 500; font-size: 16px">You do not have access to this page.</span>
+  <span style="max-width: 420px; font-size: 14px; color: var(--muted-fg)">It needs a permission your roles do not give you. If you need it, ask an administrator of your organisation.</span>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px"><a href="Home.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Go to Home</a></div>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Connection lost<span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--info-fg); color: var(--info-fg); font-size: 11px; font-weight: 500">New, not in the app yet</span></span>
+        <span style="font-size: 13px; color: var(--muted-fg)">A bar above the content while offline; it goes away by itself when the connection is back.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div role="status" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--warn-border); border-radius: 10px; background: var(--warn-bg); color: var(--warn-fg); font-size: 13px">
+  <span style="display: flex; align-items: flex-start; gap: 10px; flex: 1"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path><path d="M5 12.859a10 10 0 0 1 5.17-2.69"></path><path d="M19 12.859a10 10 0 0 0-2.007-1.523"></path><path d="M2 8.82a15 15 0 0 1 4.177-2.643"></path><path d="M22 8.82a15 15 0 0 0-11.288-3.764"></path><path d="m2 2 20 20"></path></svg></span><span><strong style="font-weight: 600">You are offline.</strong> You can keep reading. Nothing you send is saved until the connection is back; this page checks again by itself.</span></span>
+</div>
+      </div>
+    </figure>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+      <figcaption style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Signed out<span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--info-fg); color: var(--info-fg); font-size: 11px; font-weight: 500">New, not in the app yet</span></span>
+        <span style="font-size: 13px; color: var(--muted-fg)">When the session ends mid-task. One way forward: sign in again and return to the same page.</span>
+      </figcaption>
+      <div style="padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card)">
+<div style="display: flex; justify-content: center; padding: 32px 16px; border-radius: 8px; background: rgba(0,0,0,0.45)"><div role="alertdialog" aria-labelledby="so-t" aria-describedby="so-d" style="width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+  <div style="display: flex; flex-direction: column; gap: 6px"><h2 id="so-t" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">You were signed out</h2><p id="so-d" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Your session ended. Sign in again to carry on; you come back to this page.</p></div>
+  <div style="display: flex; justify-content: flex-end"><a href="SignIn.dc.html" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg); height: 36px; font-size: 14px">Sign in again</a></div>
+</div></div>
+      </div>
+    </figure>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":2600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    return { themeClass: st.theme || this.props.theme || 'system', noop: () => {} };
+  }
+}
+</script>
+</body>
+</html>

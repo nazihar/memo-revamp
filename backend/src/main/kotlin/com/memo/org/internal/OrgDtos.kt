@@ -41,6 +41,11 @@ data class OrgUnitDetailResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Ancestors, root first") val path: List<OrgUnitResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Whether the signed-in user may change this unit")
     val canManage: Boolean,
+    @field:Schema(
+        requiredMode = Schema.RequiredMode.REQUIRED,
+        description = "The organisation's date today, in its time zone: the default for new dates and what \"current\" means",
+    )
+    val today: LocalDate,
 )
 
 @Schema(name = "CreateOrgUnitRequest")
@@ -130,6 +135,11 @@ data class PositionDetailResponse(
     val reportingLines: List<ReportingLineResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Whether the signed-in user may change it")
     val canManage: Boolean,
+    @field:Schema(
+        requiredMode = Schema.RequiredMode.REQUIRED,
+        description = "The organisation's date today, in its time zone: the default for new dates and what \"current\" means",
+    )
+    val today: LocalDate,
 )
 
 @Schema(name = "PositionRequest")

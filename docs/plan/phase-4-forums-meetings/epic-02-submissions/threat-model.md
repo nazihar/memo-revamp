@@ -26,3 +26,16 @@
 
 ## Residual risks
 - Officers read the memo as soon as it is escalated, before triage. This matches practice (the secretariat prepares the papers) and is visible on the memo's access list.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**.
+- **Changed by the build:**
+  - S1 and T1: the forum's decision now exists (E06). `ForumDecided` comes only from the release of a decision recorded at a held meeting, guarded on `released_at` and sent once per decision (`DecisionReleaseIT`, `ForumEscalationIT`). No public endpoint resumes a memo.
+  - A T1 defect was fixed in E02 T3: a waiting step's `resolution` was written but never read back, so a reloaded step forgot its committee.
+- **Evidence:**
+  - S1: matrix `p4-e02-submissions.yaml`, `ForumSubmissionsIT`.
+  - T1, T2: `ForumStepTest`, `WorkflowInvariantProperties`, the guarded moves in `ForumSubmissionsIT`. T3: definitions without `wait` keep their behaviour (`ForumStepTest`).
+  - R1: `forum.submission.*` audit and the note-sheet line (`AuditActionCoverageTest`).
+  - I1: `ForumReadersIT` (the `FORUM` kind only while a submission is open, under clearance). I2: the queue's "restricted" rows (`ForumSubmissionsIT`). I3: `MailTemplatesTest`.
+  - D1: unique index `forum_submission_step_uk (tenant_id, step_id)` (`forum/V3`) and cursor paging. E1: `FORUM_INACTIVE`.
+- **Residual risk:** confirmed. Officers read the memo from the moment it is escalated, and the memo's access list shows it. A recusal at the meeting does not change memo access (E04 I6); the meeting register flags it (`alsoReadsMemo`).

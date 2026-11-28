@@ -9,7 +9,7 @@
 > - **AV** attendance per member;
 > - **AW** a committee's detail.
 >
-> The phase's moderated usability walkthrough and the owner's walk through the committee cycle (T9) are recorded at the end.
+> The phase's moderated usability walkthrough and the owner's walk through the committee cycle (T9) are prepared at the end (T9) and wait for the owner.
 
 ## Design principles taken from the research
 1. **The register answers an auditor's first question in one step:** "every decision of this committee in this period", with the number check beside it (research §3.1).
@@ -188,8 +188,8 @@ None about the screens. Reported (ADR-0069, ADR-0070):
 | AV attendance per member | 2026-11-21 | Delegated (Phase 4 Q1) |
 | AW a committee's detail | 2026-11-21 | Delegated (Phase 4 Q1) |
 | Manual keyboard and screen-reader pass over AS–AW | 2026-11-22 (AU–AW) | AU–AW: the agent's keyboard and structure pass done (T7, below), two defects fixed; the screen-reader pass by a person is carried (checklist below). AS–AT (T6): structure, focus order, live count and axe in English and Arabic checked in the component tests and the journey (`register.test.tsx`, `meeting-analytics.spec`); a browser keyboard pass against seeded decisions is carried to T8 with the demo history, and the screen-reader pass by a person with AU–AW's |
-| The owner's walk through the representative committee cycle on dev (exit criterion 3, A1) | — | T9 |
-| Moderated usability walkthrough of the committee cycle (overview §5) | — | T9 |
+| The owner's walk through the representative committee cycle on dev (exit criterion 3, A1) | — | **Pending the owner.** Prepared in T9 (2026-11-28): the checklist and results table below |
+| Moderated usability walkthrough of the committee cycle (overview §5) | — | **Pending the owner.** Prepared in T9 (2026-11-28): tasks, success criteria and what to record below |
 
 ## Keyboard and screen-reader pass over AU–AW (T7, 2026-11-22)
 Done by the agent in Chromium (Playwright, headless) against the production build (`vite build --mode e2e`, `vite preview`, the real CSP) with the analytics API answered by fixed data: a Board Risk Committee with every measure filled, three seat holders (one with an alternate standing in, one with a long name), four quarters, an owner who is a position, three held meetings (on time, late, no deadline), in English and Arabic, and at 320 CSS px wide. The demo stack has too few held meetings to fill every figure until T8 seeds a year of history; the journey `meeting-analytics.spec` walks the same pages against it on every PR. A screen reader cannot be driven from there, so the spoken output is for a person (below).
@@ -235,3 +235,109 @@ Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and 
 6. **AV:** the Member and Rate headers are read as buttons with the column's sort order; after a press the new order can be found; "(1 by alternate)" and the note under the table make the alternate rule clear; the export button is read and, after a download, "The attendance workbook has been downloaded." is announced.
 7. **A member's view:** "Your attendance: …" is read before the row, with no export; another member's address (`…/attendance/{someone else}`) says "This person held no seat at a meeting in this period."
 8. **A member's meetings:** each meeting link and its attendance in words ("Apologies (represented by their alternate)") are read in order.
+
+## Owner walkthrough of the committee cycle (exit criterion 3)
+> **Status: pending the owner.** Prepared in T9 on 2026-11-28; nothing below has been run. Under assumption A1 (there is no pilot; overview §5 and §9), the exit criterion "the pilot runs at least one real committee cycle on the platform" becomes **a representative committee cycle on dev with the demo committees, walked through by the owner**. A customer's real cycle stays carried until there is one.
+
+**Before the walk** (the agent or an operator, not the owner):
+- [ ] #256 (E07 T12) and #261 (E08 T8) are merged and deployed to dev by `deploy-dev`. After start-up, the backend log says "Demo committee history seeded: n meetings", with no "Demo history: … not seeded" or "Demo actions: …" warnings (`../demo.md` §10).
+- [ ] `committee-cycle.spec` passed against dev after that deploy (E08 log, T8, "Running it against dev"), so any failure during the walk is new.
+- [ ] `auditor@` opens Decisions and Committee analytics without a 403 (the "Committee oversight" role).
+- [ ] The owner has the demo password and TOTP secret from the dev VM's `/opt/memo/dev/.env`, held by the VM's administrator and never put in the repository or a chat. Three private browser windows are open.
+
+**The walk** follows `../demo.md` §9: the fifteen legs of `committee-cycle.spec`, in that order, through the screens only. Use a borrower name not used before (e.g. "Term loan, Titas Poultry") and an amount of BDT 10 million or more. The owner ticks each line and notes in the results table what happened, especially anything unclear, slow or wrong. It takes about 40 minutes.
+
+- [ ] 1. As `user@`, raise the credit proposal; as `head.credit@`, recommend it at the credit desk. The memo reads "With the Management Credit Committee".
+- [ ] 2. As `secretary@`, accept the paper on the MCC's Submissions tab. As `user@`, check that the committee panel says "Accepted".
+- [ ] 3. As `secretary@`, schedule a meeting for today (Dhaka time), build the agenda from the standard agenda and place the paper from the tray. As `director@` (the chair), agree to the late paper and to the agenda. Publish revision 1.
+- [ ] 4. As `director@`, `head.credit@` and `head.finance@`, answer "Yes, in person". As `secretary@`, check that the Invitations and replies tab shows the three answers.
+- [ ] 5. As `head.credit@`, declare an interest in the item, leaving the room. The item reads "— You declared an interest".
+- [ ] 6. As `secretary@`, start the meeting. Mark everyone who said yes as present, and the CRO's seat holder in person: "Quorate — meeting: 4 of 4 present, 3 needed." Move to the item and record the vice-chair stepping out.
+- [ ] 7. Record the decision: approved with one condition, by 2–1, with Demo Head of Finance's dissent and reason.
+- [ ] 8. Mark the meeting as held. The resolution gets its number, `MCC/2026/…`.
+- [ ] 9. As `user@`, check that the memo shows the number on the committee panel and the note sheet, and no longer waits for the committee.
+- [ ] 10. Approve the minutes by circulation. The secretary drafts them and the chair agrees them. `head.finance@` answers "No comments", and the secretary ends the comment period early. The chair approves them with the authenticator.
+- [ ] 11. As `secretary@`, make the condition an action owned by the position Chief Financial Officer, and send it to the owner.
+- [ ] 12. As `head.finance@`, find it under My actions and raise a General memo from it, routed to Demo Director. As `director@`, approve the memo.
+- [ ] 13. As `head.finance@`, mark the action done. As `secretary@`, verify it (the approved memo is shown) and close it.
+- [ ] 14. As `secretary@`, find the resolution in Decisions by its number, then by the memo's `CR/…` number: one row each, with its links. As `auditor@`, read the same row in full.
+- [ ] 15. As `secretary@`, export the MCC's register as a spreadsheet. It holds the resolution, and its Number check is complete.
+- [ ] Afterwards: the memo, the meeting, the resolution, the action and the follow-up memo link to one another both ways. Administration → Audit shows each step under the person who took it.
+
+**Results** (to be filled in by the owner):
+
+| Leg | Done | Date | Who signed in | What happened / what was unclear | Issue raised |
+|---|---|---|---|---|---|
+| 1 Memo to the committee | | | | | |
+| 2 Accepted | | | | | |
+| 3 Agenda published | | | | | |
+| 4 Replies | | | | | |
+| 5 Interest declared | | | | | |
+| 6 Attendance and quorum | | | | | |
+| 7 Decision with condition and dissent | | | | | |
+| 8 Resolution numbered | | | | | |
+| 9 Memo moves on | | | | | |
+| 10 Minutes by circulation | | | | | |
+| 11 Action to a position | | | | | |
+| 12 Follow-up memo approved | | | | | |
+| 13 Action verified | | | | | |
+| 14 Register by both numbers, oversight | | | | | |
+| 15 Export | | | | | |
+| Links and audit | | | | | |
+
+**Sign-off** (by the owner): "I walked through the representative committee cycle on dev on ____. It meets exit criterion 3 under A1 / It does not, because ____." Owner: ____ Date: ____
+
+## Moderated usability walkthrough
+> **Status: pending the owner.** Prepared in T9 on 2026-11-28; no session has been held. This is the phase's usability check. Overview §5 asks for "a moderated walkthrough of the committee cycle in E08", and `TESTING_STRATEGY.md` for "a short moderated usability session on the main journeys before each phase exit (pilot users or proxies), with findings triaged".
+
+**Who:**
+- **Participants:** the owner and, if possible, one or two proxies for the real users: someone who has worked as a company or committee secretary, and a committee member who is not technical. An older reader is the most useful (`AGENTS.md §3.7`). Each participant takes the roles their tasks need.
+- **Moderator:** someone other than the participant. They read each task aloud and do not show where to click. They help only when the participant has been stuck for two minutes or asks to stop, and the task is then recorded as "with help".
+- **Note-taker:** fills in the tables below. A screen recording helps, with the participant's consent.
+
+**Setup:**
+- Dev, after the checks listed before the walk above.
+- One session of about 60 minutes per participant, on a laptop with a mouse, and an iPad or phone browser for U13.
+- Before each session, the moderator raises a new credit memo of BDT 30 million for the participant (leg 1 of the walk above: `user@`, then `head.credit@` at the credit desk), so the sessions do not share state.
+- The tasks are read as goals, never as screen names.
+
+| # | Task as read to the participant | Signed in as | Success means |
+|---|---|---|---|
+| U1 | "A credit proposal for BDT 30 million is waiting for the credit committee. Find it and accept it for the next meeting." | `secretary@` | Accepted from the committee's Submissions tab, without help |
+| U2 | "Put it on today's meeting and send the agenda to the members." | `secretary@` | Meeting scheduled, paper placed, the chair's agreement asked for, revision published |
+| U3 | "You are on the credit committee. Say whether you will attend, then read the paper." | `head.finance@` | The answer recorded, the paper opened from the meeting page |
+| U4 | "You have a personal link to this borrower. Tell the committee." | `head.credit@` | An interest declared on the right item, leaving the room |
+| U5 | "The meeting has started. Record who is here, then record that the vice-chair left the room for this item." | `secretary@` | Attendance marked, quorum read correctly, "stepped out" on the right person and item |
+| U6 | "The committee approved it with one condition. One member voted against and gave a reason. Record that, then close the meeting." | `secretary@` | Outcome, condition, vote and named dissent recorded; marked as held; the number seen |
+| U7 | "You raised this memo. What did the committee decide, and what is its resolution number?" | `user@` | The number and the outcome found on the memo |
+| U8 | "Get the minutes approved by the members." | `secretary@`, then the chair | Circulated, answered and approved |
+| U9 | "Make sure the finance department follows up the condition." | `secretary@` | An action owned by the Chief Financial Officer position, sent |
+| U10 | "You have been given an action. Show it is done, with a memo approved by the managing director." | `head.finance@` | The follow-up memo raised from the action and approved; the action marked done |
+| U11 | "You are the auditor. Get every resolution of the Board Risk Committee this year, check that none is missing, and save a copy." | `auditor@` | The register filtered to the BRC and the year, the number check read, a spreadsheet exported |
+| U12 | "How often did each member of the Board Risk Committee attend over the last year?" | `secretary@` | Attendance per member found; Demo Director's 7 of 11 and his alternate's attendance read correctly |
+| U13 | "On your phone or tablet, find the next meeting you are invited to and its papers." | `director@` | The meeting and a paper opened on the small screen, with nothing hidden behind a gesture |
+
+**Success criteria for the session:**
+- Each task is completed without help, within about twice the time the moderator takes. Otherwise it is recorded as done with help, or not done.
+- After each task, the participant answers "How easy was that?" from 1 (very hard) to 7 (very easy). A task rated 4 or below gets a finding.
+- No task ends with the participant believing they finished when they had not, for example a decision recorded but the meeting not marked as held. Every such case is a high-severity finding.
+
+**Observations to record** per task:
+- where they hesitated or looked for something;
+- wrong turns: a menu or tab tried first;
+- words they did not understand or read differently: committee, submission, revision, recused, quorum, consent section, to be ratified, verify;
+- anything too small to read or tap;
+- whether they understood the restricted lines and "You declared an interest";
+- anything they expected the system to do for them.
+
+**Results per participant** (to be filled in):
+
+| Participant (role, not name) | Date | Device | Task | Done (unaided / with help / not done) | Time | Ease (1–7) | Observations |
+|---|---|---|---|---|---|---|---|
+| | | | U1 | | | | |
+
+**Findings and triage** (to be filled in after the sessions; each finding gets a severity and a decision):
+
+| # | Finding | Tasks | Severity (high: blocks or misleads; medium: slows; low: cosmetic) | Decision (fix before the phase closes / backlog with an issue / no change, and why) |
+|---|---|---|---|---|
+| | | | | |

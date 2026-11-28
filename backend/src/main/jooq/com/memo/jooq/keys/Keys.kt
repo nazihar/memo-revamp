@@ -154,6 +154,7 @@ import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
 import com.memo.jooq.tables.WorkflowDoaVersion
+import com.memo.jooq.tables.WorkflowHolderSync
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
@@ -312,6 +313,7 @@ import com.memo.jooq.tables.records.WorkflowDefinitionRecord
 import com.memo.jooq.tables.records.WorkflowDefinitionVersionRecord
 import com.memo.jooq.tables.records.WorkflowDoaRuleRecord
 import com.memo.jooq.tables.records.WorkflowDoaVersionRecord
+import com.memo.jooq.tables.records.WorkflowHolderSyncRecord
 import com.memo.jooq.tables.records.WorkflowInstanceRecord
 import com.memo.jooq.tables.records.WorkflowQueueMemberRecord
 import com.memo.jooq.tables.records.WorkflowQueueRecord
@@ -569,6 +571,7 @@ val WORKFLOW_DOA_RULE_TENANT_ID_VERSION_ID_ORDINAL_KEY: UniqueKey<WorkflowDoaRul
 val WORKFLOW_DOA_VERSION_PKEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.createUniqueKey(WorkflowDoaVersion.WORKFLOW_DOA_VERSION, DSL.name("workflow_doa_version_pkey"), arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.ID), true)
 val WORKFLOW_DOA_VERSION_TENANT_ID_ID_KEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.createUniqueKey(WorkflowDoaVersion.WORKFLOW_DOA_VERSION, DSL.name("workflow_doa_version_tenant_id_id_key"), arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.TENANT_ID, WorkflowDoaVersion.WORKFLOW_DOA_VERSION.ID), true)
 val WORKFLOW_DOA_VERSION_TENANT_ID_NUMBER_KEY: UniqueKey<WorkflowDoaVersionRecord> = Internal.createUniqueKey(WorkflowDoaVersion.WORKFLOW_DOA_VERSION, DSL.name("workflow_doa_version_tenant_id_number_key"), arrayOf(WorkflowDoaVersion.WORKFLOW_DOA_VERSION.TENANT_ID, WorkflowDoaVersion.WORKFLOW_DOA_VERSION.NUMBER), true)
+val WORKFLOW_HOLDER_SYNC_PKEY: UniqueKey<WorkflowHolderSyncRecord> = Internal.createUniqueKey(WorkflowHolderSync.WORKFLOW_HOLDER_SYNC, DSL.name("workflow_holder_sync_pkey"), arrayOf(WorkflowHolderSync.WORKFLOW_HOLDER_SYNC.TENANT_ID), true)
 val WORKFLOW_INSTANCE_PKEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_pkey"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.ID), true)
 val WORKFLOW_INSTANCE_SUBJECT_RUN_UK: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_subject_run_uk"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_TYPE, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_ID, WorkflowInstance.WORKFLOW_INSTANCE.RUN), true)
 val WORKFLOW_INSTANCE_TENANT_ID_ID_KEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_id_key"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true)

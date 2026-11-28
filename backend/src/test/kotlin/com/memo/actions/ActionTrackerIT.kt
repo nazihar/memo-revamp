@@ -19,6 +19,7 @@ import com.memo.org.OrgDirectory
 import com.memo.testsupport.SqlRecorder
 import com.memo.testsupport.TestDatabase
 import org.assertj.core.api.Assertions.assertThat
+import org.jooq.conf.StatementType
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.sql.DriverManager
@@ -308,6 +309,11 @@ class ActionTrackerIT : ActionFixture() {
                 TenantContext.call(tenant.id) { transactions.readInTenant(tenant.id) { stats.overdue(setOf(brc), today) } }
             }
         assertThat(bySystem).isEmpty()
+        // The counts' inlined statements leave the shared settings as they were: changing them in place switched every later
+        // query of the JVM to static statements (OrgPerformanceIT's bound parameters failed on #257).
+        val statementType =
+            TenantContext.call(tenant.id) { transactions.readInTenant(tenant.id) { actionsDsl.current().settings().statementType } }
+        assertThat(statementType).isNotEqualTo(StatementType.STATIC_STATEMENT)
     }
 
     @Test

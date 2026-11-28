@@ -79,6 +79,7 @@ class OrgUnitsController(
                     unit.toResponse(),
                     unit.ancestors.mapNotNull { all[it]?.toResponse() },
                     policy.allows(Permission.ORG_MANAGE, Resource.Unit(id)),
+                    calendar.today(),
                 )
             }
         return ResponseEntity

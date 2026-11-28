@@ -42,7 +42,7 @@ function orgBackend(canManage: boolean) {
     http.get(`${API_ORIGIN}/api/v1/org/units`, () => HttpResponse.json<OrgUnit[]>([head, credit])),
     http.get(`${API_ORIGIN}/api/v1/org/legal-entities`, () => HttpResponse.json<LegalEntity[]>([entity])),
     http.get(`${API_ORIGIN}/api/v1/org/units/crd`, () =>
-      HttpResponse.json<OrgUnitDetail>({ unit: credit, path: [head], canManage }),
+      HttpResponse.json<OrgUnitDetail>({ unit: credit, path: [head], canManage, today: '2026-11-09' }),
     ),
     http.get(`${API_ORIGIN}/api/v1/org/units/crd/positions`, () =>
       HttpResponse.json<OrgPositionWithHolder[]>([
@@ -99,6 +99,16 @@ describe('org directory', () => {
     expect(body).toEqual({ title: 'Head of Credit', head: true, unitId: 'crd' })
     expect(keys).toHaveLength(1)
     expect(keys[0]).toMatch(/^[0-9a-f-]{36}$/)
+  })
+
+  it("starts a date on the organisation's today, not the browser's (a day apart around midnight)", async () => {
+    const user = userEvent.setup()
+    orgBackend(true)
+    renderRoute('/org?unit=crd')
+
+    await user.click(await screen.findByRole('button', { name: 'Close' }, { timeout: 5000 }))
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByLabelText(/Closes on/)).toHaveValue('2026-11-09')
   })
 })
 

@@ -3,6 +3,7 @@ package com.memo.workflow.engine
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import java.util.UUID
 
 /**
  * Staff changes while an item is in flight (design E04 §4.6, ADR-0040): a deactivated holder's task waits for an
@@ -50,10 +51,22 @@ internal class StaffChanges(
         val closed = step.tasks.filter { it.state == TaskState.OPEN }.map { Effect.TaskClosed(it.id, TaskState.REASSIGNED, null) }
         // A route entry restarts with the rest of the route rebuilt behind it, as after a send back.
         val restarted = if (step.routeIndex != null) replaced.skipPending() else replaced
-        val walk = rounds.reactivate(restarted, step.copy(assignee = null), state.initiator)
+        val walk = rounds.reactivate(restarted, step.copy(assignee = null), state.initiator).keepClaim(step.claimedBy)
         val details = mapOf("step" to step.nodeId, "reason" to command.reason, "from" to open.mapNotNull { it.assignee?.toString() })
         val action = record(ActionKind.REASSIGN, state, null, command.actor, null).copy(details = details)
         return Outcome(state.copy(round = walk.round), action, closed + walk.effects, walk.followUps)
+    }
+
+    /**
+     * A pool drawn again (its tasks closed and opened anew for the people it resolves to now) keeps the claim of a member
+     * who is still in it (ADR-0040's claims); a claim by someone who left the pool ends with their task.
+     */
+    private fun Walk.keepClaim(claimer: UUID?): Walk {
+        val created = effects.filterIsInstance<Effect.TaskCreated>().map { it.stepId }.toSet()
+        // Claims are on steps decided by the first of several candidates (invariant 20).
+        val pool = round.steps.firstOrNull { it.id in created && it.needed != null }
+        val stays = pool?.tasks?.any { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE && it.assignee == claimer } == true
+        return if (pool != null && stays) copy(round = round.replaceStep(pool.id) { it.copy(claimedBy = claimer) }) else this
     }
 
     companion object {

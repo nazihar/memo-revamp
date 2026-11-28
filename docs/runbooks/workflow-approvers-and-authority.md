@@ -22,7 +22,7 @@ Tenant administrators hold all of these by default.
 
 ## When nobody can be found
 A step whose position is vacant, or whose DoA group cannot be filled, does not skip. It waits with a task **Nobody found for this step**, and the people who reassign tasks are told. Administration → **Open tasks** → **Waiting for reassignment** → **Reassign** (see `workflow-reassignment.md`). Typical causes:
-- **A vacant position:** assign someone in Organisation. Open steps for that position move to the new holder by themselves.
+- **A vacant position:** assign someone in Organisation. Open steps for that position move to the new holder by themselves: at once for an assignment from today, at the start of its first day for one from a later date.
 - **No DoA rule fits:** fix the rules and publish a new version. The memo keeps its old version, so reassign it.
 - **Everyone was excluded by separation of duties:** they are the author, already approved in this round, or declared an interest. Reassign to someone else.
 
@@ -35,10 +35,21 @@ Administration → **Substitutions** → **Add substitution** names who acts for
 - A person has at most one substitute at any date.
 
 ## Staff changes
-- **A position changes hands:** open steps resolved from that position move to the new holder. They wait as "nobody found" while the position is vacant.
-- **A person is deactivated:** their open tasks wait for reassignment.
+- **A position changes hands:** open steps resolved from that position move to the new holder. They wait as "nobody found" while the position is vacant, or go to the step's fallback if it has one.
+  - **Changed with immediate effect** (an assignment edited so that it starts or ends today): the steps move at once, recorded as reassignments by the administrator who made the change.
+  - **Recorded for a later date** (a successor from next Monday, a term that ends): the steps move at the start of that day in the organisation's time zone (`default.timezone`), within 15 minutes of midnight. They are recorded as reassignments by **Workflow**, and in the audit log as `workflow.task.reassigned` with the cause `HOLDER_CHANGED` by the system actor `workflow-position-holders`. Until that day, the current holder keeps the task.
+  - **Shared steps:** a claim by someone still in the pool stays. The people who left lose their tasks.
+  - **Action items** owned by a position follow the same way. With nobody in the position, the action has no holder until someone is assigned, and its owner's task waits for reassignment.
+- **A person is deactivated:** their open tasks wait for reassignment, recorded by the administrator who made the change.
 
-Both are recorded as reassignments by the administrator who made the change.
+**Background work:** the platform task `workflow-position-holders-sweep` schedules, every 15 minutes, one `workflow-position-holders` per active tenant. A tenant's run does its work once a day, at the first run after midnight in its zone. It records the day in `workflow_holder_sync`. It moves only the open steps whose positions changed holder since the last run, and only when their recorded people differ from the holders that day. After a gap of more than 31 days, or on the first run, it checks every open position step.
+
+**Troubleshooting: a task still with a former holder after the date.**
+1. Check the organisation's time zone. The change applies at midnight there, not in UTC.
+2. Check the assignment's dates. The end date is the first day the person no longer holds the position.
+3. Check the scheduler: the failure metric `memo.jobs.failed` with `task=workflow-position-holders`, and the day in `workflow_holder_sync` (`synced_on`, one row per tenant; read it as the tenant).
+4. If a run failed, the next sweep runs the day again. Steps already moved are not moved twice.
+5. To move a task at once, reassign it (Administration → **Open tasks**).
 
 ## Refusals
 | Refusal | What to do |

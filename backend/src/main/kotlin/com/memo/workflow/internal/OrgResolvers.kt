@@ -9,6 +9,7 @@ import com.memo.workflow.definition.AssigneeKind
 import com.memo.workflow.engine.Resolution
 import com.memo.workflow.engine.Resolver
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 import java.util.UUID
 
 /**
@@ -24,22 +25,27 @@ class OrgResolvers(
 ) {
     /**
      * A resolver for one action; the initiator's position is looked up once. [slots] answers `subject` assignees for the
-     * instance's item (ADR-0068); without it they resolve to nobody.
+     * instance's item (ADR-0068); without it they resolve to nobody. The organisation is read as on [on], today in the
+     * tenant's zone by default (the daily holder run passes the day it runs for).
      */
-    fun resolver(slots: ((String) -> List<SlotHolder>)? = null): Resolver {
+    fun resolver(
+        on: LocalDate? = null,
+        slots: ((String) -> List<SlotHolder>)? = null,
+    ): Resolver {
         val positions = mutableMapOf<UUID, PositionRef?>()
+        val day by lazy { on ?: directory.today() }
         return Resolver { assignee, initiator ->
-            val own by lazy { positions.getOrPut(initiator) { directory.positionsOf(listOf(initiator))[initiator] } }
+            val own by lazy { positions.getOrPut(initiator) { directory.positionsOf(listOf(initiator), day)[initiator] } }
             val resolution =
                 when (assignee.kind) {
                     AssigneeKind.PERSON -> Resolution(listOfNotNull(assignee.userId), inputs(assignee))
                     AssigneeKind.INITIATOR -> Resolution(listOf(initiator), inputs(assignee))
-                    AssigneeKind.POSITION -> holderOf(checkNotNull(assignee.positionId), inputs(assignee))
-                    AssigneeKind.SUPERVISOR -> supervisor(assignee, own)
-                    AssigneeKind.UNIT_HEAD -> unitHead(assignee, own)
+                    AssigneeKind.POSITION -> holderOf(checkNotNull(assignee.positionId), inputs(assignee), day)
+                    AssigneeKind.SUPERVISOR -> supervisor(assignee, own, day)
+                    AssigneeKind.UNIT_HEAD -> unitHead(assignee, own, day)
                     AssigneeKind.ROLE -> role(assignee, own)
                     AssigneeKind.QUEUE -> queue(checkNotNull(assignee.queue), inputs(assignee))
-                    AssigneeKind.SUBJECT -> slot(checkNotNull(assignee.slot), slots, inputs(assignee))
+                    AssigneeKind.SUBJECT -> slot(checkNotNull(assignee.slot), slots, inputs(assignee), day)
                 }
             if (resolution.people.size > MAX_CANDIDATES) {
                 Resolution(emptyList(), resolution.inputs + ("reason" to TOO_MANY))
@@ -52,30 +58,32 @@ class OrgResolvers(
     private fun supervisor(
         assignee: Assignee,
         own: PositionRef?,
+        day: LocalDate,
     ): Resolution {
         val inputs = inputs(assignee) + ("initiatorPosition" to own?.id?.toString())
-        val above = own?.let { directory.reportsTo(it.id, checkNotNull(assignee.levels)) }
+        val above = own?.let { directory.reportsTo(it.id, checkNotNull(assignee.levels), day) }
         return when {
             own == null -> Resolution(emptyList(), inputs + ("reason" to NO_POSITION))
             above == null -> Resolution(emptyList(), inputs + ("reason" to NO_LINE))
-            else -> holderOf(above.id, inputs)
+            else -> holderOf(above.id, inputs, day)
         }
     }
 
     private fun unitHead(
         assignee: Assignee,
         own: PositionRef?,
+        day: LocalDate,
     ): Resolution {
         val base = assignee.unit ?: own?.unitId
         val up = assignee.up ?: 0
         val unit = base?.let { if (up == 0) it else directory.ancestors(it).getOrNull(up - 1) }
         val inputs = inputs(assignee) + ("unitId" to unit?.toString())
-        val head = unit?.let { directory.headOf(it) }
+        val head = unit?.let { directory.headOf(it, day) }
         return when {
             base == null -> Resolution(emptyList(), inputs + ("reason" to NO_POSITION))
             unit == null -> Resolution(emptyList(), inputs + ("reason" to NO_UNIT))
             head == null -> Resolution(emptyList(), inputs + ("reason" to NO_HEAD))
-            else -> holderOf(head.id, inputs)
+            else -> holderOf(head.id, inputs, day)
         }
     }
 
@@ -106,15 +114,12 @@ class OrgResolvers(
         slot: String,
         slots: ((String) -> List<SlotHolder>)?,
         inputs: Map<String, Any?>,
+        day: LocalDate,
     ): Resolution {
         val named = slots?.invoke(slot).orEmpty()
         val positions = named.filterIsInstance<SlotHolder.Position>().map { it.positionId }.distinct()
-        val held = if (positions.isEmpty()) emptyMap() else directory.holders(positions)
-        val people =
-            named
-                .mapNotNull { holder ->
-                    (holder as? SlotHolder.Person)?.userId ?: (holder as? SlotHolder.Position)?.let { held[it.positionId] }
-                }.distinct()
+        val held = if (positions.isEmpty()) emptyMap() else directory.holders(positions, day)
+        val people = peopleOf(named, held)
         val recorded =
             inputs +
                 listOfNotNull(
@@ -132,8 +137,9 @@ class OrgResolvers(
     private fun holderOf(
         position: UUID,
         inputs: Map<String, Any?>,
+        day: LocalDate,
     ): Resolution {
-        val holder = directory.holders(listOf(position))[position]
+        val holder = directory.holders(listOf(position), day)[position]
         val withPosition = inputs + ("positionId" to position.toString())
         return if (holder ==
             null
@@ -166,5 +172,15 @@ class OrgResolvers(
         const val NO_HEAD = "NO_HEAD"
         const val NOBODY = "NOBODY"
         const val TOO_MANY = "TOO_MANY_CANDIDATES"
+
+        /** The people a slot naming [named] resolves to when its positions are held as in [held], in the item's order. */
+        fun peopleOf(
+            named: List<SlotHolder>,
+            held: Map<UUID, UUID>,
+        ): List<UUID> =
+            named
+                .mapNotNull { holder ->
+                    (holder as? SlotHolder.Person)?.userId ?: (holder as? SlotHolder.Position)?.let { held[it.positionId] }
+                }.distinct()
     }
 }

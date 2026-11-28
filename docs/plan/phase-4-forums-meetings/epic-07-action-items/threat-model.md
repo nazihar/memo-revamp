@@ -48,3 +48,17 @@
 - V1 and V5 (input, files): export formula injection, evidence uploads, lengths.
 - V2 (business logic): status guards, the lock order with the engine, idempotent bulk actions, the digest's idempotency.
 - V14 (data protection): notifications and the digest without content.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**. No leak was found in E07's surfaces. The suites probed each surface as it was built (ACTIONS, TRACKER, ACTION_REPORT and the evidence files, with recusal columns and officer probes).
+- **Found and fixed:**
+  - T1, D1 (#238, in the test, not the product): `ActionReportIT` dated actions with the database's `current_date`, which follows the JVM's zone. The report uses only the tenant's day (`OrgDirectory.today()`). `ReportSectionsDayBoundaryTest` pins the clock either side of the tenant's midnight, and since #251 the backend tests run in UTC.
+- **Changed by the build:**
+  - I1 (E07 follow-up): the action taken report joins its follow-up memos per reader by the memo's own read rule. `PaperLeakIT` plants a follow-up memo that none of the probed viewers may read.
+  - T1: the seed-only paths added by E07 T12 cannot be reached from a request, and only `com.memo.demo` may call them. They are an action issued as on a past day (`ActionSeeding.issue` with `asOf`, through the explicit `ActionIssuing.issue` overload) and overdue timers fired at once (`WorkflowTimerSeeding.catchUp`, `TimerCatchUp`). `ArchitectureRulesTest` enforces this (added at phase close: only the demo seeders use a `*Seeding` facade; only `WorkflowTimerSeeding` uses `TimerCatchUp`; only `ActionSeeding` calls the `asOf` overload). The controllers call the overload that uses today. The demo seeders bind only the demo tenant and start only with `memo.demo.seed=true`. The demo tenant's seeder refuses the `prod` profile and stops the start-up (`DemoTenantSeedIT`).
+- **Evidence:** the seven E07 rows of `docs/security/asvs-checklist.md` (V8 twice, V2, V1, V5, V14, V16), with their tests. Also:
+  - S3: `OWNER_NOT_CLEARED` and re-resolution (`OwnerChangeIT`, `SubjectSlotIT`). T5: `ActionDefinitionSeedIT`.
+  - I5: the level defaults to the action's, and a lower one needs a confirmation (`FollowUpMemoIT`).
+  - R1: the per-recipient notifications and the digest's row (`ActionsDigestIT`). D1: the digest and `UpdateRequestsIT` (once a day per committee).
+- **Residual risks:** all three confirmed. The secretary's context is shown to an owner outside the committee, with the form's warning. Titles are free text inside the app. A verifier can close without reading the evidence.
+- **Pen test:** area 6 (the action taken report and its follow-up memos) and area 4 (the tracker's export) of `docs/security/pen-test-scope.md`.

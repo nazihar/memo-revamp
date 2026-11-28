@@ -14,6 +14,7 @@ import com.memo.meeting.internal.MeetingStore
 import com.memo.meeting.internal.MemberAgendas
 import com.memo.meeting.internal.TimesInput
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -23,6 +24,7 @@ import java.util.UUID
  * called from requests. Each call is its own tenant transaction. The seeder decides what already exists ("seeders only
  * fill gaps"): [find] answers whether a meeting is there. The agenda is [AgendaSeeding]'s.
  */
+@Suppress("TooManyFunctions") // One facade for every meeting step a seeder takes, as ActionSeeding.
 @Service
 class MeetingSeeding(
     private val lifecycle: MeetingLifecycle,
@@ -39,6 +41,9 @@ class MeetingSeeding(
         forumId: UUID,
         title: String,
     ): UUID? = tx { meetings.ofForum(forumId).firstOrNull { it.title == title }?.id }
+
+    /** The days the forum's meetings start on, each in its own zone, in any state (Phase 4 E08 T8: the history's months). */
+    fun dates(forumId: UUID): List<LocalDate> = tx { meetings.ofForum(forumId).map { it.date } }
 
     /** The meeting's status (Phase 4 E04 T9: declarations are seeded only while it is scheduled). */
     fun status(meetingId: UUID): MeetingStatus = tx { meeting(meetingId).status }

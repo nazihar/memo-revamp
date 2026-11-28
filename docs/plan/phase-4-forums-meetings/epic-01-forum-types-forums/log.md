@@ -45,3 +45,6 @@
   - History is a table (name, role, term, from, until, state with reason, authority) rather than K2's prose lines. It carries the same facts and is easier to scan.
   - The committee page reuses the committee-type texts (quorum sentence, outcome meanings), so the `forumAdmin` part now also loads on `/committees`. Every member-facing text of T5 is in `forums`.
   - "My committees" is in the account menu (beside My security) and on the home page; "Committees" joins the Work menu for every signed-in user. The nightly visual baselines that show the menu need re-rendering.
+
+## 2026-11-28 — Terms and position seats now drive the queue readers by date
+- Terms of office and position seats were already resolved by date (`ForumDirectory.membersOn`), but the memo readers derived from them (E02's `FORUM` rows) were refreshed only by edits. A daily per-tenant run in the tenant's zone and a listener on assignment changes now keep them in step; a position's new holder also reaches open meetings' audiences through `ForumChanged`. Details in the E02 log of the same date and the ADR-0059 amendment.

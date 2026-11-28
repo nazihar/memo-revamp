@@ -1,9 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { FileText, Lock } from 'lucide-react'
 import { useEffect, useId, useRef, useState, type SyntheticEvent } from 'react'
 import { useIntl } from 'react-intl'
-import { listClassificationLevelsOptions, listMemoTypesOptions } from '@/api/generated/@tanstack/react-query.gen'
+import {
+  getActionEntriesQueryKey,
+  getActionQueryKey,
+  listClassificationLevelsOptions,
+  listMemoTypesOptions,
+} from '@/api/generated/@tanstack/react-query.gen'
 import { linkActionMemo, raiseActionMemo, suggestSearch } from '@/api/generated/sdk.gen'
 import type { ActionMemoResponse, ActionResponse } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
@@ -107,6 +112,7 @@ export function MemoLine({ memo: m }: { memo: ActionMemoResponse }) {
  */
 export function RaiseMemoDialog({ action, onClose }: { action: ActionResponse; onClose: () => void }) {
   const intl = useIntl()
+  const queryClient = useQueryClient()
   const terms = useTerms()
   const navigate = useNavigate()
   const types = useQuery(listMemoTypesOptions())
@@ -154,6 +160,9 @@ export function RaiseMemoDialog({ action, onClose }: { action: ActionResponse; o
         },
         throwOnError: true,
       })
+      // Back on the action from the memo ("Raised from action …"), its page lists the new memo at once (E07 T12).
+      queryClient.setQueryData(getActionQueryKey({ path: { actionId: action.id } }), raised.data.action)
+      void queryClient.invalidateQueries({ queryKey: getActionEntriesQueryKey({ path: { actionId: action.id } }) })
       await navigate({ to: '/memos/$memoId', params: { memoId: raised.data.memoId } })
     } catch (problem) {
       const fields = Object.fromEntries(

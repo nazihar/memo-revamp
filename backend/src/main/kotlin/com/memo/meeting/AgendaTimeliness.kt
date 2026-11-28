@@ -60,6 +60,7 @@ class AgendaTimeliness(
     fun of(meetingIds: Collection<UUID>): Map<UUID, MeetingTimeliness> {
         val rows = meetings.findAll(meetingIds)
         val heads = revisions.heads(rows.map { it.id })
+        val deadlines = lateness.deadlines(rows)
         return rows.associate { row ->
             val published = heads[row.id].orEmpty()
             val first = published.firstOrNull()?.publishedAt
@@ -68,7 +69,7 @@ class AgendaTimeliness(
                     meetingId = row.id,
                     firstPublishedAt = first,
                     firstPublishedOn = first?.atZone(row.zone)?.toLocalDate(),
-                    deadline = lateness.deadline(row),
+                    deadline = deadlines[row.id],
                     latestRevision = published.lastOrNull()?.number,
                 )
         }

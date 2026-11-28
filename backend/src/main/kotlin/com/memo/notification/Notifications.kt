@@ -267,7 +267,23 @@ interface Notifications {
         link: String? = null,
         calendar: CalendarPart? = null,
     ): NotificationResult
+
+    /**
+     * Each of [requests] as [notify] would notify it, in the caller's transaction, the recipients' preferences read and the
+     * items and emails written a chunk at a time (a daily digest to thousands of people); the results in order.
+     */
+    fun notifyAll(requests: List<NotificationRequest>): List<NotificationResult> =
+        requests.map { notify(it.recipient, it.kind, it.params, it.link, it.calendar) }
 }
+
+/** One notification for [Notifications.notifyAll]: as [Notifications.notify]'s arguments. */
+data class NotificationRequest(
+    val recipient: Recipient,
+    val kind: NotificationKind,
+    val params: Map<String, String> = emptyMap(),
+    val link: String? = null,
+    val calendar: CalendarPart? = null,
+)
 
 /** One in-app notification as it was written, for a module that sums up its own kinds (a digest). */
 data class SentNotification(

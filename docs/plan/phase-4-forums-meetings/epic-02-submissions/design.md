@@ -90,6 +90,7 @@ erDiagram
 - **forum:** consumes `WorkflowEscalatedToForum` synchronously (the submission is created in the same transaction) and `WorkflowInstanceEnded` (open submissions of an instance that ended become WITHDRAWN). It publishes `ForumSubmissionChanged(tenantId, submissionId)` for E03. It now depends on `workflow` and `memo`.
 - **memo:**
   - The published `MemoReaders` API grants and retires the `FORUM` reader kind (`memo/V20`: the kind check gains `FORUM`).
+  - The forum module keeps those rows equal to the chair and secretaries in office on the tenant's date: after submission and member changes, at once on an assignment change (`OrgChanged`), and once a day at the start of the tenant's day for terms and holder changes by date (`forum-officer-readers`, `forum/V9` `forum_reader_sync`; ADR-0059 amendment, 2026-11-28).
   - `MemoNotes` gets a system entry kind for forum events.
   - The memo page's forum panel reads `GET /api/v1/memos/{id}/forum-submissions` (forum module, after the memo read check).
 - **Module direction:** forum → workflow, memo. Never the reverse; the memo shows the forum's name through the workflow step's name.

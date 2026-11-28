@@ -13,7 +13,7 @@
 | # | Threat | Flow | Mitigation | ASVS |
 |---|---|---|---|---|
 | S1 | A former member, guest, item attendee or memo reader uses the register or analytics to read a committee's decisions | 2, 4 | Scope from today's roles only (officer or member in office, `forums.manage`, `forum.read`); others 403; former members lose access (E03's rule); matrix columns for each | V8 |
-| T1 | A row is written for the wrong tenant or with another tenant's ids | 1 | The writer functions check the tenant argument against `app.tenant_id` and raise otherwise; `memo_app` has no privilege on the table; `DecisionSearchCrossTenantIT` | V8 |
+| T1 | A row is written for the wrong tenant or with another tenant's ids | 1 | The writer functions check the tenant argument against `app.tenant_id` and raise otherwise; `memo_app` has no privilege on the table; `DecisionSearchExplainIT` (as built: "every function refuses another tenant" and the privilege check; there is no separate `DecisionSearchCrossTenantIT`) | V8 |
 | T2 | The register shows a stale decision (an old outcome after a correction, a voided number as in force) | 1 | Indexing in the change's transaction from E06's events, corrections and voids included (`ResolutionChanged`); the nightly unindexed check; the property test compares rows with E06's current entries | V2 |
 | T3 | An export is altered after it leaves the system, or denied later | 3 | The audit records the filters, count and `rowsSha256` over `decision_id:entry_seq`, so a copy can be matched to the register; the records themselves (approved minutes, extracts) are object-locked PDF/A (E06) | V16 |
 | R1 | An auditor or secretary denies having exported the register or attendance | 3, 4 | `search.decisions.exported` and `analytics.attendance.exported` in the hash-chained audit, written before streaming | V16 |
@@ -47,3 +47,24 @@
 
 ## Phase-close review (T11)
 At phase close every Phase 4 threat model (E01–E08) is re-read against what was built: each mitigation checked for its test or evidence, residual risks confirmed or closed, and each file gains a line "Reviewed at phase close on {date}: {result}". New threats found go into the epic's file and, if they need work, into the retrospective's "Carried". The external pen test for Phase 4 joins the one booked after Phase 1b (Phase 4 Q2); its scope names the recusal leak surfaces (overview risk R1) and the definer functions.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (T11): **every mitigation is built and tested.** The performance half of D1 waits for T5.
+- **Changed by the build:**
+  - T1: the cross-tenant test lives in `DecisionSearchExplainIT`, as corrected above.
+  - I5 (T2): the audit holds the words as a SHA-256 of their normal form, never the words.
+  - I10 (T2, new): cursors are sealed.
+  - D2 (T3): with words, an export takes at most 10,000 candidates, so a word search over 10,000 decisions is `TOO_MANY_ROWS` for a spreadsheet too.
+  - I7 (T3): a void's reason is shown only when its decision is a FULL row of the same export.
+  - S1, E1 (T3): an officer who is not oversight exports only the committees where they are an officer. A committee where they only hold a seat is `FORUM_OUT_OF_SCOPE`.
+  - Analytics (T4, master CI): a test tenant without a zone dated meetings held in Dhaka after the default period from 18:00 to 24:00 UTC. The fix was in the test (#247, #251), and `AnalyticsDayBoundaryTest` pins it. The demo tenant is now on Asia/Dhaka (E06 T12), so the gap the T4 entry of the log carried for the demo is closed.
+- **Evidence:**
+  - S1, E1: matrices `p4-e08-register-analytics.yaml` and `p4-e08-analytics.yaml`, `DecisionRegisterIT`, `AnalyticsIT`. T2: `DecisionIndexingIT` and the nightly unindexed check. T3, R1: `DecisionExportIT` recomputes `rowsSha256`.
+  - I1, I2, I7: `RegisterLeakIT`, `RecusalLeakIT` (REGISTER and EXPORTS), `DecisionRegisterIT` ("a declaration applies at once"). I3, I9: `AnalyticsLeakIT` (the differential), `AnalyticsIT`. I4: `AnalyticsIT` (above clearance), `DecisionRegisterEquivalenceProperties`.
+  - I6: `DecisionRowTest`. I8: `SheetCells` (`DecisionExportIT`, `AnalyticsIT`). I10: `DecisionRegisterIT` (sealed cursor).
+  - D1: rate limits, caps and periods (`DecisionRegisterIT`, `AnalyticsIT`), and the `EXPLAIN` gate (`DecisionSearchExplainIT`). D2: `DecisionExportIT` (20,010 rows).
+  - E2: `DecisionRegisterArchTest`, `DecisionSearchExplainIT` (privileges), `DecisionRegisterEquivalenceProperties`.
+- **Still open in E08 (not security gaps):** T5's volumes (`RegisterVolumeIT` at 108,000 decisions, `AnalyticsVolumeIT`, the Gatling simulation) are on `phase4/e08-t5`. Until they merge, D1's budget evidence is the `EXPLAIN` gate on seeded data. T8's exit journey and T10's runbook `decision-register-and-analytics.md` are also open.
+- **ASVS:** the rows listed above were added (V8 twice, V15 extended, V16, V1, V2, V14), plus a V2 row on business dates in the tenant's zone.
+- **Residual risks:** all three confirmed.
+- **Phase 4 as a whole:** the threat models of E01–E07 were re-read at the same time, and each has its own "Reviewed at phase close" section. The pen-test scope is `docs/security/pen-test-scope.md` (Phase 4 part). It covers the recusal leak surfaces, the definer functions, minutes copies, exports, invitations, the action taken report, step-up and rate limits.

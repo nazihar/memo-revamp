@@ -182,6 +182,7 @@ class DemoMemoSeedOnStartup(
     private val following: DemoFollowingSeeder,
     private val legacy: DemoLegacySeeder,
     private val meetings: DemoMeetingSeeder,
+    private val history: DemoHistorySeeder,
     private val uploads: FileUploads,
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -197,13 +198,15 @@ class DemoMemoSeedOnStartup(
             return
         }
         // In this order: the access seeder needs the demo memos, and the legacy import its grant, clearance and the leaver.
-        // The meetings come last: they need the committees and the credit workflow, which are seeded at start-up.
+        // The meetings come last: they need the committees and the credit workflow, which are seeded at start-up. The
+        // committees' history (E08 T8) after them, so the meetings and resolutions seeded before it keep their numbers.
         listOf<Pair<String, () -> Any?>>(
             "Demo memos" to seeder::seed,
             "Demo notes, access and templates" to access::seed,
             "Demo following and saved searches" to following::seed,
             "Demo legacy import" to legacy::seed,
             "Demo meetings" to meetings::seed,
+            "Demo committee history" to history::seed,
         ).forEach { (what, step) ->
             try {
                 step()

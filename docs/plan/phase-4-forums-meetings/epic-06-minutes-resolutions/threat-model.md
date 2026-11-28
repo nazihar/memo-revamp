@@ -52,3 +52,22 @@
 - V5 and V1 (files and input): templates, copies, the structure check.
 - V6 and V7 (authentication, session): step-up on confirmation, corrections, extracts and the starting number.
 - V12 and V14 (data protection): records and copies locked, notifications without content.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**. The fail-closed leak check (I1) worked as designed: it refused copies rather than serve them.
+- **Found and fixed:**
+  - I1, I3 (T3): a recused alternate not named on the member's restricted item got the recused view of its decision. The recused view now needs the item to be unrestricted or restricted to the viewer.
+  - E1 (T3): a ruling or withdrawal on a decided item answered `FROZEN` before the 403, which was an oracle for someone who may not act. The decided check now follows E04's access checks.
+  - I1 (T6): the meeting-level actions table printed every action's title, so the leak check refused the copies of recused and restricted readers. An item's actions are now printed inside its block only, and the meeting table holds only actions agreed on no item.
+  - D1 (#255): ONLYOFFICE keeps a conversion's answer by its key, failures included. One transient error (-3 during a restart) failed a copy or a record for good. Each conversion is now sent under the caller's key plus a fresh nonce, so a retry is a new conversion (`OnlyOfficeConverterKeyTest`, `ConversionRetryIT`). Nothing is served from a kept answer.
+- **Changed by the build:**
+  - I5: the memo's note sheet carries the outcome and the resolution number only (`ForumEscalationIT`). E07 adds the follow-up memos, which are read by the memo's own rule.
+  - The register (E08) reads decisions through definer functions, under the same rule (`DecisionRegisterEquivalenceProperties`).
+  - The demo seed records decisions, approves minutes and certifies an extract without a step-up through `DecisionSeeding` and `MinutesSeeding`. Only `com.memo.demo` may call them (`ArchitectureRulesTest`). The seed binds the demo tenant only, and the demo tenant is refused under `prod` (`DemoTenantSeedIT`).
+- **ASVS rows planned above:** written in E06 T12. V7 is part of the V6 row (the approval keeps the session's hash), and V12's "records and copies locked" is part of the V14 rows.
+- **Evidence:** the seven E06 rows of `docs/security/asvs-checklist.md` (V8, V14 twice, V6, V2, V5, V16), with their tests. Also: S2 the extract's check and runbook; S3 `onBehalfBy` with how it was given (`MinutesCirculationIT`); T4 the structure check on every saved version (`StructureScanTest`); I6 `MinutesCirculationIT`; I7 the hashes (`AuditActionCoverageTest`); D2 one transaction per decision, retried and reported (`DecisionReleaseIT`); E2 the pinned type version (`ForumTypeMinutesPolicyIT`).
+- **Residual risks:** all three confirmed.
+  - Text typed outside an item's block cannot be redacted by control. The leak check refuses a copy that contains a redacted item's recorded text, and the runbook covers the rest.
+  - Extracts must be checked against memo.
+  - An ONLYOFFICE upgrade reruns `MinutesControlsRoundTripIT`.
+- **Pen test:** area 3 (copies per reader), area 4 (extracts) and area 7 (step-up) of `docs/security/pen-test-scope.md`.

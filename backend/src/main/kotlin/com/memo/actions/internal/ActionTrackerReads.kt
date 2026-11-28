@@ -8,6 +8,7 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.SortField
+import org.jooq.conf.SettingsTools
 import org.jooq.conf.StatementType
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -343,10 +344,11 @@ class ActionTrackerReads(
      * The context of E08's set-based counts, with every value written into the statement: their condition is one access rule a
      * committee, thirty for an auditor, and a statement prepared with them as parameters is planned once for any values
      * after a few runs (a generic plan that read every action, about 10 s at 3,600 meetings; E08 T5). Planned for its own
-     * values each time, it reads the committees' indexes. jOOQ writes the values as literals, escaped.
+     * values each time, it reads the committees' indexes. jOOQ writes the values as literals, escaped. The settings are
+     * copied first: `Settings.withStatementType` changes its receiver, and the receiver is the application's shared settings.
      */
     private fun inlined(): DSLContext =
         tenantDsl.current().let { ctx ->
-            DSL.using(ctx.configuration().derive(ctx.settings().withStatementType(StatementType.STATIC_STATEMENT)))
+            DSL.using(ctx.configuration().derive(SettingsTools.clone(ctx.settings()).withStatementType(StatementType.STATIC_STATEMENT)))
         }
 }

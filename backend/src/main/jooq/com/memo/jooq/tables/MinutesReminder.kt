@@ -149,7 +149,7 @@ open class MinutesReminder(
     val minutes: MinutesPath by lazy { MinutesPath(this, MINUTES_REMINDER__MINUTES_REMINDER_TENANT_ID_MEETING_ID_FKEY, null) }
     override fun getChecks(): List<Check<MinutesReminderRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_reminder_key_check"), "(((char_length(key) >= 1) AND (char_length(key) <= 100)))", true),
-        Internal.createCheck(this, DSL.name("minutes_reminder_kind_check"), "((kind = ANY (ARRAY['COMMENTS_CLOSING'::text, 'DRAFT_OVERDUE'::text, 'CONFIRMATION'::text])))", true)
+        Internal.createCheck(this, DSL.name("minutes_reminder_kind_check"), "((kind = ANY (ARRAY['COMMENTS_CLOSING'::text, 'DRAFT_OVERDUE'::text, 'CONFIRMATION'::text, 'RECORD_FAILED'::text])))", true)
     )
     override fun `as`(alias: String): MinutesReminder = MinutesReminder(DSL.name(alias), this)
     override fun `as`(alias: Name): MinutesReminder = MinutesReminder(alias, this)

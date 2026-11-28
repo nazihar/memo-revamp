@@ -339,7 +339,7 @@
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "org",
-      "types" : [ "USES_COMPONENT" ]
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     }, {
       "target" : "system",
       "types" : [ "USES_COMPONENT" ]

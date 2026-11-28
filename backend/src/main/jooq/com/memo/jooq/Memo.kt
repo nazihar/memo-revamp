@@ -32,6 +32,7 @@ import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumReaderSync
 import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
@@ -343,6 +344,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.forum_member</code>.
      */
     val FORUM_MEMBER: ForumMember get() = ForumMember.FORUM_MEMBER
+
+    /**
+     * The table <code>memo.forum_reader_sync</code>.
+     */
+    val FORUM_READER_SYNC: ForumReaderSync get() = ForumReaderSync.FORUM_READER_SYNC
 
     /**
      * The table <code>memo.forum_submission</code>.
@@ -1649,6 +1655,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         FilesVersion.FILES_VERSION,
         Forum.FORUM,
         ForumMember.FORUM_MEMBER,
+        ForumReaderSync.FORUM_READER_SYNC,
         ForumSubmission.FORUM_SUBMISSION,
         ForumTermReminder.FORUM_TERM_REMINDER,
         ForumType.FORUM_TYPE,

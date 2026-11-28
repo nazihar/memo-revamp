@@ -71,9 +71,10 @@ class CommitteeLoadSimulation : Simulation() {
     /** Blocks until the host has written its file (the volume takes a while), at most [WAIT_MINUTES]. */
     private fun waitForHost(): Properties {
         val file = dir.resolve("ready.properties")
-        val until = Instant.now().plus(Duration.ofMinutes(Integer.getInteger("waitMinutes", WAIT_MINUTES).toLong()))
+        // A monotonic deadline: the wait is a duration, not a point in time.
+        val until = System.nanoTime() + Duration.ofMinutes(Integer.getInteger("waitMinutes", WAIT_MINUTES).toLong()).toNanos()
         while (!Files.exists(file)) {
-            check(Instant.now().isBefore(until)) { "the load host wrote no $file" }
+            check(System.nanoTime() - until < 0) { "the load host wrote no $file" }
             Thread.sleep(POLL_MS)
         }
         return Properties().apply { Files.newBufferedReader(file).use { load(it) } }
@@ -156,7 +157,7 @@ class CommitteeLoadSimulation : Simulation() {
 
     /** Writes `done`, so the host stops serving. */
     override fun after() {
-        Files.writeString(dir.resolve("done"), Instant.now().toString())
+        Files.writeString(dir.resolve("done"), Instant.now(clock).toString())
     }
 
     init {

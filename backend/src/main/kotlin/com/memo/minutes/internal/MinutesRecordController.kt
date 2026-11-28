@@ -7,6 +7,7 @@ import com.memo.files.FileServing
 import com.memo.files.OpenAudit
 import com.memo.files.ServeOutcome
 import com.memo.files.ServedContent
+import com.memo.system.Idempotency
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -100,13 +102,15 @@ class MinutesFileStreams(
 /**
  * The approved minutes' record (design E06 §3, ADR-0066, E06 T7): the record or the reader's approved copy (PDF/A), the
  * versions as the reader reads them, and the check of a version (the approval's hashes and chain, the approved document
- * and the reader's file re-hashed from storage).
+ * and the reader's file re-hashed from storage); "Make the record again" when it failed after its tries.
  */
 @RestController
 @Tag(name = "minutes")
 class MinutesRecordController(
     private val recordReading: MinutesRecordReading,
     private val streams: MinutesFileStreams,
+    private val retries: RecordRetries,
+    private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
 ) {
     @GetMapping("/api/v1/meetings/{meetingId}/minutes/record")
@@ -115,7 +119,8 @@ class MinutesRecordController(
         operationId = "getMinutesRecord",
         summary =
             "The approved minutes' record as the viewer reads it (PDF/A, supports Range): the record itself, or their approved " +
-                "copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made",
+                "copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made, " +
+                "409 RECORD_FAILED when it or their copy failed after its tries",
     )
     fun record(
         @PathVariable meetingId: UUID,
@@ -137,6 +142,29 @@ class MinutesRecordController(
             .ok()
             .cacheControl(CacheControl.noStore())
             .body(transactions.inTenant(TenantContext.current()) { recordReading.versions(meetingId) })
+
+    @PostMapping("/api/v1/meetings/{meetingId}/minutes/record/retry")
+    @SignedIn
+    @Operation(
+        operationId = "retryMinutesRecord",
+        summary =
+            "Make the record again (a secretary not recused from any item): the failed newest record version, or the " +
+                "readers' failed approved copies of it, asked for again; 202 with the versions, 409 RECORD_NOT_FAILED otherwise",
+    )
+    fun retry(
+        @PathVariable meetingId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+    ): ResponseEntity<List<MinutesRecordResponse>> {
+        val answer =
+            transactions.inTenant(TenantContext.current()) {
+                idempotency.once("minutes.record.retry", key, fingerprint("$meetingId")) {
+                    retries.retry(meetingId)
+                    meetingId.toString()
+                }
+                recordReading.versions(meetingId)
+            }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).cacheControl(CacheControl.noStore()).body(answer)
+    }
 
     @PostMapping("/api/v1/meetings/{meetingId}/minutes/records/{version}/check")
     @SignedIn

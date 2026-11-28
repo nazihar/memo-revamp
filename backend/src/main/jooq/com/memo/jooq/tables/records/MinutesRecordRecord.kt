@@ -100,6 +100,14 @@ open class MinutesRecordRecord private constructor() : UpdatableRecordImpl<Minut
         set(value): Unit = set(19, value)
         get(): Long? = get(19) as Long?
 
+    open var failedAt: OffsetDateTime?
+        set(value): Unit = set(20, value)
+        get(): OffsetDateTime? = get(20) as OffsetDateTime?
+
+    open var retries: Int?
+        set(value): Unit = set(21, value)
+        get(): Int? = get(21) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -109,7 +117,7 @@ open class MinutesRecordRecord private constructor() : UpdatableRecordImpl<Minut
     /**
      * Create a detached, initialised MinutesRecordRecord
      */
-    constructor(id: UUID, tenantId: UUID, meetingId: UUID, forumId: UUID, recordVersion: Int, approvalId: UUID, docxVersionId: UUID, docxSha256: String, state: String? = null, error: String? = null, fileId: UUID? = null, fileVersionId: UUID? = null, sha256: String? = null, sizeBytes: Long? = null, pages: Int? = null, compliant: Boolean? = null, validation: JSONB? = null, createdAt: OffsetDateTime, builtAt: OffsetDateTime? = null, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, meetingId: UUID, forumId: UUID, recordVersion: Int, approvalId: UUID, docxVersionId: UUID, docxSha256: String, state: String? = null, error: String? = null, fileId: UUID? = null, fileVersionId: UUID? = null, sha256: String? = null, sizeBytes: Long? = null, pages: Int? = null, compliant: Boolean? = null, validation: JSONB? = null, createdAt: OffsetDateTime, builtAt: OffsetDateTime? = null, version: Long? = null, failedAt: OffsetDateTime? = null, retries: Int? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.meetingId = meetingId
@@ -130,6 +138,8 @@ open class MinutesRecordRecord private constructor() : UpdatableRecordImpl<Minut
         this.createdAt = createdAt
         this.builtAt = builtAt
         this.version = version
+        this.failedAt = failedAt
+        this.retries = retries
         resetTouchedOnNotNull()
     }
 }

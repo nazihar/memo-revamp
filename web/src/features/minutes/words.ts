@@ -131,6 +131,7 @@ const REASONS: Record<string, MessageDescriptor> = {
   ALREADY_ANSWERED: mn.ALREADY_ANSWERED,
   TOO_MANY_COPIES: mn.TOO_MANY_COPIES,
   DECIDED: mn.DECIDED,
+  RECORD_NOT_FAILED: mn.RECORD_NOT_FAILED,
 }
 
 /** A refusal of a minutes request in plain words (design E06 §3's problems). */

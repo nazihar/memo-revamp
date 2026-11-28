@@ -83397,6 +83397,20 @@
       "value": "‬"
     }
   ],
+  "minutes.problem.recordNotFailed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹǝɔoɹp ɥɐs uoʇ ɟɐıʅǝp: ʇɥǝɹǝ ıs uoʇɥıuƃ ʇo ɯɐʞǝ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "minutes.problem.recused": [
     {
       "type": 0,
@@ -83572,7 +83586,21 @@
     },
     {
       "type": 0,
-      "value": "⊥ɥǝ ɹǝɔoɹp ɔonʅp uoʇ qǝ ɯɐpǝ ʎǝʇ. Iʇ ıs ʇɹıǝp ɐƃɐıu; odǝɹɐʇıous ɥɐʌǝ qǝǝu ʇoʅp."
+      "value": "⊥ɥǝ ɹǝɔoɹp ɔonʅp uoʇ qǝ ɯɐpǝ; ʇɥǝ sǝɔɹǝʇɐɹʎ ɥɐs qǝǝu ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "minutes.record.failedOfficer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹǝɔoɹp ɔonʅp uoʇ qǝ ɯɐpǝ ɐɟʇǝɹ sǝʌǝɹɐʅ ʇɹıǝs. Iʇ ıs ʇɹıǝp ɐƃɐıu ouɔǝ ɐ pɐʎ; ʍɥǝu ʇɥǝ poɔnɯǝuʇ sǝɹʌǝɹ ıs ʍoɹʞıuƃ ɐƃɐıu, ʎon ɔɐu ɯɐʞǝ ıʇ uoʍ."
     },
     {
       "type": 0,
@@ -83601,6 +83629,34 @@
     {
       "type": 0,
       "value": "⊥ɥǝ ɹǝɔoɹp ıs qǝıuƃ ɯɐpǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "minutes.record.retried": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹǝɔoɹp ıs qǝıuƃ ɯɐpǝ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "minutes.record.retry": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐʞǝ ʇɥǝ ɹǝɔoɹp ɐƃɐıu"
     },
     {
       "type": 0,
@@ -90141,6 +90197,36 @@
     {
       "type": 0,
       "value": " ɐɹǝ ɹǝɐpʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notificationKinds.minutesRecordFailed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹǝɔoɹp oɟ ʇɥǝ ɐddɹoʌǝp ɯıunʇǝs oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɔonʅp uoʇ qǝ ɯɐpǝ: odǝu ʇɥǝ ɯıunʇǝs ʇo ɯɐʞǝ ıʇ ɐƃɐıu"
     },
     {
       "type": 0,

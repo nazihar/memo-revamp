@@ -46725,6 +46725,12 @@
       "value": "The draft is not with you for review.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "minutes.problem.recordNotFailed": [
+    {
+      "type": 0,
+      "value": "The record has not failed: there is nothing to make again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "minutes.problem.recused": [
     {
       "type": 0,
@@ -46800,7 +46806,13 @@
   "minutes.record.failed": [
     {
       "type": 0,
-      "value": "The record could not be made yet. It is tried again; operations have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "The record could not be made; the secretary has been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.failedOfficer": [
+    {
+      "type": 0,
+      "value": "The record could not be made after several tries. It is tried again once a day; when the document server is working again, you can make it now.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "minutes.record.notCompliant": [
@@ -46813,6 +46825,18 @@
     {
       "type": 0,
       "value": "The record is being made…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.retried": [
+    {
+      "type": 0,
+      "value": "The record is being made again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "minutes.record.retry": [
+    {
+      "type": 0,
+      "value": "Make the record againSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "minutes.record.title": [
@@ -51461,6 +51485,28 @@
     {
       "type": 0,
       "value": " are readySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notificationKinds.minutesRecordFailed": [
+    {
+      "type": 0,
+      "value": "The record of the approved minutes of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " could not be made: open the minutes to make it againSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notificationKinds.minutesReturned": [

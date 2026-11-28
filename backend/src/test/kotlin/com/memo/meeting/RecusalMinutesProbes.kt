@@ -8,8 +8,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 /**
- * The officer probes of the minutes' circulation and the preview "as" (E06 T6) for [RecusalLeakIT]: the recused secretary
- * calls each on the planted (scheduled) meeting and is refused or finds nothing, naming nothing.
+ * The officer probes of the minutes' circulation and the preview "as" (E06 T6), issuing an extract (E06 T8) and making a
+ * failed record again (the fix after E08 T10) for [RecusalLeakIT]: the recused secretary calls each on the planted
+ * (scheduled) meeting and is refused or finds nothing, naming nothing.
  */
 internal fun RecusalLeakIT.minutesOfficerProbes(): Map<String, (RecusalLeakFixture.Planted) -> MvcTestResult> {
     val base = { p: RecusalLeakFixture.Planted -> "/api/v1/meetings/${p.meeting.id}/minutes" }
@@ -34,6 +35,13 @@ internal fun RecusalLeakIT.minutesOfficerProbes(): Map<String, (RecusalLeakFixtu
         // E06 T8: issuing a certified extract, of a resolution that is not there: 404, naming nothing.
         "POST /api/v1/resolutions/{resolutionId}/extracts" to
             { _ -> send(HttpMethod.POST, "/api/v1/resolutions/${UUID.randomUUID()}/extracts", secretary, "{}") },
+        // Making a failed record again (the fix after E08 T10): the recused secretary is refused (403 `RECUSED`), naming nothing.
+        "POST /api/v1/meetings/{meetingId}/minutes/record/retry" to { p ->
+            val answer = send(HttpMethod.POST, "${base(p)}/record/retry", secretary, "{}")
+            assertThat(answer).hasStatus(HttpStatus.FORBIDDEN)
+            assertThat(answer.response.contentAsString).contains("RECUSED")
+            answer
+        },
     )
 }
 

@@ -183,6 +183,11 @@ enum class NotificationKind(
     MINUTES_COMMENT_ADDED(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_OVERDUE(NotificationCategory.WORKFLOW, null),
     MINUTES_DRAFT_READY(NotificationCategory.WORKFLOW, null),
+
+    // The approved minutes' record, or a reader's approved copy of it, failed after its job's last try (to the committee's
+    // secretaries not recused from any item, else all of them; once per record version, in the app only): the sweep asks
+    // again daily and a secretary can "Make the record again". The minutes' parameters; never an item or a word of them.
+    MINUTES_RECORD_FAILED(NotificationCategory.WORKFLOW, null),
     DECISIONS_RELEASE_FAILED(NotificationCategory.WORKFLOW, null),
 
     // Action items (Phase 4 E07, design E07 §2.3): a committee gave the person an action (to the holder of the owner's

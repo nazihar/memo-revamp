@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MINUTES_RECORD_APPROVAL_IDX
+import com.memo.jooq.indexes.MINUTES_RECORD_FAILED_IDX
 import com.memo.jooq.indexes.MINUTES_RECORD_READY_IDX
 import com.memo.jooq.indexes.MINUTES_RECORD_VERSION_UK
 import com.memo.jooq.keys.MINUTES_RECORD_PKEY
@@ -184,6 +185,16 @@ open class MinutesRecord(
      */
     val VERSION: TableField<MinutesRecordRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.minutes_record.failed_at</code>.
+     */
+    val FAILED_AT: TableField<MinutesRecordRecord, OffsetDateTime?> = createField(DSL.name("failed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.minutes_record.retries</code>.
+     */
+    val RETRIES: TableField<MinutesRecordRecord, Int?> = createField(DSL.name("retries"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<MinutesRecordRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MinutesRecordRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MinutesRecordRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -216,7 +227,7 @@ open class MinutesRecord(
         override fun `as`(alias: Table<*>): MinutesRecordPath = MinutesRecordPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MINUTES_RECORD_APPROVAL_IDX, MINUTES_RECORD_READY_IDX, MINUTES_RECORD_VERSION_UK)
+    override fun getIndexes(): List<Index> = listOf(MINUTES_RECORD_APPROVAL_IDX, MINUTES_RECORD_FAILED_IDX, MINUTES_RECORD_READY_IDX, MINUTES_RECORD_VERSION_UK)
     override fun getPrimaryKey(): UniqueKey<MinutesRecordRecord> = MINUTES_RECORD_PKEY
     override fun getReferences(): List<ForeignKey<MinutesRecordRecord, *>> = listOf(MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_APPROVAL_ID_FKEY, MINUTES_RECORD__MINUTES_RECORD_TENANT_ID_MEETING_ID_FKEY)
 
@@ -239,6 +250,7 @@ open class MinutesRecord(
         Internal.createCheck(this, DSL.name("minutes_record_error_check"), "(((char_length(error) >= 1) AND (char_length(error) <= 100)))", true),
         Internal.createCheck(this, DSL.name("minutes_record_pages_check"), "((pages >= 0))", true),
         Internal.createCheck(this, DSL.name("minutes_record_record_version_check"), "((record_version >= 1))", true),
+        Internal.createCheck(this, DSL.name("minutes_record_retries_check"), "((retries >= 0))", true),
         Internal.createCheck(this, DSL.name("minutes_record_sha256_check"), "((sha256 ~ '^[0-9a-f]{64}\$'::text))", true),
         Internal.createCheck(this, DSL.name("minutes_record_size_bytes_check"), "((size_bytes >= 0))", true),
         Internal.createCheck(this, DSL.name("minutes_record_state_check"), "((state = ANY (ARRAY['PENDING'::text, 'READY'::text, 'FAILED'::text])))", true),

@@ -10231,6 +10231,9 @@
           "current" : {
             "type" : "boolean"
           },
+          "failed" : {
+            "type" : "boolean"
+          },
           "file" : {
             "oneOf" : [ {
               "$ref" : "#/components/schemas/MinutesRecordFile"
@@ -10252,7 +10255,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "approvalId", "createdAt", "current", "redacted", "state", "version" ],
+        "required" : [ "approvalId", "createdAt", "current", "failed", "redacted", "state", "version" ],
         "type" : "object"
       },
       "MinutesRedactedItem" : {
@@ -10403,6 +10406,9 @@
           "mayReadCopy" : {
             "type" : "boolean"
           },
+          "mayRetryRecord" : {
+            "type" : "boolean"
+          },
           "mayReview" : {
             "type" : "boolean"
           },
@@ -10458,7 +10464,7 @@
             } ]
           }
         },
-        "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayProposeCorrection", "mayReadCopy", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
+        "required" : [ "agreed", "answered", "approval", "copies", "forumId", "items", "mayCirculate", "mayComment", "mayConfirm", "mayEdit", "mayEndCirculation", "mayGenerate", "mayProposeCorrection", "mayReadCopy", "mayRetryRecord", "mayReview", "maySendForReview", "mayWithdraw", "meetingId", "state", "structure", "undecided", "version", "viewerAccess", "viewerRecused" ],
         "type" : "object"
       },
       "MinutesReviewNoteResponse" : {
@@ -28960,7 +28966,45 @@
             "description" : "OK"
           }
         },
-        "summary" : "The approved minutes' record as the viewer reads it (PDF/A, supports Range): the record itself, or their approved copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made",
+        "summary" : "The approved minutes' record as the viewer reads it (PDF/A, supports Range): the record itself, or their approved copy; the current version or ?version=; 202 while their copy is being made, 409 RECORD_PENDING until it is made, 409 RECORD_FAILED when it or their copy failed after its tries",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/minutes/record/retry" : {
+      "post" : {
+        "operationId" : "retryMinutesRecord",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MinutesRecordResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Make the record again (a secretary not recused from any item): the failed newest record version, or the readers' failed approved copies of it, asked for again; 202 with the versions, 409 RECORD_NOT_FAILED otherwise",
         "tags" : [ "minutes" ]
       }
     },

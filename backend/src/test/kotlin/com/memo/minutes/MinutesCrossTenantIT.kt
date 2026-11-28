@@ -235,6 +235,8 @@ class MinutesCrossTenantIT : DecisionFixture() {
         }
     }
 
+    @Autowired lateinit var recordRetries: com.memo.minutes.internal.RecordRetries
+
     @Autowired lateinit var minutesCorrections: com.memo.minutes.internal.MinutesCorrectionsService
 
     @Autowired lateinit var resolutionExtracts: com.memo.minutes.internal.ResolutionExtracts
@@ -266,6 +268,8 @@ class MinutesCrossTenantIT : DecisionFixture() {
             { resolutionExtracts.list(number.id) },
             { resolutionExtracts.requireIssuer(number.id) },
             { resolutionExtracts.serve(number.id, UUID.randomUUID()) ?: "building" },
+            // The fix after E08 T10: "Make the record again".
+            { recordRetries.retry(held.id) },
         ).forEach { call ->
             val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
             assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "MinutesNotFoundException")

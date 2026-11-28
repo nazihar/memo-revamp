@@ -196,6 +196,11 @@ data class MinutesResponse(
     /** May propose a correction to the approved minutes (a secretary or `forums.manage`; per item, not recused from it). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayProposeCorrection: Boolean = false,
     /**
+     * May "Make the record again" (`POST …/minutes/record/retry`): a secretary or `forums.manage` not recused from any
+     * item, while the newest record version, or a reader's approved copy of it, has failed after its tries.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mayRetryRecord: Boolean = false,
+    /**
      * The secretaries not recused from any item, while the minutes are a draft: the reviewer's last answer (agreed or sent
      * back) with their comments; null before a review and once the draft is sent again or circulated.
      */
@@ -223,6 +228,7 @@ class MinutesPages(
     private val comments: MinutesCommentStore,
     private val copies: MinutesCopies,
     private val corrections: MinutesCorrectionStore,
+    private val retries: RecordRetries,
 ) {
     fun view(meetingId: UUID): MinutesResponse {
         val view = reading.actorView(meetingId)
@@ -289,6 +295,8 @@ class MinutesPages(
         val answered: Set<UUID>,
         val secretaries: Set<UUID>,
         val agreed: Boolean,
+        /** The approved minutes' record, or a reader's copy of it, failed after its tries (read for the secretaries only). */
+        val recordFailed: Boolean,
         val person: (UUID) -> MinutesPerson,
     ) {
         val row: MinutesRow get() = reader.row
@@ -297,6 +305,9 @@ class MinutesPages(
         val reviewing: Boolean get() = row.state == MinutesStage.CHAIR_REVIEW && row.reviewerId == reader.userId
         val idle: Boolean get() = held && !recused && row.workState != WorkState.PENDING
         val officer: Boolean get() = manager || reviewing || confirmer?.userId == reader.userId
+
+        /** "Make the record again": a secretary not recused, while the record or a copy of it has failed. */
+        val mayRetryRecord: Boolean get() = manager && !recused && recordFailed
 
         /** A reader of circulated minutes who answers them (secretaries answer comments instead). */
         val comments: Boolean
@@ -327,6 +338,8 @@ class MinutesPages(
             answered = people.answeredBy(row.meetingId),
             secretaries = people.secretaries(row.forumId),
             agreed = reader.access == MinutesAccessKind.MANAGER && row.state == MinutesStage.DRAFT && review.agreementStands(row.meetingId),
+            recordFailed =
+                reader.access == MinutesAccessKind.MANAGER && row.state == MinutesStage.APPROVED && retries.retryable(row.meetingId),
             person = { id -> MinutesPerson(id, names[id].orEmpty()) },
         )
     }
@@ -375,6 +388,7 @@ class MinutesPages(
             mayConfirm = row.state == MinutesStage.AWAITING_CHAIR && s.confirmer?.userId == s.reader.userId,
             mayReadCopy = row.state in MinutesCopies.COPYING,
             mayProposeCorrection = s.manager && row.state == MinutesStage.APPROVED,
+            mayRetryRecord = s.mayRetryRecord,
         )
     }
 

@@ -46,10 +46,11 @@ class ActionAbilityRules(
             edit = manages && (draft || open),
             issue = manages && draft,
             discard = manages && draft,
-            update = open && (owner || contributor || secretary),
+            // A secretary writes for the owner ([updateOnBehalf]); their own "Post an update" would be refused (E07 T12).
+            update = open && (owner || contributor),
             updateOnBehalf = open && secretary,
             confidence = open && (owner || secretary),
-            start = row.status == ActionStatus.OPEN && (owner || secretary),
+            start = row.status == ActionStatus.OPEN && owner,
             requestDue = open && owner && mode != DueChange.OWNER_WITH_REASON && pending == null,
             decideDue = open && pending != null && !recused && viewer.userId in deciders.of(row, mode),
             changeDue = open && (manages || (owner && mode == DueChange.OWNER_WITH_REASON)),

@@ -12,6 +12,7 @@ import com.memo.workflow.WorkingDays
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.Instant
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
@@ -42,14 +43,19 @@ class ActionIssuing(
     private val effects: ActionItemEffects,
     private val clock: Clock,
 ) {
-    /** Issues the draft [actionId], seen at [version] (any version when null). */
+    /**
+     * Issues the draft [actionId], seen at [version] (any version when null). [asOf] is for seeders only
+     * ([com.memo.actions.ActionSeeding]): the day the action was issued on at a past meeting, which the date and the counter's
+     * year are checked against instead of today.
+     */
     fun issue(
         actionId: UUID,
         version: Long?,
+        asOf: LocalDate? = null,
     ): ActionRow {
         val row = scenes.officer(actionId)
         ActionRules.requireDraft(row.status)
-        val today = org.today()
+        val today = asOf ?: org.today()
         val ownerInput = row.owner?.let { OwnerInput(it.kind, it.userId, it.positionId) }
         requireNoProblems(
             ActionRules.issuable(row.owner, row.dueDate, today) +

@@ -7,8 +7,11 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.forum.ForumRole
 import com.memo.forum.ForumSeeding
+import com.memo.forum.MinutesApproval
+import com.memo.forum.QuorumOverride
 import com.memo.forum.SeedMember
 import com.memo.forum.SeedPreset
+import com.memo.forum.SeedTypeChange
 import com.memo.identity.UserAccounts
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -26,6 +29,11 @@ import java.util.UUID
  * director with sign-in, the chairman's seat and the managing director; management committees are held by position
  * where a seat exists; Demo Director's risk committee seat has Demo Head of Credit as its alternate (Phase 4 E05 T10).
  * Seeded as the demo administrator; existing committees and members are left as they are (an alternate is only added).
+ *
+ * Phase 4 E06 T12: the management committee type's minutes are approved by circulation (types stored before E06 read as
+ * "at the next meeting") and a missing quorum may be overridden with a reason, to be ratified later (the override type of
+ * the demo: Demo Head of Credit's connection drops during the credit review). Changed through a new version drafted by the
+ * demo administrator and published by the second one, as the API would; meetings created before it keep their version.
  */
 @Component
 class DemoForumSeeder(
@@ -39,7 +47,7 @@ class DemoForumSeeder(
             transactions.inTenant(DemoTenant.ID) {
                 val board = forums.ensureType("BOARD", "Board", SeedPreset.BOARD)
                 val boardCommittee = forums.ensureType("BC", "Board committee", SeedPreset.BOARD_COMMITTEE)
-                val management = forums.ensureType("MC", "Management committee", SeedPreset.MANAGEMENT_COMMITTEE)
+                val management = forums.ensureType(MANAGEMENT, "Management committee", SeedPreset.MANAGEMENT_COMMITTEE)
                 forums.ensureForum(BOARD, "BOD", "Board of Directors", "Board", board)
                 forums.ensureForum(RISK, "BRC", "Board Risk Committee", "Risk", boardCommittee, BOARD)
                 forums.ensureForum(AUDIT, "BAC", "Board Audit Committee", "Audit", boardCommittee, BOARD)
@@ -51,6 +59,11 @@ class DemoForumSeeder(
                 // send apologies (the demo risk review and the journey meeting-replies.spec).
                 forums.ensureAlternate(RISK, person(DIRECTOR), person(HEAD_CREDIT))
             }
+        }
+        val proposed = asUser(admin) { transactions.inTenant(DemoTenant.ID) { forums.proposeTypeChange(MANAGEMENT, MANAGEMENT_CHANGE) } }
+        if (proposed != null) {
+            val checker = ActorContext.asSystem("demo-forums") { transactions.inTenant(DemoTenant.ID) { person(REVIEWER) } }
+            asUser(checker) { transactions.inTenant(DemoTenant.ID) { forums.approveVersion(MANAGEMENT, proposed) } }
         }
     }
 
@@ -128,6 +141,12 @@ class DemoForumSeeder(
         const val ALCO = "alco"
         const val EXCO = "exco"
         const val ADMIN = "admin@demo.example"
+        const val REVIEWER = "reviewer@demo.example"
+        const val MANAGEMENT = "MC"
+
+        /** The management committee type's settings since E06 T12 (see the class). */
+        val MANAGEMENT_CHANGE =
+            SeedTypeChange(minutesApproval = MinutesApproval.BY_CIRCULATION, quorumOverride = QuorumOverride.WITH_REASON)
         const val SECRETARY = "secretary@demo.example"
         const val BOARD_MEMBER = "board.member@demo.example"
         const val DIRECTOR = "director@demo.example"

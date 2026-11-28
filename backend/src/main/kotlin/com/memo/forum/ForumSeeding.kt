@@ -4,8 +4,10 @@ import com.memo.forum.internal.ForumInput
 import com.memo.forum.internal.ForumMemberStore
 import com.memo.forum.internal.ForumMembers
 import com.memo.forum.internal.ForumStore
+import com.memo.forum.internal.ForumTypeLifecycle
 import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypeStore
+import com.memo.forum.internal.ForumTypeVersionStore
 import com.memo.forum.internal.ForumTypes
 import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberEdit
@@ -26,6 +28,15 @@ enum class SeedPreset(
     BOARD_AUDIT_COMMITTEE(ForumTypePreset.BOARD_AUDIT_COMMITTEE),
     MANAGEMENT_COMMITTEE(ForumTypePreset.MANAGEMENT_COMMITTEE),
 }
+
+/**
+ * What a seeder changes in a committee type's published settings (Phase 4 E06 T12): how its minutes are approved and
+ * whether a missing quorum may be overridden with a reason. Null leaves a setting as it is.
+ */
+data class SeedTypeChange(
+    val minutesApproval: MinutesApproval? = null,
+    val quorumOverride: QuorumOverride? = null,
+)
 
 /** A member a seeder adds: a person or a position, with its role and attributes. */
 data class SeedMember(
@@ -50,6 +61,8 @@ class ForumSeeding(
     private val members: ForumMembers,
     private val memberStore: ForumMemberStore,
     private val submissions: SubmissionStore,
+    private val lifecycle: ForumTypeLifecycle,
+    private val versions: ForumTypeVersionStore,
 ) {
     /** The type with [code], created and published from [preset] (named [name]) if missing. */
     fun ensureType(
@@ -57,6 +70,43 @@ class ForumSeeding(
         name: String,
         preset: SeedPreset,
     ): UUID = typeStore.all().firstOrNull { it.code == code }?.id ?: types.create(code, name, preset.preset, publish = true).type.id
+
+    /**
+     * Drafts and submits, as the bound administrator, a new version of the type with [code] carrying [change] (Phase 4 E06
+     * T12), unless its published version already has it or the type has a version open; the version's number, for a second
+     * administrator to [approveVersion] (maker-checker, as the API). Meetings created afterwards are pinned to it.
+     */
+    fun proposeTypeChange(
+        code: String,
+        change: SeedTypeChange,
+    ): Int? {
+        val type = typeStore.all().firstOrNull { it.code == code }
+        val settings = type?.let { versions.published(it.id) }?.settings
+        val wanted =
+            settings?.copy(
+                minutes = change.minutesApproval?.let { settings.minutes.copy(approval = it) } ?: settings.minutes,
+                meetings = change.quorumOverride?.let { settings.meetings.copy(quorumOverride = it) } ?: settings.meetings,
+            )
+        val open = type != null && versions.versions(type.id).any { it.state.open }
+        val changed = wanted != null && wanted != settings && !open
+        return if (type == null || !changed) {
+            null
+        } else {
+            val draft = lifecycle.newDraft(type.id)
+            val saved = lifecycle.replace(type.id, draft.number, draft.revision, checkNotNull(wanted))
+            lifecycle.submit(type.id, draft.number, saved.revision)
+            draft.number
+        }
+    }
+
+    /** Publishes version [number] of the type with [code], as the bound administrator (who did not submit it). */
+    fun approveVersion(
+        code: String,
+        number: Int,
+    ) {
+        val type = checkNotNull(typeStore.all().firstOrNull { it.code == code }) { "forum type $code missing" }
+        lifecycle.approve(type.id, number, "Demo committee settings (Phase 4 E06).")
+    }
 
     /** The forum with [key], created if missing. */
     fun ensureForum(

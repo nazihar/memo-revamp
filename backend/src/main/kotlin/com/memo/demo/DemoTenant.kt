@@ -39,7 +39,8 @@ object DemoTenant {
     val SETTINGS =
         linkedMapOf(
             "locale.default" to "en",
-            "default.timezone" to "UTC",
+            // The demo bank is Bangladeshi: its business calendar, working days and dates are in Dhaka (Phase 4 E06 T12).
+            "default.timezone" to "Asia/Dhaka",
         )
 
     /** Demo accounts. Their password comes from `MEMO_DEMO_PASSWORD` (generated into the git-ignored `.env`), never code. */
@@ -61,6 +62,9 @@ object DemoTenant {
             // chairs the board committees. Neither holds an org seat, so the seats on dev stay as they are.
             DemoUser("secretary@demo.example", "Demo Company Secretary", null),
             DemoUser("board.member@demo.example", "Demo Board Member", null),
+            // Action items (Phase 4 E07 T12): the staff member holding Head of Credit Risk, given sign-in, owns the demo's actions
+            // through the position. Her seat is the one the staff seating gives her, so no seat moves.
+            DemoUser(DemoOrg.staffEmail(DemoActionsSeeder.HEAD_CREDIT_RISK_NAME), DemoActionsSeeder.HEAD_CREDIT_RISK_NAME, null),
         )
 }
 

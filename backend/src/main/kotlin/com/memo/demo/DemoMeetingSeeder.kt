@@ -54,6 +54,17 @@ import java.util.UUID
  * an interest in, Demo Head of Finance left early, and the meeting lost its quorum when the vice-chair's connection dropped
  * and had it restored eight minutes later. The Meghna Foods decision's quorum snapshot is kept for E06's minutes.
  *
+ * Phase 4 E06 T12 ([DemoMinutesSeeder]) adds the Board Risk Committee's held "Risk review, third quarter" (seeded before the
+ * quarterly review, so it has the earlier number) and the two held meetings' decisions, resolutions and minutes. On a new
+ * seed, "Working capital limit, Meghna Foods" is Demo User's credit memo of BDT 80 million, sent to the credit committee
+ * through the credit desk (recommended by Demo Head of Credit, who declares their interest at the meeting, as before), so
+ * the committee's decision moves the memo on with its resolution number to the delegation of authority (Demo Director
+ * and the head of finance's seat, neither of whom acted on it at the desk).
+ *
+ * Phase 4 E07 T12 ([DemoActionsSeeder]) adds action items on the two held meetings (from a condition of MCC/…/001, from
+ * the discussion of two BRC items, and directly), a follow-up memo, and a third revision of the quarterly risk review
+ * with its action taken report.
+ *
  * Dates are relative to the day of seeding, so on a long-lived environment the meetings drift into the past. Fills gaps
  * only: a meeting already there (by its title, in any state) is left as it is. Needs the files service (scanner) and the
  * demo password (the people acting must exist with sign-in), like the demo memos.
@@ -64,6 +75,9 @@ class DemoMeetingSeeder(
     private val agendas: AgendaSeeding,
     private val declarations: DeclarationSeeding,
     private val e05: DemoMeetingAttendanceSeeder,
+    private val e06Held: DemoHeldRiskReviewSeeder,
+    private val e06: DemoMinutesSeeder,
+    private val e07: DemoActionsSeeder,
     private val memos: MemoSeeding,
     private val memoAccess: MemoAccessSeeding,
     private val forums: ForumSeeding,
@@ -82,13 +96,20 @@ class DemoMeetingSeeder(
         val risk = forumId(ids, DemoForumSeeder.RISK)
         val credit = forumId(ids, DemoForumSeeder.CREDIT)
         val today = LocalDate.now(clock.withZone(ZONE))
+        val heldRisk =
+            asUser(ids.getValue(SECRETARY)) { meetings.find(risk, DemoMinutesSeeder.RISK_TITLE) }
+                ?: e06Held.heldRiskReview(ids, risk, today)
         val riskMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(risk, RISK_TITLE) } ?: riskReview(ids, risk, today)
         val creditMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(credit, CREDIT_TITLE) } ?: creditMeeting(ids, credit, today)
         riskDeclarations(ids, risk, riskMeeting, today)
         e05.riskReplies(ids, risk, riskMeeting, today)
-        val held = asUser(ids.getValue(SECRETARY)) { meetings.find(credit, HELD_TITLE) } ?: e05.heldCreditReview(ids, credit, today)
+        val held =
+            asUser(ids.getValue(SECRETARY)) { meetings.find(credit, HELD_TITLE) }
+                ?: e05.heldCreditReview(ids, credit, today, meghnaSubmission(ids))
+        e06.seed(ids, heldRisk, held)
+        e07.seed(ids, risk to credit, heldRisk, held, riskMeeting)
         log.info("Demo meetings seeded")
-        return Seeded(riskMeeting, creditMeeting, held)
+        return Seeded(riskMeeting, creditMeeting, held, heldRisk)
     }
 
     /** The BRC's meeting with revisions 1 and 2 (see the class). */
@@ -226,7 +247,8 @@ class DemoMeetingSeeder(
                 )
             }
         }
-        asUser(director) { declarations.confirmReview(meeting) }
+        // Once: a later revision (E07 T12's third) leaves the director to confirm it in the app.
+        if (!asUser(director) { declarations.reviewed(meeting) }) asUser(director) { declarations.confirmReview(meeting) }
     }
 
     /** What revision 2 of the risk review changes: the appetite paper, the consent item lifted, the item that gets a late paper. */
@@ -262,42 +284,58 @@ class DemoMeetingSeeder(
     }
 
     /** Demo User's credit proposal of BDT 15 million, through the credit desk and so to the credit committee; once. */
-    private fun creditProposal(ids: Map<String, UUID>): UUID {
+    private fun creditProposal(ids: Map<String, UUID>): UUID = creditMemo(ids, PADMA)
+
+    /**
+     * E06 T12: Demo User's BDT 80 million working capital memo for Meghna Foods, through the credit desk to the credit
+     * committee's queue (once), for the held review; its submission there, or null when it is not in the queue (the review
+     * then has an item of its own, as before E06).
+     */
+    private fun meghnaSubmission(ids: Map<String, UUID>): UUID? {
+        val memo = creditMemo(ids, MEGHNA_MEMO)
+        return asUser(ids.getValue(SECRETARY)) {
+            transactions.inTenant(DemoTenant.ID) { forums.unplacedSubmission(DemoForumSeeder.CREDIT, memo) }
+        }
+    }
+
+    /**
+     * A credit memo of Demo User's as [spec] says, submitted and recommended at the credit desk (by the director when the
+     * head of credit stands aside for an interest, else by the head of credit); once.
+     */
+    private fun creditMemo(
+        ids: Map<String, UUID>,
+        spec: CreditMemo,
+    ): UUID {
         val author = ids.getValue(AUTHOR)
-        asUser(author) { memoAccess.find(author, CREDIT_SUBJECT) }?.let { return it }
+        asUser(author) { memoAccess.find(author, spec.subject) }?.let { return it }
         // The representative type exists (DemoWorkflowSeeder); an administrator looks it up.
         val type = asUser(ids.getValue(ADMIN)) { memos.fixedType(DemoWorkflowSeeder.CREDIT_PROPOSAL, DemoWorkflowSeeder.AUTHORITY_KEY) }
         val memo =
             asUser(author) {
                 val id =
                     memos.draft(
-                        CREDIT_SUBJECT,
+                        spec.subject,
                         typeId = type,
                         metadata =
                             mapOf(
-                                "customer" to "Padma Spinning Mills Ltd",
-                                "amount" to mapOf("value" to CREDIT_AMOUNT, "currency" to "BDT"),
-                                "purpose" to "term-loan",
-                                "tenor" to CREDIT_TENOR,
+                                "customer" to spec.customer,
+                                "amount" to mapOf("value" to spec.amount, "currency" to "BDT"),
+                                "purpose" to spec.purpose,
+                                "tenor" to spec.tenor,
                             ),
                     )
-                memos.document(
-                    id,
-                    "padma-spinning-term-loan.docx",
-                    DemoDocx.of(
-                        CREDIT_SUBJECT,
-                        listOf(
-                            "Term loan of BDT 15 million over 60 months for a new spinning line.",
-                            "Security: a first charge on the plant and machinery, and the directors' personal guarantees.",
-                        ),
-                    ),
-                )
+                memos.document(id, spec.file, DemoDocx.of(spec.subject, spec.lines))
                 memos.submit(id, "For the committee's decision.")
                 id
             }
-        // E04 T9: the head of credit has an interest and stands aside at the desk; the director, its other member, recommends.
-        asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.STAND_ASIDE, CREDIT_INTEREST) }
-        asUser(ids.getValue(DIRECTOR)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        val interest = spec.interest
+        if (interest != null) {
+            // E04 T9: the head of credit has an interest and stands aside at the desk; the director, its other member, recommends.
+            asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.STAND_ASIDE, interest) }
+            asUser(ids.getValue(DIRECTOR)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        } else {
+            asUser(ids.getValue(HEAD_CREDIT)) { memos.act(memo, MemoSeeding.APPROVE, "Recommended to the credit committee.") }
+        }
         return memo
     }
 
@@ -319,12 +357,27 @@ class DemoMeetingSeeder(
         block: () -> T,
     ): T = ActorContext.call(ActorScope(Actor.User(user), null)) { TenantContext.call(DemoTenant.ID, block) }
 
-    /** The three demo meetings. */
+    /** The demo meetings. */
     data class Seeded(
         val riskReview: UUID,
         val creditMeeting: UUID,
         /** The credit committee's monthly review, held (E05 T10). */
         val heldCreditReview: UUID,
+        /** The risk committee's review of the third quarter, held, with circulated minutes (E06 T12). */
+        val heldRiskReview: UUID,
+    )
+
+    /** A credit memo the demo sends to the credit committee. */
+    private data class CreditMemo(
+        val subject: String,
+        val customer: String,
+        val amount: Int,
+        val purpose: String,
+        val tenor: Int,
+        val file: String,
+        val lines: List<String>,
+        /** Demo Head of Credit's interest, for which they stand aside at the credit desk; null: they recommend it. */
+        val interest: String?,
     )
 
     companion object {
@@ -374,6 +427,41 @@ class DemoMeetingSeeder(
         private const val IN_CAMERA_MINUTES = 15
         private const val CREDIT_AMOUNT = 15_000_000
         private const val CREDIT_TENOR = 60
+        private const val MEGHNA_AMOUNT = 80_000_000
+        private const val MEGHNA_TENOR = 12
+
+        private val PADMA =
+            CreditMemo(
+                CREDIT_SUBJECT,
+                "Padma Spinning Mills Ltd",
+                CREDIT_AMOUNT,
+                "term-loan",
+                CREDIT_TENOR,
+                "padma-spinning-term-loan.docx",
+                listOf(
+                    "Term loan of BDT 15 million over 60 months for a new spinning line.",
+                    "Security: a first charge on the plant and machinery, and the directors' personal guarantees.",
+                ),
+                CREDIT_INTEREST,
+            )
+
+        /** E06 T12: the held review's limit item as a memo (its subject is the item's title). */
+        private val MEGHNA_MEMO =
+            CreditMemo(
+                MEGHNA,
+                "Meghna Foods Ltd",
+                MEGHNA_AMOUNT,
+                "working-capital",
+                MEGHNA_TENOR,
+                "meghna-foods-working-capital.docx",
+                listOf(
+                    "Renewal of the BDT 80 million working capital limit for a year.",
+                    "Security: a charge over stock and receivables, and the directors' personal guarantees.",
+                ),
+                // The head of credit recommends it at the desk and declares their interest at the meeting (E05): the director
+                // stays free to decide it under the delegation of authority after the committee (SOD-2).
+                null,
+            )
 
         /** [from], or the first Monday to Thursday after it: no weekend meetings, whether the weekend is Fri–Sat or Sat–Sun. */
         fun weekday(from: LocalDate): LocalDate =

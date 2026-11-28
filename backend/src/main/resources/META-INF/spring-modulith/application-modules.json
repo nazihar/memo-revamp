@@ -616,6 +616,9 @@
       "target" : "memo",
       "types" : [ "USES_COMPONENT" ]
     }, {
+      "target" : "minutes",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
       "target" : "org",
       "types" : [ "USES_COMPONENT" ]
     }, {

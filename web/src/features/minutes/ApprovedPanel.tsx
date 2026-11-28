@@ -372,7 +372,9 @@ function Correction({
         <p>{intl.formatMessage(mnv.correctionWithheld, { number: c.itemNumber ?? '?' })}</p>
       ) : (
         <>
-          <p className="whitespace-pre-line">{c.text}</p>
+          <p dir="auto" className="whitespace-pre-line">
+            {c.text}
+          </p>
           {c.reason ? (
             <p className="text-base">{intl.formatMessage(mnv.correctionReasonLine, { reason: c.reason })}</p>
           ) : null}

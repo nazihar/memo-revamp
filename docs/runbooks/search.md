@@ -9,6 +9,7 @@
 - **Following** (design E05 §4) tells people about memos they follow:
   - in the app, once a memo has been quiet for 3 minutes (all its news in one item);
   - by email, as each person chooses: a daily digest at 08:00 in the tenant's time zone (the default), at once, or never. Emails carry the memo's number and a link, never its subject; the digest carries only a count.
+- **The decision register** (Phase 4 E08, ADR-0069) is a search table of the same kind, `search_decision`, one row per committee decision, behind definer functions of its own. Its privileges, plan gate and upgrades are below ("The decision register"); how people use it, the backfill and the rebuild are in [decision-register-and-analytics.md](decision-register-and-analytics.md).
 - **The team view and the approvals dashboard** show the open work of the people in the units a person oversees: heads of a unit for its subtree, and holders of `inbox.team.read` or `memo.dashboard.read` for their grant's scope.
 
 ## What must be running
@@ -58,6 +59,7 @@
 **PostgreSQL major upgrade (for example to 19).** The English stemmer and character classes may change, so stored vectors must be recomputed. After `pg_upgrade`:
 1. Rebuild every tenant's index as above.
 2. `REINDEX` the GIN indexes `search_memo_tsv_idx`, `search_note_tsv_idx` and `search_chunk_tsv_idx`.
+3. Recompute the decision register's vectors (below, "The decision register").
 
 **Someone gets no digest.**
 1. Check their choice: the notification preferences page, "Memos you follow" (`GET /api/v1/me/watch-settings` as them).
@@ -72,6 +74,35 @@
 - Check the person's assignment, and that the position is marked as the unit's head (Organisation).
 - Others need `inbox.team.read` (team view) or `memo.dashboard.read` (dashboard) granted on purpose, scoped to a unit.
 - Memos the head may not read show as "Restricted memo", with no subject or number. To read them, the head needs `memo.read.unit` on the unit, granted on purpose.
+
+## The decision register (`search_decision`)
+**Privileges** (ADR-0054's pattern; `search/V4__decisions.sql`, `search/V5__decision_stats.sql`):
+- The table is owned by the schema owner, with row security **enabled but not forced** (the owner, which the functions run as, is not bound by it), and **no privilege at all for `memo_app`** (`REVOKE ALL`). The application never reads or writes it directly.
+- It is reached only through `SECURITY DEFINER` functions with `search_path` pinned to `memo, pg_catalog`. Each refuses a tenant argument other than the transaction's `app.tenant_id` (`search: tenant mismatch`), so a request fails closed:
+  - writers: `search_put_decision` (one decision's row), `search_put_decisions_final` (a meeting's decisions made final when its minutes are approved), `search_put_decision_items` (a meeting's columns and its decided items' after an agenda revision or a meeting change);
+  - readers: `search_find_decisions` (the register's page, totals and facets under the one rule), `search_decision_stats` (full rows only, for analytics' time to decision and deferrals; at most ten years and 100,000 rows), `search_decision_unindexed` (decisions without an up-to-date row, at most 1,000).
+- `memo_app` holds `EXECUTE` on those six entry points only. The rule itself (`search_decision_level`) and the query texts (`search_find_decisions_sql`, `search_decision_stats_sql`) are revoked from `PUBLIC` and `memo_app`. In the application only `DecisionRegisterAccess` calls the readers (`DecisionRegisterArchTest`).
+- **Check after any manual change to the database** (`DecisionSearchExplainIT` asserts the same on every PR), as the schema owner:
+
+  ```sql
+  select has_table_privilege('memo_app', 'search_decision', 'select,insert,update,delete');  -- false
+  select p.proname, has_function_privilege('memo_app', p.oid, 'execute')
+  from pg_proc p where p.proname like 'search_%decision%' order by 1;  -- true for the six entry points only
+  ```
+
+**The `EXPLAIN` gate.** The readers build their statement as text and run it with `EXECUTE … USING`, so PostgreSQL plans every call with its values and never uses a generic plan (ADR-0054's amendment).
+- **On every PR:** `DecisionSearchExplainIT` generates 54,000 decisions (`DECISION_VOLUME` changes it) and explains, as the owner the functions run as, the search's shapes (newest and oldest first, one committee, number order, words, a resolution number, a memo number, with facets and totals) and the statistics (12 months and five years) for five reader profiles: a secretary of three committees, a director member of two, an auditor with `forum.read`, a recused director, a `forums.manage` holder. A sequential scan of `search_decision` fails it.
+- **Weekly** (`load`, job `committee-volume`): `RegisterVolumeIT` repeats the review at about 55,000 and 115,000 decisions with each profile's real parameters (`RegisterPlans`, shared with the PR test) and `EXPLAIN ANALYZE`s every statement. One sequential scan is the planner's choice and allowed: words found in nearly every row read the table in order and stop at the 2,000 candidates (30–113 ms measured).
+- **Any change** to these functions, to `search_decision`'s indexes or to the rule passes both before it merges. The plans are in the test reports (the artefact `committee-volume-report`).
+- **In production**, a slow register search (503 `SEARCH_TIMEOUT` after 2 seconds) is checked the same way. As the schema owner, run `ANALYZE search_decision` first; then take the statement from `select search_find_decisions_sql(<true with words, else false>, '<NEWEST|OLDEST|RELEVANCE|NUMBER>')`, `EXPLAIN (ANALYZE, BUFFERS)` it with the call's values, and look for a sequential scan of `search_decision`.
+
+**PostgreSQL major upgrade.** `tsv` is a stored generated column (the title in the row's language with weight A, the resolution and memo numbers B, the decision's text and conditions C), and the English stemmer may change between majors. `pg_upgrade` copies the stored vectors as they were. After it, as the schema owner:
+1. `update search_decision set body = body where tenant_id = '<tenant id>';` for each tenant (or the whole table on a small installation) recomputes every row's vector in place. Rows stay searchable throughout; no backfill or rebuild is needed.
+2. `reindex index search_decision_tsv_idx;` (`reindex index concurrently` while the application runs).
+3. `analyze search_decision;`
+4. Run the unindexed check ([decision-register-and-analytics.md](decision-register-and-analytics.md)); expected empty.
+
+The register's rebuild (`search-decisions-backfill` with `rebuild: true`, same runbook) is for a change to what a row holds, not for an upgrade.
 
 ## Limits
 - **Search:** at most 200 characters and 12 words; a word ending a search is also matched as a prefix when it has 3 or more characters; 30 searches a minute per person (429 above).

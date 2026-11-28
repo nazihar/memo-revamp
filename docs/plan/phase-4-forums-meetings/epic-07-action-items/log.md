@@ -593,3 +593,9 @@
   - `OwnerPositionDatesIT` (new): an action owned by a position, whose task and holder move to the successor and then wait with no holder.
   - Also run: the workflow, memo and actions packages, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT` (regenerated), `JooqCodegenTest` (regenerated), both leak suites, ktlint, detekt and SpotBugs. Results are in the PR.
 - **Docs:** the ADR-0068 amendment, and the "Staff changes" section of `docs/runbooks/workflow-approvers-and-authority.md` (dates, background work, troubleshooting).
+- **CI follow-up (#264, run 46151099626, after merging `master`):** the e2e smoke `committee-escalation.spec` timed out at "Mark as held…".
+  - **Not the workflow change.** The trace shows every API call answered within milliseconds, and the meeting was in progress.
+  - **The cause was a web race.** `DecisionForm` showed "The decision is recorded." *before* it refreshed the decisions and moved focus to the decision's heading. The journey (or a quick keyboard user) acted on the toast by opening the meeting's ⋯ menu. The menu opened, then the late focus move closed it, and the menu item detached from the DOM.
+  - **The same race is on `master`.** It is the step the E07 T12 entry above saw stop locally. Locally, without the fix, it failed 1 run in 4 the same way ("element was detached from the DOM").
+  - **The fix:** the form now refreshes, moves focus, and only then shows the toast. With it, `committee-escalation.spec` passed 6 of 6 serially. `meeting-decisions.spec` and `action-items.spec` pass.
+  - **Not fixed here:** locally, near midnight, `committee-cycle.spec` failed in its scheduling helper (`cycle.ts:146`, `getByLabel(/^Ends on/)` matches both the checkbox and the date when the meeting ends the next day). It is a test helper issue that shows only when the run crosses the end of the day.

@@ -328,9 +328,11 @@ export function DecisionForm({
       })
       sent.current = null
       setNotQuorate(undefined)
-      toast.show(intl.formatMessage(correcting ? dm.corrected : dm.recorded), 'success')
       await refreshDecisions(queryClient, meeting.id)
+      // Focus moves to the decision first, and only then does the toast say it is recorded: someone who acts on the toast
+      // at once (opening the meeting's menu, for example) no longer loses that menu to the focus moving under it.
       onDone(result.data)
+      toast.show(intl.formatMessage(correcting ? dm.corrected : dm.recorded), 'success')
     } catch (problem) {
       if (rethrow?.(problem)) throw problem
       if (!isProblem(problem)) {

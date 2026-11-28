@@ -64,6 +64,10 @@ class BusinessCalendarIT : MemoIntegrationTest() {
             assertThat(workingDays.before(wednesday, 0)).isEqualTo(wednesday)
             assertThat(workingDays.before(wednesday, 1)).isEqualTo(thursday)
             assertThat(workingDays.before(wednesday, 2)).isEqualTo(thursday.minusDays(1))
+            // Many at once (analytics' papers deadlines, E08 T5): the calendar read once, the same days as one by one.
+            val asked = listOf(wednesday to 0, wednesday to 1, wednesday to 2, sunday to 1, thursday.plusWeeks(3) to 5, thursday to 3)
+            assertThat(workingDays.beforeEach(asked)).isEqualTo(asked.map { (day, n) -> workingDays.before(day, n) })
+            assertThat(workingDays.beforeEach(emptyList())).isEmpty()
         }
 
         val listed = read("$base/days?from=${sunday.minusDays(14)}&to=${sunday.plusDays(14)}", session)

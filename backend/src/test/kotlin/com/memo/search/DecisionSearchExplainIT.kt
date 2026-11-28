@@ -3,6 +3,8 @@ package com.memo.search
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantTransactions
+import com.memo.search.RegisterPlans.Profile
+import com.memo.search.RegisterPlans.Shape
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
@@ -47,15 +49,6 @@ class DecisionSearchExplainIT : IntegrationTest() {
     private val type = UUID.randomUUID()
     private val viewer = UUID.randomUUID()
 
-    /** A profile: officer of all, officer committees, member committees, reader, recused items. */
-    private data class Profile(
-        val all: Boolean,
-        val officers: List<UUID>,
-        val members: List<UUID>,
-        val reader: Boolean,
-        val recused: List<UUID> = emptyList(),
-    )
-
     private lateinit var profiles: Map<String, Profile>
 
     @BeforeAll
@@ -75,110 +68,39 @@ class DecisionSearchExplainIT : IntegrationTest() {
         recusedItems = items[0].take(RECUSED) + items[1].take(RECUSED)
         profiles =
             mapOf(
-                "secretary of three" to Profile(false, forums.take(3), emptyList(), false),
-                "director of two" to Profile(false, emptyList(), forums.take(2), false),
-                "auditor" to Profile(false, emptyList(), emptyList(), true),
-                "recused director" to Profile(false, emptyList(), forums.take(2), false, recusedItems),
-                "forums.manage" to Profile(true, emptyList(), emptyList(), false),
+                "secretary of three" to Profile(false, forums.take(3), emptyList(), false, viewer = viewer),
+                "director of two" to Profile(false, emptyList(), forums.take(2), false, viewer = viewer),
+                "auditor" to Profile(false, emptyList(), emptyList(), true, viewer = viewer),
+                "recused director" to Profile(false, emptyList(), forums.take(2), false, recusedItems, viewer = viewer),
+                "forums.manage" to Profile(true, emptyList(), emptyList(), false, viewer = viewer),
             )
     }
 
-    /** One search shape: words or a number given, the order, the committee filter and the tsquery / number keys. */
-    private data class Shape(
-        val name: String,
-        val text: Boolean,
-        val sort: String,
-        val forums: (Profile) -> List<UUID>?,
-        val tsquery: String = "null",
-        val refNorm: String = "null",
-        val refTail: String = "null",
-    )
-
     private val shapes: List<Shape>
-        get() =
-            listOf(
-                Shape("newest", false, "NEWEST", { null }),
-                Shape("oldest", false, "OLDEST", { null }),
-                Shape("one committee", false, "NEWEST", { p -> listOf(firstOf(p)) }),
-                Shape("number order", false, "NUMBER", { p -> listOf(firstOf(p)) }),
-                Shape("text", true, "RELEVANCE", { null }, tsquery = "websearch_to_tsquery('english', '${DecisionVolume.NEEDLE}')"),
-                Shape("text, newest", true, "NEWEST", { null }, tsquery = "websearch_to_tsquery('english', 'treasury limits')"),
-                Shape("number", true, "RELEVANCE", { null }, refNorm = "'C0-2017-0001'"),
-                Shape("number tail", true, "RELEVANCE", { null }, refTail = "'14'"),
-                Shape("memo number", true, "RELEVANCE", { null }, refNorm = "'CP-2018-00042'"),
-            )
+        get() = RegisterPlans.shapes(DecisionVolume.NEEDLE, "treasury limits", "C0-2017-0001", "14", "CP-2018-00042", ::firstOf)
 
     private fun firstOf(p: Profile): UUID = (p.officers + p.members).firstOrNull() ?: forums.first()
 
     @Test
     fun `the register's query uses the indexes for every reader profile and shape`() {
         owner { c ->
-            c.exec("set plan_cache_mode = force_custom_plan")
-            shapes.forEach { shape ->
-                val statement = "s_" + shape.name.replace(Regex("[^a-z]"), "_")
-                val sql = c.lines("select search_find_decisions_sql(${shape.text}, '${shape.sort}')").single()
-                c.exec("prepare $statement(${TYPES.joinToString()}) as $sql")
-                profiles.forEach { (name, profile) ->
-                    val plan = c.lines("explain execute $statement(${arguments(profile, shape)})")
-                    val scans = plan.filter { it.contains("Seq Scan on search_decision") }
-                    assertThat(scans).describedAs("$name, ${shape.name}:\n${plan.joinToString("\n")}").isEmpty()
-                }
-                val analysed = c.lines("explain (analyze, buffers) execute $statement(${arguments(profiles.getValue("auditor"), shape)})")
-                println("DecisionSearchExplainIT plan, auditor, ${shape.name}:\n" + analysed.joinToString("\n"))
-                c.exec("deallocate $statement")
-            }
+            val scans = RegisterPlans.searchScans(c, tenant.id.value, profiles, shapes, "auditor", "DecisionSearchExplainIT")
+            assertThat(scans).describedAs("sequential scans of search_decision").isEmpty()
         }
     }
 
     @Test
     fun `the decision statistics use the indexes for every reader profile, over the summary's and the detail's periods`() {
         owner { c ->
-            c.exec("set plan_cache_mode = force_custom_plan")
-            val sql = c.lines("select search_decision_stats_sql()").single()
-            c.exec("prepare s_stats(${STATS_TYPES.joinToString()}) as $sql")
             // The summary (every committee in scope, the last 12 months) and one committee's detail over five years.
             val shapes =
                 mapOf<String, (Profile) -> Pair<List<UUID>?, Long>>(
                     "summary" to { _ -> null to 1L },
                     "detail" to { p -> listOf(firstOf(p)) to 5L },
                 )
-            shapes.forEach { (shape, of) ->
-                profiles.forEach { (name, profile) ->
-                    val (committees, years) = of(profile)
-                    val plan = c.lines("explain execute s_stats(${statsArguments(profile, committees, years)})")
-                    val scans = plan.filter { it.contains("Seq Scan on search_decision") }
-                    assertThat(scans).describedAs("stats, $name, $shape:\n${plan.joinToString("\n")}").isEmpty()
-                }
-            }
-            val analysed = c.lines("explain (analyze, buffers) execute s_stats(${statsArguments(profiles.getValue("auditor"), null, 1)})")
-            println("DecisionSearchExplainIT plan, auditor, stats:\n" + analysed.joinToString("\n"))
-            c.exec("deallocate s_stats")
+            val scans = RegisterPlans.statsScans(c, tenant.id.value, profiles, shapes, "auditor", "DecisionSearchExplainIT")
+            assertThat(scans).describedAs("sequential scans of search_decision").isEmpty()
         }
-    }
-
-    /** The values of `search_decision_stats_sql()`'s parameters \$1 to \$14 for [profile], [committees] and the last [years]. */
-    private fun statsArguments(
-        profile: Profile,
-        committees: List<UUID>?,
-        years: Long,
-    ): String {
-        fun uuids(ids: List<UUID>?) = ids?.let { "array[${it.joinToString { id -> "'$id'" }}]::uuid[]" } ?: "null::uuid[]"
-        return listOf(
-            "'${tenant.id.value}'",
-            "'$viewer'",
-            "2",
-            "${profile.all}",
-            uuids(profile.officers),
-            uuids(profile.members),
-            "${profile.reader}",
-            uuids(profile.recused),
-            uuids(committees),
-            "(current_date - interval '$years years')::date",
-            "current_date",
-            "${profile.reader || profile.all}",
-            uuids(profile.officers + profile.members),
-            "100000",
-        ).joinToString()
     }
 
     @Test
@@ -266,50 +188,6 @@ class DecisionSearchExplainIT : IntegrationTest() {
         }
     }
 
-    /** The values of `search_find_decisions_sql()`'s parameters \$1 to \$33 for [profile] and [shape]. */
-    private fun arguments(
-        profile: Profile,
-        shape: Shape,
-    ): String {
-        fun uuids(ids: List<UUID>?) = ids?.let { "array[${it.joinToString { id -> "'$id'" }}]::uuid[]" } ?: "null::uuid[]"
-        val inScope = profile.officers + profile.members
-        return listOf(
-            "'${tenant.id.value}'",
-            "'$viewer'",
-            "2",
-            "${profile.all}",
-            uuids(profile.officers),
-            uuids(profile.members),
-            "${profile.reader}",
-            uuids(profile.recused),
-            shape.tsquery,
-            shape.refNorm,
-            shape.refTail,
-            uuids(shape.forums(profile)),
-            "null",
-            "null",
-            "null",
-            "null",
-            "false",
-            "null",
-            "null",
-            "null",
-            "current_date",
-            "false",
-            "null",
-            "null",
-            "null",
-            "null",
-            "null",
-            "null",
-            "51",
-            "2000",
-            "10001",
-            "${profile.reader || profile.all}",
-            uuids(inScope),
-        ).joinToString()
-    }
-
     /** A transaction as the schema owner, bound to the tenant. */
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
@@ -336,16 +214,5 @@ class DecisionSearchExplainIT : IntegrationTest() {
         const val MEETINGS_OTHER = 2
         const val PER_COMMITTEE = MEETINGS * DecisionVolume.ITEMS_PER_MEETING
         const val RECUSED = 50
-
-        /** The types of `search_decision_stats_sql()`'s parameters \$1 to \$14. */
-        val STATS_TYPES =
-            "uuid uuid int boolean uuid[] uuid[] boolean uuid[] uuid[] date date boolean uuid[] int".split(" ")
-
-        /** The types of `search_find_decisions_sql()`'s parameters \$1 to \$33. */
-        val TYPES =
-            (
-                "uuid uuid int boolean uuid[] uuid[] boolean uuid[] tsquery text text uuid[] uuid[] date date text[] boolean " +
-                    "text[] uuid[] text[] date boolean date timestamptz real text bigint uuid int int int boolean uuid[]"
-            ).split(" ")
     }
 }

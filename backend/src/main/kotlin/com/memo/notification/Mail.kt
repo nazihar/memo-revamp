@@ -125,6 +125,15 @@ enum class MailTemplate {
     ACTION_UPDATE_REQUESTED,
 }
 
+/** One email for [Mail.enqueueAll]: as [Mail.enqueue]'s arguments. */
+data class MailMessage(
+    val template: MailTemplate,
+    val to: String,
+    val params: Map<String, String>,
+    val locale: String? = null,
+    val calendar: CalendarPart? = null,
+)
+
 /**
  * Queues an email in the caller's tenant transaction and schedules its delivery in the same commit (db-scheduler joins
  * Spring transactions, ADR-0018): a rolled-back business change sends nothing. Parameters are encrypted at rest because
@@ -178,7 +187,61 @@ class Mail(
         return id
     }
 
+    /**
+     * [messages] queued as [enqueue] queues each one, in the caller's transaction, but written [CHUNK] rows a statement and
+     * their deliveries scheduled a chunk at a time (a daily digest to thousands of people); the outbox ids, in order.
+     */
+    fun enqueueAll(messages: List<MailMessage>): List<UUID> {
+        if (messages.isEmpty()) return emptyList()
+        val tenant = tenantDsl.tenant()
+        val now = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
+        val queued = messages.map { ids.next() to it }
+        val o = NOTIFICATION_MAIL_OUTBOX
+        queued.chunked(CHUNK).forEach { chunk ->
+            val insert =
+                tenantDsl
+                    .current()
+                    .insertInto(
+                        o,
+                        o.ID,
+                        o.TENANT_ID,
+                        o.TEMPLATE,
+                        o.TO_ADDRESS,
+                        o.LOCALE,
+                        o.PARAMS_ENC,
+                        o.CALENDAR_ENC,
+                        o.CALENDAR_METHOD,
+                        o.STATUS,
+                        o.CREATED_AT,
+                    )
+            chunk
+                .fold(insert) { step, (id, m) ->
+                    val key = id.toString()
+                    step.values(
+                        id,
+                        tenant.value,
+                        m.template.name,
+                        m.to,
+                        m.locale,
+                        keys.encrypt(json.writeValueAsBytes(m.params), aad(tenant.toString(), key)),
+                        m.calendar?.let { keys.encrypt(it.ics, calendarAad(tenant.toString(), key)) },
+                        m.calendar?.method?.name,
+                        "PENDING",
+                        now,
+                    )
+                }.execute()
+            if (jobs) {
+                val deliveries = chunk.map { (id, _) -> sendTask.schedulableInstance(id.toString(), MailSend(tenant.value, id)) }
+                scheduler.ifAvailable?.scheduleBatch(deliveries)
+            }
+        }
+        return queued.map { it.first }
+    }
+
     companion object {
+        /** Rows a statement in [enqueueAll]. */
+        const val CHUNK = 500
+
         internal fun aad(
             tenant: String,
             id: String,

@@ -14,6 +14,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.references.ACTIONS_DIGEST
 import com.memo.notification.NotificationKind
 import com.memo.notification.NotificationLog
+import com.memo.notification.NotificationRequest
 import com.memo.notification.Notifications
 import com.memo.notification.Recipient
 import com.memo.notification.RecipientLookup
@@ -233,16 +234,18 @@ class ActionsDaily(
         val recorded = digests.recordAll(batch.map { it.first }, today, now)
         val found = recipients.recipients(recorded)
         val tenant = registry.current()
-        val sent = batch.count { (user, news) -> user in recorded && found[user]?.also { send(it, news, tenant) } != null }
-        return sent to (due.size <= PEOPLE_MAX)
+        // The emails queued together: the recipients' preferences in one read, the outbox rows a chunk a statement.
+        val digests = batch.mapNotNull { (user, news) -> found[user]?.takeIf { user in recorded }?.let { digestOf(it, news, tenant) } }
+        notifications.notifyAll(digests)
+        return digests.size to (due.size <= PEOPLE_MAX)
     }
 
     /** One digest to [recipient] with [news] from [tenant]: their references by kind in their language. */
-    private fun send(
+    private fun digestOf(
         recipient: Recipient,
         news: List<SentNotification>,
         tenant: Tenant?,
-    ) {
+    ): NotificationRequest {
         val locale = localeOf(recipient.locale)
         val params =
             mapOf(
@@ -250,7 +253,7 @@ class ActionsDaily(
                 "lines" to texts.lines(news, locale),
                 "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + MY_ACTIONS),
             )
-        notifications.notify(recipient, NotificationKind.ACTIONS_DIGEST, params)
+        return NotificationRequest(recipient, NotificationKind.ACTIONS_DIGEST, params)
     }
 
     /** The recipient's language if the digest has texts for it, else the tenant's default, else English (as the mail's). */

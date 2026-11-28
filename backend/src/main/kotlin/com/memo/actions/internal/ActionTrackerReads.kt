@@ -5,8 +5,10 @@ import com.memo.actions.OverdueActions
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.ACTIONS_ITEM
 import org.jooq.Condition
+import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.SortField
+import org.jooq.conf.StatementType
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.Instant
@@ -155,8 +157,7 @@ class ActionTrackerReads(
         val a = ACTIONS_ITEM
         val day = day(today)
         val late = DSL.localDateDiff(day, a.DUE_DATE)
-        return tenantDsl
-            .current()
+        return inlined()
             .select(
                 a.FORUM_ID,
                 a.OWNER_USER_ID,
@@ -206,8 +207,7 @@ class ActionTrackerReads(
                 .atStartOfDay(zone)
                 .toOffsetDateTime()
                 .withOffsetSameInstant(ZoneOffset.UTC)
-        return tenantDsl
-            .current()
+        return inlined()
             .select(
                 a.FORUM_ID,
                 DSL.count(),
@@ -338,4 +338,15 @@ class ActionTrackerReads(
                 TrackerSort.REFERENCE -> TrackerKey.Reference(row.numberYear ?: NO_YEAR, row.sequence ?: NO_SEQUENCE, row.id)
             }
     }
+
+    /**
+     * The context of E08's set-based counts, with every value written into the statement: their condition is one access rule a
+     * committee, thirty for an auditor, and a statement prepared with them as parameters is planned once for any values
+     * after a few runs (a generic plan that read every action, about 10 s at 3,600 meetings; E08 T5). Planned for its own
+     * values each time, it reads the committees' indexes. jOOQ writes the values as literals, escaped.
+     */
+    private fun inlined(): DSLContext =
+        tenantDsl.current().let { ctx ->
+            DSL.using(ctx.configuration().derive(ctx.settings().withStatementType(StatementType.STATIC_STATEMENT)))
+        }
 }

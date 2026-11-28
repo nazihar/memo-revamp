@@ -1,6 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { defineMessages } from 'react-intl'
 import { ActionReportPage } from '@/features/actions/ActionReportPage'
-import { am } from '@/features/actions/messages'
+
+// The crumb lives here, not in the actions' messages: route options are in the first page's script (NFR P5).
+const crumbs = defineMessages({
+  report: { id: 'actions.crumb.report', defaultMessage: 'Action taken report' },
+})
 
 interface ReportSearch {
   revision?: number
@@ -16,7 +21,7 @@ function parseReportSearch(search: Record<string, unknown>): ReportSearch {
 export const Route = createFileRoute('/_shell/_signedIn/meetings/$meetingId_/action-report')({
   validateSearch: parseReportSearch,
   component: ReportRoute,
-  staticData: { crumb: am.crumbReport },
+  staticData: { crumb: crumbs.report },
 })
 
 function ReportRoute() {

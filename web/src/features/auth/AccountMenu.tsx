@@ -1,45 +1,22 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
-import { BellRing, CalendarDays, LogOut, ShieldCheck, UsersRound } from 'lucide-react'
-import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
-import { logout } from '@/api/generated/sdk.gen'
-import { useTerms, type TermValues } from '@/features/terms/terms'
-import { useSession } from './session'
+import { Link } from '@tanstack/react-router'
+import { lazy } from 'react'
+import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { DeferredMenu } from '@/components/shell/DeferredMenu'
+import { accountMessages as messages } from './account-menu'
+import { AccountInitial } from './AccountInitial'
+import { useSession } from './session'
 
-const messages = defineMessages<{
-  trigger: { name: string }
-  security: NoMessageValues
-  notifications: NoMessageValues
-  forums: TermValues
-  meetings: NoMessageValues
-  signOut: NoMessageValues
-  signIn: NoMessageValues
-}>({
-  trigger: { id: 'account.trigger', defaultMessage: 'Account: {name}' },
-  security: { id: 'account.security', defaultMessage: 'My security' },
-  notifications: { id: 'account.notifications', defaultMessage: 'Notification settings' },
-  forums: { id: 'nav.myForums', defaultMessage: 'My {forums}' },
-  meetings: { id: 'nav.myMeetings', defaultMessage: 'My meetings' },
-  signOut: { id: 'account.signOut', defaultMessage: 'Sign out' },
-  signIn: { id: 'account.signIn', defaultMessage: 'Sign in' },
-})
+const load = () => import('./AccountMenuFull')
+const AccountMenuFull = lazy(load)
 
-/** The account menu of the top bar (E03 design §11); a sign-in link for anonymous visitors (the status page). */
+/**
+ * The account menu of the top bar (E03 design §11); a sign-in link for anonymous visitors (the status page). The menu
+ * loads when first wanted ([DeferredMenu]).
+ */
 export function AccountMenu() {
   const intl = useIntl()
-  const terms = useTerms()
   const session = useSession()
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const user = session.data?.state === 'AUTHENTICATED' ? session.data.user : undefined
 
   if (!session.data) return null
@@ -50,56 +27,11 @@ export function AccountMenu() {
       </Button>
     )
   }
-
-  const signOut = async () => {
-    await logout({ throwOnError: false })
-    queryClient.clear()
-    await navigate({ to: '/login' })
-  }
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={intl.formatMessage(messages.trigger, { name: user.displayName })}
-        >
-          <span
-            aria-hidden="true"
-            className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground"
-          >
-            {user.displayName.slice(0, 1)}
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel className="flex flex-col">
-          <span>{user.displayName}</span>
-          <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/security' })}>
-          <ShieldCheck aria-hidden="true" />
-          {intl.formatMessage(messages.security)}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/committees' })}>
-          <UsersRound aria-hidden="true" />
-          {intl.formatMessage(messages.forums, terms)}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/meetings' })}>
-          <CalendarDays aria-hidden="true" />
-          {intl.formatMessage(messages.meetings)}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/notifications' })}>
-          <BellRing aria-hidden="true" />
-          {intl.formatMessage(messages.notifications)}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void signOut()}>
-          <LogOut aria-hidden="true" />
-          {intl.formatMessage(messages.signOut)}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <DeferredMenu menu={AccountMenuFull} preload={load}>
+      <Button variant="ghost" size="icon" aria-label={intl.formatMessage(messages.trigger, { name: user.displayName })}>
+        <AccountInitial name={user.displayName} />
+      </Button>
+    </DeferredMenu>
   )
 }

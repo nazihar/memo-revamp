@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { Activity, ShieldCheck, Users, UsersRound } from 'lucide-react'
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { listMyForumsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { useSession } from '@/features/auth/session'
-import { MyMeetingsCard } from '@/features/meetings/MyMeetings'
+import { upcoming, useMyMeetings } from '@/features/meetings/mine'
 import { useTerms, type TermValues } from '@/features/terms/terms'
 import { PageHeader } from '@/components/page/PageHeader'
 
@@ -34,6 +34,21 @@ const messages = defineMessages<{
   forums: { id: 'home.forums', defaultMessage: 'My {forums}' },
 })
 
+// The card, its replies and their messages load only for someone with a meeting to show: they are not in the first page's
+// script of everyone else (NFR P5).
+const MyMeetingsCard = lazy(() => import('@/features/meetings/MyMeetings').then((m) => ({ default: m.MyMeetingsCard })))
+
+/** "My meetings" on the home page (flow N3), once the person has a meeting to come or under way. */
+function MeetingsSlot() {
+  const mine = useMyMeetings()
+  if (!upcoming(mine.data ?? []).length) return null
+  return (
+    <Suspense fallback={null}>
+      <MyMeetingsCard />
+    </Suspense>
+  )
+}
+
 /** Landing page after sign-in; the work queues of later phases replace the shortcuts. */
 export function HomePage() {
   const intl = useIntl()
@@ -49,7 +64,7 @@ export function HomePage() {
         title={intl.formatMessage(messages.title, { name: user?.displayName ?? '' })}
         description={intl.formatMessage(messages.lead)}
       />
-      <MyMeetingsCard />
+      <MeetingsSlot />
       <ul className="grid gap-3 sm:grid-cols-2">
         {sitting.length ? (
           <Shortcut

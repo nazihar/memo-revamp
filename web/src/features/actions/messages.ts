@@ -18,8 +18,6 @@ function plain<T extends Record<string, MessageDescriptor>>(
 export const am = plain(
   defineMessages({
     // The page and the crumbs.
-    crumbAction: { id: 'actions.crumb.action', defaultMessage: 'Action' },
-    crumbReport: { id: 'actions.crumb.report', defaultMessage: 'Action taken report' },
     notFound: {
       id: 'actions.notFound',
       defaultMessage: 'This action is not there, or it is not yours to see.',

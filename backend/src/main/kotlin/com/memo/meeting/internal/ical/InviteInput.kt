@@ -14,6 +14,7 @@ internal object InviteInput {
     private const val MAX_URL = 2000
     private val WHITESPACE = Regex("\\s+")
     private val NO_SPACE_OR_CONTROL = Regex("^[^\\s\\p{Cc}]+$")
+    private const val FULLWIDTH_EQUALS = '＝'
 
     /** One line: every control or line break becomes a space, runs of spaces one space, trimmed. */
     fun line(text: String): String = clean(text) { if (isBreak(it) || it == '\t'.code) " " else null }.replace(WHITESPACE, " ").trim()
@@ -35,8 +36,16 @@ internal object InviteInput {
     /**
      * A parameter value such as CN: one line, without the characters RFC 6868 escapes, and without backslashes, which
      * parsers (ical4j among them, the E05 T1 property tests found) read as escaping the closing quote of a quoted value.
+     * An equals sign becomes the full-width one (U+FF1D): RFC 5545 allows `=` in an unquoted value, but ical4j writes it
+     * unquoted and its own parser then fails the whole ATTENDEE line (`CN==`, found by the Jazzer nightly on 2026-11-28).
+     * A character outside ASCII makes ical4j quote the value, which every parser reads.
      */
-    fun name(text: String): String = line(text).replace('"', '\'').replace("^", "").replace("\\", "")
+    fun name(text: String): String =
+        line(text)
+            .replace('"', '\'')
+            .replace("^", "")
+            .replace("\\", "")
+            .replace('=', FULLWIDTH_EQUALS)
 
     fun mailto(email: String): URI {
         val trimmed = email.trim()

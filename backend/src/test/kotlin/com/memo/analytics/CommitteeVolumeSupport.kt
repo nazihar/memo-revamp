@@ -374,8 +374,15 @@ abstract class CommitteeVolumeSupport : MeetingVolumeSupport() {
             }
         }
         backfillMillis = (System.nanoTime() - started) / NANOS_PER_MILLI
+        // Planned and timed on a vacuumed table, as autovacuum leaves it in production: the GIN index's pending list merged
+        // (`fastupdate`) and the visibility map set. With only ANALYZE, the backfill's pending entries made the text search
+        // over every committee plan as a sequential scan on a CI runner (load run 46156574343), as `SearchVolume` found for
+        // the memo search.
+        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
+            c.createStatement().use { it.execute("set statement_timeout = '30min'") }
+            c.createStatement().use { it.execute("vacuum (analyze) search_decision") }
+        }
         owner { c ->
-            c.createStatement().use { it.execute("analyze search_decision") }
             decisions =
                 c.createStatement().use { st ->
                     st.executeQuery("select count(*) from search_decision").use { rs ->

@@ -12,8 +12,8 @@ export type MeetingMode = MeetingResponse['mode']
 
 export const MODES: MeetingMode[] = ['IN_PERSON', 'ONLINE', 'HYBRID']
 
-/** States before the meeting is held: the Upcoming list. */
-export const OPEN: MeetingStatus[] = ['DRAFT', 'SCHEDULED', 'IN_PROGRESS']
+/** States before the meeting is held: the Upcoming list (defined beside "My meetings", which the home page loads). */
+export { OPEN } from './mine'
 /** States after it was held: the Past list. */
 export const DONE: MeetingStatus[] = ['HELD', 'MINUTES_APPROVED', 'CLOSED']
 

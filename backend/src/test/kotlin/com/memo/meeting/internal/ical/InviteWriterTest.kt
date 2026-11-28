@@ -57,6 +57,17 @@ class InviteWriterTest {
     }
 
     @Test
+    fun `a name with an equals sign is quoted, so both parsers read the attendee`() {
+        // ical4j writes `CN==` unquoted and its parser then fails the line (the Jazzer nightly's finding, 2026-11-28).
+        for (name in listOf("=", "A = B")) {
+            val bytes = writer.write(InviteFixtures.request().copy(attendee = InviteParty(name, "nadia@demo.example")))
+
+            assertThat(unfolded(bytes)).contains("ATTENDEE;CN=\"${name.replace('=', '＝')}\";ROLE=REQ-PARTICIPANT")
+            assertThat(InviteChecks.valid(bytes, InviteKind.REQUEST).attendees).containsExactly("nadia@demo.example")
+        }
+    }
+
+    @Test
     fun `a guest is an optional participant, and no file asks for a calendar reply`() {
         val text = unfolded(writer.write(InviteFixtures.request().copy(guest = true)))
 

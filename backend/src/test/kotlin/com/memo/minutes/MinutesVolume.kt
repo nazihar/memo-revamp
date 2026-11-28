@@ -237,8 +237,10 @@ class MinutesVolume(
                              then 'It was RESOLVED that the proposal of item ' || n || ' be ' || lower(${label(kind)})
                                   || case when $seq = 2 then ', as corrected.' else '.' end
                         when $kind = 'DEFERRED' then 'Deferred to the next meeting.' else 'Noted.' end,
-                   case when $kind = 'APPROVED_WITH_CONDITIONS'
+                   case when $kind = 'APPROVED_WITH_CONDITIONS' and abs(hashtext(decision_id::text)) % 5 = 0
                              then '["Security perfected before disbursement.", "A quarterly review of the covenants."]'::jsonb
+                        when $kind = 'APPROVED_WITH_CONDITIONS'
+                             then '["Security perfected before disbursement.", "A quarterly review of the exposure."]'::jsonb
                         else '[]'::jsonb end,
                    case when $kind = 'APPROVED_WITH_CONDITIONS' then (starts_at + interval '1 year')::date end,
                    case when $kind = 'DEFERRED' then '{"next": true}'::jsonb end, null::uuid, null::text,

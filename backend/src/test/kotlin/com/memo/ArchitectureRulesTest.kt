@@ -196,6 +196,75 @@ class ArchitectureRulesTest {
     }
 
     @Test
+    fun `only the demo seeders use a seeding facade`() {
+        // Phase 4 E08 T11: every `*Seeding` facade acts through the services without a step-up and outside a session, and
+        // some do what no request may (an action issued as on a past day, overdue timers fired at once). Only the demo
+        // seeders (started by `memo.demo.seed`, refused under `prod`) and the facades themselves may reach them.
+        val seeding = """com\.memo\..*Seeding(\$.*)?"""
+        noClasses()
+            .that()
+            .resideOutsideOfPackage("com.memo.demo..")
+            .and()
+            .haveNameNotMatching(seeding)
+            .should()
+            .dependOnClassesThat()
+            .haveNameMatching(seeding)
+            .because("seeding facades skip the step-up and are for the demo tenant's seeders only (Phase 4 E08 T11)")
+            .check(classes)
+        classes()
+            .that()
+            .haveFullyQualifiedName("com.memo.demo.DemoActionsSeeder")
+            .should()
+            .dependOnClassesThat()
+            .haveNameMatching(seeding)
+            .because("the pattern above names the facades the seeders use, so the rule cannot pass by matching none")
+            .check(classes)
+    }
+
+    @Test
+    fun `only the timer seeding facade fires overdue timers at once`() {
+        val catchUp = """com\.memo\.workflow\.internal\.TimerCatchUp(\$.*)?"""
+        noClasses()
+            .that()
+            .doNotHaveFullyQualifiedName("com.memo.workflow.WorkflowTimerSeeding")
+            .and()
+            .haveNameNotMatching(catchUp)
+            .should()
+            .dependOnClassesThat()
+            .haveNameMatching(catchUp)
+            .because("firing overdue timers at once is for seeders only (Phase 4 E07 T12)")
+            .check(classes)
+        classes()
+            .that()
+            .haveFullyQualifiedName("com.memo.workflow.WorkflowTimerSeeding")
+            .should()
+            .dependOnClassesThat()
+            .haveNameMatching(catchUp)
+            .check(classes)
+    }
+
+    @Test
+    fun `only the action seeding facade issues an action as on a past day`() {
+        // The explicit `asOf` overload of ActionIssuing.issue. Requests call the default (today).
+        val issueAsOf = arrayOf("java.util.UUID", "java.lang.Long", "java.time.LocalDate")
+        val issuing = "com.memo.actions.internal.ActionIssuing"
+        noClasses()
+            .that()
+            .haveNameNotMatching("""com\.memo\.actions\.(ActionSeeding|internal\.ActionIssuing)(\$.*)?""")
+            .should()
+            .callMethod(issuing, "issue", *issueAsOf)
+            .because("only the seeders issue an action as on a past day (Phase 4 E07 T12)")
+            .check(classes)
+        classes()
+            .that()
+            .haveFullyQualifiedName("com.memo.actions.ActionSeeding")
+            .should()
+            .callMethod(issuing, "issue", *issueAsOf)
+            .because("the rule above names the overload the seeder calls, so it cannot pass by naming none")
+            .check(classes)
+    }
+
+    @Test
     fun `no coroutines on the backend`() {
         noClasses()
             .should()

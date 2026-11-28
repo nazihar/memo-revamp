@@ -69,9 +69,12 @@ class MinutesJobsVolumeIT : MinutesFixture() {
         endMeeting(r.meeting)
 
         var pass: com.memo.minutes.internal.ReleasePass? = null
-        var statements = 0
-        val release = timed { statements = sql.record { pass = job(m, ReleaseTrigger.HELD) }.second.size }
+        var recorded = emptyList<String>()
+        val release = timed { recorded = sql.record { pass = job(m, ReleaseTrigger.HELD) }.second }
+        val statements = recorded.size
         println("MinutesJobsVolumeIT minutes-release ran $statements statements (${statements / DECISIONS} a decision)")
+        // Where they go (E08 T5's profile): by the table each statement reads or writes first, the most first.
+        println("MinutesJobsVolumeIT minutes-release statements by table:\n  " + byTable(recorded))
         assertThat(checkNotNull(pass).numbered).hasSize(DECISIONS)
         assertThat(checkNotNull(pass).released).hasSize(DECISIONS)
         assertThat(checkNotNull(pass).failed).isEmpty()
@@ -209,7 +212,17 @@ class MinutesJobsVolumeIT : MinutesFixture() {
     /** The budgets missed: every job is timed and printed first, then the test fails naming them all. */
     private val missed = mutableListOf<String>()
 
+    /** [statements] counted by the first table each reads or writes, the most first, with its share a decision. */
+    private fun byTable(statements: List<String>): String =
+        statements
+            .groupingBy { TABLE.find(it)?.groupValues?.get(1) ?: it.trim().substringBefore(' ').lowercase() }
+            .eachCount()
+            .entries
+            .sortedByDescending { it.value }
+            .joinToString("\n  ") { (table, n) -> "$table: $n (${"%.1f".format(n.toDouble() / DECISIONS)} a decision)" }
+
     private companion object {
+        val TABLE = Regex("(?:from|into|update)\\s+(?:\"?memo\"?\\.)?\"?([a-z_]+)", RegexOption.IGNORE_CASE)
         const val DECISIONS = 60
         const val MEMOS_PER_INITIATOR = 20
         const val CONDITIONS_EVERY = 5

@@ -28,6 +28,10 @@ class DecisionIndex(
     /** Writes [decisionId]'s row as it is now; false when there is no such decision. */
     fun put(decisionId: UUID): Boolean = source.row(decisionId)?.also(::write) != null
 
+    /** Writes each of [decisionIds]' rows as [put] does, their sources read together (a backfill chunk); the ids not written. */
+    fun putAll(decisionIds: List<UUID>): List<UUID> =
+        source.rows(decisionIds).mapNotNull { (id, row) -> if (row == null) id else null.also { write(row) } }
+
     /** [meetingId]'s minutes were approved at [at]: its rows are FINAL. Returns how many rows changed. */
     fun putFinal(
         meetingId: UUID,

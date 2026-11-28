@@ -49,3 +49,23 @@
 - **Unsigned iMIP:** anyone who learns a meeting's UID could send a forged update or cancellation to a director (RFC 6047 §2.2). The UID is random and only in the invite itself; S/MIME is a follow-up.
 - **Forwarded invites** carry the join link (I3).
 - **The room:** attendance records what the secretary sees; it cannot prove who was on a call.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**. T4 and I8 cannot be closed until the recorded run in real calendar clients (T9), which is carried for the owner.
+- **Found and fixed:**
+  - T4 (E05 T10): a meeting starting or ending in the second occurrence of a repeated hour was written as an ambiguous local time. Such meetings are now written in UTC (`DTSTART:…Z`), with property tests across zones (`InviteWriterProperties`).
+  - Two biweekly reading limits (Africa/Cairo, Australia/Adelaide) are handled in `InviteChecks`, with the reason given.
+- **Changed by the build:**
+  - E2 (ADR-0064 amended): a seat present through its alternate counts towards the number and towards a composition majority's denominator, never towards a required role or attribute (`QuorumProperties`, `PresenceBuilderProperties`, `ItemQuorumProperties`).
+  - I4: E06 and E07 extend the alternate's inherited recusal to decisions, minutes copies and actions. E08 extends it to the register and analytics (`AlternateRecusalIT`, `RecusalLeakIT`, `AnalyticsLeakIT`).
+- **Evidence:**
+  - S2: no reader of `METHOD:REPLY` exists. S3: `HOW_REQUIRED` (`RepliesIT`). S4: no answer links in mail (`InvitationContentIT`).
+  - T1: no DELETE or UPDATE on the answer history, the attendance events, the quorum change log or the snapshots; snapshots store their inputs' SHA-256 and report `drifted` (`QuorumSnapshotsIT`). T2: `RepliesConcurrencyIT`, `AttendanceIT`.
+  - T3, T4: `InviteWriterProperties`, `InviteValidationTest`, `InviteCrossParserTest`, `InviteWriterGoldenTest`, Jazzer `InviteWriterFuzz`. T5: a random UID per meeting and a sequence kept by the server (`InvitationSequenceProperties`).
+  - R1, R2: `meeting.rsvp.*`, `meeting.attendance.*`, `meeting.quorum.overridden` (`AuditActionCoverageTest`).
+  - I1, I2: `InvitationContentIT`, `InvitationMailIT`, `MailCalendarPartIT`. I5: numbers only for an item the viewer is recused from (`PaperLeakIT` QUORUM). I6: `RepliesIT`. I7: the audience check on `calendar.ics` (`PaperLeakIT` INVITATIONS).
+  - I8: no relay password or mailbox address is in the repository. The run has not happened.
+  - D1: `RESEND_TOO_SOON`, and the reconciler's one update per two minutes (`InvitationsIT`). D2: sending after commit, in the background. D3: polling every 15 s only while the meeting runs.
+  - E1, E4: matrices `p4-e05-attendance.yaml` and `p4-e05-quorum.yaml`, `AttendanceCrossTenantIT`. E3: the pinned type version.
+- **Residual risks:** all five confirmed. Unsigned iMIP and forwarded invitations are listed for the pen test as accepted (`docs/security/pen-test-scope.md`, area 5).
+- **Carried for the owner:** T9, the recorded run in the owner's Outlook and Gmail mailboxes through an SMTP relay. Until it happens, the golden files and the RFC validation are the evidence.

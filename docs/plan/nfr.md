@@ -10,7 +10,7 @@
 | P2 | First page of a board book visible < 2 s | — (Phase 5) | Gatling + Lighthouse |
 | P3 | 500-page book compile < 60 s; 1,500-page book within budget (Phase 5 test) | — | Background-job timing |
 | P4 | 1,000 concurrent users per mid-size tenant | — | Weekly load test |
-| P5 | Web: LCP ≤ 2.5 s, CLS ≤ 0.1, first-route JS ≤ 250 KB gzip | first-route JS about 242 KB gzip (2026-11-17, after #144; Phase 3 had grown it to 264 KB; 157 KB at Phase 1a E03) | Lighthouse CI (nightly) |
+| P5 | Web: LCP ≤ 2.5 s, CLS ≤ 0.1, first-route JS ≤ 250 KB gzip | first-route JS: Phase 4 grew it to 301 KB (Lighthouse, 2026-11-19..28); #266 (2026-11-28) brings it back by about 49 KB measured as gzip without a backend (248 to 199 KB, against 205 KB for the #144 build, which Lighthouse counted as 242 KB). Earlier: about 242 KB after #144 (2026-11-17), 264 KB at the end of Phase 3, 157 KB at Phase 1a E03 | Lighthouse CI (nightly) |
 | P6 | Release regression gate: p95 of key endpoints does not regress by more than 10 % | — | Release stage |
 
 ## Availability and recovery

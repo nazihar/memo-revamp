@@ -28,3 +28,38 @@ History of the phase, newest last. `STATUS.md` keeps only the current position.
   - **ADR-0068:** engine additions for subject slots, subject due times with re-planning, subject-bound definitions and the initiator taking part.
   - **The other documents:** design, threat model, tasks T1–T12, test plan with the leak-suite surfaces for actions, and flows AJ–AR recorded as delegated.
 - E08 plan written under the delegated gate (`epic-08-register-analytics-close/`): research (auditors and ASA 560, Basel ¶60, Bangladesh Bank on dissent, the UK Code's attendance disclosure, BoardPro, Diligent, OnBoard, useful vs vanity measures, older readers and charts), ADR-0069 (the decision register: `search_decision` behind the search functions, one rule with restricted lines, recusals at query time, exports for auditors) and ADR-0070 (five measures computed live per viewer, tables first), design, threat model, tasks T1–T12 with the phase close-out, test plan with the leak-suite surfaces, flows AS–AW recorded as delegated; four refinements of the overview to report to the owner.
+
+## 2026-11-28 — E08 T12: closing the phase
+- **Built; the exit waits on the owner's walkthrough** (`retrospective.md`, `overview.md §10`).
+  - Exit criteria 1 and 2 are met with evidence.
+  - Criterion 3, a representative committee cycle on dev walked through by the owner (A1), waits for the owner.
+- **Master-only workflows run by hand on `master` (21786192).**
+  - **The weekly `load`, run 46156574343:**
+    - **Passed:** `committee-load` (50 people, 10,690 requests, 0 % failed, p95 62 ms), `minutes-volume` (releasing 60 decisions in 2.0 s against 5 s), `actions-volume`, search V1, import and the V2 Gatling job.
+    - **Failed:**
+      - `committee-volume`: the plan gate at 3,600 saw a sequential scan for every committee's readers on a word in a fifth of the submissions.
+      - `meeting-volume`: two volume classes in one database collided on the generator's fixed ids. This has failed every week since 2026-11-22.
+  - **The nightly, run 46156577177:** red since 2026-11-18.
+    - `build` was cancelled at its 30-minute limit, so the jobs that need the jar were skipped.
+    - Jazzer failed again on `=` in a display name, as every night since 2026-11-19.
+    - Lighthouse failed on the first page's script: 301 KB against 250 KB, since 2026-11-19.
+    - The earlier run on 2026-11-28 also failed on two English visual baselines from before the "Decisions" menu item.
+  - **All fixed in #266.**
+  - **T5's three items over budget on a loaded PC, as the CI runners measure them:**
+    - the 50-person load: p95 48–62 ms for the register, 272 ms for the analytics overview;
+    - releasing 60 decisions: 2,024 ms;
+    - indexing a recorded decision: p95 2 ms.
+    - All are within budget.
+- **Fixes:**
+  - **#265:**
+    - the web's date defaults use the organisation's `today` from the session;
+    - actions waiting for verification offer no update and no new date;
+    - `MeetingStatus.CLOSED` stays reserved (ADR-0060 amendment);
+    - the "Ends on" locator in `committee-cycle.spec`;
+    - runbook corrections.
+  - **#266:** the master-only failures above.
+- **Dev:**
+  - "Demo committee history seeded: 15 meetings" is in the log after #261–#263 deployed.
+  - `committee-cycle.spec` passed against dev (all fifteen legs).
+  - 16 of the other 17 Phase 4 journey tests passed against dev. `action-items.spec`'s demo check found no BRC A2, because on dev the position Head of Credit Risk's holder has no clearance row, so the seeder refused the owner (`OWNER_NOT_CLEARED`).
+  - Journey data is left on dev, noted in the retrospective and not deleted.

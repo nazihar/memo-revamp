@@ -22,6 +22,7 @@
   - Renewing a term or changing a role adds a row. Ending one keeps the record.
   - A secretary may add and end ordinary members. Only an administrator appoints a chair or a secretary.
 - The secretaries are reminded before a term ends: 42 days and 1 day before, by default.
+- **Background work:** the `forum-officer-readers-sweep` (every 15 minutes) schedules one `forum-officer-readers` per tenant. Once a day, at the first run after midnight in the tenant's zone, it resyncs the queue readers of every committee whose chair or secretaries changed by date since its last run (the day is kept in `forum_reader_sync`; the first run, or one after more than 31 days, resyncs every committee). A position's holder change applies at once.
 
 ## A memo sent to a committee
 1. A workflow step `escalate-to-forum` with `"wait": true` holds the memo. The step's `forum` is the committee's workflow key.
@@ -29,7 +30,10 @@
    - Nobody's inbox has a task for it.
 2. The committee's queue gets a **submission** in the same transaction, and the secretaries are told.
    - While the paper is open, the chair and secretaries in office can read the memo, within their clearance.
-   - A chair or secretary appointed meanwhile can read it at once. One who leaves loses access at once.
+   - Access follows the chair and secretaries in office on the organisation's date, with a position seat resolved to whoever holds the position:
+     - appointed or ended through the Members tab: at once;
+     - a new holder of a position seat (Organisation → positions or assignments): at once, in the same change; the previous holder stops reading;
+     - by date (a term that lapses on its planned end, an appointment or a holder change recorded for a later day): at the start of that day in the tenant's zone (`default.timezone`), within 15 minutes of midnight, by the `forum-officer-readers` task.
 3. The secretary triages the paper:
    - **Accept**, with an optional target meeting date.
    - **Defer**, with a reason.
@@ -54,7 +58,8 @@ The demo's "Credit under authority" workflow sends credit proposals of BDT 10 mi
 ## "Why can't I see this memo?"
 - Committee members who are not chair or secretary do not read memos from the queue. They get them with the meeting's papers (E03).
 - An officer below the memo's classification cannot read it. The queue shows the paper as "restricted" (no number or subject) until they are cleared.
-- Check the audit log: `memo.reader.forum_added` and `memo.reader.forum_retired` on the memo, and `forum.member.*` on the committee.
+- An officer whose term started today reads the queue from shortly after midnight in the tenant's zone; one whose term ended yesterday no longer does. If that has not happened, check that `forum-officer-readers` ran for the tenant today (`forum_reader_sync.synced_on`) and that the tenant's zone is the one expected.
+- Check the audit log: `memo.reader.forum_added` and `memo.reader.forum_retired` on the memo (the actor is `forum-officer-readers` for a change by date, and whoever changed the assignment for a new holder), `forum.member.*` on the committee, and `org.assignment.*` for a position seat.
 
 ## Audit actions
 - Submissions: `forum.submission.created`, `.updated`, `.accepted`, `.deferred`, `.returned`, `.declined`, `.referred`, `.decided`, `.withdrawn` and `.reminded`.

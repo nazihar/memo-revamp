@@ -244,8 +244,9 @@ class ForumMembers(
     ): MemberChange {
         audit.record(action, OBJECT_TYPE, row.id.toString(), before = before?.let { audited(it) }, after = audited(row))
         notifier.membershipChanged(forum, row)
-        // A chair or secretary joining or leaving changes who reads the memos in the queue (ADR-0059).
-        if (listOfNotNull(row.role, before?.role).any { it == ForumRole.CHAIR || it == ForumRole.SECRETARY }) readers.resync(forum.id)
+        // A chair or secretary joining or leaving changes who reads the memos in the queue (ADR-0059); dates that pass and
+        // a position seat's new holder are followed by OfficerReaders.
+        if (listOfNotNull(row.role, before?.role).any { it in SubmissionReaders.OFFICERS }) readers.resync(forum.id)
         // Meetings recompute their audience from the roster (design E03 §1.6).
         events.publishEvent(ForumChanged(store.tenant(), forum.id))
         return MemberChange(row)

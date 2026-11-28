@@ -4,8 +4,9 @@ import com.memo.common.events.TenantScopedEvent
 import java.util.UUID
 
 /**
- * A forum or its membership changed (ADR-0056): published in the changing transaction by every change to the forum and
- * to its terms of office. The meeting module recomputes the audience of the forum's open meetings (design E03 §1.6).
+ * A forum or its membership changed (ADR-0056): published in the changing transaction by every change to the forum, to its
+ * terms of office, and to the holder of a position it seats. The meeting module recomputes the audience of the forum's open
+ * meetings (design E03 §1.6).
  */
 data class ForumChanged(
     override val tenantId: UUID,

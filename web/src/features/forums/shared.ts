@@ -3,6 +3,7 @@ import type { IntlShape } from 'react-intl'
 import type { ForumPolicyResponse, ForumResponse, MemberResponse } from '@/api/generated/types.gen'
 import { isProblem } from '@/api/http'
 import type { TermValues } from '@/features/terms/terms'
+import { orgToday } from '@/lib/org-today'
 import { fm, fmt } from './messages'
 
 export type Role = MemberResponse['role']
@@ -21,9 +22,9 @@ export function votesByDefault(role: Role): boolean {
 /** The reasons a person may give for ending a membership; renewals, role changes and withdrawals have their own action. */
 export const END_REASONS: EndReason[] = ['RESIGNED', 'TERM_COMPLETED', 'REMOVED', 'OTHER']
 
-/** Today in the browser as `YYYY-MM-DD` (the server checks dates in the organisation's time zone). */
+/** Today on the organisation's calendar as `YYYY-MM-DD` (the server checks dates there; from the session). */
 export function today(): string {
-  return isoDay(new Date())
+  return orgToday()
 }
 
 function isoDay(d: Date): string {

@@ -141,7 +141,7 @@ Not measured, on purpose: paper opens and reading time, meeting length, number o
 5. **Papers on time says late.** The first revision was published after the deadline, even if a later one was on time; a meeting moved earlier moves its deadline. A holiday added to the calendar after publication changes the deadline the measure computes.
 6. **An overdue action is not counted.** It is a draft (not issued), the viewer cannot see it (another committee, a recused item), or it was re-dated.
 7. **The register disagrees with analytics.** M3 and M4 read the register's rows: run the unindexed check. Analytics reads nothing else from the register.
-8. **The browser's date.** The period picker's quick choices use the browser's date; the server's default period uses the tenant's. Near midnight they can differ by a day (a known gap, below).
+8. **The day the period ends.** The period picker's quick choices end on the organisation's today (from the session), as the server's default period does; a page open since before midnight in the tenant's zone moves on within 30 seconds of the next page it opens.
 
 ## Rate limits
 
@@ -168,7 +168,6 @@ Above the limit: 429 with `Retry-After`; the dialog says when to try again. Anal
 
 ## Known limits
 
-- The web's defaults (the register's dates and file names, the analytics period's quick choices) use the browser's date; the server checks and defaults use the tenant's. Near midnight in another zone they can differ by a day.
 - A word search matches at most 2,000 full rows before ranking (10,000 for an export); counts are exact up to 10,000 ("more than 10,000").
 - The register has no filter for "decisions on a submission": the analytics link "Open these decisions" lists every decision of the committee and period.
 - The number order needs one committee (422 `SORT_NEEDS_ONE_FORUM`).
@@ -176,4 +175,4 @@ Above the limit: 429 with `Retry-After`; the dialog says when to try again. Anal
 
 ## Demo data
 
-The register holds the demo's decided items (E06 T12): BRC/…/001–003 at the Board Risk Committee's "Risk review, third quarter" (Demo Director recused from the Rupsha Steel item: a restricted line for him) and MCC/…/001 with a deferral and a decision to be ratified at the Management Credit Committee's "Monthly credit review". No demo account holds `forum.read`: to show the oversight view, grant a role with it to `auditor@demo.example`. A year of history for analytics is seeded with the phase's demo cycle (E08 T8). Seeders only fill gaps; the backfill indexes whatever they add.
+The register holds the demo's decided items (E06 T12): BRC/…/001–003 at the Board Risk Committee's "Risk review, third quarter" (Demo Director recused from the Rupsha Steel item: a restricted line for him) and MCC/…/001 with a deferral and a decision to be ratified at the Management Credit Committee's "Monthly credit review". `auditor@demo.example` holds the custom role "Committee oversight" with `forum.read` (`DemoAccessSeeder`, E08 T8, #261), so it shows the oversight view: every committee's register (restricted items as lines) and analytics, with a second factor at sign-in. A year of history for analytics is seeded with the phase's demo cycle (E08 T8, `DemoHistorySeeder`: monthly Board Risk Committee meetings and a Management Credit Committee meeting every other month, each with two numbered resolutions and a report for noting). Seeders only fill gaps; the backfill indexes whatever they add.

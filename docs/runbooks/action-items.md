@@ -56,7 +56,7 @@ Everyone else gets 404. An owner outside the committee sees their own action and
   - `OWNER_WITH_REASON` (the management committee presets): the owner changes the date with a reason; the secretaries are told.
 - A secretary not recused may always change the date directly, with a reason.
 - Every change keeps the original date and counts the revisions: "Due 20 January 2027 (originally 15 December 2026, revised once)" on the action, "(rev. 1)" on the tracker, and both on the report. The owner's reminders and the escalation are planned again from the new date in the same transaction (`Workflows.redue`).
-- A date in the past is refused (422 `DUE_IN_PAST`), for a new action, a new date and an update's "until". **"Today" is the organisation's**, in the tenant's time zone (`default.timezone`; the demo tenant is on Asia/Dhaka), as are "overdue" and "Ask owners for an update" once a day. The date picker's earliest day and its quick choices use the browser's date (known limit): near midnight, someone in another zone can pick a day the server refuses as past, or be kept from today. To record that an action was due earlier, leave the date and let it show as overdue.
+- A date in the past is refused (422 `DUE_IN_PAST`), for a new action, a new date and an update's "until". **"Today" is the organisation's**, in the tenant's time zone (`default.timezone`; the demo tenant is on Asia/Dhaka), as are "overdue" and "Ask owners for an update" once a day. The date picker's earliest day and its quick choices start on the organisation's today too (the session carries it), so someone in another zone near midnight is offered the days the server takes. To record that an action was due earlier, leave the date and let it show as overdue.
 
 ## Risk accepted
 

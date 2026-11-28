@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient, type QueryClient, type QueryFunction } from '@tanstack/react-query'
 import {
   getMeOptions,
   getMyAccessQueryKey,
@@ -8,9 +8,22 @@ import {
 import type { MyAccess, MyForumResponse, Session } from '@/api/generated/types.gen'
 import { problemType, PROBLEM } from '@/api/http'
 import type { Viewer } from '@/app/navigation'
+import { rememberOrgToday } from '@/lib/org-today'
 
-/** Session state as the server reports it (`GET /auth/session`); never 401, anonymous callers get ANONYMOUS. */
-export const sessionQuery = () => ({ ...getSessionOptions(), staleTime: 30_000 })
+/**
+ * Session state as the server reports it (`GET /auth/session`); never 401, anonymous callers get ANONYMOUS. Each answer
+ * also gives the web's date defaults the organisation's date today (`orgToday`).
+ */
+export const sessionQuery = () => {
+  const options = getSessionOptions()
+  const read = options.queryFn as QueryFunction<Session, ReturnType<typeof getSessionQueryKey>>
+  const queryFn: typeof read = async (context) => {
+    const session = await read(context)
+    rememberOrgToday(session.today)
+    return session
+  }
+  return { ...options, queryFn, staleTime: 30_000 }
+}
 
 export function useSession() {
   return useQuery(sessionQuery())
@@ -28,7 +41,10 @@ export function useSessionRefresh() {
 }
 
 export function refreshSession(queryClient: QueryClient, next?: Session) {
-  if (next) queryClient.setQueryData(getSessionQueryKey(), next)
+  if (next) {
+    queryClient.setQueryData(getSessionQueryKey(), next)
+    rememberOrgToday(next.today)
+  }
   // Permissions belong to the session: another sign-in must not see the previous user's.
   queryClient.removeQueries({ queryKey: getMyAccessQueryKey() })
   return queryClient.invalidateQueries({ queryKey: getSessionQueryKey() })

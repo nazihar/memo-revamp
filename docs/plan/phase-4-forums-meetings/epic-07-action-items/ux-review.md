@@ -270,7 +270,7 @@ Done by the agent in Chromium (Playwright, headless) against a local E2E stack w
 3. **Quoted English in Arabic** (WCAG 1.3.2, seen in the new visual baselines): what the owner is told, the timeline's updates and the report's reasons and latest updates took the page's direction, so their full stop and quotation marks landed at the wrong ends. They now take `dir="auto"` (`ActionPage.tsx`, `Timeline.tsx`, `ActionReportPage.tsx`), and `<bdi>` where the words sit inside a sentence ("23 November: «…»").
 
 ### Observed, not changed
-- **The owner of an action waiting for verification** still has "Post an update" and "Ask for a new date": the server allows both until the action is verified (a date request is withdrawn when it is marked as done, not refused after).
+- **The owner of an action waiting for verification** still has "Post an update" and "Ask for a new date": the server allows both until the action is verified (a date request is withdrawn when it is marked as done, not refused after). **Changed at the phase close:** once marked done the owner's step is over (design §1.4 and §1.7), so `can.update`, `can.updateOnBehalf`, `can.confidence` and `can.requestDue` are false for DONE_PENDING and the page offers neither (`ActionAbilityRules`, `ActionClosureIT`).
 - **The committee page's "All committees" link** is 20 px high (E01's breadcrumb, not this epic's screens); it is a text link at the top of the page, well spaced.
 - **After the last row** focus goes to the document and then the skip link, as on every page.
 - **After moving to another page** focus starts at the top of the document, as everywhere in the app; the skip link is the first stop.

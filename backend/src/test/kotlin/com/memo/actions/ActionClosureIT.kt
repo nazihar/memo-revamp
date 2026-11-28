@@ -116,6 +116,23 @@ class ActionClosureIT : ActionFixture() {
     }
 
     @Test
+    fun `an action waiting for verification offers its owner and contributors no update and no new date`() {
+        secondSecretary()
+        val id = issued(owner = person(secretary), contributors = listOf(others[0].id.value)).id
+        // Underway: the owner may post an update, say how it is going and ask for a new date; the contributor may post.
+        checkNotNull(seen(id, secretary)).can.let { assertThat(listOf(it.update, it.confidence, it.requestDue)).containsOnly(true) }
+        assertThat(checkNotNull(seen(id, others[0])).can.update).isTrue()
+
+        // Marked done: the owner's step is over (design E07 §1.4, §1.7), so neither is offered while it waits.
+        asUser(secretary) { done(id) }
+        assertThat(row(id).status).isEqualTo(ActionStatus.DONE_PENDING)
+        checkNotNull(seen(id, secretary)).can.let {
+            assertThat(listOf(it.update, it.updateOnBehalf, it.confidence, it.requestDue)).containsOnly(false)
+        }
+        assertThat(checkNotNull(seen(id, others[0])).can.update).isFalse()
+    }
+
+    @Test
     fun `evidence is required when the committee says so, and done withdraws a pending date request`() {
         actionsPolicy(ActionsPolicy(evidenceRequired = true))
         val id = issued().id

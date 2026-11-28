@@ -3,6 +3,7 @@ import type { IntlShape } from 'react-intl'
 import { listOrgUnitsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { Named } from '@/api/generated/types.gen'
 import { holds, PERMISSION, useMyAccess } from '@/features/access/access'
+import { orgTodayDate } from '@/lib/org-today'
 import { useTeamAccess } from '@/features/inbox/team'
 import { dm, dmv } from './dashboard-messages'
 import type { Weeks } from './dashboard-params'
@@ -14,8 +15,8 @@ export function unitOf(scope: string): string | undefined {
   return scope.startsWith('unit:') ? scope.slice(5) : undefined
 }
 
-/** The first day of a period of [weeks] ending today, as the API's ISO date (the server ends it on its own today). */
-export function periodStart(weeks: Weeks, today: Date = new Date()): string {
+/** The first day of a period of [weeks] ending on the organisation's today, as the API's ISO date (the server ends it there too). */
+export function periodStart(weeks: Weeks, today: Date = orgTodayDate()): string {
   const start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - weeks * 7 + 1)
   const pad = (n: number) => String(n).padStart(2, '0')
   return `${String(start.getFullYear())}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`

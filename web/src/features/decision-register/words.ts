@@ -1,6 +1,7 @@
 import type { IntlShape } from 'react-intl'
 import type { DecisionRowView, RegisterScopeView } from '@/api/generated/types.gen'
 import type { TermValues } from '@/features/terms/terms'
+import { orgToday } from '@/lib/org-today'
 import { drm } from './messages'
 import { FLAGS, OUTCOMES, STATES, type Flag, type RegisterSearch } from './register-params'
 
@@ -65,8 +66,9 @@ export function exceptionWords(intl: IntlShape, row: DecisionRowView, today: str
   return words
 }
 
-/** Today in the reader's calendar, as an ISO date. */
-export function todayIso(now: Date = new Date()): string {
+/** Today on the organisation's calendar (from the session), or on the reader's for a given [now], as an ISO date. */
+export function todayIso(now?: Date): string {
+  if (!now) return orgToday()
   const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
   return local.toISOString().slice(0, 10)
 }

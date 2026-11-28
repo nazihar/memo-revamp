@@ -22,7 +22,7 @@ import { day, ownerWords, referenceWords } from '../words'
 import { ActionForm } from './ActionForm'
 import { ao } from './messages'
 import { officerRefusal } from './problems'
-import { refreshActions } from './shared'
+import { refreshActions, todayIso } from './shared'
 
 type Query = NonNullable<GetForumActionsData['query']>
 type StatusFilter = 'OPEN' | 'ALL' | 'DRAFT' | 'TO_VERIFY' | 'CLOSED' | 'CANCELLED'
@@ -149,7 +149,7 @@ export function Tracker({ forum }: { forum: ForumResponse }) {
       const url = URL.createObjectURL(data)
       const link = document.createElement('a')
       link.href = url
-      link.download = `${forum.code}-actions-${new Date().toISOString().slice(0, 10)}.xlsx`
+      link.download = `${forum.code}-actions-${todayIso()}.xlsx`
       link.click()
       URL.revokeObjectURL(url)
       toast.show(intl.formatMessage(ao.exported), 'success')

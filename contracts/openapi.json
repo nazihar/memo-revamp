@@ -15118,6 +15118,11 @@
             "enum" : [ "ANONYMOUS", "MFA_REQUIRED", "MFA_ENROLMENT_REQUIRED", "AUTHENTICATED" ],
             "type" : "string"
           },
+          "today" : {
+            "description" : "The organisation's date today, in its time zone: the default for new dates and the earliest a date may be. Present once AUTHENTICATED",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
           "user" : {
             "description" : "Present unless ANONYMOUS",
             "oneOf" : [ {

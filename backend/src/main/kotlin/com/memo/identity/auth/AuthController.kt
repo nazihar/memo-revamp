@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import java.util.UUID
 
 @Schema(name = "LoginRequest")
@@ -48,6 +49,12 @@ data class SessionResponse(
     val organisation: String,
     @field:Schema(description = "Present unless ANONYMOUS")
     val user: SessionUserResponse? = null,
+    @field:Schema(
+        description =
+            "The organisation's date today, in its time zone: the default for new dates and the earliest a date may be. " +
+                "Present once AUTHENTICATED",
+    )
+    val today: LocalDate? = null,
 )
 
 @Schema(name = "SessionUser")

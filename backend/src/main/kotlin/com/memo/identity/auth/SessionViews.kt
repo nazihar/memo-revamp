@@ -6,6 +6,7 @@ import com.memo.identity.UserAccounts
 import com.memo.identity.UserId
 import com.memo.identity.mfa.MfaService
 import com.memo.identity.session.SessionPrincipal
+import com.memo.tenancy.TenantCalendar
 import com.memo.tenancy.TenantRegistry
 import org.springframework.stereotype.Component
 
@@ -16,6 +17,7 @@ class SessionViews(
     private val registry: TenantRegistry,
     private val accounts: UserAccounts,
     private val mfa: MfaService,
+    private val calendar: TenantCalendar,
 ) {
     fun of(principal: SessionPrincipal?): SessionResponse =
         transactions.readInTenant(TenantContext.current()) {
@@ -34,6 +36,8 @@ class SessionViews(
                     state,
                     organisation,
                     SessionUserResponse(account.id.value, account.email, account.displayName, accounts.isTenantAdmin(account.id)),
+                    // The web's date defaults (new dates, earliest dates, file names) start on the organisation's day.
+                    today = if (state == SessionState.AUTHENTICATED) calendar.today() else null,
                 )
             }
         }

@@ -776,6 +776,7 @@ Conventions as E03 and E06:
 - "rule" is §1.14's `seeAction`. A recused secretary or chair is the Recused column for that item's actions and an ordinary officer for the others.
 - "fallback" means the slot resolves to `forums.manage` holders only when no secretary or chair can verify.
 - Invisible actions answer 404. Visible but forbidden actions answer 403.
+- **The page's offers (`ActionResponse.can`, Phase 4 close):** "Post an update" (own or on behalf), "How is it going" and "Ask for a new date" are offered while the action is OPEN or IN_PROGRESS. Once it is DONE_PENDING the owner's step is over and none is offered; the API's state rules of §1.4 are unchanged.
 - `AuthzMatrixCoverageTest` requires a row for every endpoint. The matrix file is `p4-e07-actions.yaml`.
 
 ## 5. Audit events

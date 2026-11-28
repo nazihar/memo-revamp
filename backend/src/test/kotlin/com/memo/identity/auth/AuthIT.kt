@@ -2,6 +2,7 @@ package com.memo.identity.auth
 
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccounts
+import com.memo.tenancy.TenantCalendar
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AppRoleJdbc
@@ -26,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.assertj.MockMvcTester
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Base64
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -81,6 +84,32 @@ class AuthIT : IntegrationTest() {
         assertThat(sessionId(cookie)).matches("[A-Za-z0-9_-]{43}")
         assertThat(session(cookie)).bodyJson().extractingPath("$.state").isEqualTo("AUTHENTICATED")
         Audit.assertAudited(tenant.id, "identity.session.created", user.id.toString(), actorId = user.id.toString())
+    }
+
+    @Test
+    fun `a signed-in session carries the organisation's date in its time zone, for the web's date defaults`() {
+        // UTC+14: for ten hours of every UTC day the organisation is already on the next date.
+        val zone = ZoneId.of("Pacific/Kiritimati")
+        val zoned = registry.aTestTenant(transactions, settings, "auth-today", mfaRequired = false)
+        transactions.inTenant(zoned.id) { settings.put(TenantCalendar.TIME_ZONE, zone.id) }
+        val user = accounts.anActiveUser(transactions, zoned, password)
+        assertThat(session(null, zoned)).bodyJson().doesNotHavePath("$.today")
+
+        val before = LocalDate.now(zone)
+        val signedIn = mvc.login(zoned, user.email, password)
+        val read = session(signedIn.response.getCookie(SESSION_COOKIE)!!, zoned)
+        val days = setOf(before.toString(), LocalDate.now(zone).toString())
+
+        assertThat(signedIn)
+            .bodyJson()
+            .extractingPath("$.today")
+            .asString()
+            .isIn(days)
+        assertThat(read)
+            .bodyJson()
+            .extractingPath("$.today")
+            .asString()
+            .isIn(days)
     }
 
     @Test

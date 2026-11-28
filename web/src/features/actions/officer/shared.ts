@@ -2,6 +2,7 @@ import { useQuery, type QueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { listForumMeetingsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { ActionResponse, ActionSummary, MeetingResponse } from '@/api/generated/types.gen'
+import { orgToday, orgTodayDate } from '@/lib/org-today'
 
 /** The meeting statuses in which actions are raised from it (design §1.1 RAISE_WINDOW). */
 export const RAISING: MeetingResponse['status'][] = ['IN_PROGRESS', 'HELD', 'MINUTES_APPROVED']
@@ -14,9 +15,9 @@ export function ifMatch(a: Pick<ActionResponse, 'version'>): { 'If-Match': strin
   return { 'If-Match': `"${String(a.version)}"` }
 }
 
-/** Today in the reader's zone as `2026-11-23`. */
+/** Today on the organisation's calendar as `2026-11-23` (the server refuses a due date before it). */
 export function todayIso(): string {
-  return isoOf(new Date())
+  return orgToday()
 }
 
 export function isoOf(d: Date): string {
@@ -24,9 +25,9 @@ export function isoOf(d: Date): string {
   return `${String(d.getFullYear())}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
 
-/** A day [days] or [months] after today, as a date: the due date's quick picks. */
+/** A day [days] or [months] after the organisation's today, as a date: the due date's quick picks. */
 export function later({ days = 0, months = 0 }: { days?: number; months?: number }): string {
-  const d = new Date()
+  const d = orgTodayDate()
   d.setMonth(d.getMonth() + months)
   d.setDate(d.getDate() + days)
   return isoOf(d)

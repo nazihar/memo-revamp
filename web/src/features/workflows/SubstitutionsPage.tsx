@@ -15,6 +15,7 @@ import { Input, Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
+import { orgToday } from '@/lib/org-today'
 
 const m = defineMessages({
   title: { id: 'workflows.substitutions.title', defaultMessage: 'Substitutions' },
@@ -73,10 +74,9 @@ const mv = defineMessages<{
 
 type Phase = 'inForce' | 'planned' | 'ended'
 
-/** Today as a calendar date; the server decides with the tenant's time zone and refuses what is not possible. */
+/** Today on the organisation's calendar; the server decides with the tenant's time zone and refuses what is not possible. */
 function today(): string {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return orgToday()
 }
 
 function phaseOf(row: SubstitutionResponse, date: string): Phase {

@@ -35,8 +35,9 @@ stateDiagram-v2
   SCHEDULED --> CANCELLED: cancel (reason)
   IN_PROGRESS --> HELD: end (secretary)
   HELD --> MINUTES_APPROVED: minutes approved (E06)
-  MINUTES_APPROVED --> CLOSED: close (E06/E07)
+  MINUTES_APPROVED --> CLOSED: close (reserved: no action in Phase 4)
 ```
+- **CLOSED is reserved** (ADR-0060 amendment, Phase 4 close): no Phase 4 action leads to it, so MINUTES_APPROVED is the final state; every reader treats CLOSED as MINUTES_APPROVED.
 - Forbidden transitions answer 409 `WRONG_STATE`. Examples: start a draft, reschedule a held meeting, cancel an in-progress meeting.
 - As built (T1): times change only through `reschedule`, so a draft is rescheduled too, without a reason; the place, mode and link change through `PATCH` (DRAFT or SCHEDULED). Guests change until the meeting is held.
 - A meeting still SCHEDULED a day after `endsAt` is flagged "Not marked as held" to the secretaries (§9).

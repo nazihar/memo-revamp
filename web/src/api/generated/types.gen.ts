@@ -4922,6 +4922,10 @@ export type Session = {
     organisation: string;
     state: 'ANONYMOUS' | 'MFA_REQUIRED' | 'MFA_ENROLMENT_REQUIRED' | 'AUTHENTICATED';
     /**
+     * The organisation's date today, in its time zone: the default for new dates and the earliest a date may be. Present once AUTHENTICATED
+     */
+    today?: string | null;
+    /**
      * Present unless ANONYMOUS
      */
     user?: SessionUser | null;

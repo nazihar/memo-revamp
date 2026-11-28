@@ -3,6 +3,7 @@ import { cleanup, configure } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest'
 import { client } from '@/api/generated/client.gen'
 import { configureHttp } from '@/api/http'
+import { rememberOrgToday } from '@/lib/org-today'
 import { installDialogPolyfill } from './dialog-polyfill'
 import './prosemirror'
 import { API_ORIGIN, server } from './msw'
@@ -34,6 +35,8 @@ beforeAll(() => {
 beforeEach(() => {
   client.setConfig({ baseUrl: API_ORIGIN })
   localStorage.clear()
+  // The organisation's today comes from the session each test serves; none is left from an earlier test.
+  rememberOrgToday(undefined)
   media.prefersDark = false
   document.documentElement.className = ''
   document.documentElement.lang = 'en'

@@ -1,4 +1,5 @@
 import type { IntlShape } from 'react-intl'
+import { orgTodayDate } from '@/lib/org-today'
 import type { PeriodSearch, Preset } from './analytics-params'
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -6,14 +7,14 @@ const iso = (d: Date) => `${String(d.getFullYear())}-${pad(d.getMonth() + 1)}-${
 
 /**
  * The `from` and `to` a period asks the API for; none for the default (the server's last 12 months in the tenant's
- * zone). Presets end today in the viewer's calendar: "last 2 years" is 2 years to today, both days included.
+ * zone). Presets end on the organisation's today (from the session): "last 2 years" is 2 years to today, both days included.
  */
-export function periodQuery(search: PeriodSearch, today: Date = new Date()): { from?: string; to?: string } {
+export function periodQuery(search: PeriodSearch, today: Date = orgTodayDate()): { from?: string; to?: string } {
   if (search.period) return presetRange(search.period, today)
   return { ...(search.from ? { from: search.from } : {}), ...(search.to ? { to: search.to } : {}) }
 }
 
-export function presetRange(preset: Preset, today: Date = new Date()): { from: string; to: string } {
+export function presetRange(preset: Preset, today: Date = orgTodayDate()): { from: string; to: string } {
   const year = today.getFullYear()
   switch (preset) {
     case '2y':

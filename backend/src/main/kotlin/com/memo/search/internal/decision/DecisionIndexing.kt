@@ -65,10 +65,14 @@ class DecisionIndexing(
     @EventListener
     fun onRecorded(event: DecisionRecorded) {
         index.put(event.decisionId)
+        // A first entry has no earlier one to read.
         val ratified =
             listOfNotNull(
                 decisions.find(event.decisionId)?.current?.ratifiesDecisionId,
-                decisions.entry(event.decisionId, event.seq - 1)?.ratifiesDecisionId,
+                event.seq
+                    .takeIf { it > 1 }
+                    ?.let { decisions.entry(event.decisionId, it - 1) }
+                    ?.ratifiesDecisionId,
             ).toSet()
         ratified.forEach { index.put(it) }
     }
@@ -109,16 +113,18 @@ class DecisionIndexing(
      * returns how many it wrote. A decision whose meeting or item cannot be read is left out (and logged): the next run
      * meets it again, and the metric keeps counting it.
      */
-    fun backfill(limit: Int = CHUNK): Int =
-        index.unindexed(limit).count { id ->
-            index.put(id).also { written -> if (!written) log.warn("search: decision {} has no meeting or item to index", id) }
-        }
+    fun backfill(limit: Int = CHUNK): Int {
+        val ids = index.unindexed(limit)
+        val missed = index.putAll(ids)
+        missed.forEach { log.warn("search: decision {} has no meeting or item to index", it) }
+        return ids.size - missed.size
+    }
 
     /** Rewrites up to [limit] rows after [after] in id order, inside a tenant transaction; returns the ids it rewrote. */
     fun rebuild(
         after: UUID?,
         limit: Int = CHUNK,
-    ): List<UUID> = decisions.ids(after, limit).onEach { index.put(it) }
+    ): List<UUID> = decisions.ids(after, limit).also { index.putAll(it) }
 
     /** How many decisions still lack an up-to-date row (counted up to the function's 1,000), inside a tenant transaction. */
     fun unindexed(): Int = index.unindexed(MAX_COUNTED).size

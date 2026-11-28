@@ -44,7 +44,9 @@ export function Timeline({ action }: { action: ActionResponse }) {
                   <p className="text-sm text-muted-foreground">{intl.formatMessage(am.correction)}</p>
                 ) : null}
                 {e.text ? (
-                  <p className="whitespace-pre-line">{intl.formatMessage(am.quoted, { text: e.text })}</p>
+                  <p dir="auto" className="whitespace-pre-line">
+                    {intl.formatMessage(am.quoted, { text: e.text })}
+                  </p>
                 ) : null}
                 <EvidenceLinks files={e.files} />
               </div>

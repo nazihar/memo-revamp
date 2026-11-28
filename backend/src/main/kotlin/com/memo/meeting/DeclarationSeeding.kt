@@ -64,6 +64,9 @@ class DeclarationSeeding(
     ): UUID =
         tx { declarations.declare(meetingId, itemId, DeclareInput(nature, intent, onBehalfOf = userId, how = how, howNote = howNote)).id }
 
+    /** Whether the bound user has confirmed the review of any revision of [meetingId]. */
+    fun reviewed(meetingId: UUID): Boolean = tx { reviews.mine(meetingId).reviewedRevision != null }
+
     /** The bound person confirms "I have declared my interests" for the latest revision, unless they had; whether now. */
     fun confirmReview(meetingId: UUID): Boolean =
         tx {

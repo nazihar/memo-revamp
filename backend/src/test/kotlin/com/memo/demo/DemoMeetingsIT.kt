@@ -1,5 +1,6 @@
 package com.memo.demo
 
+import com.memo.actions.ActionSeeding
 import com.memo.common.authz.AccessAdministration
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
@@ -51,6 +52,7 @@ import com.memo.minutes.internal.MinutesCopies
 import com.memo.minutes.internal.MinutesJobs
 import com.memo.minutes.internal.MinutesRecords
 import com.memo.minutes.internal.MinutesReleaseScheduler
+import com.memo.org.OrgDirectory
 import com.memo.org.OrgSeeding
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -107,6 +109,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var memoAccess: MemoAccessSeeding
 
+    @Autowired lateinit var memoTemplates: com.memo.memo.MemoTemplateSeeding
+
     @Autowired lateinit var uploads: FileUploads
 
     @Autowired lateinit var lifecycle: com.memo.identity.UserLifecycle
@@ -159,6 +163,10 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var minutesRecords: MinutesRecords
 
+    @Autowired lateinit var actionSeeding: ActionSeeding
+
+    @Autowired lateinit var orgDirectory: OrgDirectory
+
     @Test
     fun `the risk review is published twice and the credit committee has the proposal from its queue, once`() {
         val password = aPassword()
@@ -197,31 +205,39 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertRiskMinutes(seeded)
             assertCreditMinutes(seeded.heldCreditReview)
             val e06Rows = e06Rows(seeded)
+            assertActions(seeded)
+            val e07Rows = e07Rows()
 
             // Fills gaps only: a second run finds the three meetings and adds nothing.
             assertThat(seeder.seed()).isEqualTo(seeded)
             assertThat(e05Rows(seeded)).isEqualTo(e05Rows)
             assertThat(e06Rows(seeded)).isEqualTo(e06Rows)
-            AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
-                listOf(
-                    DemoMeetingSeeder.RISK_TITLE,
-                    DemoMeetingSeeder.CREDIT_TITLE,
-                    DemoMeetingSeeder.HELD_TITLE,
-                    DemoMinutesSeeder.RISK_TITLE,
-                ).forEach {
-                    assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
-                }
-                assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
-                assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.MEGHNA)).isOne()
-                val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
-                assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
-                assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
-            }
+            assertThat(e07Rows()).isEqualTo(e07Rows)
+            assertOnce(seeded)
         } finally {
             notices.jobs = true
             invitations.jobs = true
             minutesJobs.jobs = true
             releases.jobs = true
+        }
+    }
+
+    /** After a second run: each meeting, the two credit memos and the risk review's declarations once. */
+    private fun assertOnce(seeded: DemoMeetingSeeder.Seeded) {
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            listOf(
+                DemoMeetingSeeder.RISK_TITLE,
+                DemoMeetingSeeder.CREDIT_TITLE,
+                DemoMeetingSeeder.HELD_TITLE,
+                DemoMinutesSeeder.RISK_TITLE,
+            ).forEach {
+                assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
+            }
+            assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
+            assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.MEGHNA)).isOne()
+            val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
+            assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
+            assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
         }
     }
 
@@ -243,6 +259,18 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             e05,
             DemoHeldRiskReviewSeeder(meetingSeeding, agendaSeeding, declarationSeeding, attendanceSeeding, e05),
             DemoMinutesSeeder(declarationSeeding, attendanceSeeding, decisionSeeding, minutesSeeding),
+            DemoActionsSeeder(
+                actionSeeding,
+                declarationSeeding,
+                attendanceSeeding,
+                agendaSeeding,
+                meetingSeeding,
+                memoSeeding,
+                memoTemplates,
+                accounts,
+                orgDirectory,
+                transactions,
+            ),
             memoSeeding,
             memoAccess,
             forumSeeding,
@@ -275,12 +303,18 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         assertThat(day).isAfter(LocalDate.now(clock.withZone(DemoMeetingSeeder.ZONE)))
         assertThat(day.dayOfWeek).isBetween(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)
 
+        // E07 T12 publishes revision 3 (the cyber figures for matters arising, with the action taken report).
+        val latest = asUser(director) { agendas.agenda(meeting, null) }
+        assertThat(latest.revision).isEqualTo(3)
+        assertThat(latest.note).isEqualTo(DemoActionsSeeder.PUBLISH_NOTE)
         // The director reads revision 2, has seen revision 1, and so sees what changed.
-        val agenda = asUser(director) { agendas.agenda(meeting, null) }
-        assertThat(agenda.revision to agenda.latestRevision).isEqualTo(2 to 2)
+        val agenda = asUser(director) { agendas.agenda(meeting, 2) }
+        assertThat(agenda.revision to agenda.latestRevision).isEqualTo(2 to 3)
         assertThat(agenda.note).isEqualTo("Updated risk appetite paper; a late liquidity addendum agreed by the chair")
         assertThat(agenda.lastSeenRevision).isEqualTo(1)
-        assertThat(agenda.whatChanged).isNotNull()
+        // What changed is told on the latest revision, since the one the director last saw.
+        assertThat(latest.lastSeenRevision).isEqualTo(1)
+        assertThat(latest.whatChanged).isNotNull()
         val items = agenda.sections.flatMap { it.items }
         val appetite = items.single { it.title == "Risk appetite statement 2027" }
         assertThat(appetite.changes).contains(ItemFlag.PAPER_REPLACED)
@@ -617,6 +651,100 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertThat(c.long("select count(*) from minutes_record where meeting_id = ? and state = 'READY'", meeting)).isOne()
         }
     }
+
+    /**
+     * E07 T12: the five actions as [DemoActionsSeeder] says, the follow-up memo approved by someone other than its
+     * initiator, the overdue action escalated by the engine, and the quarterly review's report listing the risk committee's
+     * four in their sections.
+     */
+    private fun assertActions(seeded: DemoMeetingSeeder.Seeded) {
+        val holder = id(DemoOrg.staffEmail(DemoActionsSeeder.HEAD_CREDIT_RISK_NAME))
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            val charge = rowOf(c, DemoActionsSeeder.CHARGE)
+            assertThat(charge.getValue("reference")).matches("MCC A1/\\d{4}")
+            assertThat(charge).containsEntry("status", "CLOSED").containsEntry("source", "DECISION").containsEntry("condition_index", "0")
+            assertThat(charge).containsEntry("owner_kind", "POSITION").containsEntry("holder_user_id", holder.toString())
+            assertThat(charge.getValue("meeting_id")).isEqualTo(seeded.heldCreditReview.toString())
+            val chargeId = UUID.fromString(charge.getValue("id"))
+            val evidence = "select count(*) from actions_entry where action_id = ? and kind = 'DONE' and cardinality(file_ids) = 1"
+            assertThat(c.long(evidence, chargeId)).isOne()
+            val memo =
+                "select count(*) from actions_memo m join memo on memo.id = m.memo_id where m.action_id = ? and m.kind = 'RAISED' " +
+                    "and memo.status = 'APPROVED' and memo.initiator_id = ?"
+            assertThat(c.long(memo, chargeId, holder)).isOne()
+
+            val cyber = rowOf(c, DemoActionsSeeder.INSURANCE)
+            assertThat(cyber).containsEntry("status", "DONE_PENDING").containsEntry("source", "ITEM")
+            assertThat(cyber).containsEntry("owner_user_id", id(DemoMeetingSeeder.DIRECTOR).toString())
+
+            val rupsha = rowOf(c, DemoActionsSeeder.RUPSHA_BORROWINGS)
+            assertThat(rupsha).containsEntry("status", "OPEN").containsEntry("source", "DECISION").containsEntry("owner_kind", "POSITION")
+            assertThat(rupsha.getValue("item_id")).isNotNull()
+            assertThat(LocalDate.parse(rupsha.getValue("due_date"))).isBefore(LocalDate.now(clock.withZone(DemoMeetingSeeder.ZONE)))
+            val instance = UUID.fromString(rupsha.getValue("workflow_instance_id"))
+            val fired = "select count(*) from workflow_timer where instance_id = ? and kind = ? and state = 'FIRED'"
+            assertThat(c.long(fired, instance, "DUE")).isOne()
+            assertThat(c.long(fired, instance, "ESCALATE")).isOne()
+
+            val plan = rowOf(c, DemoActionsSeeder.FUNDING_PLAN)
+            assertThat(plan).containsEntry("status", "OPEN").containsEntry("source", "DIRECT").containsEntry("due_revisions", "1")
+            assertThat(plan.getValue("due_date")).isNotEqualTo(plan.getValue("original_due_date"))
+
+            val stress = rowOf(c, DemoActionsSeeder.STRESS_MODEL)
+            assertThat(stress).containsEntry("status", "CANCELLED").containsEntry("cancel_kind", "RISK_ACCEPTED")
+            assertThat(stress.getValue("closed_by")).isEqualTo(id(DemoMeetingSeeder.BOARD_MEMBER).toString())
+
+            // The quarterly review's latest report: to close, overdue, open, cancelled since the last meeting.
+            val sections =
+                strings(
+                    c,
+                    "select r.section || ':' || a.title from actions_report_row r join actions_item a on a.id = r.action_id " +
+                        "where r.report_id = (select id from actions_report where meeting_id = ? order by revision desc limit 1) " +
+                        "order by r.position",
+                    seeded.riskReview,
+                )
+            assertThat(sections).containsExactly(
+                "TO_CLOSE:${DemoActionsSeeder.INSURANCE}",
+                "OVERDUE:${DemoActionsSeeder.RUPSHA_BORROWINGS}",
+                "OPEN:${DemoActionsSeeder.FUNDING_PLAN}",
+                "CANCELLED:${DemoActionsSeeder.STRESS_MODEL}",
+            )
+        }
+    }
+
+    /** The action called [title], its columns as text. */
+    private fun rowOf(
+        c: java.sql.Connection,
+        title: String,
+    ): Map<String, String?> =
+        c.prepareStatement("select * from actions_item where title = ?").use { s ->
+            s.setString(1, title)
+            s.executeQuery().use { rs ->
+                assertThat(rs.next()).describedAs(title).isTrue()
+                val meta = rs.metaData
+                val row = (1..meta.columnCount).associate { meta.getColumnName(it) to rs.getString(it) }
+                assertThat(rs.next()).describedAs("one $title").isFalse()
+                row
+            }
+        }
+
+    private fun strings(
+        c: java.sql.Connection,
+        sql: String,
+        vararg args: Any,
+    ): List<String> =
+        c.prepareStatement(sql).use { s ->
+            args.forEachIndexed { i, a -> s.setObject(i + 1, a) }
+            s.executeQuery().use { rs -> generateSequence { if (rs.next()) rs.getString(1) else null }.toList() }
+        }
+
+    /** The E07 rows, to compare before and after a second run. */
+    private fun e07Rows(): List<Long> =
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            listOf("actions_item", "actions_entry", "actions_memo", "actions_due_request", "actions_report", "actions_report_row")
+                .map { c.long("select count(*) from $it") } +
+                c.long("select count(*) from workflow_timer where kind = 'ESCALATE'")
+        }
 
     /** The E06 rows of the held meetings, to compare before and after a second run. */
     private fun e06Rows(seeded: DemoMeetingSeeder.Seeded): List<Long> =

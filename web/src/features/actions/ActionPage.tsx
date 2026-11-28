@@ -302,7 +302,9 @@ function Facts({ action: a }: { action: ActionResponse }) {
       </Fact>
       {a.context ? (
         <Fact term={intl.formatMessage(am.asked, terms)}>
-          <span className="whitespace-pre-line">{intl.formatMessage(am.quoted, { text: a.context })}</span>
+          <span dir="auto" className="whitespace-pre-line">
+            {intl.formatMessage(am.quoted, { text: a.context })}
+          </span>
         </Fact>
       ) : null}
       {a.description ? (

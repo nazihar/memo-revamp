@@ -435,3 +435,9 @@ internal fun ActionStore.openAfter(
         } ?: DSL.noCondition()
     return where(OPEN_ACTIONS.and(position), limit)
 }
+
+/** The actions of [forumId] called [title], oldest first (the demo's seeder finds what it made by its title, E07 T12). */
+internal fun ActionStore.titled(
+    forumId: UUID,
+    title: String,
+): List<ActionRow> = where(ACTIONS_ITEM.FORUM_ID.eq(forumId).and(ACTIONS_ITEM.TITLE.eq(title)))

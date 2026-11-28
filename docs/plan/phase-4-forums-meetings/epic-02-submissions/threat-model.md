@@ -28,3 +28,17 @@
 - Officers read the memo as soon as it is escalated, before triage. This matches practice (the secretariat prepares the papers) and is visible on the memo's access list.
 - Officers' access follows the calendar at the start of the tenant's day, within 15 minutes of midnight in its zone (`forum-officer-readers`). A former officer whose term ended yesterday can read the queue's memos for up to those 15 minutes, and an officer whose term starts today waits as long. Until 2026-11-28 the gap lasted until the next edit to the committee's chair or secretary rows (E08 T10 finding, fixed; ADR-0059 amendment). If the task stops running, the gap returns; the runbook says how to check `forum_reader_sync`.
 - A deactivated officer seated as a person keeps their `FORUM` rows until their term ends or an administrator ends it; they cannot sign in, so the rows grant nothing.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**.
+- **Changed by the build:**
+  - S1 and T1: the forum's decision now exists (E06). `ForumDecided` comes only from the release of a decision recorded at a held meeting, guarded on `released_at` and sent once per decision (`DecisionReleaseIT`, `ForumEscalationIT`). No public endpoint resumes a memo.
+  - A T1 defect was fixed in E02 T3: a waiting step's `resolution` was written but never read back, so a reloaded step forgot its committee.
+  - I1: officers' access did not follow dates or position holders (E08 T10 finding): a lapsed term kept access, and a started appointment or a position seat's new holder got none, until the next edit to the chair or secretary rows. Fixed by #260 (ADR-0059 amendment): the daily `forum-officer-readers` run at the start of the tenant's day and the listener on assignment changes.
+- **Evidence:**
+  - S1: matrix `p4-e02-submissions.yaml`, `ForumSubmissionsIT`.
+  - T1, T2: `ForumStepTest`, `WorkflowInvariantProperties`, the guarded moves in `ForumSubmissionsIT`. T3: definitions without `wait` keep their behaviour (`ForumStepTest`).
+  - R1: `forum.submission.*` audit and the note-sheet line (`AuditActionCoverageTest`).
+  - I1: `ForumReadersIT` (the `FORUM` kind only while a submission is open, under clearance) and `OfficerAccessIT` (a term ended yesterday and one starting today across midnight in the tenant's zone, a position seat's new holder at once and by date). I2: the queue's "restricted" rows (`ForumSubmissionsIT`). I3: `MailTemplatesTest`.
+  - D1: unique index `forum_submission_step_uk (tenant_id, step_id)` (`forum/V3`) and cursor paging. E1: `FORUM_INACTIVE`.
+- **Residual risks:** confirmed, with the two above added by #260 (the up-to-15-minute lag after midnight, and a deactivated person-seated officer's rows). The gap where access did not follow dates or holders is fixed, not residual. Officers read the memo from the moment it is escalated, and the memo's access list shows it. A recusal at the meeting does not change memo access (E04 I6); the meeting register flags it (`alsoReadsMemo`).

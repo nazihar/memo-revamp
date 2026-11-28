@@ -1,0 +1,247 @@
+{
+  "at": "2026-11-23T18:54:08.458Z",
+  "actionId": "01a209c0-ba29-7522-a7cb-c507ef2fba8d",
+  "answers": {
+    "/auth/session": {
+      "state": "AUTHENTICATED",
+      "organisation": "Demo Organization",
+      "user": {
+        "id": "01a209c0-1f88-7660-b002-622164a60204",
+        "email": "director@demo.example",
+        "displayName": "Demo Director",
+        "tenantAdmin": false
+      }
+    },
+    "/branding": {
+      "organisation": "Demo Organization",
+      "version": 0
+    },
+    "/terms?locale=en": {
+      "locale": "en",
+      "terms": [],
+      "version": 0
+    },
+    "/me/notifications/unread-count": {
+      "count": 40
+    },
+    "/me/access": {
+      "permissions": [
+        {
+          "key": "directory.read",
+          "tenantWide": true,
+          "scopeUnitIds": []
+        },
+        {
+          "key": "memo.create",
+          "tenantWide": true,
+          "scopeUnitIds": []
+        }
+      ],
+      "clearance": {
+        "rank": 0,
+        "name": "Public"
+      }
+    },
+    "/me/forums": [
+      {
+        "forumId": "01a209c0-3402-7181-bb0c-0b7689b96527",
+        "name": "Asset-Liability Committee",
+        "code": "ALCO",
+        "status": "ACTIVE",
+        "role": "CHAIR",
+        "voting": true,
+        "attributes": ["management"],
+        "state": "IN_OFFICE",
+        "startsOn": "2026-01-01",
+        "termNumber": 1,
+        "canOpen": true
+      },
+      {
+        "forumId": "01a209c0-33cb-774c-aa91-f9058b65e068",
+        "name": "Board Risk Committee",
+        "code": "BRC",
+        "status": "ACTIVE",
+        "role": "MEMBER",
+        "voting": true,
+        "attributes": [],
+        "state": "IN_OFFICE",
+        "startsOn": "2026-01-01",
+        "termEndsOn": "2028-12-31",
+        "termNumber": 1,
+        "canOpen": true
+      },
+      {
+        "forumId": "01a209c0-33ab-760e-b3b9-0bf816910c4d",
+        "name": "Board of Directors",
+        "code": "BOD",
+        "status": "ACTIVE",
+        "role": "MEMBER",
+        "voting": true,
+        "attributes": [],
+        "state": "IN_OFFICE",
+        "startsOn": "2026-01-01",
+        "termEndsOn": "2028-12-31",
+        "termNumber": 1,
+        "canOpen": true
+      },
+      {
+        "forumId": "01a209c0-3413-71c6-9d54-f6ac879527b9",
+        "name": "Executive Committee",
+        "code": "EXCO",
+        "status": "ACTIVE",
+        "role": "CHAIR",
+        "voting": true,
+        "attributes": ["management"],
+        "state": "IN_OFFICE",
+        "startsOn": "2026-01-01",
+        "termNumber": 1,
+        "canOpen": true
+      },
+      {
+        "forumId": "01a209c0-33f1-73e6-9efb-f30b56958cbb",
+        "name": "Management Credit Committee",
+        "code": "MCC",
+        "status": "ACTIVE",
+        "role": "CHAIR",
+        "voting": true,
+        "attributes": ["management"],
+        "state": "IN_OFFICE",
+        "startsOn": "2026-01-01",
+        "termNumber": 1,
+        "canOpen": true
+      }
+    ],
+    "/actions/01a209c0-ba29-7522-a7cb-c507ef2fba8d": {
+      "id": "01a209c0-ba29-7522-a7cb-c507ef2fba8d",
+      "version": 5,
+      "forumId": "01a209c0-33cb-774c-aa91-f9058b65e068",
+      "committee": "Board Risk Committee",
+      "reference": "BRC A1/2026",
+      "status": "DONE_PENDING",
+      "priority": "NORMAL",
+      "title": "Brief the committee on the renewal of the cyber insurance cover",
+      "context": "Raised under any other business: the chair asked for a summary of the renewed cover and its exclusions.",
+      "classificationId": "01a209c0-15b5-74ba-9626-ab10b5d4f769",
+      "source": {
+        "kind": "ITEM",
+        "label": "BRC 1/2026, item 9",
+        "meetingId": "01a209c0-6cfa-7233-ae0c-1bacc038c178",
+        "itemId": "01a209c0-6d6c-70c4-9f27-9d9504ac3b4b",
+        "itemNumber": "9",
+        "itemTitle": "Any other business (notified in advance)"
+      },
+      "owner": {
+        "kind": "PERSON",
+        "person": {
+          "id": "01a209c0-1f88-7660-b002-622164a60204",
+          "name": "Demo Director"
+        },
+        "holder": {
+          "id": "01a209c0-1f88-7660-b002-622164a60204",
+          "name": "Demo Director"
+        }
+      },
+      "contributors": [],
+      "dueDate": "2026-11-26",
+      "originalDueDate": "2026-11-26",
+      "dueRevisions": 0,
+      "stepName": "Verification",
+      "issuedAt": "2026-11-23T18:52:35.304308Z",
+      "createdAt": "2026-11-23T18:52:35.241770Z",
+      "viewerRecused": false,
+      "warnings": [],
+      "can": {
+        "edit": false,
+        "issue": false,
+        "discard": false,
+        "raiseMemo": false,
+        "linkMemo": true,
+        "update": true,
+        "updateOnBehalf": false,
+        "confidence": true,
+        "start": false,
+        "requestDue": true,
+        "decideDue": false,
+        "changeDue": false,
+        "overrideRag": false,
+        "changeOwner": false,
+        "cancel": false,
+        "acceptRisk": false,
+        "reopen": false,
+        "markDone": false,
+        "verify": false,
+        "holdBack": false
+      },
+      "memos": [],
+      "rag": {
+        "colour": "BLUE",
+        "word": "TO_VERIFY"
+      },
+      "confidence": "ON_TRACK",
+      "lastUpdateAt": "2026-11-23T18:52:35.463956Z",
+      "dueChange": "SECRETARY_AGREES",
+      "reopenCount": 0,
+      "evidenceRequired": false
+    },
+    "/actions/01a209c0-ba29-7522-a7cb-c507ef2fba8d/entries": {
+      "actionId": "01a209c0-ba29-7522-a7cb-c507ef2fba8d",
+      "entries": [
+        {
+          "seq": 4,
+          "kind": "DONE",
+          "actor": {
+            "id": "01a209c0-1f88-7660-b002-622164a60204",
+            "name": "Demo Director"
+          },
+          "text": "The summary of the renewed cover is in the papers for matters arising at the next meeting.",
+          "files": [],
+          "details": {
+            "instanceId": "01a209c0-ba8d-7743-9e55-feab1304577f"
+          },
+          "at": "2026-11-23T18:52:35.559718Z"
+        },
+        {
+          "seq": 3,
+          "kind": "UPDATE",
+          "actor": {
+            "id": "01a209c0-1f88-7660-b002-622164a60204",
+            "name": "Demo Director"
+          },
+          "text": "The broker's summary of the renewed cover is due this week.",
+          "confidence": "ON_TRACK",
+          "files": [],
+          "details": {},
+          "at": "2026-11-23T18:52:35.463956Z"
+        },
+        {
+          "seq": 2,
+          "kind": "ISSUED",
+          "actor": {
+            "id": "01a209c0-1fcb-74f1-a93e-1b824068b383",
+            "name": "Demo Company Secretary"
+          },
+          "files": [],
+          "details": {
+            "dueDate": "2026-11-26",
+            "reference": "BRC A1/2026"
+          },
+          "at": "2026-11-23T18:52:35.307593Z"
+        },
+        {
+          "seq": 1,
+          "kind": "DRAFTED",
+          "actor": {
+            "id": "01a209c0-1fcb-74f1-a93e-1b824068b383",
+            "name": "Demo Company Secretary"
+          },
+          "files": [],
+          "details": {
+            "source": "ITEM"
+          },
+          "at": "2026-11-23T18:52:35.241770Z"
+        }
+      ]
+    },
+    "/saved-searches": []
+  }
+}

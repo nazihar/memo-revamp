@@ -40,6 +40,11 @@ class MeetingVolume(
     private val e05: Boolean = false,
     /** Each agenda opens with a "Matters arising" standing item, as E07's action taken report needs (`ActionsVolumeIT`). */
     private val mattersArising: Boolean = false,
+    /**
+     * With [e05], the attendance histories of design E08 §8 ([AttendanceHistories]: every committee seated, apologies,
+     * absences, late arrivals, early departures and alternates at realistic rates; analytics' volume, E08 T5).
+     */
+    private val histories: Boolean = false,
 ) {
     /** The meeting levels: [low] for most rows, [high] above the director's clearance. */
     data class Levels(
@@ -49,7 +54,11 @@ class MeetingVolume(
 
     init {
         require(perForum > FUTURE) { "perForum must be more than $FUTURE" }
+        require(!histories || e05) { "the attendance histories are written over E05's rows" }
     }
+
+    /** E05's attendance, or the histories of design E08 §8 with [histories]. */
+    private val history = AttendanceHistories(tenant, people.secretary, histories)
 
     /** Meetings already past per committee: k ≤ [past]; the [FUTURE] after them are still to come. */
     private val past = perForum - FUTURE
@@ -108,7 +117,7 @@ class MeetingVolume(
             submissions(),
             files(),
             declarations(),
-            if (e05) invitations() + replies() + attendance() + quorum() else emptyList(),
+            if (e05) history.seats() + invitations() + replies() + attendance() + history.alternates() + quorum() else emptyList(),
         ).flatten()
 
     private fun forumsAndMeetings(): List<String> {
@@ -500,10 +509,12 @@ class MeetingVolume(
      */
     private fun replies(): List<String> {
         val focal = "f = 1 and k = $focalK"
+        val apologies = history.apologies("i.meeting_id", "i.u", "(i.f = 1 and i.k in ($focalK, $heldK))")
         return listOf(
             """
             create temp table mv_rsvp on commit drop as
-            select i.*, case when i.u % 5 = 3 then 'APOLOGIES' when i.u % 7 = 2 then 'REMOTE' else 'IN_PERSON' end as answer,
+            select i.*, case when $apologies then 'APOLOGIES'
+                             when i.u % 7 = 2 then 'REMOTE' else 'IN_PERSON' end as answer,
                    ($focal and i.u % 9 = 4) as stale
             from mv_invitee i
             where not ($focal and i.u % 10 = 0)
@@ -511,7 +522,8 @@ class MeetingVolume(
             """
             insert into meeting_rsvp (tenant_id, meeting_id, user_id, answer, alternate_attends, note, for_starts_at, for_ends_at,
                                       recorded_by, how, how_note, answered_at, version)
-            select '$tenant'::uuid, meeting_id, user_id, answer, false, case when u % 8 = 1 then 'I will join after the first item' end,
+            select '$tenant'::uuid, meeting_id, user_id, answer, ${history.standsIn()},
+                   case when u % 8 = 1 then 'I will join after the first item' end,
                    starts_at - case when stale then interval '1 day' else interval '0' end,
                    starts_at + interval '3 hours' - case when stale then interval '1 day' else interval '0' end,
                    user_id, 'IN_APP', null, sent_at + interval '2 days', case when u % 3 = 0 then 2 else 1 end
@@ -539,47 +551,63 @@ class MeetingVolume(
      * back, a third went online, a quarter left early (about 90 events a meeting, 290,000). The held focal meeting has its
      * 36 members and three officers on its register with 9 events each (about 300): three departures and returns and
      * stepping out of an item; ten items in progress. A quorum reached per held meeting, and a snapshot for each of its
-     * first items (60,000; the held focal meeting's are taken through [QuorumSnapshots] by the test).
+     * first items (60,000; the held focal meeting's are taken through [QuorumSnapshots] by the test). With [histories] the
+     * other meetings follow design E08 §8's rates instead, some members are absent without apologies, and the alternates of
+     * seats 3 to 5 attend for their members ([AttendanceHistories]).
      */
     private fun attendance(): List<String> {
         val held = "f = 1 and k = $heldK"
         val minute = "* interval '1 minute'"
-        val general = "not apologies and not focal"
-        val cycles = "mv_attendee, generate_series(1, 3) c where focal and not apologies"
+        val apologies = history.apologies("meeting_id", "u", "($held)")
         return listOf(
             """
             create temp table mv_attendee on commit drop as
-            select meeting_id, f, k, u, user_id, starts_at, ($held) as focal, u % 5 = 3 as apologies
-            from mv_invitee where status = 'HELD'
+            select a.*, not a.apologies and not a.absent as arrives
+            from (
+                select meeting_id, f, k, u, user_id, starts_at, ($held) as focal, $apologies as apologies,
+                       ${history.columns(held)}
+                from mv_invitee where status = 'HELD'
+            ) a
             """,
             """
             insert into meeting_attendance (tenant_id, meeting_id, user_id, capacity, state, mode, first_arrived_at, last_left_at,
                                             opened_at, updated_at, version)
             select '$tenant'::uuid, meeting_id, user_id, 'MEMBER',
-                   case when apologies then 'APOLOGIES' when not focal and u % 4 = 1 then 'LEFT' else 'PRESENT' end,
-                   case when apologies or (not focal and u % 4 = 1) then null when not focal and u % 3 = 0 then 'REMOTE'
+                   case when apologies then 'APOLOGIES' when absent then 'ABSENT' when not focal and leaves then 'LEFT' else 'PRESENT' end,
+                   case when not arrives or (not focal and leaves) then null when not focal and u % 3 = 0 then 'REMOTE'
                         else 'IN_PERSON' end,
-                   case when not apologies then starts_at + (u % 12) $minute end,
-                   case when apologies then null when focal or u % 2 = 0 then starts_at + interval '90 minutes'
-                        when u % 4 = 1 then starts_at + interval '170 minutes' end,
+                   case when arrives then starts_at + late $minute end,
+                   case when not arrives then null when focal or returns then starts_at + interval '90 minutes'
+                        when leaves then starts_at + interval '170 minutes' end,
                    starts_at, starts_at + interval '3 hours', 0
             from mv_attendee
             """,
+        ) + attendanceEvents()
+    }
+
+    /** Each attendee's events, as [attendance]'s rows say what happened (over `mv_attendee`). */
+    private fun attendanceEvents(): List<String> {
+        val minute = "* interval '1 minute'"
+        val general = "arrives and not focal"
+        val cycles = "mv_attendee, generate_series(1, 3) c where focal and not apologies"
+        return listOf(
             """
             create temp table mv_attendance_event on commit drop as
             select meeting_id, user_id, 0 as n, 'APOLOGIES' as kind, null::text as mode, starts_at - interval '1 hour' as at,
                    false as stepped, 'RSVP' as source
             from mv_attendee where apologies
-            union all select meeting_id, user_id, 0, 'ARRIVED', 'IN_PERSON', starts_at + (u % 12) $minute, false, 'RECORDED'
-            from mv_attendee where not apologies
+            union all select meeting_id, user_id, 0, 'ABSENT', null, starts_at + interval '30 minutes', false, 'RECORDED'
+            from mv_attendee where absent
+            union all select meeting_id, user_id, 0, 'ARRIVED', 'IN_PERSON', starts_at + late $minute, false, 'RECORDED'
+            from mv_attendee where arrives
             union all select meeting_id, user_id, 1, 'LEFT', null, starts_at + interval '90 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 2 = 0
+            from mv_attendee where $general and returns
             union all select meeting_id, user_id, 2, 'ARRIVED', 'IN_PERSON', starts_at + interval '100 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 2 = 0
+            from mv_attendee where $general and returns
             union all select meeting_id, user_id, 3, 'MODE_CHANGED', 'REMOTE', starts_at + interval '120 minutes', false, 'RECORDED'
             from mv_attendee where $general and u % 3 = 0
             union all select meeting_id, user_id, 4, 'LEFT', null, starts_at + interval '170 minutes', false, 'RECORDED'
-            from mv_attendee where $general and u % 4 = 1
+            from mv_attendee where $general and leaves
             union all select meeting_id, user_id, 2 * c - 1, 'LEFT', null, starts_at + 30 * c $minute, false, 'RECORDED' from $cycles
             union all select meeting_id, user_id, 2 * c, 'ARRIVED', 'IN_PERSON', starts_at + (30 * c + 5) $minute, false, 'RECORDED'
             from $cycles

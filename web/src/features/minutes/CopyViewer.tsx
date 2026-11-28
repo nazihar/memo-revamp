@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { useClosable } from '@/features/meetings/page/closable'
 import { mn } from './messages'
+import { reasonOf } from './words'
 
 const PdfViewer = lazy(() => import('@/features/memo/PdfViewer'))
 
@@ -23,8 +24,14 @@ function pathOf(meetingId: string, source: CopySource): string {
   return `${base}/document`
 }
 
-/** Asks for the first byte of the copy: 200/206 when it is there, 202 while it is made, 409 while the record is made. */
-async function probe(meetingId: string, source: CopySource): Promise<Response | undefined> {
+/**
+ * Asks for the first byte of the copy: 200/206 when it is there, 202 while it is made, 409 `RECORD_PENDING` while the
+ * record is made, 409 `RECORD_FAILED` when the record or the reader's copy could not be made.
+ */
+async function probe(
+  meetingId: string,
+  source: CopySource,
+): Promise<{ response: Response | undefined; error: unknown }> {
   const options = { path: { meetingId }, headers: { Range: 'bytes=0-0' }, parseAs: 'blob' as const }
   const result =
     source.kind === 'preview'
@@ -32,17 +39,21 @@ async function probe(meetingId: string, source: CopySource): Promise<Response | 
       : source.kind === 'record'
         ? await getMinutesRecord({ ...options, query: { version: source.version } })
         : await getMinutesDocument(options)
-  return result.response
+  return { response: result.response, error: result.error }
 }
 
 type Probe =
-  { state: 'asking' } | { state: 'making'; record: boolean } | { state: 'ready' } | { state: 'failed'; status?: number }
+  | { state: 'asking' }
+  | { state: 'making'; record: boolean }
+  | { state: 'ready' }
+  | { state: 'failed'; status?: number; recordFailed?: boolean }
 
 /**
  * A copy of the minutes in the app's PDF viewer, full screen, with "Back to the minutes" always in view (flow AF2): the
  * reader's own copy (with "DRAFT" on every page until approved), an officer's preview of a reader's copy (flow AD4), or
  * a version of the approved record. While the copy is being made (202 with `Retry-After`, or 409 `RECORD_PENDING` just
- * after the approval) it says so in a live region and asks again by itself.
+ * after the approval) it says so in a live region and asks again by itself. When it could not be made (409
+ * `RECORD_FAILED`) it says so, and that the secretary has been told, and asks no more.
  */
 export function CopyViewer({
   meetingId,
@@ -64,8 +75,11 @@ export function CopyViewer({
     const run = { cancelled: false, timer: undefined as ReturnType<typeof setTimeout> | undefined }
     const ask = async () => {
       let response: Response | undefined
+      let error: unknown
       try {
-        response = await probe(meetingId, JSON.parse(key) as CopySource)
+        const probed = await probe(meetingId, JSON.parse(key) as CopySource)
+        response = probed.response
+        error = probed.error
       } catch {
         response = undefined
       }
@@ -73,6 +87,10 @@ export function CopyViewer({
       const status = response?.status
       if (status === 200 || status === 206) {
         setProbed({ state: 'ready' })
+        return
+      }
+      if (status === 409 && reasonOf(error) === 'RECORD_FAILED') {
+        setProbed({ state: 'failed', status, recordFailed: true })
         return
       }
       if (response && (status === 202 || status === 409)) {
@@ -120,7 +138,9 @@ export function CopyViewer({
             : probed.state === 'making'
               ? intl.formatMessage(probed.record ? mn.recordBeingMade : mn.copyBeingMade)
               : probed.state === 'failed'
-                ? failedText(probed.status)
+                ? probed.recordFailed
+                  ? intl.formatMessage(mn.recordFailed)
+                  : failedText(probed.status)
                 : ''}
         </p>
         {probed.state === 'ready' ? (

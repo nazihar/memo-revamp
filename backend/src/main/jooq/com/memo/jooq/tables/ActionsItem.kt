@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.ACTIONS_ITEM_CLOSED_IDX
 import com.memo.jooq.indexes.ACTIONS_ITEM_DECISION_IDX
 import com.memo.jooq.indexes.ACTIONS_ITEM_FORUM_IDX
 import com.memo.jooq.indexes.ACTIONS_ITEM_HOLDER_IDX
@@ -407,7 +408,7 @@ open class ActionsItem(
         override fun `as`(alias: Table<*>): ActionsItemPath = ActionsItemPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(ACTIONS_ITEM_DECISION_IDX, ACTIONS_ITEM_FORUM_IDX, ACTIONS_ITEM_HOLDER_IDX, ACTIONS_ITEM_INSTANCE_IDX, ACTIONS_ITEM_MEETING_IDX, ACTIONS_ITEM_OWNER_POSITION_IDX, ACTIONS_ITEM_OWNER_USER_IDX, ACTIONS_ITEM_SUPERSEDED_IDX)
+    override fun getIndexes(): List<Index> = listOf(ACTIONS_ITEM_CLOSED_IDX, ACTIONS_ITEM_DECISION_IDX, ACTIONS_ITEM_FORUM_IDX, ACTIONS_ITEM_HOLDER_IDX, ACTIONS_ITEM_INSTANCE_IDX, ACTIONS_ITEM_MEETING_IDX, ACTIONS_ITEM_OWNER_POSITION_IDX, ACTIONS_ITEM_OWNER_USER_IDX, ACTIONS_ITEM_SUPERSEDED_IDX)
     override fun getPrimaryKey(): UniqueKey<ActionsItemRecord> = ACTIONS_ITEM_PKEY
     override fun getUniqueKeys(): List<UniqueKey<ActionsItemRecord>> = listOf(ACTIONS_ITEM_NUMBER_UK, ACTIONS_ITEM_REFERENCE_UK)
     override fun getReferences(): List<ForeignKey<ActionsItemRecord, *>> = listOf(ACTIONS_ITEM__ACTIONS_ITEM_TENANT_ID_SUPERSEDED_BY_FKEY)

@@ -262,8 +262,15 @@ export const mn = defineMessages({
   recordPending: { id: 'minutes.record.pending', defaultMessage: 'The record is being made…' },
   recordFailed: {
     id: 'minutes.record.failed',
-    defaultMessage: 'The record could not be made yet. It is tried again; operations have been told.',
+    defaultMessage: 'The record could not be made; the secretary has been told.',
   },
+  recordFailedOfficer: {
+    id: 'minutes.record.failedOfficer',
+    defaultMessage:
+      'The record could not be made after several tries. It is tried again once a day; when the document server is working again, you can make it now.',
+  },
+  retryRecord: { id: 'minutes.record.retry', defaultMessage: 'Make the record again' },
+  recordRetried: { id: 'minutes.record.retried', defaultMessage: 'The record is being made again.' },
   notCompliant: { id: 'minutes.record.notCompliant', defaultMessage: 'not confirmed as PDF/A' },
   current: { id: 'minutes.record.current', defaultMessage: '(current)' },
   versions: { id: 'minutes.record.versions', defaultMessage: 'Versions of the record' },
@@ -367,6 +374,10 @@ export const mn = defineMessages({
     defaultMessage: 'The readers would need more than 50 different copies. Ask your administrator.',
   },
   DECIDED: { id: 'minutes.problem.decided', defaultMessage: 'This correction has been decided already.' },
+  RECORD_NOT_FAILED: {
+    id: 'minutes.problem.recordNotFailed',
+    defaultMessage: 'The record has not failed: there is nothing to make again.',
+  },
   stale: {
     id: 'minutes.problem.stale',
     defaultMessage: 'Someone changed the minutes meanwhile. The page now shows the latest: try again.',

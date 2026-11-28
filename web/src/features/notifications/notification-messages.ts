@@ -156,6 +156,7 @@ const kindsWithValues = defineMessages<{
   minutesCommentAdded: { committee: string; date: string; kind: string }
   minutesDraftOverdue: { committee: string; date: string }
   minutesDraftReady: { committee: string; date: string }
+  minutesRecordFailed: { committee: string; date: string }
   decisionsReleaseFailed: { committee: string; date: string; count: number }
   actionAssigned: { committee: string; reference: string; date: string }
   actionSourceCorrected: { committee: string; reference: string }
@@ -399,6 +400,11 @@ const kindsWithValues = defineMessages<{
   minutesDraftReady: {
     id: 'notificationKinds.minutesDraftReady',
     defaultMessage: 'The draft minutes of {committee} on {date} are ready',
+  },
+  minutesRecordFailed: {
+    id: 'notificationKinds.minutesRecordFailed',
+    defaultMessage:
+      'The record of the approved minutes of {committee} on {date} could not be made: open the minutes to make it again',
   },
   decisionsReleaseFailed: {
     id: 'notificationKinds.decisionsReleaseFailed',
@@ -685,6 +691,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.minutesDraftOverdue, meetingValues(params))
     case 'MINUTES_DRAFT_READY':
       return intl.formatMessage(kindsWithValues.minutesDraftReady, meetingValues(params))
+    case 'MINUTES_RECORD_FAILED':
+      return intl.formatMessage(kindsWithValues.minutesRecordFailed, meetingValues(params))
     case 'DECISIONS_RELEASE_FAILED':
       return intl.formatMessage(kindsWithValues.decisionsReleaseFailed, {
         ...meetingValues(params),

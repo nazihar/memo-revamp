@@ -84,6 +84,9 @@ describe('minutes notifications (design E06 §2)', () => {
     expect(notificationText(english, 'MINUTES_COMMENT_ADDED', { ...minutes, kind: 'SUGGESTION' })).toBe(
       'A correction to the draft minutes of Board Risk Committee on 2026-12-12 was suggested',
     )
+    expect(notificationText(english, 'MINUTES_RECORD_FAILED', minutes)).toBe(
+      'The record of the approved minutes of Board Risk Committee on 2026-12-12 could not be made: open the minutes to make it again',
+    )
     expect(notificationText(english, 'DECISIONS_RELEASE_FAILED', { ...minutes, count: '2' })).toBe(
       '2 decisions of Board Risk Committee on 2026-12-12 were not sent to their memos: open the meeting to try again',
     )
@@ -101,6 +104,7 @@ describe('minutes notifications (design E06 §2)', () => {
     expect(notificationText(arabic, 'MINUTES_APPROVED', minutes)).toContain('اعتُمد محضر')
     expect(notificationText(arabic, 'MINUTES_CORRECTION_PROPOSED', minutes)).toContain('بانتظار اعتمادك')
     expect(notificationText(arabic, 'MINUTES_CIRCULATED', { ...minutes, until: '2026-12-19' })).toContain('2026-12-19')
+    expect(notificationText(arabic, 'MINUTES_RECORD_FAILED', minutes)).toContain('تعذّر إعداد سجل المحضر المعتمد')
   })
 })
 

@@ -33,6 +33,7 @@ import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumReaderSync
 import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
@@ -189,6 +190,7 @@ import com.memo.jooq.tables.records.FilesRenditionRecord
 import com.memo.jooq.tables.records.FilesTenantKeysetRecord
 import com.memo.jooq.tables.records.FilesVersionRecord
 import com.memo.jooq.tables.records.ForumMemberRecord
+import com.memo.jooq.tables.records.ForumReaderSyncRecord
 import com.memo.jooq.tables.records.ForumRecord
 import com.memo.jooq.tables.records.ForumSubmissionRecord
 import com.memo.jooq.tables.records.ForumTermReminderRecord
@@ -381,6 +383,7 @@ val FORUM_TENANT_ID_ID_KEY: UniqueKey<ForumRecord> = Internal.createUniqueKey(Fo
 val FORUM_TENANT_ID_KEY_KEY: UniqueKey<ForumRecord> = Internal.createUniqueKey(Forum.FORUM, DSL.name("forum_tenant_id_key_key"), arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.KEY), true)
 val FORUM_MEMBER_PKEY: UniqueKey<ForumMemberRecord> = Internal.createUniqueKey(ForumMember.FORUM_MEMBER, DSL.name("forum_member_pkey"), arrayOf(ForumMember.FORUM_MEMBER.ID), true)
 val FORUM_MEMBER_TENANT_ID_ID_KEY: UniqueKey<ForumMemberRecord> = Internal.createUniqueKey(ForumMember.FORUM_MEMBER, DSL.name("forum_member_tenant_id_id_key"), arrayOf(ForumMember.FORUM_MEMBER.TENANT_ID, ForumMember.FORUM_MEMBER.ID), true)
+val FORUM_READER_SYNC_PKEY: UniqueKey<ForumReaderSyncRecord> = Internal.createUniqueKey(ForumReaderSync.FORUM_READER_SYNC, DSL.name("forum_reader_sync_pkey"), arrayOf(ForumReaderSync.FORUM_READER_SYNC.TENANT_ID), true)
 val FORUM_SUBMISSION_PKEY: UniqueKey<ForumSubmissionRecord> = Internal.createUniqueKey(ForumSubmission.FORUM_SUBMISSION, DSL.name("forum_submission_pkey"), arrayOf(ForumSubmission.FORUM_SUBMISSION.ID), true)
 val FORUM_SUBMISSION_TENANT_ID_ID_KEY: UniqueKey<ForumSubmissionRecord> = Internal.createUniqueKey(ForumSubmission.FORUM_SUBMISSION, DSL.name("forum_submission_tenant_id_id_key"), arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.ID), true)
 val FORUM_TERM_REMINDER_PKEY: UniqueKey<ForumTermReminderRecord> = Internal.createUniqueKey(ForumTermReminder.FORUM_TERM_REMINDER, DSL.name("forum_term_reminder_pkey"), arrayOf(ForumTermReminder.FORUM_TERM_REMINDER.TENANT_ID, ForumTermReminder.FORUM_TERM_REMINDER.MEMBER_ID, ForumTermReminder.FORUM_TERM_REMINDER.DAYS_BEFORE), true)

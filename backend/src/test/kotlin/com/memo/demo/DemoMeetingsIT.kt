@@ -80,6 +80,7 @@ import java.util.UUID
  * minutes, and the credit review's decisions (the memo moved on with its number), approved minutes and an extract. Once
  * only.
  */
+@Suppress("LargeClass") // One seed checked in one class: the demo tenant is shared, so its epics cannot be split apart.
 class DemoMeetingsIT : FilesIntegrationTest() {
     @Autowired lateinit var committees: DemoForumSeeder
 
@@ -206,6 +207,10 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertCreditMinutes(seeded.heldCreditReview)
             val e06Rows = e06Rows(seeded)
             assertActions(seeded)
+            // E08 T8: the committees' year of history, after the meetings above (which keep their numbers).
+            val (history, historyMeetings) = seedHistory(password)
+            val historyRows = DemoHistoryRows.rows(historyMeetings)
+            // After the history: its meetings have their action taken reports too.
             val e07Rows = e07Rows()
 
             // Fills gaps only: a second run finds the three meetings and adds nothing.
@@ -213,6 +218,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertThat(e05Rows(seeded)).isEqualTo(e05Rows)
             assertThat(e06Rows(seeded)).isEqualTo(e06Rows)
             assertThat(e07Rows()).isEqualTo(e07Rows)
+            assertThat(history.seed()).isEqualTo(historyMeetings)
+            assertThat(DemoHistoryRows.rows(historyMeetings)).isEqualTo(historyRows)
             assertOnce(seeded)
         } finally {
             notices.jobs = true
@@ -280,6 +287,37 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             clock,
             password,
         )
+    }
+
+    /** E08 T8: the committees' year of history seeded and checked ([DemoHistoryRows]); the seeder and its meetings. */
+    private fun seedHistory(password: String): Pair<DemoHistorySeeder, Map<String, UUID>> {
+        val history =
+            DemoHistorySeeder(
+                meetingSeeding,
+                agendaSeeding,
+                declarationSeeding,
+                replySeeding,
+                attendanceSeeding,
+                decisionSeeding,
+                forumDirectory,
+                accounts,
+                transactions,
+                clock,
+                password,
+            )
+        val historyMeetings = checkNotNull(history.seed())
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        DemoHistoryRows.assertHistory(
+            historyMeetings,
+            LocalDate.now(clock.withZone(DemoMeetingSeeder.ZONE)),
+            held = { asUser(secretary) { reads.get(it) }.let { m -> (m.status == MeetingStatus.HELD) to m.startsAt } },
+            people = id(DemoMeetingSeeder.DIRECTOR) to id(DemoMeetingSeeder.HEAD_CREDIT),
+            forums =
+                listOf(DemoForumSeeder.RISK, DemoForumSeeder.CREDIT).map { key ->
+                    asSystem { transactions.inTenant(DemoTenant.ID) { checkNotNull(forumDirectory.forumByKey(key)).id } }
+                },
+        )
+        return history to historyMeetings
     }
 
     @Test

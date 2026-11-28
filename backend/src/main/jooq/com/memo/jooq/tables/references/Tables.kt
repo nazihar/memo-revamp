@@ -33,6 +33,7 @@ import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumReaderSync
 import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
@@ -327,6 +328,11 @@ val FORUM: Forum = Forum.FORUM
  * The table <code>memo.forum_member</code>.
  */
 val FORUM_MEMBER: ForumMember = ForumMember.FORUM_MEMBER
+
+/**
+ * The table <code>memo.forum_reader_sync</code>.
+ */
+val FORUM_READER_SYNC: ForumReaderSync = ForumReaderSync.FORUM_READER_SYNC
 
 /**
  * The table <code>memo.forum_submission</code>.

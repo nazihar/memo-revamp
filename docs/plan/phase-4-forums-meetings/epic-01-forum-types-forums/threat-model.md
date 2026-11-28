@@ -23,10 +23,10 @@
 | T2 | Two administrators appoint two chairs at the same moment | 4 | Invariants checked under `FOR UPDATE` on the forum row; concurrency test | V2 business logic (concurrency) |
 | T3 | Lost update on a forum or member edit | 3, 4 | If-Match on `version`; 412 on mismatch | V2 |
 | R1 | Someone denies having appointed a member | 4 | Audit entry with actor, acting-for, IP and authority text; notification to the chair and secretaries | V16 |
-| I1 | The existence or roster of a confidential committee (for example a special investigation committee) leaks to staff | 5 | `ForumVisible`: members, former members (name and own history only), `forums.manage`, `forum.read`, all under clearance of the forum's classification; deny by default; 404 for invisible forums (no existence oracle) | V8 |
+| I1 | The existence or roster of a confidential committee (for example a special investigation committee) leaks to staff | 5 | `ForumVisible` (as built: `ForumAccess.visible`): members, former members (name and own history only), `forums.manage`, `forum.read`, all under clearance of the forum's classification; deny by default; 404 for invisible forums (no existence oracle) | V8 |
 | I2 | Escalation targets list forums to workflow authors | 6 | Accepted: only holders of `workflow.definitions.manage` (privileged administrators) see keys and names of active forums; documented in the runbook | V8 |
 | I3 | Reminder or membership emails reveal the committee in the subject | 7, 4 | Subjects take no parameters (ADR-0030); bodies stay inside the tenant's relay | V14 data protection |
-| I4 | A member's position seat resolves to the wrong person after a reorganisation | 5 | Holders read from the org directory on the date asked; roster cache evicted on `OrgChanged`; a vacant seat is a vacancy, never a fallback person | V8 |
+| I4 | A member's position seat resolves to the wrong person after a reorganisation | 5 | Holders read from the org directory on the date asked (as built: the roster cache holds the committee's rows only, evicted on every membership change, and never a resolved holder, so a reorganisation needs no eviction); a vacant seat is a vacancy, never a fallback person | V8 |
 | D1 | Huge rules or attribute lists slow previews | 8, 1 | Typed request objects with caps (8 attributes, 3 required sets, 3 composition conditions, 8 outcomes; JSON ≤ 16 KiB); the preview roster is capped at 100 members, and the preview is a pure computation with no query | V2 input validation, V13 |
 | D2 | The reminder job floods mail after downtime | 7 | Only `term_ends_on = today + r` is matched, so missed days are skipped, not batched; the reminder table keeps it idempotent | V2 |
 | E1 | A `forum.read` grant opens meeting papers later | 5 | `forum.read` covers forum metadata and rosters only; papers (E03) have their own rule (ADR-PAPERS) | V8 |
@@ -35,3 +35,21 @@
 ## Residual risks
 - Membership changes are not four-eyes. This is mitigated by notifications and audit (ADR-0056, option 4 rejected), and can be made a tenant option later.
 - A tenant administrator holds every forum permission. That is the built-in role's design (ADR-0027); tenants that want separation grant `forums.manage` to a governance role and keep `tenant_admin` small.
+
+## Reviewed at phase close
+Reviewed at phase close on 2026-11-28 (Phase 4 E08 T11): **every mitigation holds as built**, with two changes recorded above.
+- **Changed by the build:**
+  - I1: the predicate is `ForumAccess.visible` (clearance first, then `forums.manage`, `forum.read` or a row of one's own).
+  - I4: the roster cache holds rows, not resolved holders. A position seat is resolved from the org directory on each read, so no eviction on `OrgChanged` is needed.
+  - The cross-tenant test is in `ForumsIT` ("another tenant neither sees nor writes forums or members"), not a separate `ForumCrossTenantIT`.
+- **Evidence:**
+  - S1, S2: `SAME_PERSON` and the `reviewed_by <> submitted_by` CHECK (`forum/V1`), step-up on approve (matrix rule `tenantAdminStepUp`), `ForumTypesIT`.
+  - S3: `SECRETARY_LIMIT` (`ForumsIT`).
+  - T1: no DELETE or TRUNCATE for the app role on `forum`, `forum_member`, the types and their versions (`forum/V1`, `V2`).
+  - T2: two parallel chairs, exactly one appointed (`ForumsIT`). T3: If-Match on the version.
+  - R1: `forum.*` and `forum.member.*` audit with before and after (`AuditActionCoverageTest`).
+  - I1, E2: `ForumsIT`. I2: as accepted. I3: `MailTemplatesTest`.
+  - D1: JSON caps in `forum/V1` and the typed request objects. D2: `ForumRemindersIT`.
+  - E1: `forum.read` reads no paper (E03's `PaperAccess`, `PaperLeakIT`).
+- **ASVS:** E01 had no rows until now. Four were added at phase close (V8 visibility, V8 maker-checker and secretaries, V2 membership history, V16 audit).
+- **Residual risks:** confirmed as written. Membership changes are still not four-eyes, and the tenant administrator still holds every committee permission.

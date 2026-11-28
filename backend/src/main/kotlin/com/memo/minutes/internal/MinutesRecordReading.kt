@@ -31,6 +31,11 @@ data class MinutesRecordResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val redacted: List<MinutesRedactedItem>,
     /** Whether this is the record of reference (the newest made version; E06 T8: the earlier ones stay readable). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val current: Boolean,
+    /**
+     * What the viewer reads of this version could not be made after its tries (the record, or their copy): the
+     * secretaries were told, and the sweep or a secretary asks for it again.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val failed: Boolean = false,
 )
 
 /** The file the viewer reads: its SHA-256 (to check a download against) and veraPDF's verdict (PDF/A-2u). */
@@ -100,7 +105,7 @@ class MinutesRecordReading(
     /**
      * What the actor streams of [meetingId]'s approved minutes (inside a transaction): version [recordVersion] (the current
      * one when null) as the record or their copy; null (202) while their copy is being made, 409 `RECORD_PENDING`
-     * while the record is not made.
+     * while the record is not made, 409 `RECORD_FAILED` when it or their copy failed after its tries.
      */
     fun serve(
         meetingId: UUID,
@@ -129,6 +134,10 @@ class MinutesRecordReading(
             is RecordLookup.Pending -> {
                 throw RefusedException("RECORD_PENDING", "The approved minutes are being kept as the record; try again in a moment.")
             }
+
+            is RecordLookup.Failed -> {
+                throw RefusedException("RECORD_FAILED", "The record could not be made; the secretary has been told.")
+            }
         }
     }
 
@@ -142,7 +151,8 @@ class MinutesRecordReading(
         val redacted = reader.set.redacted.map { MinutesRedactedItem(numbers[it.itemId].orEmpty(), it.kind) }
         val current = (versions.firstOrNull { it.state == RecordState.READY } ?: versions.firstOrNull())?.recordVersion
         return versions.map { r ->
-            val ready = (copies.lookup(reader.row, reader.set, r.recordVersion) as? RecordLookup.Ready)
+            val lookup = copies.lookup(reader.row, reader.set, r.recordVersion)
+            val ready = lookup as? RecordLookup.Ready
             MinutesRecordResponse(
                 version = r.recordVersion,
                 state = r.state.name,
@@ -152,6 +162,7 @@ class MinutesRecordReading(
                 file = ready?.let { MinutesRecordFile(it.sha256, (it.copy?.compliant ?: r.compliant) == true, it.copy == null) },
                 redacted = redacted,
                 current = r.recordVersion == current,
+                failed = lookup is RecordLookup.Failed,
             )
         }
     }

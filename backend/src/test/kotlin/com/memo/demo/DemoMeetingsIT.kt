@@ -45,6 +45,12 @@ import com.memo.memo.MemoAccessSeeding
 import com.memo.memo.MemoInterestLinks
 import com.memo.memo.MemoSeeding
 import com.memo.memo.internal.Memos
+import com.memo.minutes.DecisionSeeding
+import com.memo.minutes.MinutesSeeding
+import com.memo.minutes.internal.MinutesCopies
+import com.memo.minutes.internal.MinutesJobs
+import com.memo.minutes.internal.MinutesRecords
+import com.memo.minutes.internal.MinutesReleaseScheduler
 import com.memo.org.OrgSeeding
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -68,7 +74,9 @@ import java.util.UUID
  * chair agreed, a consent item lifted by Demo Director, an item whose papers only the chair reads, an in-camera section
  * and a guest), and the credit committee's meeting with the BDT 15 million proposal placed from the queue. E04 T9 adds
  * declarations, E05 T10 the risk review's replies and the credit committee's held review with its register, quorum
- * changes and a decision's snapshot. Once only.
+ * changes and a decision's snapshot. E06 T12 adds the risk committee's held review with its decisions and circulated
+ * minutes, and the credit review's decisions (the memo moved on with its number), approved minutes and an extract. Once
+ * only.
  */
 class DemoMeetingsIT : FilesIntegrationTest() {
     @Autowired lateinit var committees: DemoForumSeeder
@@ -139,12 +147,27 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var invitations: InvitationScheduler
 
+    @Autowired lateinit var decisionSeeding: DecisionSeeding
+
+    @Autowired lateinit var minutesSeeding: MinutesSeeding
+
+    @Autowired lateinit var minutesJobs: MinutesJobs
+
+    @Autowired lateinit var releases: MinutesReleaseScheduler
+
+    @Autowired lateinit var minutesCopies: MinutesCopies
+
+    @Autowired lateinit var minutesRecords: MinutesRecords
+
     @Test
     fun `the risk review is published twice and the credit committee has the proposal from its queue, once`() {
         val password = aPassword()
         // Test contexts share the scheduler table: the notices and invitations the seed causes are not scheduled here.
         notices.jobs = false
         invitations.jobs = false
+        // The minutes' jobs too: the copies and the record are built here by hand, as their jobs would.
+        minutesJobs.jobs = false
+        releases.jobs = false
         try {
             DemoTenantSeeder(
                 registry,
@@ -171,15 +194,25 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             assertReplies(seeded.riskReview)
             assertHeldReview(seeded.heldCreditReview)
             val e05Rows = e05Rows(seeded)
+            assertRiskMinutes(seeded)
+            assertCreditMinutes(seeded.heldCreditReview)
+            val e06Rows = e06Rows(seeded)
 
             // Fills gaps only: a second run finds the three meetings and adds nothing.
             assertThat(seeder.seed()).isEqualTo(seeded)
             assertThat(e05Rows(seeded)).isEqualTo(e05Rows)
+            assertThat(e06Rows(seeded)).isEqualTo(e06Rows)
             AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
-                listOf(DemoMeetingSeeder.RISK_TITLE, DemoMeetingSeeder.CREDIT_TITLE, DemoMeetingSeeder.HELD_TITLE).forEach {
+                listOf(
+                    DemoMeetingSeeder.RISK_TITLE,
+                    DemoMeetingSeeder.CREDIT_TITLE,
+                    DemoMeetingSeeder.HELD_TITLE,
+                    DemoMinutesSeeder.RISK_TITLE,
+                ).forEach {
                     assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
                 }
                 assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
+                assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.MEGHNA)).isOne()
                 val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
                 assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
                 assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
@@ -187,14 +220,13 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         } finally {
             notices.jobs = true
             invitations.jobs = true
+            minutesJobs.jobs = true
+            releases.jobs = true
         }
     }
 
-    private fun meetingSeeder(password: String) =
-        DemoMeetingSeeder(
-            meetingSeeding,
-            agendaSeeding,
-            declarationSeeding,
+    private fun meetingSeeder(password: String): DemoMeetingSeeder {
+        val e05 =
             DemoMeetingAttendanceSeeder(
                 meetingSeeding,
                 agendaSeeding,
@@ -203,7 +235,14 @@ class DemoMeetingsIT : FilesIntegrationTest() {
                 attendanceSeeding,
                 forumDirectory,
                 transactions,
-            ),
+            )
+        return DemoMeetingSeeder(
+            meetingSeeding,
+            agendaSeeding,
+            declarationSeeding,
+            e05,
+            DemoHeldRiskReviewSeeder(meetingSeeding, agendaSeeding, declarationSeeding, attendanceSeeding, e05),
+            DemoMinutesSeeder(declarationSeeding, attendanceSeeding, decisionSeeding, minutesSeeding),
             memoSeeding,
             memoAccess,
             forumSeeding,
@@ -213,6 +252,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             clock,
             password,
         )
+    }
 
     @Test
     fun `meetings are held on a Monday to Thursday`() {
@@ -409,7 +449,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
         val finance = id(DemoMeetingSeeder.HEAD_FINANCE)
         val read = asUser(secretary) { reads.get(meeting) }
-        assertThat(read.status).isEqualTo(MeetingStatus.HELD)
+        // Held, and since E06 T12 its minutes are approved too.
+        assertThat(read.status).isEqualTo(MeetingStatus.MINUTES_APPROVED)
         assertThat(read.startsAt).isBefore(clock.instant())
         assertThat(read.label).matches("MCC \\d+/\\d{4}")
         val meghna = checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, DemoMeetingSeeder.MEGHNA) })
@@ -433,7 +474,8 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         val day = read.startsAt.atZone(DemoMeetingSeeder.ZONE).toLocalDate()
         assertThat(lost.at).isEqualTo(DemoMeetingSeeder.at(day, LocalTime.of(15, 30)))
 
-        val snapshot = asUser(secretary) { snapshots.ofMeeting(meeting) }.single()
+        // The first snapshot is E05's; E06's decisions took their own after it.
+        val snapshot = asUser(secretary) { snapshots.ofMeeting(meeting) }.first { it.itemId == meghna }
         assertThat(snapshot.itemId).isEqualTo(meghna)
         assertThat(snapshot.result.quorate).isTrue()
         assertThat(snapshot.override).isNull()
@@ -441,6 +483,157 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         assertThat(snapshot.inputs.evaluate()).isEqualTo(snapshot.result)
         assertThat(snapshot.result.present to snapshot.result.needed).isEqualTo(3 to 3)
     }
+
+    /**
+     * E06 T12: the risk committee's held review, numbered before the quarterly review: Demo Director recused from the Rupsha
+     * Steel item and out of the room for it; two items approved and the consent section decided together, numbered in that
+     * order; the minutes circulated (approved at the next meeting), linked to the quarterly review's previous-minutes item,
+     * the director's comment on the cyber item, and two copies: the full one and the director's without the Rupsha item.
+     */
+    private fun assertRiskMinutes(seeded: DemoMeetingSeeder.Seeded) {
+        val meeting = seeded.heldRiskReview
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        val director = id(DemoMeetingSeeder.DIRECTOR)
+        val held = asUser(secretary) { reads.get(meeting) }
+        assertThat(held.status).isEqualTo(MeetingStatus.HELD)
+        assertThat(held.startsAt).isBefore(clock.instant())
+        val number = { m: UUID -> checkNotNull(asUser(secretary) { reads.get(m) }.label).substringBefore('/').substringAfter(' ').toInt() }
+        assertThat(number(meeting)).isLessThan(number(seeded.riskReview))
+        val item = { title: String -> checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, title) }) }
+        val resolution = { title: String -> asUser(secretary) { decisionSeeding.resolution(item(title)) }?.first }
+        val year = held.startsAt.atZone(DemoMeetingSeeder.ZONE).year
+        assertThat(listOf(DemoMinutesSeeder.RUPSHA, DemoMinutesSeeder.CYBER, DemoMinutesSeeder.POLICY).map(resolution))
+            .containsExactly("BRC/$year/001", "BRC/$year/002", "BRC/$year/003")
+        assertThat(resolution(DemoMinutesSeeder.INCIDENTS)).isNull()
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_decision_entry e join minutes_decision d on d.id = e.decision_id " +
+                        "where d.meeting_id = ? and e.consent_batch_id is not null",
+                    meeting,
+                ),
+            ).isEqualTo(2)
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_decision_entry e join minutes_decision d on d.id = e.decision_id " +
+                        "where d.item_id = ? and ? = any(e.took_no_part)",
+                    item(DemoMinutesSeeder.RUPSHA),
+                    director,
+                ),
+            ).isOne()
+            assertThat(
+                c.long(
+                    "select count(*) from minutes where meeting_id = ? and state = 'CIRCULATED' and linked_meeting_id = ? " +
+                        "and policy ->> 'approval' = 'AT_NEXT_MEETING'",
+                    meeting,
+                    seeded.riskReview,
+                ),
+            ).isOne()
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_comment where meeting_id = ? and user_id = ? and kind = 'SUGGESTION' and item_id = ?",
+                    meeting,
+                    director,
+                    item(DemoMinutesSeeder.CYBER),
+                ),
+            ).isOne()
+        }
+        // The copies, as the job builds them: everyone's, and the director's without the item they declared an interest in.
+        asSystem { minutesCopies.build(meeting, last = true) }
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            assertThat(c.long("select count(*) from minutes_copy where meeting_id = ? and state = 'DONE'", meeting)).isEqualTo(2)
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_copy where meeting_id = ? and state = 'DONE' and redacted::text like ?",
+                    meeting,
+                    "%${item(DemoMinutesSeeder.RUPSHA)}%",
+                ),
+            ).isOne()
+        }
+    }
+
+    /**
+     * E06 T12: the credit review's decisions: the Meghna Foods memo approved with conditions by 2–1 with the head of
+     * finance's dissent and the head of credit taking no part, numbered MCC/…/001 and the memo moved on with it; the
+     * watch-list deferred; the portfolio report noted without a quorum, to be ratified. The minutes approved by circulation
+     * (the meeting's minutes approved), the record made and an extract of the resolution issued.
+     */
+    private fun assertCreditMinutes(meeting: UUID) {
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        val finance = id(DemoMeetingSeeder.HEAD_FINANCE)
+        val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
+        val meghna = checkNotNull(asUser(secretary) { declarationSeeding.item(meeting, DemoMeetingSeeder.MEGHNA) })
+        val year = asUser(secretary) { reads.get(meeting) }.startsAt.atZone(DemoMeetingSeeder.ZONE).year
+        val (number, resolutionId) = checkNotNull(asUser(secretary) { decisionSeeding.resolution(meghna) })
+        assertThat(number).isEqualTo("MCC/$year/001")
+        assertThat(asUser(secretary) { reads.get(meeting) }.status).isEqualTo(MeetingStatus.MINUTES_APPROVED)
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_decision_entry e join minutes_decision d on d.id = e.decision_id " +
+                        "where d.item_id = ? and e.outcome_kind = 'APPROVED_WITH_CONDITIONS' and jsonb_array_length(e.conditions) = 2 " +
+                        "and e.votes_for = 2 and e.votes_against = 1 and e.dissent::text like ? and ? = any(e.took_no_part) " +
+                        "and d.released_at is not null and d.memo_id is not null",
+                    meghna,
+                    "%$finance%",
+                    headCredit,
+                ),
+            ).isOne()
+
+            fun outcome(title: String) =
+                c.long(
+                    "select count(*) from minutes_decision_entry e join minutes_decision d on d.id = e.decision_id " +
+                        "join meeting_item i on i.id = d.item_id where d.meeting_id = ? and i.title = ? and e.outcome_kind = ? " +
+                        "and e.ratification_required = ?",
+                    meeting,
+                    title,
+                    if (title == DemoMeetingSeeder.WATCH_LIST) "DEFERRED" else "NOTED",
+                    title == DemoMeetingSeeder.PORTFOLIO,
+                )
+            assertThat(outcome(DemoMeetingSeeder.WATCH_LIST)).isOne()
+            assertThat(outcome(DemoMeetingSeeder.PORTFOLIO)).isOne()
+            // The memo's note sheet carries the committee's decision with its number.
+            assertThat(
+                c.long(
+                    "select count(*) from minutes_decision d join workflow_instance w on w.subject_id = d.memo_id " +
+                        "join workflow_action a on a.instance_id = w.id " +
+                        "where d.item_id = ? and a.kind = 'FORUM_DECIDED' and a.remark like ?",
+                    meghna,
+                    "%Resolution $number:%",
+                ),
+            ).isOne()
+            assertThat(
+                c.long(
+                    "select count(*) from minutes where meeting_id = ? and state = 'APPROVED' and policy ->> 'approval' = 'BY_CIRCULATION'",
+                    meeting,
+                ),
+            ).isOne()
+            assertThat(c.long("select count(*) from minutes_comment where meeting_id = ? and kind = 'NO_COMMENTS'", meeting)).isEqualTo(3)
+            assertThat(c.long("select count(*) from minutes_extract where resolution_id = ?", resolutionId)).isOne()
+        }
+        // The record, as its job makes it.
+        asSystem { minutesRecords.build(meeting, 1, last = true) }
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            assertThat(c.long("select count(*) from minutes_record where meeting_id = ? and state = 'READY'", meeting)).isOne()
+        }
+    }
+
+    /** The E06 rows of the held meetings, to compare before and after a second run. */
+    private fun e06Rows(seeded: DemoMeetingSeeder.Seeded): List<Long> =
+        AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+            val both = arrayOf<Any>(seeded.heldRiskReview, seeded.heldCreditReview)
+            listOf(
+                "minutes_decision",
+                "minutes_item_note",
+                "minutes_resolution",
+                "minutes_event",
+                "minutes_comment",
+                "minutes_approval",
+            ).map { c.long("select count(*) from $it where meeting_id in (?, ?)", *both) } +
+                c.long("select count(*) from minutes_extract")
+        }
+
+    private fun <T> asSystem(block: () -> T): T = TenantContext.call(DemoTenant.ID) { ActorContext.asSystem("demo-test") { block() } }
 
     /** The E05 rows of the three meetings, to compare before and after a second run. */
     private fun e05Rows(seeded: DemoMeetingSeeder.Seeded): List<Long> =

@@ -39,7 +39,8 @@ object DemoTenant {
     val SETTINGS =
         linkedMapOf(
             "locale.default" to "en",
-            "default.timezone" to "UTC",
+            // The demo bank is Bangladeshi: its business calendar, working days and dates are in Dhaka (Phase 4 E06 T12).
+            "default.timezone" to "Asia/Dhaka",
         )
 
     /** Demo accounts. Their password comes from `MEMO_DEMO_PASSWORD` (generated into the git-ignored `.env`), never code. */

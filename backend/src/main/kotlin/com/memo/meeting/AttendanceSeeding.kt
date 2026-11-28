@@ -9,6 +9,7 @@ import com.memo.meeting.internal.attendance.AttendanceInput
 import com.memo.meeting.internal.attendance.AttendanceStore
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.LocalDate
 import java.util.UUID
 
 /**
@@ -31,6 +32,9 @@ class AttendanceSeeding(
     fun start(meetingId: UUID) {
         tx { lifecycle.start(meetingId, meeting(meetingId).version) }
     }
+
+    /** The meeting's date: the day it starts, in its zone (Phase 4 E06 T12: decisions are recorded at times on that day). */
+    fun date(meetingId: UUID): LocalDate = tx { meeting(meetingId).date }
 
     /** Ends the meeting in progress: it is held. */
     fun end(meetingId: UUID) {

@@ -1,0 +1,487 @@
+{
+  "meeting": {
+    "id": "id0",
+    "forumId": "id1",
+    "forumName": "Board Risk Committee",
+    "forumCode": "BRC",
+    "typeVersion": 1,
+    "kind": "ORDINARY",
+    "title": "Risk review, third quarter",
+    "startsAt": "2026-11-02T04:00:00Z",
+    "endsAt": "2026-11-02T06:00:00Z",
+    "timeZone": "Asia/Dhaka",
+    "localStartsAt": "2026-11-02T10:00:00",
+    "localEndsAt": "2026-11-02T12:00:00",
+    "mode": "IN_PERSON",
+    "location": "Board Room, Level 12, Head Office",
+    "classificationId": "id2",
+    "number": 1,
+    "label": "BRC 1/2026",
+    "status": "HELD",
+    "relation": "MEMBER",
+    "canManage": false,
+    "guests": [],
+    "version": 4,
+    "rsvp": {
+      "capacity": "MEMBER",
+      "alternateAttends": false,
+      "stale": false,
+      "canAnswer": false
+    }
+  },
+  "minutes": {
+    "meetingId": "id0",
+    "forumId": "id1",
+    "state": "CIRCULATED",
+    "approval": "AT_NEXT_MEETING",
+    "heldAt": "2026-11-23T05:08:16.475779Z",
+    "structure": {
+      "pending": false,
+      "problems": [],
+      "trackedChanges": 0,
+      "comments": 0
+    },
+    "items": [
+      {
+        "itemId": "id3",
+        "number": "1"
+      },
+      {
+        "itemId": "id4",
+        "number": "2"
+      },
+      {
+        "itemId": "id5",
+        "number": "3"
+      },
+      {
+        "itemId": "id6",
+        "number": "4"
+      },
+      {
+        "itemId": "id7",
+        "number": "5"
+      },
+      {
+        "itemId": "id8",
+        "number": "6"
+      },
+      {
+        "itemId": "id9",
+        "number": "7"
+      },
+      {
+        "itemId": "id10",
+        "number": "8"
+      },
+      {
+        "itemId": "id11",
+        "number": "9"
+      }
+    ],
+    "undecided": [],
+    "viewerRecused": true,
+    "mayGenerate": false,
+    "mayEdit": false,
+    "version": 9,
+    "viewerAccess": "READER",
+    "myAction": "READ",
+    "reviewer": {
+      "id": "id12",
+      "name": "Demo Board Member"
+    },
+    "confirmer": {
+      "id": "id12",
+      "name": "Demo Board Member"
+    },
+    "commentsUntil": "2026-11-30T11:00:00Z",
+    "circulatedAt": "2026-11-23T05:08:30.904946Z",
+    "linkedMeeting": {
+      "id": "id13",
+      "label": "BRC 2/2026",
+      "startsAt": "2026-11-25T04:00:00Z"
+    },
+    "agreed": false,
+    "answered": true,
+    "copies": [],
+    "maySendForReview": false,
+    "mayReview": false,
+    "mayCirculate": false,
+    "mayWithdraw": false,
+    "mayEndCirculation": false,
+    "mayComment": true,
+    "mayConfirm": false,
+    "mayReadCopy": true,
+    "mayProposeCorrection": false
+  },
+  "agenda": {
+    "meetingId": "id0",
+    "status": "HELD",
+    "startsAt": "2026-11-02T04:00:00Z",
+    "endsAt": "2026-11-02T06:00:00Z",
+    "timeZone": "Asia/Dhaka",
+    "revision": 1,
+    "latestRevision": 1,
+    "publishedAt": "2026-11-23T05:08:14.518570Z",
+    "preview": false,
+    "sections": [
+      {
+        "id": "id14",
+        "title": "Opening",
+        "kind": "STANDARD",
+        "membersOnly": false,
+        "items": [
+          {
+            "id": "id3",
+            "number": "1",
+            "access": "FULL",
+            "kind": "STANDING",
+            "standingKind": "APOLOGIES",
+            "title": "Welcome and apologies",
+            "purpose": "INFORMATION",
+            "minutes": 5,
+            "startsAt": "2026-11-02T04:00:00Z",
+            "localStartsAt": "2026-11-02T10:00:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          },
+          {
+            "id": "id4",
+            "number": "2",
+            "access": "FULL",
+            "kind": "STANDING",
+            "standingKind": "DECLARATIONS",
+            "title": "Declarations of interest",
+            "purpose": "INFORMATION",
+            "minutes": 5,
+            "startsAt": "2026-11-02T04:05:00Z",
+            "localStartsAt": "2026-11-02T10:05:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          },
+          {
+            "id": "id5",
+            "number": "3",
+            "access": "FULL",
+            "kind": "STANDING",
+            "standingKind": "PREVIOUS_MINUTES",
+            "title": "Minutes of the last meeting",
+            "purpose": "DECISION",
+            "minutes": 5,
+            "startsAt": "2026-11-02T04:10:00Z",
+            "localStartsAt": "2026-11-02T10:10:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          },
+          {
+            "id": "id6",
+            "number": "4",
+            "access": "FULL",
+            "kind": "STANDING",
+            "standingKind": "MATTERS_ARISING",
+            "title": "Matters arising and actions",
+            "purpose": "INFORMATION",
+            "minutes": 10,
+            "startsAt": "2026-11-02T04:15:00Z",
+            "localStartsAt": "2026-11-02T10:15:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": [
+              {
+                "kind": "ACTION_REPORT",
+                "meetingId": "id0",
+                "label": "Action taken report: nothing to report",
+                "counts": {
+                  "TO_CLOSE": 0,
+                  "OVERDUE": 0,
+                  "OPEN": 0,
+                  "CLOSED": 0,
+                  "CANCELLED": 0,
+                  "CORRECTIONS": 0
+                },
+                "state": "BUILT",
+                "at": "2026-11-23T05:08:14.677835Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "id15",
+        "title": "For decision",
+        "kind": "STANDARD",
+        "membersOnly": false,
+        "items": [
+          {
+            "id": "id7",
+            "number": "5",
+            "access": "TITLE",
+            "kind": "ITEM",
+            "title": "Exposure above the single-borrower limit, Rupsha Steel",
+            "purpose": "DECISION",
+            "minutes": 25,
+            "startsAt": "2026-11-02T04:25:00Z",
+            "localStartsAt": "2026-11-02T10:25:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": true,
+            "myDeclaration": {
+              "id": "id16",
+              "meetingId": "id0",
+              "itemId": "id7",
+              "itemNumber": "5",
+              "itemTitle": "Exposure above the single-borrower limit, Rupsha Steel",
+              "user": {
+                "id": "id17",
+                "name": "Demo Director"
+              },
+              "nature": "My cousin is the finance director of Rupsha Steel Mills.",
+              "intent": "LEAVE",
+              "source": "SELF",
+              "how": "IN_APP",
+              "recordedBy": {
+                "id": "id17",
+                "name": "Demo Director"
+              },
+              "declaredAt": "2026-11-23T05:08:14.852824Z",
+              "atMeeting": false,
+              "correction": false,
+              "revision": 1,
+              "state": "RECUSED",
+              "version": 0
+            },
+            "declarations": [],
+            "links": []
+          },
+          {
+            "id": "id8",
+            "number": "6",
+            "access": "FULL",
+            "kind": "ITEM",
+            "title": "Cyber risk appetite metrics",
+            "purpose": "DECISION",
+            "minutes": 25,
+            "startsAt": "2026-11-02T04:50:00Z",
+            "localStartsAt": "2026-11-02T10:50:00",
+            "description": "Four metrics for the cyber risk appetite, with their amber and red levels.",
+            "resolutionSought": "That the committee adopts the cyber risk appetite metrics.",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "id18",
+        "title": "Consent items",
+        "kind": "CONSENT",
+        "membersOnly": false,
+        "items": [
+          {
+            "id": "id9",
+            "number": "7",
+            "access": "FULL",
+            "kind": "ITEM",
+            "title": "Credit risk policy: annual review, no changes",
+            "purpose": "DECISION",
+            "startsAt": "2026-11-02T05:15:00Z",
+            "localStartsAt": "2026-11-02T11:15:00",
+            "resolutionSought": "That the committee approves the credit risk policy without changes.",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "discussion": {
+              "requestedBy": [],
+              "mine": false,
+              "canAsk": false
+            },
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          },
+          {
+            "id": "id10",
+            "number": "8",
+            "access": "FULL",
+            "kind": "ITEM",
+            "title": "Operational risk incidents, second quarter",
+            "purpose": "INFORMATION",
+            "startsAt": "2026-11-02T05:15:00Z",
+            "localStartsAt": "2026-11-02T11:15:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "discussion": {
+              "requestedBy": [],
+              "mine": false,
+              "canAsk": false
+            },
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          }
+        ]
+      },
+      {
+        "id": "id19",
+        "title": "For noting",
+        "kind": "STANDARD",
+        "membersOnly": false,
+        "items": []
+      },
+      {
+        "id": "id20",
+        "title": "Any other business",
+        "kind": "STANDARD",
+        "membersOnly": false,
+        "items": [
+          {
+            "id": "id11",
+            "number": "9",
+            "access": "FULL",
+            "kind": "STANDING",
+            "standingKind": "AOB",
+            "title": "Any other business (notified in advance)",
+            "purpose": "INFORMATION",
+            "minutes": 5,
+            "startsAt": "2026-11-02T05:15:00Z",
+            "localStartsAt": "2026-11-02T11:15:00",
+            "presenters": [],
+            "late": "NONE",
+            "changes": [],
+            "papers": [],
+            "subItems": [],
+            "recused": false,
+            "declarations": [],
+            "links": []
+          }
+        ]
+      }
+    ]
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "id21",
+        "by": {
+          "id": "id17",
+          "name": "Demo Director"
+        },
+        "itemId": "id8",
+        "itemNumber": "6",
+        "kind": "SUGGESTION",
+        "text": "Please record that the committee asked for the first quarter's figures at its next meeting.",
+        "at": "2026-11-23T05:08:31.612735Z",
+        "mine": true
+      }
+    ],
+    "all": false
+  },
+  "forums": [
+    {
+      "forumId": "id22",
+      "name": "Asset-Liability Committee",
+      "code": "ALCO",
+      "status": "ACTIVE",
+      "role": "CHAIR",
+      "voting": true,
+      "attributes": ["management"],
+      "state": "IN_OFFICE",
+      "startsOn": "2026-01-01",
+      "termNumber": 1,
+      "canOpen": true
+    },
+    {
+      "forumId": "id1",
+      "name": "Board Risk Committee",
+      "code": "BRC",
+      "status": "ACTIVE",
+      "role": "MEMBER",
+      "voting": true,
+      "attributes": [],
+      "state": "IN_OFFICE",
+      "startsOn": "2026-01-01",
+      "termEndsOn": "2028-12-31",
+      "termNumber": 1,
+      "canOpen": true
+    },
+    {
+      "forumId": "id23",
+      "name": "Board of Directors",
+      "code": "BOD",
+      "status": "ACTIVE",
+      "role": "MEMBER",
+      "voting": true,
+      "attributes": [],
+      "state": "IN_OFFICE",
+      "startsOn": "2026-01-01",
+      "termEndsOn": "2028-12-31",
+      "termNumber": 1,
+      "canOpen": true
+    },
+    {
+      "forumId": "id24",
+      "name": "Executive Committee",
+      "code": "EXCO",
+      "status": "ACTIVE",
+      "role": "CHAIR",
+      "voting": true,
+      "attributes": ["management"],
+      "state": "IN_OFFICE",
+      "startsOn": "2026-01-01",
+      "termNumber": 1,
+      "canOpen": true
+    },
+    {
+      "forumId": "id25",
+      "name": "Management Credit Committee",
+      "code": "MCC",
+      "status": "ACTIVE",
+      "role": "CHAIR",
+      "voting": true,
+      "attributes": ["management"],
+      "state": "IN_OFFICE",
+      "startsOn": "2026-01-01",
+      "termNumber": 1,
+      "canOpen": true
+    }
+  ],
+  "unread": {
+    "count": 56
+  }
+}

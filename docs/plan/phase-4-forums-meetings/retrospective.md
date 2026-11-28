@@ -1,6 +1,6 @@
 # Phase 4 — retrospective (built 2026-11-28; exit waiting on the owner's walkthrough)
 
-> **Built, exit waiting on the owner's walkthrough** (recorded in `overview.md §10`). All eight epics are merged (PRs #148–#263), as are the close-out fixes #265 and #266. #264 is in review: position steps follow dated holder changes. `ci` and `deploy-dev` are green on `master`. The master-only workflows were run by hand on 2026-11-28 (below), and their failures were fixed in #266.
+> **Built, exit waiting on the owner's walkthrough** (recorded in `overview.md §10`). All eight epics are merged (PRs #148–#263), and so is #264 (position steps follow dated holder changes, the decision form's focus race and the cycle journey's end-date locator). The close-out fixes #265 and #266 are open for review. `ci` and `deploy-dev` are green on `master`. The master-only workflows were run by hand on 2026-11-28 (below), and their failures were fixed in #266.
 >
 > Two exit criteria are met. The third, "the pilot runs a real committee cycle", stands for a representative cycle on dev walked through by the owner (overview §5, A1). The agent's half of it is done: `committee-cycle.spec` passes against dev. The owner's walk is not yet done, so the phase is not closed. Next is Phase 1b (Phase 4 Q2), whose overview (#141) waits for approval.
 
@@ -139,7 +139,7 @@
 - **#257, jOOQ settings mutated in place:** `Settings.withStatementType` on the context's settings switched the whole JVM to static statements. `OrgPerformanceIT` found it on #257's CI, and the settings are now cloned first.
 - **#260, officers' stale access:** queue readers changed only on member edits. A lapsed term kept access, and a new appointment or a position's new holder got none. It now runs daily per tenant and on assignment changes. Found by the E08 T10 runbook check (`OfficerAccessIT`).
 - **#262, the minutes record never retried:** a failed record or approved copy was never asked for again. The sweep and the secretary now ask again (`RecordRetryIT`). Also found by the runbook check.
-- **#264, position steps not following dated changes** (in review): workflow steps held by a position did not follow a holder change that takes effect on a date.
+- **#264, position steps not following dated changes** (merged 2026-11-28): workflow steps held by a position did not follow a holder change that takes effect on a date.
 - **Flaky tests fixed at the root:**
   - **#241:** performance budgets keep the best of three rounds (`Latency.p95`), since single rounds failed on noise.
   - **#254:** the inbox budget check analyses every table it loads.
@@ -178,7 +178,7 @@
   - **E05 T9:** the recorded run in real calendar clients (Outlook, Gmail, and an SMTP relay; Q5). The threat model's T4 and I8 and `CLASS:PRIVATE` wait for it;
   - the external pen test after Phase 1b (Q2; scope in `docs/security/pen-test-scope.md`).
 - **To finish the close:**
-  - #264 to merge;
+  - #265, #266 and this close to merge;
   - #266's nightly and `load` green on `master` after it merges;
   - a fresh look at dev's two unseeded demo actions (the Head of Credit Risk holder's clearance) before the owner's walk.
 - **Follow-ups:**
@@ -188,6 +188,6 @@
     - "Not yet sent — retry" is not shown;
     - row-level controls through ONLYOFFICE editing are untested;
     - the release reads the agenda once per decision (2.0 s for 60 on a CI runner, within budget).
-  - E07: `committee-escalation.spec` stops at "Mark as held" on the local stack. The race in `DecisionForm.tsx` is fixed in #264.
+  - E07: `committee-escalation.spec` stops at "Mark as held" on the local stack. The race in `DecisionForm.tsx` was fixed in #264.
   - The demo tenant's earlier UTC rows on dev.
   - Phase 2's and Phase 1a's follow-ups as listed in STATUS.

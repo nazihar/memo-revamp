@@ -55,7 +55,6 @@ History of the phase, newest last. `STATUS.md` keeps only the current position.
     - the web's date defaults use the organisation's `today` from the session;
     - actions waiting for verification offer no update and no new date;
     - `MeetingStatus.CLOSED` stays reserved (ADR-0060 amendment);
-    - the "Ends on" locator in `committee-cycle.spec`;
     - runbook corrections.
   - **#266:** the master-only failures above.
 - **Dev:**

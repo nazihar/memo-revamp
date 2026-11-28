@@ -1,6 +1,7 @@
 import { defineMessages, type IntlShape } from 'react-intl'
 import type { TermValues } from '@/features/terms/terms'
 import { isProblem } from '@/api/http'
+import { orgToday } from '@/lib/org-today'
 
 /** Strings shared by the org screens (design E04 §13). */
 export const om = defineMessages({
@@ -143,10 +144,9 @@ export function orgProblemMessage(intl: IntlShape, error: unknown): string {
   return intl.formatMessage(om.failed)
 }
 
-/** Today in the browser, as `YYYY-MM-DD` for date fields (the server checks dates in the organisation's time zone). */
+/** Today on the organisation's calendar, as `YYYY-MM-DD` for date fields (the server checks dates there; from the session). */
 export function today(): string {
-  const d = new Date()
-  return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  return orgToday()
 }
 
 /**

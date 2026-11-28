@@ -39,6 +39,7 @@ class ActionAbilityRules(
         val contributor = viewer.userId in contributors && !recused
         val draft = row.status == ActionStatus.DRAFT
         val open = row.status in ActionChecks.OPEN
+        val underway = row.status in ActionChecks.UNDERWAY
         val ended = row.status in ActionEnding.ENDED && row.cancelKind != CancelKind.DISCARDED
         val recent =
             row.closedAt?.let { ChronoUnit.DAYS.between(it.atZone(org.zone()).toLocalDate(), today) <= ActionEnding.REOPEN_DAYS } == true
@@ -47,11 +48,13 @@ class ActionAbilityRules(
             issue = manages && draft,
             discard = manages && draft,
             // A secretary writes for the owner ([updateOnBehalf]); their own "Post an update" would be refused (E07 T12).
-            update = open && (owner || contributor),
-            updateOnBehalf = open && secretary,
-            confidence = open && (owner || secretary),
+            // Once marked done the owner's step is over (design E07 §1.4, §1.7): the action waits for its verifier, its date
+            // no longer drives its colour and a date request would be withdrawn, so updates and new dates are not offered.
+            update = underway && (owner || contributor),
+            updateOnBehalf = underway && secretary,
+            confidence = underway && (owner || secretary),
             start = row.status == ActionStatus.OPEN && owner,
-            requestDue = open && owner && mode != DueChange.OWNER_WITH_REASON && pending == null,
+            requestDue = underway && owner && mode != DueChange.OWNER_WITH_REASON && pending == null,
             decideDue = open && pending != null && !recused && viewer.userId in deciders.of(row, mode),
             changeDue = open && (manages || (owner && mode == DueChange.OWNER_WITH_REASON)),
             overrideRag = row.status in ActionChecks.UNDERWAY && officer,

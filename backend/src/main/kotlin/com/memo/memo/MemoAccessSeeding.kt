@@ -19,6 +19,7 @@ import com.memo.memo.internal.MemoTemplatePurpose
 import com.memo.memo.internal.MemoTemplateService
 import com.memo.memo.internal.MemoTemplateStore
 import com.memo.memo.internal.MemoTypeLifecycle
+import com.memo.memo.internal.MemoTypeStore
 import com.memo.memo.internal.MemoTypes
 import com.memo.memo.internal.Memos
 import com.memo.memo.internal.RecipientKind
@@ -148,6 +149,9 @@ class MemoTemplateSeeding(
     private val uploads: FileUploads,
     private val transactions: TenantTransactions,
 ) {
+    /** The built-in General memo type (a follow-up memo the demo raises from an action, Phase 4 E07 T12). */
+    fun generalType(): UUID = tx { types.active().first { it.key == MemoTypeStore.GENERAL }.id }
+
     /** Whether the published version of [typeId] has a template. */
     fun hasTemplate(typeId: UUID): Boolean = tx { types.published(typeId)?.let { store.of(it.id)?.present } == true }
 

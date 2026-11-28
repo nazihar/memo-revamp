@@ -61,12 +61,12 @@ data class ActionAbilities(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raiseMemo: Boolean = false,
     /** Link a memo they may read (the owner, a contributor or a secretary, until the action is verified). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val linkMemo: Boolean = false,
-    /** Post an update: the owner, a contributor, or a secretary for the owner ([updateOnBehalf]). */
+    /** Post an update: the owner or a contributor; a secretary writes for the owner ([updateOnBehalf]). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val update: Boolean = false,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updateOnBehalf: Boolean = false,
     /** Say how it is going with an update (the owner). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val confidence: Boolean = false,
-    /** "I have started". */
+    /** "I have started": the owner. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val start: Boolean = false,
     /** Ask for a new date (the owner, when the committee agrees dates). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val requestDue: Boolean = false,
